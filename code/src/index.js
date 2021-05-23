@@ -1,78 +1,54 @@
-const dotenv = require('dotenv');
+require('dotenv').config();
+
 const ejs = require('ejs');
-const fs = require('fs');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const path = require('path');
-const rimraf = require('rimraf');
 const slugify = require('slugify');
 
-dotenv.config({ path: path.resolve(__dirname, './.env') });
+const fs = require('fs');
+const path = require('path');
 
-const doc = new GoogleSpreadsheet(process.env.GOOGLE_SPREADSHEET_ID);
-doc.useApiKey(process.env.GOOGLE_API_KEY);
-
-const INVITABILITY = {
-  'A - Very High': 1,
-  'B - High': 2,
-  'C - Medium': 3,
-  'D - Low': 4,
-  'E - Very Low': 5,
-};
-const OUTPUT_DIR = path.resolve(__dirname, `./output`);
+const { Guest, GuestRecord } = require('./classes');
+const { DOCUMENT, OUTPUT_DIR } = require('./config');
+const { clean, exit } = require('./utils');
 
 (async () => {
-  await retrieveGuestList();
+  const guests = await retrieveGuestList();
+  generateHTMLFiles(guests);
 })();
 
 /**
- * Retrieves the full guest
+ * Retrieves the full guest list.
+ * @returns
  */
 async function retrieveGuestList() {
   clean();
 
-  await doc.loadInfo();
-  const [sheet] = doc.sheetsByIndex;
-  const rows = await sheet.getRows();
-
-  rows.slice(0, 1).some((row) => {
-    const name = row['Name'];
-    const invitability = INVITABILITY[row['Invitability']];
-
-    if (invitability > 1) return true;
-    generateHTMLFiles({ name, invitability });
-  });
+  await DOCUMENT.loadInfo();
+  const [sheet] = DOCUMENT.sheetsByIndex;
+  const records = await sheet.getRows();
+  return records;
 }
 
 /**
- * Generates the HTML files for each member on the guest list from the template.
- * @param {string} member.name The full name of the member.
- * @param {number} member.invitability The rank of invitability.
+ * Generates the HTML files for each member on the guest list from the
+ * template.
+ * @param {GuestRecord[]} records The guests on the list.
  */
-function generateHTMLFiles({ name, invitability }) {
-  const templateFile = path.resolve(__dirname, './template.ejs');
-  // name = slugify(name, { lower: true });
-  const outputFile = OUTPUT_DIR + `/${name}.html`;
+function generateHTMLFiles(records) {
+  records.slice(0, 1).some((record) => {
+    const guest = new Guest();
+    guest.name = record['Name'];
+    guest.invitability = GuestRecord.getInvitValue(record);
 
-  fs.readFile(templateFile, 'utf8', (err, data) => {
-    const template = ejs.compile(data);
-    const html = template({ invitee: { name, invitability } });
-    fs.writeFile(outputFile, html, logError);
+    if (guest.invitability > 1) return true;
+
+    const templateFile = path.resolve(__dirname, './styling/template.ejs');
+    // guest.name = slugify(guest.name, { lower: true });
+    const outputFile = OUTPUT_DIR + `/${guest.name}.html`;
+
+    fs.readFile(templateFile, 'utf8', (err, data) => {
+      const template = ejs.compile(data);
+      const html = template({ guest });
+      fs.writeFile(outputFile, html, exit);
+    });
   });
-}
-
-/**
- * Cleans the output directory.
- */
-function clean() {
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR);
-  }
-  rimraf(OUTPUT_DIR + '/*', logError);
-}
-
-function logError(err) {
-  if (err) {
-    console.error(err);
-    process.exit(0);
-  }
 }
