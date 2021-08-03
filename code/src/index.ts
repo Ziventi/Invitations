@@ -1,17 +1,14 @@
-require('dotenv').config();
+import ejs from 'ejs';
 
-const ejs = require('ejs');
-const slugify = require('slugify');
+import fs from 'fs';
+import path from 'path';
 
-const fs = require('fs');
-const path = require('path');
-
-const { Guest, GuestRecord } = require('./classes');
-const { DOCUMENT, OUTPUT_DIR } = require('./config');
-const { clean, exit } = require('./utils');
+import { Guest, GuestRecord } from './classes';
+import { DOCUMENT, OUTPUT_DIR } from './config';
+import { clean, exit } from './utils';
 
 (async () => {
-  const guests = await retrieveGuestList();
+  const guests = <GuestRecord[]>await retrieveGuestList();
   generateHTMLFiles(guests);
 })();
 
@@ -31,9 +28,9 @@ async function retrieveGuestList() {
 /**
  * Generates the HTML files for each member on the guest list from the
  * template.
- * @param {GuestRecord[]} records The guests on the list.
+ * @param records The guests on the list.
  */
-function generateHTMLFiles(records) {
+function generateHTMLFiles(records: GuestRecord[]) {
   records.slice(0, 1).some((record) => {
     const guest = new Guest();
     guest.name = record['Name'];

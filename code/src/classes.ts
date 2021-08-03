@@ -1,33 +1,28 @@
-class Guest {
+import { GoogleSpreadsheetRow } from 'google-spreadsheet';
+
+export class Guest {
   name = '';
   invitability = 0;
 }
 
-class GuestRecord {
+export class GuestRecord extends GoogleSpreadsheetRow {
   Name = '';
   Invitability = '';
 
-  constructor() {}
-
   /**
    * Retrieve the numeric invitability value.
-   * @param {GuestRecord} record The guest record.
+   * @param record The guest record.
    * @returns The invitability value.
    */
-  static getInvitValue(record) {
+  static getInvitValue(record: GuestRecord): number {
     return INVITABILITY[record['Invitability']];
   }
 }
 
-module.exports = {
-  Guest,
-  GuestRecord,
-};
-
-const INVITABILITY = {
+const INVITABILITY: Record<string, number> = {
   'A - Very High': 1,
   'B - High': 2,
   'C - Medium': 3,
   'D - Low': 4,
-  'E - Very Low': 5,
+  'E - Very Low': 5
 };
