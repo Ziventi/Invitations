@@ -14,7 +14,7 @@ export class GuestRecord extends GoogleSpreadsheetRow {
    * @param record The guest record.
    * @returns The invitability value.
    */
-  static getInvitValue(record: GuestRecord): number {
+  static getInviteValue(record: GuestRecord): number {
     return INVITABILITY[record['Invitability']];
   }
 }

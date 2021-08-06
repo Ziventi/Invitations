@@ -1,6 +1,4 @@
-import rimraf from 'rimraf';
-
-import fs from 'fs';
+import fs from 'fs-extra';
 
 import { OUTPUT_DIR } from './config';
 
@@ -8,10 +6,7 @@ import { OUTPUT_DIR } from './config';
  * Cleans the output directory.
  */
 export function clean() {
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR);
-  }
-  rimraf(OUTPUT_DIR + '/*', module.exports.exit);
+  fs.remove(OUTPUT_DIR, module.exports.exit);
 }
 
 /**

@@ -1,15 +1,18 @@
 import ejs from 'ejs';
+import fs from 'fs-extra';
+import puppeteer from 'puppeteer';
 
-import fs from 'fs';
 import path from 'path';
 
 import { Guest, GuestRecord } from './classes';
 import { DOCUMENT, OUTPUT_DIR } from './config';
 import { clean, exit } from './utils';
 
+const TEMPLATE_FILE = path.resolve(__dirname, './assets/template.ejs');
+
 (async () => {
-  const guests = <GuestRecord[]>await retrieveGuestList();
-  generateHTMLFiles(guests);
+  await generateHTMLFiles();
+  await generatePDFFiles();
 })();
 
 /**
@@ -17,8 +20,6 @@ import { clean, exit } from './utils';
  * @returns
  */
 async function retrieveGuestList() {
-  clean();
-
   await DOCUMENT.loadInfo();
   const [sheet] = DOCUMENT.sheetsByIndex;
   const records = await sheet.getRows();
@@ -28,24 +29,59 @@ async function retrieveGuestList() {
 /**
  * Generates the HTML files for each member on the guest list from the
  * template.
- * @param records The guests on the list.
  */
-function generateHTMLFiles(records: GuestRecord[]) {
-  records.slice(0, 1).some((record) => {
+async function generateHTMLFiles() {
+  clean();
+  fs.ensureDirSync(`${OUTPUT_DIR}/html`);
+
+  const records = <GuestRecord[]>await retrieveGuestList();
+
+  const promises = records.slice(0, 1).map((record) => {
     const guest = new Guest();
     guest.name = record['Name'];
-    guest.invitability = GuestRecord.getInvitValue(record);
+    guest.invitability = GuestRecord.getInviteValue(record);
+    return generateHTML(guest);
+  });
 
-    if (guest.invitability > 1) return true;
+  return Promise.all(promises);
+}
 
-    const templateFile = path.resolve(__dirname, './styling/template.ejs');
-    // guest.name = slugify(guest.name, { lower: true });
-    const outputFile = OUTPUT_DIR + `/${guest.name}.html`;
+async function generatePDFFiles() {
+  fs.ensureDirSync(`${OUTPUT_DIR}/pdf`);
+  const filenames = fs.readdirSync(`${OUTPUT_DIR}/html`);
 
-    fs.readFile(templateFile, 'utf8', (err, data) => {
+  const promises = filenames.map((filename) => {
+    const [name] = filename.split('.');
+    const html = fs.readFileSync(`${OUTPUT_DIR}/html/${name}.html`, {
+      encoding: 'utf8'
+    });
+    return generatePDF(html, name);
+  });
+
+  return Promise.all(promises);
+}
+
+async function generateHTML(guest: Guest) {
+  return Promise.resolve()
+    .then(() => fs.readFile(TEMPLATE_FILE, 'utf8'))
+    .then((data) => {
       const template = ejs.compile(data);
       const html = template({ guest });
-      fs.writeFile(outputFile, html, exit);
-    });
+      const outputFile = `${OUTPUT_DIR}/html/${guest.name}.html`;
+      return fs.outputFile(outputFile, html);
+    })
+    .catch(exit);
+}
+
+async function generatePDF(html: string, name: string) {
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.setContent(html);
+  await page.emulateMediaType('screen');
+  await page.pdf({
+    format: 'a4',
+    path: `${OUTPUT_DIR}/pdf/${name}.pdf`,
+    printBackground: true
   });
+  return browser.close();
 }
