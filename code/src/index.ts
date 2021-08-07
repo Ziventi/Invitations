@@ -11,6 +11,9 @@ import { DOCUMENT, OUTPUT_DIR } from './config';
 import { clean, logErrorAndExit } from './utils';
 
 const ASSETS_DIR = path.resolve(__dirname, './assets');
+const CACHE_DIR = path.resolve(__dirname, './cache');
+
+const CACHED_DATA = `${CACHE_DIR}/data.json`;
 const INFO_HTML = `${ASSETS_DIR}/info.html`;
 const INFO_PDF = `${OUTPUT_DIR}/info.pdf`;
 const STYLES_FILE = `${ASSETS_DIR}/styles.css`;
@@ -39,14 +42,8 @@ async function main() {
  * @returns A promise fulfilled when all HTML files have been generated.
  */
 async function generateHTMLFiles(): Promise<Array<void>> {
-  const records = await loadGuestList();
-  const promises = records.slice(0, 1).map((record) => {
-    const guest = new Guest();
-    guest.name = record['Name'];
-    guest.invitability = GuestRecord.getInviteValue(record);
-    return createGuestHTML(guest);
-  });
-
+  const guests = await loadGuestList();
+  const promises = guests.slice(0, 1).map(createGuestHTML);
   return Promise.all(promises);
 }
 
@@ -147,10 +144,25 @@ async function createPDFPage(html: string, outputPath: string) {
  * Retrieves the full guest list.
  * @returns A promise which resolves to the list of guest records.
  */
-async function loadGuestList(): Promise<Array<GuestRecord>> {
-  await DOCUMENT.loadInfo();
-  const [sheet] = DOCUMENT.sheetsByIndex;
-  return <Array<GuestRecord>>await sheet.getRows();
+async function loadGuestList(): Promise<Array<Guest>> {
+  const refresh =
+    process.argv.includes('--refresh') || !fs.existsSync(CACHED_DATA);
+  if (refresh) {
+    console.info('Refreshing cache...');
+
+    await DOCUMENT.loadInfo();
+    const [sheet] = DOCUMENT.sheetsByIndex;
+    const records = <Array<GuestRecord>>await sheet.getRows();
+    const guests = records.map((record) => {
+      const guest = new Guest();
+      guest.name = record['Name'];
+      guest.invitability = GuestRecord.getInviteValue(record);
+      return guest;
+    });
+    fs.outputFileSync(CACHED_DATA, JSON.stringify(guests, null, 2));
+  }
+  const guests = readFileContent(CACHED_DATA);
+  return <Array<Guest>>JSON.parse(guests);
 }
 
 /**
