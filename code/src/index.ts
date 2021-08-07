@@ -24,8 +24,8 @@ const TEMPLATE_FILE = `${ASSETS_DIR}/template.ejs`;
 })();
 
 /**
- * Generates the HTML files for each member on the guest list from the
- * template.
+ * Generates the HTML files for each member on the guest list from the template.
+ * @returns A promise fulfilled when all HTML files have been generated.
  */
 async function generateHTMLFiles(): Promise<Array<void>> {
   const records = <GuestRecord[]>await loadGuestList();
@@ -39,6 +39,10 @@ async function generateHTMLFiles(): Promise<Array<void>> {
   return Promise.all(promises);
 }
 
+/**
+ * Generates the PDF files from each of the guest HTML files.
+ * @returns A promise fulfilled when all PDF files have been generated.
+ */
 function generatePDFFiles(): Promise<Array<void>> {
   fs.ensureDirSync(`${OUTPUT_DIR}/pdf`);
 
@@ -52,6 +56,11 @@ function generatePDFFiles(): Promise<Array<void>> {
   return Promise.all(promises);
 }
 
+/**
+ * Creates a single HTML file for a guest from the template.
+ * @param guest The guest whose information is on the page.
+ * @returns A promise fulfilled when the HTML file is created.
+ */
 async function createGuestHTML(guest: Guest): Promise<void> {
   try {
     const data = await fs.readFile(TEMPLATE_FILE, 'utf8');
@@ -64,17 +73,32 @@ async function createGuestHTML(guest: Guest): Promise<void> {
   }
 }
 
+/**
+ * Creates a single PDF file for a guest from the HTML file.
+ * @param html The HTML string to be used for generating the PDF.
+ * @param name The name of the guest.
+ * @returns A promise fulfilled when the PDF file is created.
+ */
 async function createGuestPDFPage(html: string, name: string): Promise<void> {
   const path = `${OUTPUT_DIR}/pdf/${name}.pdf`;
   await createPDFPage(html, path);
   return mergePDFs(path);
 }
 
+/**
+ * Creates a single PDF for the second information page.
+ * @returns A promise fulfilled when the PDF file is created.
+ */
 async function createInfoPage() {
   const html = loadHTML(INFO_HTML);
   return createPDFPage(html, INFO_PDF);
 }
 
+/**
+ * Merges a specified guest PDF page and the information page.
+ * @param pdf The PDF for the page.
+ * @returns A promise fulfilled when the PDF files have been merged.
+ */
 async function mergePDFs(pdf: string) {
   const merger = new PDFMerger();
   merger.add(pdf);
@@ -82,6 +106,12 @@ async function mergePDFs(pdf: string) {
   return await merger.save(pdf);
 }
 
+/**
+ * Helper function for creating PDF pages.
+ * @param html The HTML content to be used for the page.
+ * @param outputPath The path to which the PDF will be saved.
+ * @returns A promise fulfilled when the PDF page is created.
+ */
 async function createPDFPage(html: string, outputPath: string) {
   try {
     const browser = await puppeteer.launch({ headless: true });
@@ -101,7 +131,7 @@ async function createPDFPage(html: string, outputPath: string) {
 
 /**
  * Retrieves the full guest list.
- * @returns The list of guest records.
+ * @returns A promise which resolves to the list of guest records.
  */
 async function loadGuestList(): Promise<Array<GoogleSpreadsheetRow>> {
   await DOCUMENT.loadInfo();
@@ -109,6 +139,12 @@ async function loadGuestList(): Promise<Array<GoogleSpreadsheetRow>> {
   return await sheet.getRows();
 }
 
+/**
+ * Reads the HTML from a specified file.
+ * @param file The HTML file path to read from.
+ * @returns The HTML content as a string.
+ */
 function loadHTML(file: string) {
-  return fs.readFileSync(file, { encoding: 'utf8' });
+  const html = fs.readFileSync(file, { encoding: 'utf8' });
+  return html;
 }
