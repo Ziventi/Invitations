@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
 import ejs from 'ejs';
 import fs from 'fs-extra';
-import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
 import PDFMerger from 'pdf-merger-js';
 import puppeteer from 'puppeteer';
 
@@ -13,22 +13,33 @@ import { clean, logErrorAndExit } from './utils';
 const ASSETS_DIR = path.resolve(__dirname, './assets');
 const INFO_HTML = `${ASSETS_DIR}/info.html`;
 const INFO_PDF = `${OUTPUT_DIR}/info.pdf`;
+const STYLES_FILE = `${ASSETS_DIR}/styles.css`;
 const TEMPLATE_FILE = `${ASSETS_DIR}/template.ejs`;
 
-(async () => {
+const FONTS_URL =
+  'https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap';
+
+main();
+
+/**
+ * Main program.
+ */
+async function main() {
+  console.time('Time');
   clean();
   fs.ensureDirSync(OUTPUT_DIR);
 
   await Promise.all([generateHTMLFiles(), createInfoPage()]);
   await generatePDFFiles();
-})();
+  console.timeEnd('Time');
+}
 
 /**
  * Generates the HTML files for each member on the guest list from the template.
  * @returns A promise fulfilled when all HTML files have been generated.
  */
 async function generateHTMLFiles(): Promise<Array<void>> {
-  const records = <GuestRecord[]>await loadGuestList();
+  const records = await loadGuestList();
   const promises = records.slice(0, 1).map((record) => {
     const guest = new Guest();
     guest.name = record['Name'];
@@ -49,7 +60,7 @@ function generatePDFFiles(): Promise<Array<void>> {
   const filenames = fs.readdirSync(`${OUTPUT_DIR}/html`);
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
-    const html = loadHTML(`${OUTPUT_DIR}/html/${name}.html`);
+    const html = readFileContent(`${OUTPUT_DIR}/html/${name}.html`);
     return createGuestPDFPage(html, name);
   });
 
@@ -65,7 +76,7 @@ async function createGuestHTML(guest: Guest): Promise<void> {
   try {
     const data = await fs.readFile(TEMPLATE_FILE, 'utf8');
     const template = ejs.compile(data);
-    const html = template({ guest });
+    const html = template({ guest, cssFile: STYLES_FILE });
     const outputFile = `${OUTPUT_DIR}/html/${guest.name}.html`;
     return await fs.outputFile(outputFile, html);
   } catch (err) {
@@ -90,7 +101,7 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
  * @returns A promise fulfilled when the PDF file is created.
  */
 async function createInfoPage() {
-  const html = loadHTML(INFO_HTML);
+  const html = readFileContent(INFO_HTML);
   return createPDFPage(html, INFO_PDF);
 }
 
@@ -114,10 +125,13 @@ async function mergePDFs(pdf: string) {
  */
 async function createPDFPage(html: string, outputPath: string) {
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(html);
+    await page.addStyleTag({ url: FONTS_URL });
+    await page.addStyleTag({ path: STYLES_FILE });
     await page.emulateMediaType('screen');
+    await page.evaluateHandle('document.fonts.ready');
     await page.pdf({
       format: 'a4',
       path: outputPath,
@@ -133,18 +147,18 @@ async function createPDFPage(html: string, outputPath: string) {
  * Retrieves the full guest list.
  * @returns A promise which resolves to the list of guest records.
  */
-async function loadGuestList(): Promise<Array<GoogleSpreadsheetRow>> {
+async function loadGuestList(): Promise<Array<GuestRecord>> {
   await DOCUMENT.loadInfo();
   const [sheet] = DOCUMENT.sheetsByIndex;
-  return await sheet.getRows();
+  return <Array<GuestRecord>>await sheet.getRows();
 }
 
 /**
- * Reads the HTML from a specified file.
- * @param file The HTML file path to read from.
- * @returns The HTML content as a string.
+ * Reads content from a specified file.
+ * @param file The file path to read from.
+ * @returns The content as a string.
  */
-function loadHTML(file: string) {
+function readFileContent(file: string) {
   const html = fs.readFileSync(file, { encoding: 'utf8' });
   return html;
 }
