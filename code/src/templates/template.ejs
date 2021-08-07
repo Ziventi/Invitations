@@ -15,7 +15,9 @@
         <section>
           <p>An invitiation to:</p>
           <h1 class="guest-name"><%= guest.name %></h1>
-          <p class="guest-tagline">...<%= guest.tagline %></p>
+          <% if (guest.tagline) { %>
+            <p class="guest-tagline">...<%= guest.tagline %></p>
+          <% } %>
         </section>
 
         <section>

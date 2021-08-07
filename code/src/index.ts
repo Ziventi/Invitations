@@ -7,6 +7,7 @@ import path from 'path';
 
 import { Guest, GuestRecord } from './classes';
 import { DOCUMENT, OUTPUT_DIR } from './config';
+import RULES from './templates/rules.json';
 import { clean, logErrorAndExit } from './utils';
 
 const ASSETS_DIR = path.resolve(__dirname, './assets');
@@ -39,7 +40,7 @@ async function main() {
 
   browser = await puppeteer.launch();
   await Promise.all([generateHTMLFiles(), createInfoPage()]);
-  // await generatePDFFiles();
+  await generatePDFFiles();
   await browser.close();
   console.timeEnd('Time');
 }
@@ -99,7 +100,7 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
  */
 async function createInfoPage() {
   fs.ensureDirSync(`${OUTPUT_DIR}/pdf`);
-  await createHTMLPage(INFO_TEMPLATE, INFO_HTML);
+  await createHTMLPage(INFO_TEMPLATE, INFO_HTML, { rules: RULES });
   const html = readFileContent(INFO_HTML);
   return createPDFPage(html, INFO_PDF);
 }
