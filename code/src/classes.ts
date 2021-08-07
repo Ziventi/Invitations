@@ -2,11 +2,13 @@ import { GoogleSpreadsheetRow } from 'google-spreadsheet';
 
 export class Guest {
   name = '';
+  tagline = '';
   invitability = 0;
 }
 
 export class GuestRecord extends GoogleSpreadsheetRow {
   Name = '';
+  Tagline = '';
   Invitability = '';
 
   /**

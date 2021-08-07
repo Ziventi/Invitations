@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import ejs from 'ejs';
 import fs from 'fs-extra';
 import PDFMerger from 'pdf-merger-js';
-import puppeteer from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 
 import path from 'path';
 
@@ -12,15 +11,21 @@ import { clean, logErrorAndExit } from './utils';
 
 const ASSETS_DIR = path.resolve(__dirname, './assets');
 const CACHE_DIR = path.resolve(__dirname, './cache');
+const TEMPLATES_DIR = path.resolve(__dirname, './templates');
 
 const CACHED_DATA = `${CACHE_DIR}/data.json`;
-const INFO_HTML = `${ASSETS_DIR}/info.html`;
-const INFO_PDF = `${OUTPUT_DIR}/info.pdf`;
-const STYLES_FILE = `${ASSETS_DIR}/styles.css`;
-const TEMPLATE_FILE = `${ASSETS_DIR}/template.ejs`;
+const INFO_TEMPLATE = `${TEMPLATES_DIR}/info.ejs`;
+const INFO_HTML = `${OUTPUT_DIR}/html/info.html`;
+const INFO_PDF = `${OUTPUT_DIR}/pdf/info.pdf`;
+const STYLES_FILE = `${TEMPLATES_DIR}/styles.css`;
+const TEMPLATE_FILE = `${TEMPLATES_DIR}/template.ejs`;
+
+const SIGNATURE_IMG = `${ASSETS_DIR}/signature-dark.png`;
 
 const FONTS_URL =
   'https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap';
+
+let browser: Browser;
 
 main();
 
@@ -32,8 +37,10 @@ async function main() {
   clean();
   fs.ensureDirSync(OUTPUT_DIR);
 
+  browser = await puppeteer.launch();
   await Promise.all([generateHTMLFiles(), createInfoPage()]);
-  await generatePDFFiles();
+  // await generatePDFFiles();
+  await browser.close();
   console.timeEnd('Time');
 }
 
@@ -43,7 +50,7 @@ async function main() {
  */
 async function generateHTMLFiles(): Promise<Array<void>> {
   const guests = await loadGuestList();
-  const promises = guests.slice(0, 1).map(createGuestHTML);
+  const promises = guests.slice(18, 20).map(createGuestHTML);
   return Promise.all(promises);
 }
 
@@ -52,12 +59,12 @@ async function generateHTMLFiles(): Promise<Array<void>> {
  * @returns A promise fulfilled when all PDF files have been generated.
  */
 function generatePDFFiles(): Promise<Array<void>> {
-  fs.ensureDirSync(`${OUTPUT_DIR}/pdf`);
+  fs.ensureDirSync(`${OUTPUT_DIR}/pdf/guests`);
 
-  const filenames = fs.readdirSync(`${OUTPUT_DIR}/html`);
+  const filenames = fs.readdirSync(`${OUTPUT_DIR}/html/guests`);
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
-    const html = readFileContent(`${OUTPUT_DIR}/html/${name}.html`);
+    const html = readFileContent(`${OUTPUT_DIR}/html/guests/${name}.html`);
     return createGuestPDFPage(html, name);
   });
 
@@ -70,15 +77,8 @@ function generatePDFFiles(): Promise<Array<void>> {
  * @returns A promise fulfilled when the HTML file is created.
  */
 async function createGuestHTML(guest: Guest): Promise<void> {
-  try {
-    const data = await fs.readFile(TEMPLATE_FILE, 'utf8');
-    const template = ejs.compile(data);
-    const html = template({ guest, cssFile: STYLES_FILE });
-    const outputFile = `${OUTPUT_DIR}/html/${guest.name}.html`;
-    return await fs.outputFile(outputFile, html);
-  } catch (err) {
-    return logErrorAndExit(err);
-  }
+  const outputFile = `${OUTPUT_DIR}/html/guests/${guest.name}.html`;
+  return createHTMLPage(TEMPLATE_FILE, outputFile, { guest });
 }
 
 /**
@@ -88,7 +88,7 @@ async function createGuestHTML(guest: Guest): Promise<void> {
  * @returns A promise fulfilled when the PDF file is created.
  */
 async function createGuestPDFPage(html: string, name: string): Promise<void> {
-  const path = `${OUTPUT_DIR}/pdf/${name}.pdf`;
+  const path = `${OUTPUT_DIR}/pdf/guests/${name}.pdf`;
   await createPDFPage(html, path);
   return mergePDFs(path);
 }
@@ -98,6 +98,8 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
  * @returns A promise fulfilled when the PDF file is created.
  */
 async function createInfoPage() {
+  fs.ensureDirSync(`${OUTPUT_DIR}/pdf`);
+  await createHTMLPage(INFO_TEMPLATE, INFO_HTML);
   const html = readFileContent(INFO_HTML);
   return createPDFPage(html, INFO_PDF);
 }
@@ -115,6 +117,32 @@ async function mergePDFs(pdf: string) {
 }
 
 /**
+ * Helper function for generating HTML pages.
+ * @param templateFile The input template EJS file.
+ * @param outputFile The HTML file output path.
+ * @param extraData Any extra data to include in the file.
+ * @returns A promise fulfilled when the HTML page is created.
+ */
+async function createHTMLPage(
+  templateFile: string,
+  outputFile: string,
+  extraData?: Record<string, any>
+): Promise<void> {
+  try {
+    const data = await fs.readFile(templateFile, 'utf8');
+    const template = ejs.compile(data);
+    const html = template({
+      cssFile: STYLES_FILE,
+      signature: SIGNATURE_IMG,
+      ...extraData
+    });
+    return await fs.outputFile(outputFile, html);
+  } catch (err) {
+    return logErrorAndExit(err);
+  }
+}
+
+/**
  * Helper function for creating PDF pages.
  * @param html The HTML content to be used for the page.
  * @param outputPath The path to which the PDF will be saved.
@@ -122,19 +150,17 @@ async function mergePDFs(pdf: string) {
  */
 async function createPDFPage(html: string, outputPath: string) {
   try {
-    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(html);
     await page.addStyleTag({ url: FONTS_URL });
     await page.addStyleTag({ path: STYLES_FILE });
     await page.emulateMediaType('screen');
     await page.evaluateHandle('document.fonts.ready');
-    await page.pdf({
+    return await page.pdf({
       format: 'a4',
       path: outputPath,
       printBackground: true
     });
-    return await browser.close();
   } catch (err) {
     return logErrorAndExit(err);
   }
@@ -156,6 +182,10 @@ async function loadGuestList(): Promise<Array<Guest>> {
     const guests = records.map((record) => {
       const guest = new Guest();
       guest.name = record['Name'];
+      const tagline = record['Tagline'];
+      if (tagline) {
+        guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
+      }
       guest.invitability = GuestRecord.getInviteValue(record);
       return guest;
     });
