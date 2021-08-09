@@ -11,8 +11,8 @@
 
   <body>
     <div id="root">
-      <%- include('/pages/main.ejs', { guest, signature}) %>
-      <%- include('/pages/information.ejs', { rules, signature}) %>
+      <%- include('/pages/main.ejs', { guest, signature}) %> <%-
+      include('/pages/information.ejs', { rules, signature, lists }) %>
     </div>
   </body>
 </html>

@@ -83,7 +83,7 @@ function generatePDFFiles(): Promise<Array<void>> {
  */
 async function createGuestHTML(guest: Guest): Promise<void> {
   const outputFile = `${OUTPUT_DIR}/html/guests/${guest.name}.html`;
-  await createHTMLPage(TEMPLATE_FILE, outputFile, { guest });
+  await createHTMLPage(TEMPLATE_FILE, outputFile, guest);
 }
 
 /**
@@ -108,13 +108,13 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
  * Helper function for generating HTML pages.
  * @param templateFile The input template EJS file.
  * @param outputFile The HTML file output path.
- * @param extraData Any extra data to include in the file.
+ * @param guest The guest whose details will go on the invite.
  * @returns A promise fulfilled when the HTML page is created.
  */
 async function createHTMLPage(
   templateFile: string,
   outputFile: string,
-  extraData?: Record<string, any>
+  guest: Guest
 ): Promise<void> {
   try {
     const data = await fs.readFile(templateFile, 'utf8');
@@ -123,7 +123,11 @@ async function createHTMLPage(
       cssFile: STYLES_FILE,
       signature: SIGNATURE_IMG,
       rules: RULES,
-      ...extraData
+      lists: {
+        guest: process.env.GUESTLIST_URL,
+        wish: process.env.WISHLIST_URL
+      },
+      guest
     });
     return await fs.outputFile(outputFile, html);
   } catch (err) {

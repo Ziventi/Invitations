@@ -1,5 +1,8 @@
 <main class="info">
   <section>
+    <p>Have a look at the <a href="<%= lists.guest %>">guest list.</a></p>
+    <p>Have a look at the <a href="<%= lists.wish %>">wish list.</a></p>
+
     <ol class="rules">
       <% rules.forEach((rule) => { %>
       <li>
@@ -10,5 +13,5 @@
     </ol>
   </section>
 
-  <%- include('/partials/footer.ejs', { signature}) %>
+  <%- include('/partials/footer.ejs', { signature }) %>
 </main>
