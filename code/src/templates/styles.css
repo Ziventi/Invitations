@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Great+Vibes&family=Style+Script&family=Tangerine:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Great+Vibes&family=Style+Script&family=Tangerine:wght@400;700&family=Poppins:wght@400;700&display=swap');
 
 html,
 body {
@@ -84,12 +84,13 @@ p.guest-tagline {
 *****************/
 
 main.info {
+  font-family: 'Poppins', sans-serif;
   padding: 1.5em;
 }
 
 ol.rules li {
-  font-size: 1.5em;
-  padding: 0.2em 0.5em;
+  font-size: 1.3em;
+  padding: 0.3em 0.5em;
 }
 
 *,

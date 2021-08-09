@@ -2,29 +2,30 @@ import { GoogleSpreadsheetRow } from 'google-spreadsheet';
 
 export class Guest {
   name = '';
+  rank = 0;
   tagline = '';
-  invitability = 0;
 }
 
 export class GuestRecord extends GoogleSpreadsheetRow {
   Name = '';
+  Rank = '';
   Tagline = '';
-  Invitability = '';
 
   /**
    * Retrieve the numeric invitability value.
    * @param record The guest record.
    * @returns The invitability value.
    */
-  static getInviteValue(record: GuestRecord): number {
-    return INVITABILITY[record['Invitability']];
+  static getRank(record: GuestRecord): number {
+    return Rank[record['Rank']];
   }
 }
 
-const INVITABILITY: Record<string, number> = {
-  'A - Very High': 1,
-  'B - High': 2,
-  'C - Medium': 3,
-  'D - Low': 4,
-  'E - Very Low': 5
+const Rank: Record<string, number> = {
+  A: 1,
+  B: 2,
+  C: 3,
+  D: 4,
+  E: 5,
+  F: 6
 };

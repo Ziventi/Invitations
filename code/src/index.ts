@@ -171,11 +171,11 @@ async function loadGuestList(): Promise<Array<Guest>> {
     const guests = records.map((record) => {
       const guest = new Guest();
       guest.name = record['Name'];
+      guest.rank = GuestRecord.getRank(record);
       const tagline = record['Tagline'];
       if (tagline) {
         guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
       }
-      guest.invitability = GuestRecord.getInviteValue(record);
       return guest;
     });
     fs.outputFileSync(CACHED_DATA, JSON.stringify(guests, null, 2));
