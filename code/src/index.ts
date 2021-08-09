@@ -1,12 +1,11 @@
 import ejs from 'ejs';
 import fs from 'fs-extra';
-import PDFMerger from 'pdf-merger-js';
 import puppeteer, { Browser } from 'puppeteer';
 
 import path from 'path';
 
 import { Guest, GuestRecord } from './classes';
-import { DOCUMENT, OUTPUT_DIR } from './config';
+import { DOCUMENT, EXIFTOOL, OUTPUT_DIR } from './config';
 import RULES from './templates/rules.json';
 import { clean, logErrorAndExit } from './utils';
 
@@ -15,9 +14,6 @@ const CACHE_DIR = path.resolve(__dirname, './cache');
 const TEMPLATES_DIR = path.resolve(__dirname, './templates');
 
 const CACHED_DATA = `${CACHE_DIR}/data.json`;
-const INFO_TEMPLATE = `${TEMPLATES_DIR}/info.ejs`;
-const INFO_HTML = `${OUTPUT_DIR}/html/info.html`;
-const INFO_PDF = `${OUTPUT_DIR}/pdf/info.pdf`;
 const STYLES_FILE = `${TEMPLATES_DIR}/styles.css`;
 const TEMPLATE_FILE = `${TEMPLATES_DIR}/template.ejs`;
 
@@ -34,14 +30,22 @@ main();
  * Main program.
  */
 async function main() {
+  await setup();
+  await generateHTMLFiles();
+  // await generatePDFFiles();
+  await tearDown();
+}
+
+async function setup() {
   console.time('Time');
   clean();
   fs.ensureDirSync(OUTPUT_DIR);
-
   browser = await puppeteer.launch();
-  await Promise.all([generateHTMLFiles(), createInfoPage()]);
-  await generatePDFFiles();
+}
+
+async function tearDown() {
   await browser.close();
+  await EXIFTOOL.end();
   console.timeEnd('Time');
 }
 
@@ -51,7 +55,7 @@ async function main() {
  */
 async function generateHTMLFiles(): Promise<Array<void>> {
   const guests = await loadGuestList();
-  const promises = guests.slice(18, 20).map(createGuestHTML);
+  const promises = guests.slice(18, 19).map(createGuestHTML);
   return Promise.all(promises);
 }
 
@@ -79,7 +83,7 @@ function generatePDFFiles(): Promise<Array<void>> {
  */
 async function createGuestHTML(guest: Guest): Promise<void> {
   const outputFile = `${OUTPUT_DIR}/html/guests/${guest.name}.html`;
-  return createHTMLPage(TEMPLATE_FILE, outputFile, { guest });
+  await createHTMLPage(TEMPLATE_FILE, outputFile, { guest });
 }
 
 /**
@@ -90,31 +94,14 @@ async function createGuestHTML(guest: Guest): Promise<void> {
  */
 async function createGuestPDFPage(html: string, name: string): Promise<void> {
   const path = `${OUTPUT_DIR}/pdf/guests/${name}.pdf`;
-  await createPDFPage(html, path);
-  return mergePDFs(path);
-}
-
-/**
- * Creates a single PDF for the second information page.
- * @returns A promise fulfilled when the PDF file is created.
- */
-async function createInfoPage() {
-  fs.ensureDirSync(`${OUTPUT_DIR}/pdf`);
-  await createHTMLPage(INFO_TEMPLATE, INFO_HTML, { rules: RULES });
-  const html = readFileContent(INFO_HTML);
-  return createPDFPage(html, INFO_PDF);
-}
-
-/**
- * Merges a specified guest PDF page and the information page.
- * @param pdf The PDF for the page.
- * @returns A promise fulfilled when the PDF files have been merged.
- */
-async function mergePDFs(pdf: string) {
-  const merger = new PDFMerger();
-  merger.add(pdf);
-  merger.add(INFO_PDF);
-  return await merger.save(pdf);
+  try {
+    await createPDFPage(html, path);
+    await EXIFTOOL.write(path, { Title: `Invite to ${name}` }, [
+      '-overwrite_original'
+    ]);
+  } catch (err) {
+    return logErrorAndExit(err);
+  }
 }
 
 /**
@@ -131,10 +118,11 @@ async function createHTMLPage(
 ): Promise<void> {
   try {
     const data = await fs.readFile(templateFile, 'utf8');
-    const template = ejs.compile(data);
+    const template = ejs.compile(data, { root: TEMPLATES_DIR });
     const html = template({
       cssFile: STYLES_FILE,
       signature: SIGNATURE_IMG,
+      rules: RULES,
       ...extraData
     });
     return await fs.outputFile(outputFile, html);

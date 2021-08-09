@@ -3,22 +3,21 @@
 html,
 body {
   font-family: 'Courgette', cursive;
-  height: 297mm;
-  margin: 0 auto;
-  width: 210mm;
+  margin: 0;
 }
 
 div#root {
-  background: #ebede5;
-  height: 100%;
-  padding: 24px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
   background: #fefff9;
-  border: 1px solid #ccc;
-  height: 100%;
+  border: 24px solid #ebede5;
+  height: 297mm;
   position: relative;
+  width: 210mm;
 }
 
 h1 {

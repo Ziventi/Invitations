@@ -1,0 +1,19 @@
+<main class="info">
+  <section>
+    <ol class="rules">
+      <% rules.forEach((rule) => { %>
+      <li>
+        <strong
+          ><a
+            href="https://docs.google.com/spreadsheets/d/1-_75ohjtqn3IG8FC9CEZCJpUOjJmKb-PsHt0a7FC88M/edit?usp=sharing"
+            ><%= rule.summary %>:</a
+          ></strong
+        >
+        <span><%= rule.description %></span>
+      </li>
+      <% }); %>
+    </ol>
+  </section>
+
+  <%- include('/pages/footer.ejs', { signature}) %>
+</main>
