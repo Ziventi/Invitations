@@ -11,7 +11,7 @@ import RULES from '../views/rules.json';
 import { clean, error } from './utils';
 
 const ASSETS_DIR = path.resolve(__dirname, '../assets');
-const CACHE_DIR = path.resolve(__dirname, '../cache');
+const CACHE_DIR = path.resolve(__dirname, '../.cache');
 const VIEWS_DIR = path.resolve(__dirname, '../views');
 
 const CACHED_DATA = `${CACHE_DIR}/data.json`;
