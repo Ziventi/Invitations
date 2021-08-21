@@ -1,13 +1,14 @@
 import ejs from 'ejs';
 import fs from 'fs-extra';
 import puppeteer, { Browser } from 'puppeteer';
+import { Command } from 'commander';
 
 import path from 'path';
 
 import { Guest, GuestRecord } from './classes';
 import { DOCUMENT, EXIFTOOL, OUTPUT_DIR } from './config';
 import RULES from './templates/rules.json';
-import { clean, logErrorAndExit } from './utils';
+import { clean, error } from './utils';
 
 const ASSETS_DIR = path.resolve(__dirname, './assets');
 const CACHE_DIR = path.resolve(__dirname, './cache');
@@ -22,20 +23,11 @@ const WAVES_SVG = `${ASSETS_DIR}/waves.svg`;
 
 const FONTS_URL =
   'https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap';
+const program = new Command();
 
 let browser: Browser;
 
 main();
-
-/**
- * Main program.
- */
-async function main() {
-  await setup();
-  await generateHTMLFiles();
-  // await generatePDFFiles();
-  await tearDown();
-}
 
 async function setup() {
   console.time('Time');
@@ -51,17 +43,45 @@ async function tearDown() {
 }
 
 /**
+ * Main program.
+ */
+async function main() {
+  program
+    .command('generate')
+    .option('-h, --only-html', 'Only generates the HTML.', false)
+    .option('-r, --refresh', 'Refreshes the cache.', false)
+    .action(async (options) => {
+      const { onlyHtml, refresh } = options;
+      const refreshCache = refresh || !fs.existsSync(CACHED_DATA);
+
+      await setup();
+      await generateHTMLFiles(refreshCache);
+      if (!onlyHtml) {
+        console.info('Generating PDF files...');
+        await generatePDFFiles();
+      }
+
+      await tearDown();
+    });
+
+  program.command('clean').action(clean);
+  await program.parseAsync();
+}
+
+/**
  * Generates the HTML files for each member on the guest list from the template.
+ * @param refreshCache Indicates whether the data cache should be refreshed.
  * @returns A promise fulfilled when all HTML files have been generated.
  */
-async function generateHTMLFiles(): Promise<Array<void>> {
-  const guests = await loadGuestList();
+async function generateHTMLFiles(refreshCache: boolean): Promise<Array<void>> {
+  const guests = await loadGuestList(refreshCache);
   const promises = guests.slice(18, 19).map(createGuestHTML);
   return Promise.all(promises);
 }
 
 /**
  * Generates the PDF files from each of the guest HTML files.
+ * @param refreshCache Indicates whether the data cache should be refreshed.
  * @returns A promise fulfilled when all PDF files have been generated.
  */
 function generatePDFFiles(): Promise<Array<void>> {
@@ -101,7 +121,7 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
       '-overwrite_original'
     ]);
   } catch (err) {
-    return logErrorAndExit(err);
+    return error(err);
   }
 }
 
@@ -135,7 +155,7 @@ async function createHTMLPage(
     });
     return await fs.outputFile(outputFile, html);
   } catch (err) {
-    return logErrorAndExit(err);
+    return error(err);
   }
 }
 
@@ -159,7 +179,7 @@ async function createPDFPage(html: string, outputPath: string) {
       printBackground: true
     });
   } catch (err) {
-    return logErrorAndExit(err);
+    return error(err);
   }
 }
 
@@ -167,10 +187,8 @@ async function createPDFPage(html: string, outputPath: string) {
  * Retrieves the full guest list.
  * @returns A promise which resolves to the list of guest records.
  */
-async function loadGuestList(): Promise<Array<Guest>> {
-  const refresh =
-    process.argv.includes('--refresh') || !fs.existsSync(CACHED_DATA);
-  if (refresh) {
+async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
+  if (refreshCache) {
     console.info('Refreshing cache...');
 
     await DOCUMENT.loadInfo();

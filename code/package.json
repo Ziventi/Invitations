@@ -10,6 +10,7 @@
     "dev": "ts-node src"
   },
   "dependencies": {
+    "commander": "^8.1.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "exiftool-vendored": "^15.2.0",

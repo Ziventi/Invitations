@@ -13,7 +13,7 @@ export function clean() {
  * Catch error, log to console and exit process.
  * @param err The caught error.
  */
-export function logErrorAndExit(err: NodeJS.ErrnoException | null) {
+export function error(err: NodeJS.ErrnoException | null) {
   if (err) {
     console.error(err);
     process.exit(0);
