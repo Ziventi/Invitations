@@ -1,21 +1,26 @@
 <main class="guests">
-  <section>
-    <p>An invitation to:</p>
-    <h1 class="guest-name"><%= guest.name %></h1>
-    <% if (guest.tagline) { %>
-    <p class="guest-tagline">...<%= guest.tagline %></p>
-    <% } %>
-  </section>
+  <img src="<%= images.waves %>" class="waves" />
 
-  <section>
-    <p>You are cordially invited to</p>
-    <h1 class="headline">Zavid's 25<sup>th</sup> Birthday Celebration</h1>
-  </section>
+  <div>
+    <section>
+      <p>An invitation to:</p>
+      <h1 class="guest-name"><%= guest.name %></h1>
+      <% if (guest.tagline) { %>
+      <p class="guest-tagline">...<%= guest.tagline %></p>
+      <% } %>
+    </section>
 
-  <section>
-    <p>Saturday 4th December 2021</p>
-    <p>London, United Kingdom</p>
-  </section>
+    <section>
+      <p>You are cordially invited to</p>
+      <h1 class="headline">Zavid's 25<sup>th</sup> Birthday Celebration</h1>
+    </section>
 
-  <%- include('/partials/footer.ejs', { signature }) %>
+    <section>
+      <p>Saturday 4th December 2021</p>
+      <p>London, United Kingdom</p>
+      <p>Dress Code: GLAM</p>
+    </section>
+  </div>
+
+  <%- include('/partials/footer.ejs', { images }) %>
 </main>

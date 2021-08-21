@@ -17,7 +17,8 @@ const CACHED_DATA = `${CACHE_DIR}/data.json`;
 const STYLES_FILE = `${TEMPLATES_DIR}/styles.css`;
 const TEMPLATE_FILE = `${TEMPLATES_DIR}/template.ejs`;
 
-const SIGNATURE_IMG = `${ASSETS_DIR}/signature-dark.png`;
+const SIGNATURE_IMG = `${ASSETS_DIR}/signature.svg`;
+const WAVES_SVG = `${ASSETS_DIR}/waves.svg`;
 
 const FONTS_URL =
   'https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap';
@@ -121,7 +122,10 @@ async function createHTMLPage(
     const template = ejs.compile(data, { root: TEMPLATES_DIR });
     const html = template({
       cssFile: STYLES_FILE,
-      signature: SIGNATURE_IMG,
+      images: {
+        signature: SIGNATURE_IMG,
+        waves: WAVES_SVG
+      },
       rules: RULES,
       lists: {
         guest: process.env.GUESTLIST_URL,
