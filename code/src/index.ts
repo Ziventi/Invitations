@@ -1,10 +1,10 @@
 import { Command } from 'commander';
 import fs from 'fs-extra';
 
-import { EXIFTOOL } from './config';
-import * as Paths from './paths';
 import { clean } from './utils/common';
+import { EXIFTOOL } from './utils/conf';
 import { generateHTMLFiles, generatePDFFiles } from './utils/helper';
+import * as Paths from './utils/paths';
 
 const program = new Command();
 

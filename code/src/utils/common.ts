@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 
-import { OUTPUT_DIR } from '../paths';
+import { OUTPUT_DIR } from './paths';
 
 /**
  * Cleans the output directory.

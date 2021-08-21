@@ -1,10 +1,12 @@
 import path from 'path';
 
-const ASSETS_DIR = path.resolve(__dirname, '../assets');
-const CACHE_DIR = path.resolve(__dirname, '../.cache');
+const ROOT = path.resolve(__dirname, '../..');
 
-export const OUTPUT_DIR = path.resolve(__dirname, `../dist`);
-export const VIEWS_DIR = path.resolve(__dirname, '../views');
+const ASSETS_DIR = `${ROOT}/assets`;
+const CACHE_DIR = `${ROOT}/.cache`;
+
+export const OUTPUT_DIR = `${ROOT}/out`;
+export const VIEWS_DIR = `${ROOT}/views`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
 export const STYLES_FILE = `${VIEWS_DIR}/styles.css`;

@@ -2,10 +2,11 @@ import ejs from 'ejs';
 import fs from 'fs-extra';
 import puppeteer, { Browser } from 'puppeteer';
 
+import { Guest, GuestRecord } from './classes';
+import { SPREADSHEET, EXIFTOOL } from './conf';
+import * as Paths from './paths';
+
 import RULES from '../../views/data/rules.json';
-import { Guest, GuestRecord } from '../classes';
-import { SPREADSHEET, EXIFTOOL } from '../config';
-import * as Paths from '../paths';
 import { error, readFileContent } from '../utils/common';
 
 let browser: Browser;
