@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 
-import { OUTPUT_DIR } from './config';
+import { OUTPUT_DIR } from '../paths';
 
 /**
  * Cleans the output directory.
@@ -18,4 +18,14 @@ export function error(err: NodeJS.ErrnoException | null) {
     console.error(err.message);
     process.exit(0);
   }
+}
+
+/**
+ * Reads content from a specified file.
+ * @param file The file path to read from.
+ * @returns The content as a string.
+ */
+export function readFileContent(file: string) {
+  const html = fs.readFileSync(file, { encoding: 'utf8' });
+  return html;
 }

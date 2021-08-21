@@ -3,6 +3,7 @@ import path from 'path';
 const ASSETS_DIR = path.resolve(__dirname, '../assets');
 const CACHE_DIR = path.resolve(__dirname, '../.cache');
 
+export const OUTPUT_DIR = path.resolve(__dirname, `../dist`);
 export const VIEWS_DIR = path.resolve(__dirname, '../views');
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
