@@ -21,7 +21,7 @@ let exiftool: ExifTool;
  */
 export async function generateHTMLFiles(
   refreshCache: boolean
-): Promise<Array<void>> {
+): Promise<void[]> {
   console.info('Generating HTML files...');
   const guests = await loadGuestList(refreshCache);
   const promises = guests.slice(21, 22).map(createGuestHTML);
@@ -147,20 +147,20 @@ async function createPDFPage(html: string, outputPath: string) {
  * Retrieves the full guest list.
  * @returns A promise which resolves to the list of guest records.
  */
-async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
+async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
   if (refreshCache) {
     console.info('Refreshing cache...');
     let records: GuestRecord[] = [];
 
     try {
+      const credentials = await import(`${Paths.ROOT}/key.json`);
       const spreadsheet = new GoogleSpreadsheet(
         process.env.GOOGLE_SPREADSHEET_ID
       );
-      const credentials = await import(`${Paths.ROOT}/key.json`);
       await spreadsheet.useServiceAccountAuth(credentials);
       await spreadsheet.loadInfo();
       const [sheet] = spreadsheet.sheetsByIndex;
-      records = <Array<GuestRecord>>await sheet.getRows();
+      records = <GuestRecord[]>await sheet.getRows();
     } catch (err) {
       error(err);
     }
@@ -179,5 +179,5 @@ async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
     fs.outputFileSync(Paths.CACHED_DATA, JSON.stringify(guests, null, 2));
   }
   const guests = readFileContent(Paths.CACHED_DATA);
-  return <Array<Guest>>JSON.parse(guests);
+  return <Guest[]>JSON.parse(guests);
 }
