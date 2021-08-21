@@ -9,9 +9,6 @@ import { Guest, GuestRecord } from './classes';
 import * as Paths from './paths';
 import { error, readFileContent } from './utils';
 
-import credentials from '../../key.json';
-import RULES from '../../views/data/rules.json';
-
 dotenv.config();
 
 let browser: Browser;
@@ -100,18 +97,21 @@ async function createHTMLPage(
   try {
     const data = await fs.readFile(templateFile, 'utf8');
     const template = ejs.compile(data, { root: Paths.VIEWS_DIR });
+    const { default: rules } = await import(
+      `${Paths.VIEWS_DIR}/data/rules.json`
+    );
     const html = template({
       cssFile: Paths.STYLES_FILE,
       images: {
         signature: Paths.SIGNATURE_IMG,
         waves: Paths.WAVES_SVG
       },
-      rules: RULES,
+      guest,
+      rules,
       lists: {
         guest: process.env.GUESTLIST_URL,
         wish: process.env.WISHLIST_URL
-      },
-      guest
+      }
     });
     return await fs.outputFile(outputFile, html);
   } catch (err) {
@@ -150,14 +150,21 @@ async function createPDFPage(html: string, outputPath: string) {
 async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
   if (refreshCache) {
     console.info('Refreshing cache...');
+    let records: GuestRecord[] = [];
 
-    const spreadsheet = new GoogleSpreadsheet(
-      process.env.GOOGLE_SPREADSHEET_ID
-    );
-    await spreadsheet.useServiceAccountAuth(credentials);
-    await spreadsheet.loadInfo();
-    const [sheet] = spreadsheet.sheetsByIndex;
-    const records = <Array<GuestRecord>>await sheet.getRows();
+    try {
+      const spreadsheet = new GoogleSpreadsheet(
+        process.env.GOOGLE_SPREADSHEET_ID
+      );
+      const credentials = await import(`${Paths.ROOT}/key.json`);
+      await spreadsheet.useServiceAccountAuth(credentials);
+      await spreadsheet.loadInfo();
+      const [sheet] = spreadsheet.sheetsByIndex;
+      records = <Array<GuestRecord>>await sheet.getRows();
+    } catch (err) {
+      error(err);
+    }
+
     const guests = records.map((record) => {
       const guest = new Guest();
       guest.name = record['Name'];
@@ -168,6 +175,7 @@ async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
       }
       return guest;
     });
+
     fs.outputFileSync(Paths.CACHED_DATA, JSON.stringify(guests, null, 2));
   }
   const guests = readFileContent(Paths.CACHED_DATA);

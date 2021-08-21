@@ -1,6 +1,6 @@
 import path from 'path';
 
-const ROOT = path.resolve(__dirname, '../..');
+export const ROOT = path.resolve(__dirname, '../..');
 
 const ASSETS_DIR = `${ROOT}/assets`;
 const CACHE_DIR = `${ROOT}/.cache`;

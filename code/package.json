@@ -7,7 +7,7 @@
   },
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
-    "dev": "ts-node src",
+    "dev": "ts-node src/main",
     "eslint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {

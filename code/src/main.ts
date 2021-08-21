@@ -27,6 +27,13 @@ async function main() {
       tearDown();
     });
 
+    // program
+    // .command('update')
+    // .description('Updates the public guest list.')
+    // .action(async (options) => {
+      
+    // });
+
   program.command('clean').action(clean);
   program.addHelpCommand(false);
 
