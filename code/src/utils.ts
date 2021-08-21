@@ -15,7 +15,7 @@ export function clean() {
  */
 export function error(err: NodeJS.ErrnoException | null) {
   if (err) {
-    console.error(err);
+    console.error(err.message);
     process.exit(0);
   }
 }

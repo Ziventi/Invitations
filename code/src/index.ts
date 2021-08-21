@@ -48,15 +48,16 @@ async function tearDown() {
 async function main() {
   program
     .command('generate')
-    .option('-h, --only-html', 'Only generates the HTML.', false)
-    .option('-r, --refresh', 'Refreshes the cache.', false)
+    .description('Generates the view files from the templates.')
+    .option('-p, --with-pdf', 'Also generate the PDF files.', false)
+    .option('-r, --refresh', 'Reload the external dataset and refresh the cache.', false)
     .action(async (options) => {
-      const { onlyHtml, refresh } = options;
+      const { withPdf, refresh } = options;
       const refreshCache = refresh || !fs.existsSync(CACHED_DATA);
 
       await setup();
       await generateHTMLFiles(refreshCache);
-      if (!onlyHtml) {
+      if (withPdf) {
         console.info('Generating PDF files...');
         await generatePDFFiles();
       }
@@ -65,6 +66,13 @@ async function main() {
     });
 
   program.command('clean').action(clean);
+  program.addHelpCommand(false);
+  
+  if (!program.args.length){
+    program.help();
+    process.exit(0);
+  }
+  
   await program.parseAsync();
 }
 
@@ -74,6 +82,7 @@ async function main() {
  * @returns A promise fulfilled when all HTML files have been generated.
  */
 async function generateHTMLFiles(refreshCache: boolean): Promise<Array<void>> {
+  console.info('Generating HTML files...');
   const guests = await loadGuestList(refreshCache);
   const promises = guests.slice(18, 19).map(createGuestHTML);
   return Promise.all(promises);
