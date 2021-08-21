@@ -22,7 +22,6 @@ async function main() {
       setup();
       await generateHTMLFiles(refreshCache);
       if (withPdf) {
-        console.info('Generating PDF files...');
         await generatePDFFiles();
       }
       tearDown();

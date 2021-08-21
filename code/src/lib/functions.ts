@@ -38,6 +38,7 @@ export async function generateHTMLFiles(
  */
 export async function generatePDFFiles(): Promise<void> {
   fs.ensureDirSync(`${Paths.OUTPUT_DIR}/pdf/guests`);
+  console.info('Generating PDF files...');
 
   browser = await puppeteer.launch();
   exiftool = new ExifTool();
@@ -153,7 +154,7 @@ async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
     const spreadsheet = new GoogleSpreadsheet(
       process.env.GOOGLE_SPREADSHEET_ID
     );
-    spreadsheet.useServiceAccountAuth(credentials);
+    await spreadsheet.useServiceAccountAuth(credentials);
     await spreadsheet.loadInfo();
     const [sheet] = spreadsheet.sheetsByIndex;
     const records = <Array<GuestRecord>>await sheet.getRows();
