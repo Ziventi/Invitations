@@ -3,26 +3,13 @@ import fs from 'fs-extra';
 import puppeteer, { Browser } from 'puppeteer';
 import { Command } from 'commander';
 
-import path from 'path';
-
 import { Guest, GuestRecord } from './classes';
 import { DOCUMENT, EXIFTOOL, OUTPUT_DIR } from './config';
 import RULES from '../views/rules.json';
 import { clean, error } from './utils';
 
-const ASSETS_DIR = path.resolve(__dirname, '../assets');
-const CACHE_DIR = path.resolve(__dirname, '../.cache');
-const VIEWS_DIR = path.resolve(__dirname, '../views');
+import * as Paths from './paths';
 
-const CACHED_DATA = `${CACHE_DIR}/data.json`;
-const STYLES_FILE = `${VIEWS_DIR}/styles.css`;
-const TEMPLATE_FILE = `${VIEWS_DIR}/template.ejs`;
-
-const SIGNATURE_IMG = `${ASSETS_DIR}/signature.svg`;
-const WAVES_SVG = `${ASSETS_DIR}/waves.svg`;
-
-const FONTS_URL =
-  'https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap';
 const program = new Command();
 
 let browser: Browser;
@@ -53,7 +40,7 @@ async function main() {
     .option('-r, --refresh', 'Reload the external dataset and refresh the cache.', false)
     .action(async (options) => {
       const { withPdf, refresh } = options;
-      const refreshCache = refresh || !fs.existsSync(CACHED_DATA);
+      const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
 
       await setup();
       await generateHTMLFiles(refreshCache);
@@ -113,7 +100,7 @@ function generatePDFFiles(): Promise<Array<void>> {
  */
 async function createGuestHTML(guest: Guest): Promise<void> {
   const outputFile = `${OUTPUT_DIR}/html/guests/${guest.name}.html`;
-  await createHTMLPage(TEMPLATE_FILE, outputFile, guest);
+  await createHTMLPage(Paths.TEMPLATE_FILE, outputFile, guest);
 }
 
 /**
@@ -148,12 +135,12 @@ async function createHTMLPage(
 ): Promise<void> {
   try {
     const data = await fs.readFile(templateFile, 'utf8');
-    const template = ejs.compile(data, { root: VIEWS_DIR });
+    const template = ejs.compile(data, { root: Paths.VIEWS_DIR });
     const html = template({
-      cssFile: STYLES_FILE,
+      cssFile: Paths.STYLES_FILE,
       images: {
-        signature: SIGNATURE_IMG,
-        waves: WAVES_SVG
+        signature: Paths.SIGNATURE_IMG,
+        waves: Paths.WAVES_SVG
       },
       rules: RULES,
       lists: {
@@ -178,8 +165,8 @@ async function createPDFPage(html: string, outputPath: string) {
   try {
     const page = await browser.newPage();
     await page.setContent(html);
-    await page.addStyleTag({ url: FONTS_URL });
-    await page.addStyleTag({ path: STYLES_FILE });
+    await page.addStyleTag({ url: Paths.FONTS_URL });
+    await page.addStyleTag({ path: Paths.STYLES_FILE });
     await page.emulateMediaType('screen');
     await page.evaluateHandle('document.fonts.ready');
     return await page.pdf({
@@ -213,9 +200,9 @@ async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
       }
       return guest;
     });
-    fs.outputFileSync(CACHED_DATA, JSON.stringify(guests, null, 2));
+    fs.outputFileSync(Paths.CACHED_DATA, JSON.stringify(guests, null, 2));
   }
-  const guests = readFileContent(CACHED_DATA);
+  const guests = readFileContent(Paths.CACHED_DATA);
   return <Array<Guest>>JSON.parse(guests);
 }
 
