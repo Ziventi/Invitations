@@ -2,11 +2,8 @@ import { Command } from 'commander';
 import fs from 'fs-extra';
 
 import { clean } from './utils/common';
-import { EXIFTOOL } from './utils/conf';
 import { generateHTMLFiles, generatePDFFiles } from './utils/helper';
 import * as Paths from './utils/paths';
-
-const program = new Command();
 
 main();
 
@@ -17,11 +14,12 @@ async function setup() {
 }
 
 async function tearDown() {
-  await EXIFTOOL.end();
   console.timeEnd('Time');
 }
 
 async function main() {
+  const program = new Command();
+  
   program
     .command('generate')
     .description('Generates the view files from the templates.')

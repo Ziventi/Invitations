@@ -1,22 +1,26 @@
 import ejs from 'ejs';
+import { ExifTool } from 'exiftool-vendored';
 import fs from 'fs-extra';
 import puppeteer, { Browser } from 'puppeteer';
 
 import { Guest, GuestRecord } from './classes';
-import { SPREADSHEET, EXIFTOOL } from './conf';
+import { SPREADSHEET } from './conf';
 import * as Paths from './paths';
 
 import RULES from '../../views/data/rules.json';
 import { error, readFileContent } from '../utils/common';
 
 let browser: Browser;
+let exiftool: ExifTool;
 
 /**
  * Generates the HTML files for each member on the guest list from the template.
  * @param refreshCache Indicates whether the data cache should be refreshed.
  * @returns A promise fulfilled when all HTML files have been generated.
  */
-export async function generateHTMLFiles(refreshCache: boolean): Promise<Array<void>> {
+export async function generateHTMLFiles(
+  refreshCache: boolean
+): Promise<Array<void>> {
   console.info('Generating HTML files...');
   const guests = await loadGuestList(refreshCache);
   const promises = guests.slice(18, 19).map(createGuestHTML);
@@ -30,17 +34,22 @@ export async function generateHTMLFiles(refreshCache: boolean): Promise<Array<vo
  */
 export async function generatePDFFiles(): Promise<void> {
   fs.ensureDirSync(`${Paths.OUTPUT_DIR}/pdf/guests`);
+  
   browser = await puppeteer.launch();
+  exiftool = new ExifTool();
 
   const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html/guests`);
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
-    const html = readFileContent(`${Paths.OUTPUT_DIR}/html/guests/${name}.html`);
+    const html = readFileContent(
+      `${Paths.OUTPUT_DIR}/html/guests/${name}.html`
+    );
     return createGuestPDFPage(html, name);
   });
 
   await Promise.all(promises);
   await browser.close();
+  await exiftool.end();
 }
 
 /**
@@ -63,7 +72,7 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
   const path = `${Paths.OUTPUT_DIR}/pdf/guests/${name}.pdf`;
   try {
     await createPDFPage(html, path);
-    await EXIFTOOL.write(path, { Title: `Invite to ${name}` }, [
+    await exiftool.write(path, { Title: `Invite to ${name}` }, [
       '-overwrite_original'
     ]);
   } catch (err) {
