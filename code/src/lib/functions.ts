@@ -1,14 +1,18 @@
+import * as dotenv from 'dotenv';
 import ejs from 'ejs';
 import { ExifTool } from 'exiftool-vendored';
 import fs from 'fs-extra';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 import puppeteer, { Browser } from 'puppeteer';
 
 import { Guest, GuestRecord } from './classes';
-import { SPREADSHEET } from './config';
 import * as Paths from './paths';
 import { error, readFileContent } from './utils';
 
+import credentials from '../../key.json';
 import RULES from '../../views/data/rules.json';
+
+dotenv.config();
 
 let browser: Browser;
 let exiftool: ExifTool;
@@ -23,7 +27,7 @@ export async function generateHTMLFiles(
 ): Promise<Array<void>> {
   console.info('Generating HTML files...');
   const guests = await loadGuestList(refreshCache);
-  const promises = guests.slice(18, 19).map(createGuestHTML);
+  const promises = guests.slice(21, 22).map(createGuestHTML);
   return Promise.all(promises);
 }
 
@@ -34,7 +38,7 @@ export async function generateHTMLFiles(
  */
 export async function generatePDFFiles(): Promise<void> {
   fs.ensureDirSync(`${Paths.OUTPUT_DIR}/pdf/guests`);
-  
+
   browser = await puppeteer.launch();
   exiftool = new ExifTool();
 
@@ -146,8 +150,12 @@ async function loadGuestList(refreshCache: boolean): Promise<Array<Guest>> {
   if (refreshCache) {
     console.info('Refreshing cache...');
 
-    await SPREADSHEET.loadInfo();
-    const [sheet] = SPREADSHEET.sheetsByIndex;
+    const spreadsheet = new GoogleSpreadsheet(
+      process.env.GOOGLE_SPREADSHEET_ID
+    );
+    spreadsheet.useServiceAccountAuth(credentials);
+    await spreadsheet.loadInfo();
+    const [sheet] = spreadsheet.sheetsByIndex;
     const records = <Array<GuestRecord>>await sheet.getRows();
     const guests = records.map((record) => {
       const guest = new Guest();
