@@ -7,16 +7,16 @@ import path from 'path';
 
 import { Guest, GuestRecord } from './classes';
 import { DOCUMENT, EXIFTOOL, OUTPUT_DIR } from './config';
-import RULES from './templates/rules.json';
+import RULES from '../views/rules.json';
 import { clean, error } from './utils';
 
-const ASSETS_DIR = path.resolve(__dirname, './assets');
-const CACHE_DIR = path.resolve(__dirname, './cache');
-const TEMPLATES_DIR = path.resolve(__dirname, './templates');
+const ASSETS_DIR = path.resolve(__dirname, '../assets');
+const CACHE_DIR = path.resolve(__dirname, '../cache');
+const VIEWS_DIR = path.resolve(__dirname, '../views');
 
 const CACHED_DATA = `${CACHE_DIR}/data.json`;
-const STYLES_FILE = `${TEMPLATES_DIR}/styles.css`;
-const TEMPLATE_FILE = `${TEMPLATES_DIR}/template.ejs`;
+const STYLES_FILE = `${VIEWS_DIR}/styles.css`;
+const TEMPLATE_FILE = `${VIEWS_DIR}/template.ejs`;
 
 const SIGNATURE_IMG = `${ASSETS_DIR}/signature.svg`;
 const WAVES_SVG = `${ASSETS_DIR}/waves.svg`;
@@ -67,11 +67,11 @@ async function main() {
 
   program.command('clean').action(clean);
   program.addHelpCommand(false);
-  
-  if (!program.args.length){
-    program.help();
-    process.exit(0);
-  }
+
+  // if (!program.args.length){
+  //   program.help();
+  //   process.exit(0);
+  // }
   
   await program.parseAsync();
 }
@@ -148,7 +148,7 @@ async function createHTMLPage(
 ): Promise<void> {
   try {
     const data = await fs.readFile(templateFile, 'utf8');
-    const template = ejs.compile(data, { root: TEMPLATES_DIR });
+    const template = ejs.compile(data, { root: VIEWS_DIR });
     const html = template({
       cssFile: STYLES_FILE,
       images: {
