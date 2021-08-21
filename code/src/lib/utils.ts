@@ -29,3 +29,19 @@ export function readFileContent(file: string) {
   const html = fs.readFileSync(file, { encoding: 'utf8' });
   return html;
 }
+
+/**
+ * Start execution timer, clean and ensure output directory exists.
+ */
+export function setup() {
+  console.time('Time');
+  clean();
+  fs.ensureDirSync(OUTPUT_DIR);
+}
+
+/**
+ * Stop and display execution timer.
+ */
+export function tearDown() {
+  console.timeEnd('Time');
+}

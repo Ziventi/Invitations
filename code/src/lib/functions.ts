@@ -4,11 +4,11 @@ import fs from 'fs-extra';
 import puppeteer, { Browser } from 'puppeteer';
 
 import { Guest, GuestRecord } from './classes';
-import { SPREADSHEET } from './conf';
+import { SPREADSHEET } from './config';
 import * as Paths from './paths';
+import { error, readFileContent } from './utils';
 
 import RULES from '../../views/data/rules.json';
-import { error, readFileContent } from '../utils/common';
 
 let browser: Browser;
 let exiftool: ExifTool;
