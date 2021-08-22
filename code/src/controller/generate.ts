@@ -4,26 +4,35 @@ import { ExifTool } from 'exiftool-vendored';
 import fs from 'fs-extra';
 import puppeteer, { Browser } from 'puppeteer';
 
-import { Guest, GuestRecord, Rank } from './classes';
-import * as Paths from './paths';
-import { getSpreadsheet } from './spreadsheet';
-import { error, readFileContent } from './utils';
+import { Guest } from '../lib/classes';
+import * as Paths from '../lib/paths';
+import * as Utils from '../lib/utils';
 
 dotenv.config();
 
 let browser: Browser;
 let exiftool: ExifTool;
 
+export async function generate(options: GenerateOptions) {
+  const { refresh, withPdf } = options;
+  const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
+
+  Utils.setup();
+  await generateHTMLFiles(refreshCache);
+  if (withPdf) {
+    await generatePDFFiles();
+  }
+  Utils.tearDown();
+}
+
 /**
  * Generates the HTML files for each member on the guest list from the template.
  * @param refreshCache Indicates whether the data cache should be refreshed.
  * @returns A promise fulfilled when all HTML files have been generated.
  */
-export async function generateHTMLFiles(
-  refreshCache: boolean
-): Promise<void[]> {
+async function generateHTMLFiles(refreshCache: boolean): Promise<void[]> {
   console.info('Generating HTML files...');
-  const guests = await loadGuestList(refreshCache);
+  const guests = await Utils.loadGuestList(refreshCache);
   const promises = guests.slice(21, 22).map(createGuestHTML);
   return Promise.all(promises);
 }
@@ -33,7 +42,7 @@ export async function generateHTMLFiles(
  * @param refreshCache Indicates whether the data cache should be refreshed.
  * @returns A promise fulfilled when all PDF files have been generated.
  */
-export async function generatePDFFiles(): Promise<void> {
+async function generatePDFFiles(): Promise<void> {
   fs.ensureDirSync(`${Paths.OUTPUT_DIR}/pdf/guests`);
   console.info('Generating PDF files...');
 
@@ -43,7 +52,7 @@ export async function generatePDFFiles(): Promise<void> {
   const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html/guests`);
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
-    const html = readFileContent(
+    const html = Utils.readFileContent(
       `${Paths.OUTPUT_DIR}/html/guests/${name}.html`
     );
     return createGuestPDFPage(html, name);
@@ -78,7 +87,7 @@ async function createGuestPDFPage(html: string, name: string): Promise<void> {
       '-overwrite_original'
     ]);
   } catch (err) {
-    return error(err);
+    Utils.error(err);
   }
 }
 
@@ -113,9 +122,9 @@ async function createHTMLPage(
         wish: process.env.WISHLIST_URL
       }
     });
-    return await fs.outputFile(outputFile, html);
+    await fs.outputFile(outputFile, html);
   } catch (err) {
-    return error(err);
+    Utils.error(err);
   }
 }
 
@@ -139,46 +148,11 @@ async function createPDFPage(html: string, outputPath: string) {
       printBackground: true
     });
   } catch (err) {
-    error(err);
+    Utils.error(err);
   }
 }
 
-/**
- * Retrieves the full guest list.
- * @returns A promise which resolves to the list of guest records.
- */
-export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
-  if (refreshCache) {
-    console.info('Refreshing cache...');
-    let records: GuestRecord[] = [];
-
-    try {
-      const spreadsheet = await getSpreadsheet(
-        process.env.PRIVATE_SPREADSHEET_ID!
-      );
-      const [sheet] = spreadsheet.sheetsByIndex;
-      records = <GuestRecord[]>await sheet.getRows();
-    } catch (err) {
-      error(err);
-    }
-
-    const guests = records.map((record) => {
-      const guest = new Guest();
-      guest.name = record['Name'];
-      guest.rank = Rank[record['Rank']];
-      guest.known = record['Known'];
-      guest.confirmed = !!record['Confirmed'];
-
-      const tagline = record['Tagline'];
-      if (tagline) {
-        guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
-      }
-
-      return guest;
-    });
-
-    fs.outputFileSync(Paths.CACHED_DATA, JSON.stringify(guests, null, 2));
-  }
-  const guests = readFileContent(Paths.CACHED_DATA);
-  return <Guest[]>JSON.parse(guests);
-}
+type GenerateOptions = {
+  refresh?: boolean;
+  withPdf?: boolean;
+};
