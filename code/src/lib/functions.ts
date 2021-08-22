@@ -2,11 +2,11 @@ import * as dotenv from 'dotenv';
 import ejs from 'ejs';
 import { ExifTool } from 'exiftool-vendored';
 import fs from 'fs-extra';
-import { GoogleSpreadsheet } from 'google-spreadsheet';
 import puppeteer, { Browser } from 'puppeteer';
 
-import { Guest, GuestRecord } from './classes';
+import { Guest, GuestRecord, Rank } from './classes';
 import * as Paths from './paths';
+import { getSpreadsheet } from './spreadsheet';
 import { error, readFileContent } from './utils';
 
 dotenv.config();
@@ -109,7 +109,7 @@ async function createHTMLPage(
       guest,
       rules,
       lists: {
-        guest: process.env.GUESTLIST_URL,
+        guest: process.env.PUBLIC_GUESTLIST_URL,
         wish: process.env.WISHLIST_URL
       }
     });
@@ -133,13 +133,13 @@ async function createPDFPage(html: string, outputPath: string) {
     await page.addStyleTag({ path: Paths.STYLES_FILE });
     await page.emulateMediaType('screen');
     await page.evaluateHandle('document.fonts.ready');
-    return await page.pdf({
+    await page.pdf({
       format: 'a4',
       path: outputPath,
       printBackground: true
     });
   } catch (err) {
-    return error(err);
+    error(err);
   }
 }
 
@@ -147,18 +147,15 @@ async function createPDFPage(html: string, outputPath: string) {
  * Retrieves the full guest list.
  * @returns A promise which resolves to the list of guest records.
  */
-async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
+export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
   if (refreshCache) {
     console.info('Refreshing cache...');
     let records: GuestRecord[] = [];
 
     try {
-      const credentials = await import(`${Paths.ROOT}/key.json`);
-      const spreadsheet = new GoogleSpreadsheet(
-        process.env.GOOGLE_SPREADSHEET_ID
+      const spreadsheet = await getSpreadsheet(
+        process.env.PRIVATE_SPREADSHEET_ID!
       );
-      await spreadsheet.useServiceAccountAuth(credentials);
-      await spreadsheet.loadInfo();
       const [sheet] = spreadsheet.sheetsByIndex;
       records = <GuestRecord[]>await sheet.getRows();
     } catch (err) {
@@ -168,11 +165,15 @@ async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
     const guests = records.map((record) => {
       const guest = new Guest();
       guest.name = record['Name'];
-      guest.rank = GuestRecord.getRank(record);
+      guest.rank = Rank[record['Rank']];
+      guest.known = record['Known'];
+      guest.confirmed = !!record['Confirmed'];
+
       const tagline = record['Tagline'];
       if (tagline) {
         guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
       }
+
       return guest;
     });
 
