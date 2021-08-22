@@ -14,7 +14,8 @@ export async function update(options: UpdateOptions) {
     .filter((g) => g.rank <= Rank.D)
     .sort((a, b) => (a.name > b.name ? 1 : -1))
     .map(({ name, known, confirmed }) => {
-      return [name, known, confirmed];
+      const hasConfirmed = confirmed ? 'Yes' : '';
+      return [name, known, hasConfirmed];
     });
 
   const spreadsheet = await getSpreadsheet(process.env.PUBLIC_SPREADSHEET_ID!);
@@ -26,4 +27,4 @@ export async function update(options: UpdateOptions) {
 
 type UpdateOptions = {
   refresh?: boolean;
-}
+};
