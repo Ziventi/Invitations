@@ -4,13 +4,15 @@ export const ROOT = path.resolve(__dirname, '../..');
 
 const ASSETS_DIR = `${ROOT}/assets`;
 const CACHE_DIR = `${ROOT}/.cache`;
+const VIEWS_DIR = `${ROOT}/views`;
 
 export const OUTPUT_DIR = `${ROOT}/out`;
-export const VIEWS_DIR = `${ROOT}/views`;
+export const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
-export const STYLES_FILE = `${VIEWS_DIR}/styles.css`;
-export const TEMPLATE_FILE = `${VIEWS_DIR}/template.ejs`;
+export const STYLES_FILE = `${VIEWS_DIR}/styles/css/styles.css`;
+export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;
+export const RULES_JSON = `${VIEWS_DIR}/data/rules.json`;
 
 export const SIGNATURE_IMG = `${ASSETS_DIR}/signature.svg`;
 export const WAVES_SVG = `${ASSETS_DIR}/waves.svg`;

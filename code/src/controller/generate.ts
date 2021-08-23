@@ -35,7 +35,9 @@ export async function generate(options: GenerateOptions) {
 async function generateHTMLFiles(refreshCache: boolean): Promise<void[]> {
   console.info('Generating HTML files...');
   const guests = await Utils.loadGuestList(refreshCache);
-  const promises = guests.slice(TEST_NUMBER, TEST_NUMBER + 1).map(createGuestHTML);
+  const promises = guests
+    .slice(TEST_NUMBER, TEST_NUMBER + 1)
+    .map(createGuestHTML);
   return Promise.all(promises);
 }
 
@@ -107,10 +109,8 @@ async function createHTMLPage(
 ): Promise<void> {
   try {
     const data = await fs.readFile(templateFile, 'utf8');
-    const template = ejs.compile(data, { root: Paths.VIEWS_DIR });
-    const { default: rules } = await import(
-      `${Paths.VIEWS_DIR}/data/rules.json`
-    );
+    const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
+    const { default: rules } = await import(Paths.RULES_JSON);
     const html = template({
       cssFile: Paths.STYLES_FILE,
       images: {
