@@ -7,9 +7,9 @@
   },
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
+    "predev": "sass --update --style=compressed --no-source-map views/styles/sass:views/styles/css",
     "dev": "ts-node src/main",
-    "eslint": "eslint --ext .ts,.tsx .",
-    "sass": "sass --watch views/styles/sass:views/styles/css"
+    "eslint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
     "commander": "^8.1.0",
