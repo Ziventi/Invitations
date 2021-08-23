@@ -19,7 +19,7 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
 
     try {
       const spreadsheet = await getSpreadsheet(
-        process.env.PRIVATE_SPREADSHEET_ID!
+        process.env.SS_PRIVATE_GUESTLIST_ID!
       );
       const [sheet] = spreadsheet.sheetsByIndex;
       records = <GuestRecord[]>await sheet.getRows();
@@ -31,7 +31,7 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
       const guest = new Guest();
       guest.name = record['Name'];
       guest.rank = Rank[record['Rank']];
-      guest.known = record['Known'];
+      guest.origin = record['Origin'];
       guest.confirmed = !!record['Confirmed'];
 
       const tagline = record['Tagline'];
@@ -46,6 +46,15 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
   }
   const guests = readFileContent(Paths.CACHED_DATA);
   return <Guest[]>JSON.parse(guests);
+}
+
+/**
+ * Retrieves the full accessible spreadsheet URL using a specified ID.
+ * @param spreadsheetID The spreadsheet ID.
+ * @returns The full URL of the spreadsheet.
+ */
+export function getSpreadsheetUrl(spreadsheetID: string) {
+  return `https://docs.google.com/spreadsheets/d/${spreadsheetID}/edit`;
 }
 
 /**

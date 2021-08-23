@@ -13,6 +13,8 @@ dotenv.config();
 let browser: Browser;
 let exiftool: ExifTool;
 
+const TEST_NUMBER = 18;
+
 export async function generate(options: GenerateOptions) {
   const { refresh, withPdf } = options;
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
@@ -33,7 +35,7 @@ export async function generate(options: GenerateOptions) {
 async function generateHTMLFiles(refreshCache: boolean): Promise<void[]> {
   console.info('Generating HTML files...');
   const guests = await Utils.loadGuestList(refreshCache);
-  const promises = guests.slice(21, 22).map(createGuestHTML);
+  const promises = guests.slice(TEST_NUMBER, TEST_NUMBER + 1).map(createGuestHTML);
   return Promise.all(promises);
 }
 
@@ -118,8 +120,8 @@ async function createHTMLPage(
       guest,
       rules,
       lists: {
-        guest: process.env.PUBLIC_GUESTLIST_URL,
-        wish: process.env.WISHLIST_URL
+        guest: Utils.getSpreadsheetUrl(process.env.SS_PUBLIC_GUESTLIST_ID!),
+        wish: Utils.getSpreadsheetUrl(process.env.SS_PUBLIC_WISHLIST_ID!)
       }
     });
     await fs.outputFile(outputFile, html);

@@ -4,7 +4,7 @@ export class Guest {
   name = '';
   rank = 0;
   tagline = '';
-  known = '';
+  origin = '';
   confirmed = false;
 }
 
@@ -12,7 +12,7 @@ export class GuestRecord extends GoogleSpreadsheetRow {
   Name = '';
   Rank = '';
   Tagline = '';
-  Known = '';
+  Origin = '';
   Confirmed = false;
 }
 
