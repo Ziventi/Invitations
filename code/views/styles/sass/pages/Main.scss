@@ -1,0 +1,30 @@
+main.guests {
+  text-align: center;
+}
+
+h1.headline {
+  font-family: $font-headline;
+  font-size: 5em;
+  font-weight: 100;
+  letter-spacing: 1px;
+  line-height: 1;
+  padding: 0.4em 0;
+  text-align: center;
+}
+
+h1.guest-name {
+  font-family: $font-name;
+  font-size: 5em;
+  font-weight: bold;
+  padding: 0.3em 0;
+  text-align: center;
+}
+
+p.guest-tagline {
+  font-family: $font-body;
+  font-size: 1.6em;
+  font-weight: bold;
+  margin: 0 auto;
+  max-width: 400px;
+  text-align: center;
+}

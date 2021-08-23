@@ -10,7 +10,7 @@ export const OUTPUT_DIR = `${ROOT}/out`;
 export const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
-export const STYLES_FILE = `${VIEWS_DIR}/styles/css/styles.css`;
+export const STYLES_FILE = `${VIEWS_DIR}/styles/css/main.css`;
 export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;
 export const RULES_JSON = `${VIEWS_DIR}/data/rules.json`;
 

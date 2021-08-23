@@ -1,0 +1,66 @@
+@import 'Constants';
+
+@import 'pages/Main';
+@import 'pages/Info';
+
+html,
+body {
+  font-family: $font-body;
+  margin: 0;
+}
+
+div#root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  background: $color-body;
+  border: 24px solid $color-border;
+  height: 297mm;
+  overflow-x: hidden;
+  position: relative;
+  width: 210mm;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+  }
+}
+
+h1 {
+  margin: 0;
+}
+
+p {
+  color: #000;
+  font-size: 1.5em;
+  margin: 0;
+}
+
+section {
+  padding: 1em 0;
+}
+
+img.signature {
+  bottom: 10px;
+  max-height: 110px;
+  position: absolute;
+  right: 10px;
+}
+
+img.waves {
+  left: 0;
+  max-height: 300px;
+  position: absolute;
+  top: 0;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}

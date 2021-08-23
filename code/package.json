@@ -7,7 +7,7 @@
   },
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
-    "predev": "sass --update --style=compressed --no-source-map views/styles/sass:views/styles/css",
+    "predev": "sass --update --style=compressed --no-source-map views/styles/sass/App.scss:views/styles/css/main.css",
     "dev": "ts-node src/main",
     "eslint": "eslint --ext .ts,.tsx ."
   },
