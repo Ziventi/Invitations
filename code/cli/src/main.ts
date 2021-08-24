@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 
-import { generate } from './controller/generate';
-import { update } from './controller/update';
+import generate from './controller/generate';
+import update from './controller/update';
 import { clean } from './lib/utils';
 
 main();
