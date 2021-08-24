@@ -1,0 +1,43 @@
+section.interface {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+aside.mapper {
+  flex: 0 0 auto;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 1em;
+}
+
+ul.tables {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-inline-start: 0;
+}
+
+li.table {
+  $table-size: 85px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  height: $table-size;
+  list-style-type: none;
+  margin: 4em;
+  position: relative;
+  width: $table-size;
+}
+
+label.table-label {
+  bottom: -20px;
+  font-size: 0.8em;
+  font-weight: bold;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+}
