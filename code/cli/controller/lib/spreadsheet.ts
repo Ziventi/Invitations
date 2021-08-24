@@ -14,7 +14,7 @@ export async function getSpreadsheet(spreadsheetId: string) {
     return spreadsheet;
   }
 
-  const credentials = await import(`${Paths.ROOT}/key.json`);
+  const credentials = await import(Paths.KEY_JSON);
   spreadsheet = new GoogleSpreadsheet(spreadsheetId);
   await spreadsheet.useServiceAccountAuth(credentials);
   await spreadsheet.loadInfo();

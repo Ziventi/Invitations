@@ -1,15 +1,25 @@
 {
-  "eslintConfig": {
-    "extends": "@zzavidd/eslint-config"
-  },
-  "stylelint": {
-    "extends": "@zzavidd/stylelint-config"
-  },
-  "prettier": "@zzavidd/prettier-config",
   "scripts": {
+    "predev": "sass --update --style=compressed --no-source-map views/styles/sass/App.scss:views/styles/css/main.css",
+    "dev": "ts-node controller/main",
     "eslint": "eslint --ext .ts,.tsx ."
   },
+  "dependencies": {
+    "commander": "^8.1.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "exiftool-vendored": "^15.2.0",
+    "fs-extra": "^10.0.0",
+    "google-spreadsheet": "^3.1.15",
+    "puppeteer": "^10.2.0",
+    "sass": "^1.38.0",
+    "slugify": "^1.5.0"
+  },
   "devDependencies": {
+    "@types/ejs": "^3.0.7",
+    "@types/fs-extra": "^9.0.12",
+    "@types/google-spreadsheet": "^3.1.5",
+    "@types/node": "^16.4.10",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.2",
     "@zzavidd/eslint-config": "^0.2.11",
