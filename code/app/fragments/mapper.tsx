@@ -1,7 +1,8 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 
 import { GUESTS_PER_TABLE, TABLE_NAMES } from 'utils/constants';
 import {
+  AssignmentActionPayload,
   AssignmentInitialState,
   AssignmentReducer
 } from 'utils/reducers/assignment';
@@ -19,13 +20,18 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
   );
   const [distribution, setDistribution] = useDistReducer;
 
+  useEffect(() => {
+    updatePreview();
+  }, [assignment]);
+
   const onPositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, valueAsNumber } = e.target;
     updateAssignment({
       guest: name,
       payload: {
         position: valueAsNumber
-      }
+      },
+      type: 'partial'
     });
   };
 
@@ -35,7 +41,8 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
       guest: name,
       payload: {
         table: value
-      }
+      },
+      type: 'partial'
     });
   };
 
@@ -53,6 +60,25 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
     setDistribution({ payload: newDistribution });
   };
 
+  const randomiseDistribution = () => {
+    const randomAssignment = guests
+      .sort(() => (Math.random() > 0.5 ? 1 : -1))
+      .reduce((acc, guest, i) => {
+        const tableIndex = (i % TABLE_NAMES.length - 1) + 1;
+        const position = Math.ceil(i / GUESTS_PER_TABLE);
+        acc[guest.name] = {
+          table: TABLE_NAMES[tableIndex],
+          position
+        };
+        return acc;
+      }, assignment);
+
+    updateAssignment({
+      payload: randomAssignment,
+      type: 'full'
+    });
+  };
+
   return (
     <aside className={'mapper'}>
       <section className={'mapper-list'}>
@@ -64,16 +90,18 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
             </tr>
           </thead>
           <tbody>
-            {guests.map((guest, key) => {
-              return (
-                <MapperGuestRow
-                  guest={guest}
-                  onTableChange={onTableChange}
-                  onPositionChange={onPositionChange}
-                  key={key}
-                />
-              );
-            })}
+            {Object.entries(assignment)
+              .sort(([a], [b]) => (a > b ? 1 : -1))
+              .map((entry, key) => {
+                return (
+                  <MapperGuestRow
+                    guestEntry={entry}
+                    onTableChange={onTableChange}
+                    onPositionChange={onPositionChange}
+                    key={key}
+                  />
+                );
+              })}
           </tbody>
         </table>
       </section>
@@ -81,31 +109,41 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
         <button className={'mapper-button'} onClick={updatePreview}>
           Update
         </button>
+        <button className={'mapper-button'} onClick={randomiseDistribution}>
+          Random
+        </button>
       </footer>
     </aside>
   );
 }
 
 function MapperGuestRow({
-  guest,
+  guestEntry,
   onTableChange,
   onPositionChange
 }: MapperGuestRowProps) {
+  const [guestName, { table, position }] = guestEntry;
   return (
     <tr>
-      <td className={'mapper-list-guest'}>{guest.name}</td>
+      <td className={'mapper-list-guest'}>{guestName}</td>
       <td>
-        <select name={guest.name} onChange={onTableChange}>
+        <select name={guestName} onChange={onTableChange}>
           <option>None</option>
           {TABLE_NAMES.map((name, key) => {
-            return <option key={key}>{name}</option>;
+            const isSelected = name === table;
+            return (
+              <option selected={isSelected} key={key}>
+                {name}
+              </option>
+            );
           })}
         </select>
         <input
           type={'number'}
-          name={guest.name}
+          name={guestName}
           min={1}
           max={GUESTS_PER_TABLE}
+          value={position}
           onChange={onPositionChange}
         />
       </td>
@@ -119,7 +157,7 @@ type MapperProps = {
 };
 
 type MapperGuestRowProps = {
-  guest: Guest;
+  guestEntry: [string, AssignmentActionPayload];
   onTableChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onPositionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };

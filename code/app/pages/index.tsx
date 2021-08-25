@@ -1,18 +1,14 @@
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import React, { useReducer } from 'react';
 
 import Mapper from 'fragments/mapper';
-import { NUMBER_OF_TABLES, TABLE_NAMES } from 'utils/constants';
+import { GUEST_LIST, TABLE_NAMES } from 'utils/constants';
 import {
   DistributionInitialState,
   DistributionReducer
 } from 'utils/reducers/distribution';
 
-import GUEST_JSON from '../../.cache/data.json';
-import { Guest } from '../../cli/controller/lib/classes';
-
-export default function Home({ guests }: HomeProps) {
+export default function Home() {
   const [distribution, setDistribution] = useReducer(
     DistributionReducer,
     DistributionInitialState
@@ -28,12 +24,12 @@ export default function Home({ guests }: HomeProps) {
       <main>
         <section className={'preview'}>
           <ul className={'tables'}>
-            {TABLE_NAMES.slice(0, NUMBER_OF_TABLES).map((tableName) => {
+            {TABLE_NAMES.map((tableName) => {
               return (
                 <li className={'table'} key={tableName}>
-                  <ul>
+                  <ul className={'table-guests'}>
                     {distribution[tableName].map((guest, key) => {
-                      return <li key={key}>{guest}</li>;
+                      return <li className={'table-guest'} key={key}>{guest}</li>;
                     })}
                   </ul>
                   <label className={'table-label'}>{tableName}</label>
@@ -43,24 +39,10 @@ export default function Home({ guests }: HomeProps) {
           </ul>
         </section>
         <Mapper
-          guests={guests}
+          guests={GUEST_LIST}
           useDistReducer={[distribution, setDistribution]}
         />
       </main>
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const guests = GUEST_JSON.filter((g) => g.rank <= 4);
-
-  return {
-    props: {
-      guests
-    }
-  };
-};
-
-type HomeProps = {
-  guests: Guest[];
-};

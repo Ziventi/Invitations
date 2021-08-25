@@ -16,12 +16,24 @@ ul.tables {
 li.table {
   $table-size: 150px;
   border: 1px solid #000;
-  border-radius: 50%;
+  border-radius: 30%;
   height: $table-size;
   list-style-type: none;
   margin: 2.5em;
   position: relative;
   width: $table-size;
+}
+
+ul.table-guests {
+  padding: 1.5em;
+  padding-inline-start: unset;
+  width: fit-content;
+}
+
+li.table-guest {
+  font-size: 0.6em;
+  list-style-type: none;
+  width: fit-content;
 }
 
 label.table-label {
