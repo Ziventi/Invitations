@@ -1,6 +1,6 @@
-export const GuestAssignmentInitialState = {};
+export const AssignmentInitialState = {};
 
-export const GuestAssignmentReducer: Reducer<State, Action> = (
+export const AssignmentReducer: Reducer<AssignmentState, AssignmentAction> = (
   state,
   action
 ) => {
@@ -23,12 +23,12 @@ export const GuestAssignmentReducer: Reducer<State, Action> = (
   });
 };
 
-type State = Record<string, ActionPayload>;
-type Action = {
+export type AssignmentState = Record<string, AssignmentActionPayload>;
+export type AssignmentAction = {
   guest: string;
-  payload: ActionPayload;
+  payload: AssignmentActionPayload;
 };
-type ActionPayload = {
+type AssignmentActionPayload = {
   table?: string;
   position?: number;
 };
