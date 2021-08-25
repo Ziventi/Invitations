@@ -24,15 +24,19 @@ export default function Home() {
       <main>
         <section className={'preview'}>
           <ul className={'tables'}>
-            {TABLE_NAMES.map((tableName) => {
+            {TABLE_NAMES.map((table) => {
               return (
-                <li className={'table'} key={tableName}>
+                <li className={'table'} key={table.id}>
                   <ul className={'table-guests'}>
-                    {distribution[tableName].map((guest, key) => {
-                      return <li className={'table-guest'} key={key}>{guest}</li>;
+                    {distribution[table.id].map((guest, key) => {
+                      return (
+                        <li className={'table-guest'} key={key}>
+                          {guest}
+                        </li>
+                      );
                     })}
                   </ul>
-                  <label className={'table-label'}>{tableName}</label>
+                  <label className={'table-label'}>{table.name}</label>
                 </li>
               );
             })}

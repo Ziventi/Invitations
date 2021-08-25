@@ -1,8 +1,8 @@
 import { TABLE_NAMES, GUESTS_PER_TABLE } from 'utils/constants';
 
 export const DistributionInitialState = TABLE_NAMES.reduce(
-  (acc: Record<string, Array<string>>, tableName: string) => {
-    acc[tableName] = new Array(GUESTS_PER_TABLE);
+  (acc: Record<number, Array<string>>, table) => {
+    acc[table.id] = new Array(GUESTS_PER_TABLE);
     return acc;
   },
   {}

@@ -40,7 +40,7 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
     updateAssignment({
       guest: name,
       payload: {
-        table: value
+        table: parseInt(value)
       },
       type: 'partial'
     });
@@ -64,10 +64,10 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
     const randomAssignment = guests
       .sort(() => (Math.random() > 0.5 ? 1 : -1))
       .reduce((acc, guest, i) => {
-        const tableIndex = (i % TABLE_NAMES.length - 1) + 1;
+        const tableIndex = i % TABLE_NAMES.length;
         const position = Math.ceil(i / GUESTS_PER_TABLE);
         acc[guest.name] = {
-          table: TABLE_NAMES[tableIndex],
+          table: TABLE_NAMES[tableIndex].id,
           position
         };
         return acc;
@@ -129,8 +129,8 @@ function MapperGuestRow({
       <td>
         <select name={guestName} onChange={onTableChange}>
           <option>None</option>
-          {TABLE_NAMES.map((name, key) => {
-            const isSelected = name === table;
+          {TABLE_NAMES.map(({ id, name }, key) => {
+            const isSelected = id === table;
             return (
               <option selected={isSelected} key={key}>
                 {name}

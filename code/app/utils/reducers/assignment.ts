@@ -52,7 +52,7 @@ export type AssignmentAction =
       type: 'full';
     };
 export type AssignmentActionPayload = {
-  table?: string;
+  table?: number;
   position?: number;
 };
 type Reducer<State, Action> = (state: State, action: Action) => State;

@@ -16,4 +16,11 @@ export const TABLE_NAMES = [
   'Steel',
   'Poison',
   'Flying'
-].slice(0, NUMBER_OF_TABLES);
+]
+  .slice(0, NUMBER_OF_TABLES)
+  .map((tableName, key) => {
+    return {
+      id: key + 1,
+      name: tableName
+    };
+  });
