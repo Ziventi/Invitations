@@ -1,6 +1,6 @@
 import { GUEST_LIST } from 'utils/constants';
 
-import { Guest } from '../../../cli/controller/lib/classes';
+import { Guest } from '../../cli/controller/lib/classes';
 
 export const AssignmentInitialState = GUEST_LIST.reduce(
   (acc: Record<string, AssignmentActionPayload>, guest: Guest) => {

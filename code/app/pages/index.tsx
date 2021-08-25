@@ -2,11 +2,11 @@ import Head from 'next/head';
 import React, { useReducer } from 'react';
 
 import Mapper from 'fragments/mapper';
-import { GUEST_LIST, TABLE_NAMES } from 'utils/constants';
 import {
   DistributionInitialState,
   DistributionReducer
-} from 'utils/reducers/distribution';
+} from 'reducers/distribution';
+import { GUEST_LIST, TABLE_NAMES } from 'utils/constants';
 
 export default function Home() {
   const [distribution, setDistribution] = useReducer(

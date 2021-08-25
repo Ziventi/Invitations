@@ -1,15 +1,12 @@
 import React, { useEffect, useReducer } from 'react';
 
-import { GUESTS_PER_TABLE, TABLE_NAMES } from 'utils/constants';
 import {
   AssignmentActionPayload,
   AssignmentInitialState,
   AssignmentReducer
-} from 'utils/reducers/assignment';
-import {
-  DistributionAction,
-  DistributionState
-} from 'utils/reducers/distribution';
+} from 'reducers/assignment';
+import { DistributionAction, DistributionState } from 'reducers/distribution';
+import { GUESTS_PER_TABLE, TABLE_NAMES } from 'utils/constants';
 
 import { Guest } from '../../cli/controller/lib/classes';
 
