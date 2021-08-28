@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 
 import {
   AssignmentActionPayload,
+  AssignmentActionType,
   AssignmentInitialState,
   AssignmentReducer
 } from 'reducers/assignment';
@@ -28,7 +29,7 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
       payload: {
         position: valueAsNumber
       },
-      type: 'partial'
+      type: AssignmentActionType.PARTIAL
     });
   };
 
@@ -39,41 +40,58 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
       payload: {
         table: parseInt(value)
       },
-      type: 'partial'
+      type: AssignmentActionType.PARTIAL
     });
   };
 
   const updatePreview = () => {
-    const newDistribution = Object.entries(assignment).reduce(
-      (acc, [guest, payload]) => {
-        const { table, position } = payload;
-        if (table && position) {
-          acc[table][position] = guest;
+    if (assignment.lastActionType === AssignmentActionType.CLEAR) {
+      setDistribution({ type: 'clear' });
+      return;
+    }
+
+    const newDistribution = Object.entries(assignment.data).reduce(
+      (acc, [guestName, payload]) => {
+        const { table: tableNumber, position } = payload;
+        if (tableNumber && position) {
+          const guests = acc[tableNumber];
+          const guestIndex = guests.indexOf(guestName);
+          if (guestIndex > -1) {
+            guests.splice(guestIndex, 1, '-');
+          }
+          guests[position - 1] = guestName;
+          acc[tableNumber] = guests;
         }
         return acc;
       },
       distribution
     );
-    setDistribution({ payload: newDistribution });
+    setDistribution({ payload: newDistribution, type: 'update' });
   };
 
   const randomiseDistribution = () => {
+    const tableCount = TABLE_NAMES.length;
     const randomAssignment = guests
       .sort(() => (Math.random() > 0.5 ? 1 : -1))
       .reduce((acc, guest, i) => {
-        const tableIndex = i % TABLE_NAMES.length;
-        const position = Math.ceil(i / GUESTS_PER_TABLE);
+        const result = (i + 1) % tableCount;
+        const tableNumber = result === 0 ? tableCount : result;
+        const position = Math.ceil((i + 1) / tableCount);
         acc[guest.name] = {
-          table: TABLE_NAMES[tableIndex].id,
+          table: TABLE_NAMES[tableNumber - 1].id,
           position
         };
         return acc;
-      }, assignment);
+      }, assignment.data);
 
     updateAssignment({
       payload: randomAssignment,
-      type: 'full'
+      type: AssignmentActionType.FULL
     });
+  };
+
+  const clearDistribution = () => {
+    updateAssignment({ type: AssignmentActionType.CLEAR });
   };
 
   return (
@@ -87,7 +105,7 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(assignment)
+            {Object.entries(assignment.data)
               .sort(([a], [b]) => (a > b ? 1 : -1))
               .map((entry, key) => {
                 return (
@@ -103,11 +121,11 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
         </table>
       </section>
       <footer className={'mapper-footer'}>
-        <button className={'mapper-button'} onClick={updatePreview}>
-          Update
-        </button>
         <button className={'mapper-button'} onClick={randomiseDistribution}>
           Random
+        </button>
+        <button className={'mapper-button'} onClick={clearDistribution}>
+          Clear
         </button>
       </footer>
     </aside>
@@ -124,12 +142,11 @@ function MapperGuestRow({
     <tr>
       <td className={'mapper-list-guest'}>{guestName}</td>
       <td>
-        <select name={guestName} onChange={onTableChange}>
+        <select name={guestName} value={table} onChange={onTableChange}>
           <option>None</option>
           {TABLE_NAMES.map(({ id, name }, key) => {
-            const isSelected = id === table;
             return (
-              <option selected={isSelected} key={key}>
+              <option value={id} key={key}>
                 {name}
               </option>
             );
@@ -138,7 +155,7 @@ function MapperGuestRow({
         <input
           type={'number'}
           name={guestName}
-          min={1}
+          min={0}
           max={GUESTS_PER_TABLE}
           value={position}
           onChange={onPositionChange}

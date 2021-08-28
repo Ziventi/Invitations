@@ -1,8 +1,4 @@
 section.preview {
-  align-items: center;
-  display: flex;
-  flex: 1 1 auto;
-  justify-content: center;
   overflow-y: scroll;
 }
 
@@ -16,7 +12,7 @@ ul.tables {
 li.table {
   $table-size: 150px;
   border: 1px solid #000;
-  border-radius: 30%;
+  // border-radius: 30%;
   height: $table-size;
   list-style-type: none;
   margin: 2.5em;

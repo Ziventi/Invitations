@@ -31,7 +31,7 @@ export default function Home() {
                     {distribution[table.id].map((guest, key) => {
                       return (
                         <li className={'table-guest'} key={key}>
-                          {guest}
+                          {key + 1}: {guest}
                         </li>
                       );
                     })}
