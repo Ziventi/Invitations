@@ -96,8 +96,9 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
 
   const saveDistribution = async () => {
     const filename = prompt('Enter the filename:');
+    if (!filename) return;
     try {
-      await fetch('/api/save', {
+      await fetch('/api/saves', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
