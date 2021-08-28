@@ -6,7 +6,7 @@ import { TABLE_NAMES } from 'utils/constants';
 
 export default function Preview({ distribution }: PreviewProps) {
   return (
-    <section className={'preview'}>
+    <output className={'preview'}>
       <ul className={'preview-tables'}>
         {TABLE_NAMES.map((table) => {
           return (
@@ -29,7 +29,7 @@ export default function Preview({ distribution }: PreviewProps) {
           );
         })}
       </ul>
-    </section>
+    </output>
   );
 }
 

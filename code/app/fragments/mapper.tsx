@@ -11,7 +11,12 @@ import { GUESTS_PER_TABLE, TABLE_NAMES } from 'utils/constants';
 
 import { Guest } from '../../cli/controller/lib/classes';
 
-export default function Mapper({ guests, useDistReducer }: MapperProps) {
+export default function Mapper({
+  guests,
+  useDistReducer,
+  loadSavedDistributions,
+  showSavedDistributions
+}: MapperProps) {
   const [assignment, updateAssignment] = useReducer(
     AssignmentReducer,
     AssignmentInitialState
@@ -108,6 +113,7 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
           data: assignment.data
         })
       });
+      loadSavedDistributions();
     } catch (err) {
       console.error(err);
     }
@@ -141,14 +147,21 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
         </table>
       </section>
       <footer className={'mapper-footer'}>
-        <button className={'mapper-button--random'} onClick={randomiseDistribution}>
+        <button
+          className={'mapper-button--random'}
+          onClick={randomiseDistribution}>
           Random
         </button>
         <button className={'mapper-button--clear'} onClick={clearDistribution}>
           Clear
         </button>
         <button className={'mapper-button--save'} onClick={saveDistribution}>
-          Save
+          Save As...
+        </button>
+        <button
+          className={'mapper-button--load'}
+          onClick={showSavedDistributions}>
+          Load...
         </button>
       </footer>
     </aside>
@@ -198,6 +211,8 @@ function MapperGuestRow({
 type MapperProps = {
   guests: Guest[];
   useDistReducer: [DistributionState, React.Dispatch<DistributionAction>];
+  loadSavedDistributions: () => Promise<void>;
+  showSavedDistributions: () => void;
 };
 
 type MapperGuestRowProps = {
