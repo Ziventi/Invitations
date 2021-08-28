@@ -115,12 +115,13 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
 
   return (
     <aside className={'mapper'}>
-      <section className={'mapper-list'}>
-        <table>
+      <section className={'mapper-section'}>
+        <table className={'mapper-table'}>
           <thead>
             <tr>
               <th>Name</th>
               <th>Table</th>
+              <th>Pos.</th>
             </tr>
           </thead>
           <tbody>
@@ -140,13 +141,13 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
         </table>
       </section>
       <footer className={'mapper-footer'}>
-        <button className={'mapper-button'} onClick={randomiseDistribution}>
+        <button className={'mapper-button--random'} onClick={randomiseDistribution}>
           Random
         </button>
-        <button className={'mapper-button'} onClick={clearDistribution}>
+        <button className={'mapper-button--clear'} onClick={clearDistribution}>
           Clear
         </button>
-        <button className={'mapper-button'} onClick={saveDistribution}>
+        <button className={'mapper-button--save'} onClick={saveDistribution}>
           Save
         </button>
       </footer>
@@ -164,7 +165,11 @@ function MapperGuestRow({
     <tr>
       <td className={'mapper-list-guest'}>{guestName}</td>
       <td>
-        <select name={guestName} value={table} onChange={onTableChange}>
+        <select
+          name={guestName}
+          value={table}
+          onChange={onTableChange}
+          className={'mapper-table-select'}>
           <option>None</option>
           {TABLE_NAMES.map(({ id, name }, key) => {
             return (
@@ -174,6 +179,8 @@ function MapperGuestRow({
             );
           })}
         </select>
+      </td>
+      <td>
         <input
           type={'number'}
           name={guestName}
@@ -181,6 +188,7 @@ function MapperGuestRow({
           max={GUESTS_PER_TABLE}
           value={position}
           onChange={onPositionChange}
+          className={'mapper-position-input'}
         />
       </td>
     </tr>

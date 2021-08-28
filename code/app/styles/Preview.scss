@@ -10,19 +10,18 @@ ul.tables {
 }
 
 li.table {
-  $table-size: 150px;
   border: 1px solid #000;
-  // border-radius: 30%;
-  height: $table-size;
+  border-radius: 30%;
+  height: 150px;
   list-style-type: none;
-  margin: 2.5em;
+  margin: 1em;
   position: relative;
-  width: $table-size;
+  width: 200px;
 }
 
 ul.table-guests {
-  padding: 1.5em;
-  padding-inline-start: unset;
+  padding: 1em;
+  padding-inline-start: 1em;
   width: fit-content;
 }
 
