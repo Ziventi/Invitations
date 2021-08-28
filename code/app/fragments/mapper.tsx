@@ -94,6 +94,24 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
     updateAssignment({ type: AssignmentActionType.CLEAR });
   };
 
+  const saveDistribution = async () => {
+    const filename = prompt('Enter the filename:');
+    try {
+      await fetch('/api/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: filename,
+          data: assignment.data
+        })
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <aside className={'mapper'}>
       <section className={'mapper-list'}>
@@ -126,6 +144,9 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
         </button>
         <button className={'mapper-button'} onClick={clearDistribution}>
           Clear
+        </button>
+        <button className={'mapper-button'} onClick={saveDistribution}>
+          Save
         </button>
       </footer>
     </aside>
