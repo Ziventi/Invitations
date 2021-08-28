@@ -16,14 +16,14 @@ export const DistributionReducer: Reducer<
   }
 };
 
-function generateInitialState() {
+function generateInitialState(): DistributionState {
   return TABLE_NAMES.reduce((acc: Record<number, Array<string>>, table) => {
     acc[table.id] = new Array(GUESTS_PER_TABLE).fill('-');
     return acc;
   }, {});
 }
 
-export type DistributionState = typeof DistributionInitialState;
+export type DistributionState = Record<number, string[]>;
 export type DistributionAction =
   | {
       payload: typeof DistributionInitialState;
