@@ -2,14 +2,14 @@ section.preview {
   overflow-y: scroll;
 }
 
-ul.tables {
+ul.preview-tables {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   padding-inline-start: 0;
 }
 
-li.table {
+li.preview-tables-item {
   border: 1px solid #000;
   border-radius: 30%;
   height: 150px;
@@ -19,16 +19,26 @@ li.table {
   width: 200px;
 }
 
-ul.table-guests {
+ul.preview-table-guests {
   padding: 1em;
   padding-inline-start: 1em;
   width: fit-content;
 }
 
-li.table-guest {
+li.preview-table-guests-item {
   font-size: 0.6em;
   list-style-type: none;
   width: fit-content;
+}
+
+span.preview-table-guest-name {
+  margin-left: 0.4em;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  &--visible {
+    opacity: 1;
+  }
 }
 
 label.table-label {

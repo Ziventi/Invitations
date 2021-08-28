@@ -57,7 +57,7 @@ export default function Mapper({ guests, useDistReducer }: MapperProps) {
           const guests = acc[tableNumber];
           const guestIndex = guests.indexOf(guestName);
           if (guestIndex > -1) {
-            guests.splice(guestIndex, 1, '-');
+            guests.splice(guestIndex, 1, '');
           }
           guests[position - 1] = guestName;
           acc[tableNumber] = guests;
