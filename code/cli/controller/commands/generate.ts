@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import ejs from 'ejs';
 import { ExifTool } from 'exiftool-vendored';
 import fs from 'fs-extra';
+import sass from 'node-sass';
 import puppeteer, { Browser } from 'puppeteer';
 
 import { Guest } from '../lib/classes';
@@ -20,11 +21,22 @@ export default async function generate(options: GenerateOptions) {
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
 
   Utils.setup();
+  transpileSass();
   await generateHTMLFiles(refreshCache);
   if (withPdf) {
     await generatePDFFiles();
   }
   Utils.tearDown();
+}
+
+function transpileSass() {
+  console.info('Transpiling SCSS to CSS...');
+  fs.ensureDirSync(`${Paths.STYLES_DIR}/css`);
+  const output = sass.renderSync({
+    file: Paths.STYLES_INPUT_FILE,
+    sourceMap: false
+  });
+  fs.writeFileSync(Paths.STYLES_OUTPUT_FILE, output.css);
 }
 
 /**
@@ -112,7 +124,7 @@ async function createHTMLPage(
     const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
     const { default: rules } = await import(Paths.RULES_JSON);
     const html = template({
-      cssFile: Paths.STYLES_FILE,
+      cssFile: Paths.STYLES_OUTPUT_FILE,
       images: {
         signature: Paths.SIGNATURE_IMG,
         waves: Paths.WAVES_SVG
@@ -141,7 +153,7 @@ async function createPDFPage(html: string, outputPath: string) {
     const page = await browser.newPage();
     await page.setContent(html);
     await page.addStyleTag({ url: Paths.FONTS_URL });
-    await page.addStyleTag({ path: Paths.STYLES_FILE });
+    await page.addStyleTag({ path: Paths.STYLES_OUTPUT_FILE });
     await page.emulateMediaType('screen');
     await page.evaluateHandle('document.fonts.ready');
     await page.pdf({
