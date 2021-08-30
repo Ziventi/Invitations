@@ -16,6 +16,10 @@ let exiftool: ExifTool;
 
 const TEST_NUMBER = 18;
 
+/**
+ * Generates the invitation files.
+ * @param options The options supplied via the CLI.
+ */
 export default async function generate(options: GenerateOptions) {
   const { refresh, withPdf } = options;
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
@@ -29,6 +33,9 @@ export default async function generate(options: GenerateOptions) {
   Utils.tearDown();
 }
 
+/**
+ * Transpiles the SCSS files to CSS.
+ */
 function transpileSass() {
   console.info('Transpiling SCSS to CSS...');
   fs.ensureDirSync(`${Paths.STYLES_DIR}/css`);
