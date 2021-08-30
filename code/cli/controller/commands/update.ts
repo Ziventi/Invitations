@@ -5,7 +5,7 @@ import * as Paths from '../lib/paths';
 import { getSpreadsheet } from '../lib/spreadsheet';
 import * as Utils from '../lib/utils';
 
-export async function update(options: UpdateOptions) {
+export default async function update(options: UpdateOptions) {
   const { refresh } = options;
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
 

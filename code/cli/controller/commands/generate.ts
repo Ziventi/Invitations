@@ -15,7 +15,7 @@ let exiftool: ExifTool;
 
 const TEST_NUMBER = 18;
 
-export async function generate(options: GenerateOptions) {
+export default async function generate(options: GenerateOptions) {
   const { refresh, withPdf } = options;
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
 

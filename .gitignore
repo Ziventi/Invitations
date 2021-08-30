@@ -6,5 +6,7 @@ key.json
 
 # Directories
 .cache
-out
+.next
 css
+out
+/saves

@@ -1,0 +1,53 @@
+output.preview {
+  overflow-y: scroll;
+}
+
+ul.preview-tables {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding-inline-start: 0;
+}
+
+li.preview-tables-item {
+  border: 1px solid #000;
+  border-radius: 30%;
+  height: 150px;
+  list-style-type: none;
+  margin: 1em;
+  position: relative;
+  width: 200px;
+}
+
+ul.preview-table-guests {
+  padding: 1em;
+  padding-inline-start: 1em;
+  width: fit-content;
+}
+
+li.preview-table-guests-item {
+  font-size: 0.6em;
+  list-style-type: none;
+  width: fit-content;
+}
+
+span.preview-table-guest-name {
+  margin-left: 0.4em;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
+  &--visible {
+    opacity: 1;
+  }
+}
+
+label.table-label {
+  bottom: -20px;
+  font-size: 0.8em;
+  font-weight: bold;
+  left: 0;
+  margin: 0 auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+}

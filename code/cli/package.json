@@ -8,7 +8,7 @@
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "predev": "sass --update --style=compressed --no-source-map views/styles/sass/App.scss:views/styles/css/main.css",
-    "dev": "ts-node src/main",
+    "dev": "ts-node controller/main",
     "eslint": "eslint --ext .ts,.tsx ."
   },
   "dependencies": {
@@ -32,7 +32,6 @@
     "@zzavidd/eslint-config": "^0.2.11",
     "@zzavidd/prettier-config": "^0.2.10",
     "@zzavidd/stylelint-config": "^0.2.11",
-    "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",
