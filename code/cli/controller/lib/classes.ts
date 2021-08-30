@@ -6,6 +6,7 @@ export class Guest {
   tagline = '';
   origin = '';
   confirmed = false;
+  wlid = ''
 }
 
 export class GuestRecord extends GoogleSpreadsheetRow {
@@ -14,6 +15,7 @@ export class GuestRecord extends GoogleSpreadsheetRow {
   Tagline = '';
   Origin = '';
   Confirmed = false;
+  WLID = '';
 }
 
 export const Rank: Record<string, number> = {

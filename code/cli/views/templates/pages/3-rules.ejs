@@ -1,0 +1,14 @@
+<main class="rules">
+  <section>
+    <ol class="rules">
+      <% rules.forEach((rule) => { %>
+      <li>
+        <strong><%= rule.summary %>:</strong>
+        <span><%= rule.description %></span>
+      </li>
+      <% }); %>
+    </ol>
+  </section>
+
+  <%- include('/partials/footer.ejs', { images }) %>
+</main>

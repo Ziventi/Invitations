@@ -1,7 +1,8 @@
 @import 'Constants';
 
-@import 'pages/Main';
-@import 'pages/Info';
+@import 'pages/1-Index';
+@import 'pages/2-Lists';
+@import 'pages/3-Rules';
 
 html,
 body {
@@ -39,10 +40,6 @@ p {
   color: #000;
   font-size: 1.5em;
   margin: 0;
-}
-
-section {
-  padding: 1em 0;
 }
 
 img.signature {

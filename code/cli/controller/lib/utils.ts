@@ -33,6 +33,7 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
       guest.rank = Rank[record['Rank']];
       guest.origin = record['Origin'];
       guest.confirmed = !!record['Confirmed'];
+      guest.wlid = record['WLID'];
 
       const tagline = record['Tagline'];
       if (tagline) {

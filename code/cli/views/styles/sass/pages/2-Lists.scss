@@ -1,0 +1,25 @@
+main.lists {
+  font-family: $font-info-body;
+  padding: 3em;
+
+  h2 {
+    font-family: $font-body;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0.5em 0;
+  }
+
+  a {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 1.2em;
+    line-height: 1.7;
+    padding-bottom: 1em;
+  }
+
+  strong.wlid {
+    font-size: 1.1em;
+  }
+}

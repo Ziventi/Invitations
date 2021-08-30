@@ -11,8 +11,9 @@
 
   <body>
     <div id="root">
-      <%- include('/pages/1-main.ejs', { guest, images }) %>
-      <%- include('/pages/2-information.ejs', { rules, images, lists }) %>
+      <%- include('/pages/1-index.ejs', { guest, images }) %>
+      <%- include('/pages/2-lists.ejs', { images, lists, guest }) %>
+      <%- include('/pages/3-rules.ejs', { rules, images }) %>
     </div>
   </body>
 </html>
