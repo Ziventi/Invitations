@@ -1,11 +1,11 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "es5",
+    "isolatedModules": false,
     "module": "commonjs",
-    "moduleResolution": "node",
-    "lib": ["es6", "es2015", "dom"],
-    "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true
-  }
+    "noEmit": true,
+  },
+  "include": [
+    "**/*.ts",
+  ]
 }
