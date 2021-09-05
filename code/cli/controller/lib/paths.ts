@@ -22,4 +22,4 @@ export const SIGNATURE_IMG = `${ASSETS_DIR}/signature.svg`;
 export const WAVES_SVG = `${ASSETS_DIR}/waves.svg`;
 
 export const FONTS_URL =
-  'https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap';
+  'https://fonts.googleapis.com/css2?family=Courgette&family=Great+Vibes&family=Style+Script&family=Tangerine:wght@400;700&family=Poppins:wght@400;700&display=swap';

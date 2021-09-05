@@ -8,6 +8,7 @@ html,
 body {
   font-family: $font-body;
   margin: 0;
+  padding: 0;
 }
 
 div#root {
@@ -17,7 +18,7 @@ div#root {
 }
 
 main {
-  background: $color-body;
+  background: $color-border;
   border: 24px solid $color-border;
   height: 297mm;
   overflow-x: hidden;
@@ -25,10 +26,9 @@ main {
   width: 210mm;
 
   div {
-    display: flex;
-    flex-direction: column;
+    background: $color-body;
+    border-radius: 20px;
     height: 100%;
-    justify-content: space-evenly;
   }
 }
 

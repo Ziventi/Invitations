@@ -1,49 +1,49 @@
 <main class="lists">
-  <section>
-    <h2>Guest List</h2>
-    <p>
-      It'd make sense for you to check the guest list so you're aware of anybody
-      you can tag along with to the event. Always nice to know who's coming,
-      right?
-    </p>
-    <p>
-      Tap the following link for the full
-      <a href="<%= lists.guest %>" target="_blank" rel="noopener noreferrer"
-        >guest list.</a
-      >
-      I appreciate your wisdom and discretion in keeping it to yourself.
-    </p>
-    <p>
-      Please refrain from reminding me of the quantity of guests on the list,
-      I'm very well aware. I'll explain why this is the case on the night.
-    </p>
-  </section>
-  <section>
-    <h2>Wish List</h2>
-    <p>
-      I don't receive gifts often so I'm not expectant; you're under no
-      obligation to give. But I recognise that some of you are strong, loving
-      givers. I'd be honoured to provide an opportunity for you to express your
-      love.
-    </p>
-    <p>
-      Tap the following link for my
-      <a href="<%= lists.wish %>" target="_blank" rel="noopener noreferrer"
-        >wish list.</a
-      >
-    </p>
-    <p>
-      To prevent a case where I receive multiple gifts of something I only need
-      one of, I ask that you assign yourself to an item if you are purchasing
-      off the wish list. Additionally, to make buyers anonymous, please use your
-      unique wish list ID which I have assigned to you when assigning yourself
-      to an item.
-    </p>
-    <p>
-      Your anonymous wish list ID is:<br />
-      <strong class="wlid"><%= guest.wlid %></strong>
-    </p>
-  </section>
-
+  <div>
+    <section>
+      <h2>Guest List</h2>
+      <p>
+        It'd make sense for you to check the guest list so you're aware of
+        anybody you can tag along with to the event. Always nice to know who's
+        coming, right?
+      </p>
+      <p>
+        Tap the following link for the full
+        <a href="<%= lists.guest %>" target="_blank" rel="noopener noreferrer"
+          >guest list</a
+        >. I appreciate your wisdom and discretion in keeping it to yourself.
+      </p>
+      <p>
+        Please refrain from reminding me of the quantity of guests on the list,
+        I'm very well aware. I'll explain why this is the case on the night.
+      </p>
+    </section>
+    <section>
+      <h2>Wish List</h2>
+      <p>
+        I don't receive gifts often so I'm not expectant; you're under no
+        obligation to give. But I recognise that some of you are strong, loving
+        givers. I'd be honoured to provide an opportunity for you to express
+        your love.
+      </p>
+      <p>
+        Tap the following link for my
+        <a href="<%= lists.wish %>" target="_blank" rel="noopener noreferrer"
+          >wish list</a
+        >.
+      </p>
+      <p>
+        To prevent a case where I receive multiple gifts of something I only
+        need one of, I ask that you assign yourself to an item if you are
+        purchasing off the wish list. Additionally, to make buyers anonymous,
+        please use your unique wish list ID which I have assigned to you when
+        assigning yourself to an item.
+      </p>
+      <p>
+        Your anonymous wish list ID is:<br />
+        <strong class="wlid"><%= guest.wlid %></strong>
+      </p>
+    </section>
+  </div>
   <%- include('/partials/footer.ejs', { images }) %>
 </main>

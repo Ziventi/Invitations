@@ -1,6 +1,9 @@
 main.rules {
   font-family: $font-info-body;
-  padding: 1em;
+
+  div {
+    padding: 1em;
+  }
 
   ol li {
     font-size: 1.3em;

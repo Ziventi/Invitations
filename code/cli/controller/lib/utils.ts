@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import fs from 'fs-extra';
 
 import { Guest, GuestRecord, Rank } from './classes';
-import { OUTPUT_DIR } from './paths';
 import * as Paths from './paths';
 import { getSpreadsheet } from './spreadsheet';
 
@@ -62,14 +61,14 @@ export function getSpreadsheetUrl(spreadsheetID: string) {
  * Cleans the output directory.
  */
 export function clean() {
-  fs.removeSync(OUTPUT_DIR);
+  fs.removeSync(Paths.OUTPUT_DIR);
 }
 
 /**
  * Catch error, log to console and exit process.
  * @param err The caught error.
  */
-export function error(err: NodeJS.ErrnoException | null) {
+export function error(err: any) {
   if (err) {
     console.error(err.message);
     process.exit(0);
@@ -92,7 +91,7 @@ export function readFileContent(file: string) {
 export function setup() {
   console.time('Time');
   clean();
-  fs.ensureDirSync(OUTPUT_DIR);
+  fs.ensureDirSync(Paths.OUTPUT_DIR);
 }
 
 /**

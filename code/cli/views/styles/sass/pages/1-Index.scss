@@ -1,6 +1,12 @@
 main.index {
   text-align: center;
 
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
   section {
     padding: 1em 0;
   }
