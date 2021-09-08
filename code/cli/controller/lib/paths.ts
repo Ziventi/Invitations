@@ -13,7 +13,7 @@ export const STYLES_DIR = `${VIEWS_DIR}/styles`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
 export const KEY_JSON = `${CLI_ROOT}/key.json`;
-export const RULES_JSON = `${VIEWS_DIR}/data/rules.json`;
+export const NOTICES_JSON = `${VIEWS_DIR}/data/notices.json`;
 export const STYLES_INPUT_FILE = `${STYLES_DIR}/sass/App.scss`;
 export const STYLES_OUTPUT_FILE = `${STYLES_DIR}/css/main.css`;
 export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;

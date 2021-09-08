@@ -134,7 +134,7 @@ async function createHTMLPage(
   try {
     const data = await fs.readFile(templateFile, 'utf8');
     const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
-    const { default: rules } = await import(Paths.RULES_JSON);
+    const { default: notices } = await import(Paths.NOTICES_JSON);
     const html = template({
       cssFile: Paths.STYLES_OUTPUT_FILE,
       images: {
@@ -143,7 +143,7 @@ async function createHTMLPage(
         waves: `${Paths.ASSETS_DIR}/waves.svg`
       },
       guest,
-      rules,
+      notices,
       lists: {
         guest: publicListsURL,
         wish: wishListUrl
