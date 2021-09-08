@@ -5,7 +5,7 @@ export const DistributionInitialState = generateInitialState();
 export const DistributionReducer: Reducer<
   DistributionState,
   DistributionAction
-> = (_, action) => {
+> = (state, action) => {
   switch (action.type) {
     case 'update': {
       return { ...action.payload};

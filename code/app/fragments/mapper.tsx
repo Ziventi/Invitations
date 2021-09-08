@@ -1,10 +1,10 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 
 import {
-  AssignmentActionPayload,
+  AssignmentAction,
+  AssignmentActionPartialPayload,
   AssignmentActionType,
-  AssignmentInitialState,
-  AssignmentReducer
+  AssignmentState
 } from 'reducers/assignment';
 import { DistributionAction, DistributionState } from 'reducers/distribution';
 import { GUESTS_PER_TABLE, TABLE_NAMES } from 'utils/constants';
@@ -13,14 +13,12 @@ import { Guest } from '../../cli/controller/lib/classes';
 
 export default function Mapper({
   guests,
+  useAssignmentReducer,
   useDistReducer,
   loadSavedDistributions,
   showSavedDistributions
 }: MapperProps) {
-  const [assignment, updateAssignment] = useReducer(
-    AssignmentReducer,
-    AssignmentInitialState
-  );
+  const [assignment, updateAssignment] = useAssignmentReducer;
   const [distribution, setDistribution] = useDistReducer;
 
   useEffect(() => {
@@ -210,13 +208,14 @@ function MapperGuestRow({
 
 type MapperProps = {
   guests: Guest[];
+  useAssignmentReducer: [AssignmentState, React.Dispatch<AssignmentAction>];
   useDistReducer: [DistributionState, React.Dispatch<DistributionAction>];
   loadSavedDistributions: () => Promise<void>;
   showSavedDistributions: () => void;
 };
 
 type MapperGuestRowProps = {
-  guestEntry: [string, AssignmentActionPayload];
+  guestEntry: [string, AssignmentActionPartialPayload];
   onTableChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onPositionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };

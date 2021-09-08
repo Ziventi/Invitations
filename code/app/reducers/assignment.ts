@@ -52,7 +52,7 @@ function generateInitialState(
   lastActionType?: AssignmentActionType
 ): AssignmentState {
   const data = GUEST_LIST.reduce(
-    (acc: Record<string, AssignmentActionPayload>, guest: Guest) => {
+    (acc: AssignmentActionFullPayload, guest: Guest) => {
       acc[guest.name] = {
         table: 0,
         position: 0
@@ -65,25 +65,30 @@ function generateInitialState(
 }
 
 export type AssignmentState = {
-  data: Record<string, AssignmentActionPayload>;
+  data: AssignmentActionFullPayload;
   lastActionType?: AssignmentActionType;
 };
 
 export type AssignmentAction =
   | {
       guest: string;
-      payload: AssignmentActionPayload;
+      payload: AssignmentActionPartialPayload;
       type: AssignmentActionType.PARTIAL;
     }
   | {
-      payload: Record<string, AssignmentActionPayload>;
+      payload: AssignmentActionFullPayload;
       type: AssignmentActionType.FULL;
     }
   | {
       type: AssignmentActionType.CLEAR;
     };
 
-export type AssignmentActionPayload = {
+export type AssignmentActionFullPayload = Record<
+  string,
+  AssignmentActionPartialPayload
+>;
+
+export type AssignmentActionPartialPayload = {
   table?: number;
   position?: number;
 };
