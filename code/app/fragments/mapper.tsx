@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React, { useEffect } from 'react';
 
 import {
@@ -172,8 +173,13 @@ function MapperGuestRow({
   onPositionChange
 }: MapperGuestRowProps) {
   const [guestName, { table, position }] = guestEntry;
+
+  const classes = classnames('mapper-list-row', {
+    'mapper-list-row--mapped': !!table && !!position
+  });
+
   return (
-    <tr>
+    <tr className={classes}>
       <td className={'mapper-list-guest'}>{guestName}</td>
       <td>
         <select

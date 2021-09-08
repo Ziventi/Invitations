@@ -18,6 +18,11 @@ table.mapper-table {
     text-align: left;
   }
 
+  tr.mapper-list-row--mapped {
+    background: rgb(255, 247, 219);
+    font-weight: bold;
+  }
+
   td.mapper-list-guest {
     // filter: blur(0.2rem);
   }
