@@ -133,8 +133,9 @@ async function createHTMLPage(
     const html = template({
       cssFile: Paths.STYLES_OUTPUT_FILE,
       images: {
-        signature: Paths.SIGNATURE_IMG,
-        waves: Paths.WAVES_SVG
+        diamond: `${Paths.ASSETS_DIR}/diamond.svg`,
+        signature: `${Paths.ASSETS_DIR}/signature.svg`,
+        waves: `${Paths.ASSETS_DIR}/waves.svg`,
       },
       guest,
       rules,
