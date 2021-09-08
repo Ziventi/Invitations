@@ -14,7 +14,7 @@ dotenv.config();
 let browser: Browser;
 let exiftool: ExifTool;
 
-const TEST_NUMBER = 18;
+const TEST_NUMBER = 17;
 
 /**
  * Generates the invitation files.
@@ -126,6 +126,11 @@ async function createHTMLPage(
   outputFile: string,
   guest: Guest
 ): Promise<void> {
+  const publicListsURL = Utils.getSpreadsheetUrl(
+    process.env.SS_PUBLIC_LISTS_ID!
+  );
+  const wishListUrl = `${publicListsURL}#gid=${process.env
+    .SS_WISHLIST_SHEET_ID!}`;
   try {
     const data = await fs.readFile(templateFile, 'utf8');
     const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
@@ -135,13 +140,13 @@ async function createHTMLPage(
       images: {
         diamond: `${Paths.ASSETS_DIR}/diamond.svg`,
         signature: `${Paths.ASSETS_DIR}/signature.svg`,
-        waves: `${Paths.ASSETS_DIR}/waves.svg`,
+        waves: `${Paths.ASSETS_DIR}/waves.svg`
       },
       guest,
       rules,
       lists: {
-        guest: Utils.getSpreadsheetUrl(process.env.SS_PUBLIC_GUESTLIST_ID!),
-        wish: Utils.getSpreadsheetUrl(process.env.SS_PUBLIC_WISHLIST_ID!)
+        guest: publicListsURL,
+        wish: wishListUrl
       }
     });
     await fs.outputFile(outputFile, html);

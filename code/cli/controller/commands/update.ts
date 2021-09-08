@@ -18,7 +18,7 @@ export default async function update(options: UpdateOptions) {
       return [name, origin, hasConfirmed];
     });
 
-  const spreadsheet = await getSpreadsheet(process.env.SS_PUBLIC_GUESTLIST_ID!);
+  const spreadsheet = await getSpreadsheet(process.env.SS_PUBLIC_LISTS_ID!);
   const [sheet] = spreadsheet.sheetsByIndex;
   await sheet.clear();
   await sheet.setHeaderRow(['Name', 'Origin', 'Confirmed?']);

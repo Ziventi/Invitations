@@ -54,7 +54,7 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
  * @returns The full URL of the spreadsheet.
  */
 export function getSpreadsheetUrl(spreadsheetID: string) {
-  return `https://docs.google.com/spreadsheets/d/${spreadsheetID}/edit`;
+  return `https://docs.google.com/spreadsheets/d/${spreadsheetID}`;
 }
 
 /**
