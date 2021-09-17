@@ -66,17 +66,17 @@ async function generateHTMLFiles(refreshCache: boolean): Promise<void[]> {
  * @returns A promise fulfilled when all PDF files have been generated.
  */
 async function generatePDFFiles(): Promise<void> {
-  fs.ensureDirSync(`${Paths.OUTPUT_DIR}/pdf/guests`);
+  fs.ensureDirSync(`${Paths.OUTPUT_DIR}/pdf`);
   console.info('Generating PDF files...');
 
   browser = await puppeteer.launch();
   exiftool = new ExifTool();
 
-  const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html/guests`);
+  const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html`);
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
     const html = Utils.readFileContent(
-      `${Paths.OUTPUT_DIR}/html/guests/${name}.html`
+      `${Paths.OUTPUT_DIR}/html/${name}.html`
     );
     return createGuestPDFPage(html, name);
   });
@@ -92,7 +92,7 @@ async function generatePDFFiles(): Promise<void> {
  * @returns A promise fulfilled when the HTML file is created.
  */
 async function createGuestHTML(guest: Guest): Promise<void> {
-  const outputFile = `${Paths.OUTPUT_DIR}/html/guests/${guest.name}.html`;
+  const outputFile = `${Paths.OUTPUT_DIR}/html/${guest.name}.html`;
   await createHTMLPage(Paths.TEMPLATE_FILE, outputFile, guest);
 }
 
@@ -103,7 +103,7 @@ async function createGuestHTML(guest: Guest): Promise<void> {
  * @returns A promise fulfilled when the PDF file is created.
  */
 async function createGuestPDFPage(html: string, name: string): Promise<void> {
-  const path = `${Paths.OUTPUT_DIR}/pdf/guests/${name}.pdf`;
+  const path = `${Paths.OUTPUT_DIR}/pdf/${name}.pdf`;
   try {
     await createPDFPage(html, path);
     await exiftool.write(path, { Title: `Invite to ${name}` }, [
@@ -134,7 +134,8 @@ async function createHTMLPage(
   try {
     const data = await fs.readFile(templateFile, 'utf8');
     const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
-    const { default: notices } = await import(Paths.NOTICES_JSON);
+    const { default: menu } = await import(`${Paths.RESOURCES_DIR}/menu.json`);
+    const { default: notices } = await import(`${Paths.RESOURCES_DIR}/notices.json`);
     const html = template({
       cssFile: Paths.STYLES_OUTPUT_FILE,
       images: {
@@ -143,7 +144,9 @@ async function createHTMLPage(
         waves: `${Paths.ASSETS_DIR}/waves.svg`
       },
       guest,
-      notices,
+      resources: {
+        menu, notices
+      },
       lists: {
         guest: publicListsURL,
         wish: wishListUrl
