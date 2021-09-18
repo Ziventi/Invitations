@@ -1,3 +1,7 @@
 <footer>
-  <img src="<%= images.signature %>" class="signature" />
+  <img
+    src="<%= hostname %>/signature.svg"
+    onerror="this.src='<%= assetsDir %>/signature.svg'"
+    class="signature"
+  />
 </footer>
