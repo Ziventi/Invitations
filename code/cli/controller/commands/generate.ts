@@ -75,9 +75,7 @@ async function generatePDFFiles(): Promise<void> {
   const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html`);
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
-    const html = Utils.readFileContent(
-      `${Paths.OUTPUT_DIR}/html/${name}.html`
-    );
+    const html = Utils.readFileContent(`${Paths.OUTPUT_DIR}/html/${name}.html`);
     return createGuestPDFPage(html, name);
   });
 
@@ -126,26 +124,41 @@ async function createHTMLPage(
   outputFile: string,
   guest: Guest
 ): Promise<void> {
-  const publicListsURL = Utils.getSpreadsheetUrl(
-    process.env.SS_PUBLIC_LISTS_ID!
-  );
-  const wishListUrl = `${publicListsURL}#gid=${process.env
-    .SS_WISHLIST_SHEET_ID!}`;
+  const {
+    NUMBER_BOLA,
+    NUMBER_CHIDERA,
+    NUMBER_DEBORAH,
+    SS_PUBLIC_LISTS_ID,
+    SS_WISHLIST_SHEET_ID
+  } = process.env;
+
+  const publicListsURL = Utils.getSpreadsheetUrl(SS_PUBLIC_LISTS_ID!);
+  const wishListUrl = `${publicListsURL}#gid=${SS_WISHLIST_SHEET_ID!}`;
+
   try {
     const data = await fs.readFile(templateFile, 'utf8');
     const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
+
     const { default: menu } = await import(`${Paths.RESOURCES_DIR}/menu.json`);
-    const { default: notices } = await import(`${Paths.RESOURCES_DIR}/notices.json`);
+    const { default: notices } = await import(
+      `${Paths.RESOURCES_DIR}/notices.json`
+    );
+
     const html = template({
+      contacts: {
+        Bola: NUMBER_BOLA,
+        Chidera: NUMBER_CHIDERA,
+        Deborah: NUMBER_DEBORAH
+      },
       cssFile: Paths.STYLES_OUTPUT_FILE,
       images: {
-        diamond: `${Paths.ASSETS_DIR}/diamond.svg`,
         signature: `${Paths.ASSETS_DIR}/signature.svg`,
         waves: `${Paths.ASSETS_DIR}/waves.svg`
       },
       guest,
       resources: {
-        menu, notices
+        menu,
+        notices
       },
       lists: {
         guest: publicListsURL,

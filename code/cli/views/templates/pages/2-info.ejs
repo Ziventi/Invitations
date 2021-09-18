@@ -1,0 +1,28 @@
+<main class="info">
+  <div>
+    <h1>Information</h1>
+
+    <section>
+      <h2>Dress Code</h2>
+      <p>GLAM baby</p>
+    </section>
+
+    <section>
+      <h2>Parking</h2>
+      <p>Parking is allowed.</p>
+    </section>
+
+    <section>
+      <h2>Points of Contact</h2>
+      <p>
+        <ul>
+          <li><a href="tel:<%= contacts.Bola %>">Bola Sunday-Martins</a></li>
+          <li><a href="tel:<%= contacts.Chidera %>">Chidera Onyeukwu</a></li>
+          <li><a href="tel:<%= contacts.Deborah %>">Deborah Owusu-Ansah</a></li>
+        </ul>
+      </p>
+    </section>
+  </div>
+
+  <%- include('/partials/footer.ejs', { images }) %>
+</main>
