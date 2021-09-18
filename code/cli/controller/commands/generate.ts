@@ -24,14 +24,14 @@ const {
   SS_WISHLIST_SHEET_ID
 } = process.env;
 
-app.use(express.static(path.join(__dirname, '../../assets')));
+app.use(express.static(Paths.IMAGES_DIR));
 
 const PUBLIC_LISTS_URL = Utils.getSpreadsheetUrl(SS_PUBLIC_LISTS_ID!);
 const WISHLIST_URL = `${PUBLIC_LISTS_URL}#gid=${SS_WISHLIST_SHEET_ID!}`;
 
-let assetServer: Server;
 let browser: Browser;
 let exiftool: ExifTool;
+let imageServer: Server;
 
 const resources: Record<string, unknown> = {};
 
@@ -99,7 +99,7 @@ async function generatePDFFiles(): Promise<void> {
 
   browser = await puppeteer.launch();
   exiftool = new ExifTool();
-  assetServer = app.listen(3000);
+  imageServer = app.listen(3000);
 
   const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html`);
   const promises = filenames.map((filename) => {
@@ -111,7 +111,7 @@ async function generatePDFFiles(): Promise<void> {
   await Promise.all(promises);
   await browser.close();
   await exiftool.end();
-  assetServer.close();
+  imageServer.close();
 }
 
 /**
@@ -130,7 +130,6 @@ async function createHTMLPage(
     const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
 
     const html = template({
-      assetsDir: Paths.ASSETS_DIR,
       contacts: {
         Bola: NUMBER_BOLA,
         Chidera: NUMBER_CHIDERA,
@@ -139,6 +138,7 @@ async function createHTMLPage(
       cssFile: Paths.STYLES_OUTPUT_FILE,
       guest,
       hostname: 'http://localhost:3000',
+      imagesDir: Paths.IMAGES_DIR,
       resources,
       lists: {
         guest: PUBLIC_LISTS_URL,
@@ -160,9 +160,7 @@ async function createPDFPage(html: string, name: string): Promise<void> {
   const outputPath = `${Paths.OUTPUT_DIR}/pdf/${name}.pdf`;
   try {
     const page = await browser.newPage();
-    await page.goto(`data:text/html,${encodeURIComponent(html)}`, {
-      waitUntil: 'networkidle0'
-    });
+    await page.goto(`data:text/html,${encodeURIComponent(html)}`);
     await page.addStyleTag({ url: Paths.FONTS_URL });
     await page.addStyleTag({ path: Paths.STYLES_OUTPUT_FILE });
     await page.evaluateHandle('document.fonts.ready');
