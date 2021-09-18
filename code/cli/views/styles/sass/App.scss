@@ -29,6 +29,7 @@ main {
     background: $color-body;
     border-radius: 30px;
     height: 100%;
+    overflow: hidden;
   }
 }
 
@@ -45,6 +46,7 @@ p {
 img.signature {
   bottom: 10px;
   max-height: 110px;
+  opacity: 0.5;
   position: absolute;
   right: 10px;
 }

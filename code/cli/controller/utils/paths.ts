@@ -7,7 +7,7 @@ const CACHE_DIR = `${ROOT}/.cache`;
 const VIEWS_DIR = `${CLI_ROOT}/views`;
 
 export const ASSETS_DIR = `${CLI_ROOT}/assets`;
-export const OUTPUT_DIR = `${CLI_ROOT}/out`;
+export const OUTPUT_DIR = `${CLI_ROOT}/.out`;
 export const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 export const STYLES_DIR = `${VIEWS_DIR}/styles`;
 export const RESOURCES_DIR = `${VIEWS_DIR}/resources`;

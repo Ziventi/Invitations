@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
 
-import { Rank } from '../lib/classes';
-import * as Paths from '../lib/paths';
-import { getSpreadsheet } from '../lib/spreadsheet';
-import * as Utils from '../lib/utils';
+import { Rank } from '../utils/classes';
+import * as Utils from '../utils/functions';
+import * as Paths from '../utils/paths';
+import { getSpreadsheet } from '../utils/spreadsheet';
 
 export default async function update(options: UpdateOptions) {
   const { refresh } = options;

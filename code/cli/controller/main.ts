@@ -2,7 +2,7 @@ import { Command } from 'commander';
 
 import generate from './commands/generate';
 import update from './commands/update';
-import { clean } from './lib/utils';
+import { clean } from './utils/functions';
 
 main();
 

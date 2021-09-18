@@ -3,7 +3,8 @@
   "compilerOptions": {
     "isolatedModules": false,
     "module": "commonjs",
-    "noEmit": true,
+    "noEmit": false,
+    "outDir": "./.dist"
   },
   "include": [
     "**/*.ts",

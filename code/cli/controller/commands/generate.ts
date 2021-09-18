@@ -5,9 +5,9 @@ import fs from 'fs-extra';
 import sass from 'node-sass';
 import puppeteer, { Browser } from 'puppeteer';
 
-import { Guest } from '../lib/classes';
-import * as Paths from '../lib/paths';
-import * as Utils from '../lib/utils';
+import { Guest } from '../utils/classes';
+import * as Paths from '../utils/paths';
+import * as Utils from '../utils/functions';
 
 dotenv.config();
 

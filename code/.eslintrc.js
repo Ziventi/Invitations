@@ -1,7 +1,12 @@
 module.exports = {
   extends: '@zzavidd/eslint-config',
   root: true,
-  ignorePatterns: ['.eslintrc.js', '**/out/**', '**/next-env.d.ts'],
+  ignorePatterns: [
+    '.eslintrc.js',
+    '**/.dist/**',
+    '**/.out/**',
+    '**/next-env.d.ts'
+  ],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['./*/tsconfig.json']

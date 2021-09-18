@@ -8,5 +8,6 @@ key.json
 .cache
 .next
 css
-out
+.out
+.dist
 /saves
