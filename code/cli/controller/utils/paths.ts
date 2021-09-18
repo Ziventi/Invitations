@@ -14,8 +14,8 @@ export const RESOURCES_DIR = `${VIEWS_DIR}/resources`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
 export const KEY_JSON = `${CLI_ROOT}/key.json`;
-export const STYLES_INPUT_FILE = `${STYLES_DIR}/sass/App.scss`;
-export const STYLES_OUTPUT_FILE = `${STYLES_DIR}/css/main.css`;
+export const STYLES_INPUT_FILE = `${STYLES_DIR}/App.scss`;
+export const STYLES_OUTPUT_FILE = `${OUTPUT_DIR}/css/main.css`;
 export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;
 
 export const FONTS_URL =

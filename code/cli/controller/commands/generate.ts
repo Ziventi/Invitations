@@ -7,7 +7,6 @@ import sass from 'node-sass';
 import puppeteer, { Browser } from 'puppeteer';
 
 import { Server } from 'http';
-import path from 'path';
 
 import { Guest } from '../utils/classes';
 import * as Utils from '../utils/functions';
@@ -64,7 +63,7 @@ export default async function generate(options: GenerateOptions) {
  */
 function transpileSass() {
   console.info('Transpiling SCSS to CSS...');
-  fs.ensureDirSync(`${Paths.STYLES_DIR}/css`);
+  fs.ensureDirSync(`${Paths.OUTPUT_DIR}/css`);
   const output = sass.renderSync({
     file: Paths.STYLES_INPUT_FILE,
     sourceMap: false

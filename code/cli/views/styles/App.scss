@@ -1,4 +1,5 @@
 @import 'Constants';
+@import 'Mixins';
 
 @import 'pages/1-Index';
 @import 'pages/2-Info';
@@ -17,22 +18,6 @@ div#root {
   align-items: center;
   display: flex;
   flex-direction: column;
-}
-
-main {
-  background: $color-border;
-  border: 24px solid $color-border;
-  height: 297mm;
-  overflow-x: hidden;
-  position: relative;
-  width: 210mm;
-
-  > div {
-    background: $color-body;
-    border-radius: 30px;
-    height: 100%;
-    overflow: hidden;
-  }
 }
 
 h1 {

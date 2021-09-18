@@ -1,0 +1,25 @@
+
+/// Creates a new main page.
+/// @param $color The colour of the page body.
+@mixin pager($color) {
+  $color-border: adjust-color(
+    $color-body,
+    $hue: -10%,
+    $saturation: -50%,
+    $lightness: -20%
+  );
+
+  background: $color-border;
+  border: 24px solid $color-border;
+  height: 297mm;
+  overflow-x: hidden;
+  position: relative;
+  width: 210mm;
+
+  > div {
+    background: $color;
+    border-radius: 30px;
+    height: 100%;
+    overflow: hidden;
+  }
+}
