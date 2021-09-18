@@ -3,9 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "prebuild": "rm -rf .dist",
     "build": "tsc",
     "cli": "node .dist/main.js",
-    "dev": "nodemon --watch views .dist/main.js -- generate"
+    "dev": "nodemon --watch views --ext ejs,scss,json .dist/main.js -- generate"
   },
   "dependencies": {
     "commander": "^8.1.0",

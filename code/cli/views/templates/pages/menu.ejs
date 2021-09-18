@@ -1,38 +1,15 @@
 <main class="menu">
   <div class="main">
+    <h1>Three-Course Menu</h1>
     <section>
       <h2>Starters</h2>
-      <ol>
-        <% Object.entries(resources.menu.starters).forEach(function ([menuKey,
-        menuItem]) { %>
-        <li>
-          <strong><%= menuKey %>:</strong>
-          <span><%= menuItem %></span>
-        </li>
-        <% }); %>
-      </ol>
+      <%- include('/partials/msection.ejs', { menuSection: resources.menu.starters }) %>
 
       <h2>Mains</h2>
-      <ol>
-        <% Object.entries(resources.menu.mains).forEach(function ([menuKey,
-        menuItem]){ %>
-        <li>
-          <strong><%= menuKey %>:</strong>
-          <span><%= menuItem %></span>
-        </li>
-        <% }); %>
-      </ol>
+      <%- include('/partials/msection.ejs', { menuSection: resources.menu.mains }) %>
 
       <h2>Desserts</h2>
-      <ol>
-        <% Object.entries(resources.menu.desserts).forEach(function ([menuKey,
-        menuItem]) { %>
-        <li>
-          <strong><%= menuKey %>:</strong>
-          <span><%= menuItem %></span>
-        </li>
-        <% }); %>
-      </ol>
+      <%- include('/partials/msection.ejs', { menuSection: resources.menu.desserts }) %>
     </section>
   </div>
 

@@ -12,6 +12,7 @@
   <body>
     <div id="root">
       <%- include('/pages/1-index.ejs', { guest, images }) %>
+      <%- include('/pages/info.ejs', { resources }) %>
       <%- include('/pages/2-lists.ejs', { images, lists, guest }) %>
       <%- include('/pages/3-notices.ejs', { resources, images }) %>
       <%- include('/pages/menu.ejs', { resources }) %>

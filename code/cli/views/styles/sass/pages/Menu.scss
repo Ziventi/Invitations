@@ -1,18 +1,18 @@
 main.menu {
   font-family: $font-info-body;
 
-  div.main {
+  div {
     padding: 3em;
   }
 
-  ol {
-    list-style: none;
-  }
+  table {
+    border-spacing: 0.5em;
 
-  ol li {
-    font-size: 1.2em;
-    line-height: 1.7;
-    list-style: none;
-    padding: 0.3em 0.5em;
+    td.menu-key {
+      font-weight: bold;
+      min-width: 50px;
+      text-align: center;
+      vertical-align: top;
+    }
   }
 }

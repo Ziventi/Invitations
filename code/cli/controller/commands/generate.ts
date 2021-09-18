@@ -6,8 +6,8 @@ import sass from 'node-sass';
 import puppeteer, { Browser } from 'puppeteer';
 
 import { Guest } from '../utils/classes';
-import * as Paths from '../utils/paths';
 import * as Utils from '../utils/functions';
+import * as Paths from '../utils/paths';
 
 dotenv.config();
 
