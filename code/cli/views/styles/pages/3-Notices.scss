@@ -1,5 +1,5 @@
 main.notices {
-  @include pager($color-body);
+  @include pager($color-body-notices);
   font-family: $font-info-body;
 
   div {

@@ -1,5 +1,5 @@
 main.lists {
-  @include pager($color-body);
+  @include pager($color-body-lists);
   font-family: $font-info-body;
   
   div {

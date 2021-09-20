@@ -1,5 +1,5 @@
 main.menu {
-  @include pager($color-body);
+  @include pager($color-body-menu);
   font-family: $font-info-body;
 
   div {
