@@ -2,14 +2,20 @@
   <%- include('/templates/partials/header.ejs') %>
   <div class="main">
     <section>
-      <ol class="notices">
-        <% resources.notices.forEach((rule) => { %>
-        <li>
-          <strong><%= rule.summary %>:</strong>
-          <span><%= rule.description %></span>
-        </li>
+      <h1>Notices</h1>
+      <dl class="notices">
+        <% resources.notices.forEach((rule, key) => { %>
+        <dt>
+          <table>
+            <tr>
+              <td>#<%= key + 1 %>)</td>
+              <td><%= rule.summary %></td>
+            </tr>
+          </table>
+        </dt>
+          <dd><%= rule.description %></</dd>
         <% }); %>
-      </ol>
+          </dl>
     </section>
   </div>
 </main>

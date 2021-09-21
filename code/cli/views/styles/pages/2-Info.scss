@@ -7,6 +7,22 @@ main.info {
     padding: 4em;
   }
 
+  h1 {
+    margin: -0.4em -0.2em 0;
+  }
+
+  h2 {
+    font-family: $font-subheading;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0.5em 0;
+  }
+
+  p {
+    font-size: 1.2em;
+    line-height: 1.75;
+  }
+
   div.signature {
     @include signature-color($color-body-info);
   }

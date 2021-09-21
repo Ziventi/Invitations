@@ -4,16 +4,22 @@ main.notices {
   font-family: $font-body;
 
   > div {
-    padding: 5em;
+    padding: 4em;
   }
 
-  ol {
-    padding-inline-start: 0;
+  h1 {
+    margin: -0.5em -0.2em 0;
   }
 
-  ol li {
+  dt {
     font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  dd {
+    font-size: 1.1em;
     line-height: 1.7;
+    margin-inline-start: 35px;
     padding: 0.3em 0.5em;
   }
 

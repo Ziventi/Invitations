@@ -46,12 +46,12 @@ const resources: Record<string, unknown> = {};
  * @param options The options supplied via the CLI.
  */
 export default async function generate(options: GenerateOptions) {
-  const { refresh, withPdf } = options;
+  const { all, refresh, withPdf } = options;
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
 
   Utils.setup();
   transpileSass();
-  await generateHTMLFiles(refreshCache);
+  await generateHTMLFiles({ all, refreshCache });
   if (withPdf) {
     await generatePDFFiles();
   }
@@ -70,7 +70,7 @@ function transpileSass() {
       sourceMap: false
     });
     fs.writeFileSync(Paths.STYLES_OUTPUT_FILE, output.css);
-  } catch (e){
+  } catch (e) {
     Utils.error(e);
   }
 }
@@ -80,12 +80,18 @@ function transpileSass() {
  * @param refreshCache Indicates whether the data cache should be refreshed.
  * @returns A promise fulfilled when all HTML files have been generated.
  */
-async function generateHTMLFiles(refreshCache: boolean): Promise<void> {
+async function generateHTMLFiles({
+  all,
+  refreshCache
+}: GenerateHTMLOptions): Promise<void> {
   console.info('Generating HTML files...');
   const TEST_NUMBER = 17;
 
-  const guests = await Utils.loadGuestList(refreshCache);
-  const promises = guests.slice(TEST_NUMBER, TEST_NUMBER + 1).map((guest) => {
+  let guests = await Utils.loadGuestList(refreshCache);
+  if (!all) {
+    guests = guests.slice(TEST_NUMBER, TEST_NUMBER + 1);
+  }
+  const promises = guests.map((guest) => {
     const outputFile = `${Paths.OUTPUT_DIR}/html/${guest.name}.html`;
     return createHTMLPage(Paths.TEMPLATE_FILE, outputFile, guest);
   });
@@ -105,10 +111,11 @@ async function generatePDFFiles(): Promise<void> {
   imageServer = app.listen(3000);
 
   const filenames = fs.readdirSync(`${Paths.OUTPUT_DIR}/html`);
+  const pageCount = fs.readdirSync(`${Paths.TEMPLATES_DIR}/pages`).length;
   const promises = filenames.map((filename) => {
     const [name] = filename.split('.');
     const html = Utils.readFileContent(`${Paths.OUTPUT_DIR}/html/${name}.html`);
-    return createPDFPage(html, name);
+    return createPDFPage(html, name, pageCount);
   });
 
   await Promise.all(promises);
@@ -156,8 +163,13 @@ async function createHTMLPage(
  * Creates a single PDF file for a guest from the HTML file.
  * @param html The HTML string to be used for generating the PDF.
  * @param name The name of the guest.
+ * @param pageCount The number of pages to print..
  */
-async function createPDFPage(html: string, name: string): Promise<void> {
+async function createPDFPage(
+  html: string,
+  name: string,
+  pageCount: number
+): Promise<void> {
   const outputPath = `${Paths.OUTPUT_DIR}/pdf/${name}.pdf`;
   try {
     const page = await browser.newPage();
@@ -168,6 +180,7 @@ async function createPDFPage(html: string, name: string): Promise<void> {
     await page.pdf({
       format: 'a4',
       path: outputPath,
+      pageRanges: `1-${pageCount}`,
       printBackground: true
     });
     await exiftool.write(outputPath, { Title: `Invite to ${name}` }, [
@@ -179,6 +192,12 @@ async function createPDFPage(html: string, name: string): Promise<void> {
 }
 
 type GenerateOptions = {
+  all?: boolean;
   refresh?: boolean;
   withPdf?: boolean;
+};
+
+type GenerateHTMLOptions = {
+  all?: boolean;
+  refreshCache: boolean;
 };

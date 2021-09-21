@@ -12,6 +12,7 @@ async function main() {
   program
     .command('generate')
     .description('Generates the invitations from the templates.')
+    .option('-a, --all', 'Generates files for all guests', false)
     .option('-p, --with-pdf', 'Also generate the PDF files.', false)
     .option('-r, --refresh', 'Reload and cache the external dataset.', false)
     .action(generate);
