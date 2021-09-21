@@ -126,7 +126,7 @@ async function createHTMLPage(
 ): Promise<void> {
   try {
     const data = await fs.readFile(templateFile, 'utf8');
-    const template = ejs.compile(data, { root: Paths.TEMPLATES_DIR });
+    const template = ejs.compile(data, { root: Paths.VIEWS_DIR });
 
     const html = template({
       contacts: {

@@ -1,17 +1,20 @@
 <main class="index">
-
   <div class="main">
     <section>
-      <p>An invitation to:</p>
-      <h1 class="guest-name"><%= guest.name %></h1>
-      <% if (guest.tagline) { %>
-      <p class="guest-tagline">...<%= guest.tagline %></p>
-      <% } %>
+      <div class="banner"><%- include('/images/banner.svg') %></div>
+      <div class="guest">
+        <p>An invitation to:</p>
+        <h1 class="guest-name"><%= guest.name %></h1>
+        <% if (guest.tagline) { %>
+        <p class="guest-tagline">...<%= guest.tagline %></p>
+        <% } %>
+      </div>
+      <div class="banner"><%- include('/images/banner.svg') %></div>
     </section>
 
     <section>
       <p>You are cordially invited to</p>
-      <h1 class="headline">Zavid's 25<sup>th</sup> Birthday Celebration</h1>
+      <h1 class="headline">Zavid's 25<sup>th</sup><br />Birthday Banquet</h1>
     </section>
 
     <section>
@@ -20,5 +23,5 @@
     </section>
   </div>
 
-  <%- include('/partials/footer.ejs') %>
+  <%- include('/templates/partials/footer.ejs') %>
 </main>

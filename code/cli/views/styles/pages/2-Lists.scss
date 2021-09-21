@@ -2,7 +2,7 @@ main.lists {
   @include pager($color-body-lists);
   font-family: $font-info-body;
   
-  div {
+  > div {
     padding: 3em;
   }
 
@@ -29,5 +29,9 @@ main.lists {
     font-family: $font-body;
     font-size: 1.1em;
     font-weight: bold;
+  }
+
+  div.signature {
+    @include signature-color($color-body-lists);
   }
 }

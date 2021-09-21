@@ -4,11 +4,11 @@ export const ROOT = path.resolve(__dirname, '../../..');
 const CLI_ROOT = `${ROOT}/cli`;
 const CACHE_DIR = `${ROOT}/.cache`;
 
-const VIEWS_DIR = `${CLI_ROOT}/views`;
+export const VIEWS_DIR = `${CLI_ROOT}/views`;
+const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 
 export const OUTPUT_DIR = `${CLI_ROOT}/.out`;
 export const IMAGES_DIR = `${VIEWS_DIR}/images`;
-export const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 export const STYLES_DIR = `${VIEWS_DIR}/styles`;
 export const RESOURCES_DIR = `${VIEWS_DIR}/resources`;
 

@@ -2,7 +2,7 @@ main.notices {
   @include pager($color-body-notices);
   font-family: $font-info-body;
 
-  div {
+  > div {
     padding: 1em;
   }
 
@@ -10,5 +10,9 @@ main.notices {
     font-size: 1.2em;
     line-height: 1.7;
     padding: 0.3em 0.5em;
+  }
+
+  div.signature {
+    @include signature-color($color-body-notices);
   }
 }

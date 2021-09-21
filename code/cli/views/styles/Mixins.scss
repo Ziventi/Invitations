@@ -1,13 +1,19 @@
-
-/// Creates a new main page.
-/// @param $color The colour of the page body.
-@mixin pager($color) {
+/// Gets the border color from a base colour.
+/// @param $color The base colour.
+@function get-border($color) {
   $border-color: adjust-color(
     $color,
     $hue: -10%,
     $saturation: -50%,
     $lightness: -20%
   );
+  @return $border-color;
+}
+
+/// Creates a new main page.
+/// @param $color The colour of the page body.
+@mixin pager($color) {
+  $border-color: get-border($color);
 
   background: $border-color;
   border: 24px solid $border-color;
@@ -21,5 +27,23 @@
     border-radius: 30px;
     height: 100%;
     overflow: hidden;
+  }
+}
+
+@mixin signature-color($base-color) {
+  $color: get-border($base-color);
+
+  bottom: 10px;
+  position: absolute;
+  right: 10px;
+  width: 150px;
+
+  svg {
+    fill: $color;
+    height: 100%;
+    opacity: 0.5;
+    stroke: $color;
+    stroke-width: 7;
+    width: 100%;
   }
 }

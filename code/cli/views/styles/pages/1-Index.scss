@@ -2,7 +2,7 @@ main.index {
   @include pager($color-body-index);
   text-align: center;
 
-  div {
+  > div {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -11,16 +11,25 @@ main.index {
   section {
     padding: 1em 0;
   }
+
+  div.signature {
+    @include signature-color($color-body-index);
+  }
 }
 
-h1.headline {
-  font-family: $font-headline;
-  font-size: 5em;
-  font-weight: 100;
-  letter-spacing: 1px;
-  line-height: 1;
-  padding: 0.4em 0;
-  text-align: center;
+div.banner {
+  margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+
+  svg {
+    $color: get-border($color-body-index);
+    fill: $color;
+    height: 100%;
+    stroke: $color;
+    stroke-width: 5;
+    width: 100%;
+  }
 }
 
 h1.guest-name {
@@ -37,5 +46,15 @@ p.guest-tagline {
   font-weight: bold;
   margin: 0 auto;
   max-width: 400px;
+  text-align: center;
+}
+
+h1.headline {
+  font-family: $font-headline;
+  font-size: 5em;
+  font-weight: 100;
+  letter-spacing: 1px;
+  line-height: 1;
+  padding: 0.4em 0;
   text-align: center;
 }

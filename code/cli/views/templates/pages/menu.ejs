@@ -3,15 +3,15 @@
     <h1>Three-Course Menu</h1>
     <section>
       <h2>Starters</h2>
-      <%- include('/partials/msection.ejs', { menuSection: resources.menu.starters }) %>
+      <%- include('/templates/partials/msection.ejs', { menuSection: resources.menu.starters }) %>
 
       <h2>Mains</h2>
-      <%- include('/partials/msection.ejs', { menuSection: resources.menu.mains }) %>
+      <%- include('/templates/partials/msection.ejs', { menuSection: resources.menu.mains }) %>
 
       <h2>Desserts</h2>
-      <%- include('/partials/msection.ejs', { menuSection: resources.menu.desserts }) %>
+      <%- include('/templates/partials/msection.ejs', { menuSection: resources.menu.desserts }) %>
     </section>
   </div>
 
-  <%- include('/partials/footer.ejs') %>
+  <%- include('/templates/partials/footer.ejs') %>
 </main>

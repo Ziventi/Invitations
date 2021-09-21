@@ -2,7 +2,7 @@ main.menu {
   @include pager($color-body-menu);
   font-family: $font-info-body;
 
-  div {
+  > div {
     padding: 3em;
   }
 
@@ -15,5 +15,9 @@ main.menu {
       text-align: center;
       vertical-align: top;
     }
+  }
+
+  div.signature {
+    @include signature-color($color-body-menu);
   }
 }
