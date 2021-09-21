@@ -1,0 +1,19 @@
+main.agenda {
+  @include border($color-body-agenda);
+  @include pager($color-body-agenda);
+  font-family: $font-body;
+
+  > div {
+    padding: 4em;
+  }
+
+  h1 {
+    margin: -0.4em 0;
+  }
+
+  h2 {
+    font-family: $font-subheading;
+    font-size: 2em;
+    margin: 0.6em 0;
+  }
+}

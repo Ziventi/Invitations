@@ -21,7 +21,7 @@ main.index {
 
 figure.banner {
   margin: 0 auto;
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
 
   svg {
@@ -48,6 +48,7 @@ h1.guest-name {
   font-weight: bold;
   padding: 0.1em 0;
   text-align: center;
+  transform: none;
 }
 
 p.guest-tagline {
