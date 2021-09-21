@@ -1,4 +1,5 @@
 <main class="menu">
+  <%- include('/templates/partials/header.ejs') %>
   <div class="main">
     <h1>Three-Course Menu</h1>
     <section>
@@ -12,6 +13,4 @@
       <%- include('/templates/partials/msection.ejs', { menuSection: resources.menu.desserts }) %>
     </section>
   </div>
-
-  <%- include('/templates/partials/footer.ejs') %>
 </main>

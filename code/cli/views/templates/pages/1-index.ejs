@@ -1,27 +1,32 @@
 <main class="index">
-  <div class="main">
+  <%- include('/templates/partials/header.ejs') %>
+  <div>
     <section>
-      <div class="banner"><%- include('/images/banner.svg') %></div>
       <div class="guest">
-        <p>An invitation to:</p>
+        <p class="guest-intro">An invitation to:</p>
         <h1 class="guest-name"><%= guest.name %></h1>
         <% if (guest.tagline) { %>
         <p class="guest-tagline">...<%= guest.tagline %></p>
         <% } %>
       </div>
-      <div class="banner"><%- include('/images/banner.svg') %></div>
     </section>
 
     <section>
-      <p>You are cordially invited to</p>
-      <h1 class="headline">Zavid's 25<sup>th</sup><br />Birthday Banquet</h1>
+      <p class="headline-intro">You are cordially invited to...</p>
+      <div>
+        <figure class="banner"><%- include('/images/banner.svg') %></figure>
+        <h1 class="headline">Zavid's 25<sup>th</sup><br />Birthday Banquet</h1>
+        <figure class="banner banner-bottom">
+          <%- include('/images/banner.svg') %>
+        </figure>
+      </div>
     </section>
 
     <section>
-      <p>Saturday 4th December 2021</p>
-      <p>London, United Kingdom</p>
+      <p>Saturday 11th December 2021</p>
+      <p>Ivy Suite, Clayton Crown Hotel</p>
+      <p>142-152 Cricklewood Broadway</p>
+      <p>London, NW2 3ED</p>
     </section>
   </div>
-
-  <%- include('/templates/partials/footer.ejs') %>
 </main>

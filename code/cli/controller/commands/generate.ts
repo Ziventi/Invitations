@@ -64,11 +64,15 @@ export default async function generate(options: GenerateOptions) {
 function transpileSass() {
   console.info('Transpiling SCSS to CSS...');
   fs.ensureDirSync(`${Paths.OUTPUT_DIR}/css`);
-  const output = sass.renderSync({
-    file: Paths.STYLES_INPUT_FILE,
-    sourceMap: false
-  });
-  fs.writeFileSync(Paths.STYLES_OUTPUT_FILE, output.css);
+  try {
+    const output = sass.renderSync({
+      file: Paths.STYLES_INPUT_FILE,
+      sourceMap: false
+    });
+    fs.writeFileSync(Paths.STYLES_OUTPUT_FILE, output.css);
+  } catch (e){
+    Utils.error(e);
+  }
 }
 
 /**
@@ -136,8 +140,6 @@ async function createHTMLPage(
       },
       cssFile: Paths.STYLES_OUTPUT_FILE,
       guest,
-      hostname: 'http://localhost:3000',
-      imagesDir: Paths.IMAGES_DIR,
       resources,
       lists: {
         guest: PUBLIC_LISTS_URL,

@@ -1,9 +1,10 @@
 main.menu {
+  @include border($color-body-menu);
   @include pager($color-body-menu);
   font-family: $font-info-body;
 
   > div {
-    padding: 3em;
+    padding: 4em;
   }
 
   table {

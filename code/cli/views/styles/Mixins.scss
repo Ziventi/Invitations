@@ -1,11 +1,12 @@
 /// Gets the border color from a base colour.
 /// @param $color The base colour.
-@function get-border($color) {
+/// @param $lightness The lightness value. Default is -20%.
+@function get-border($color, $lightness: -20%) {
   $border-color: adjust-color(
     $color,
     $hue: -10%,
     $saturation: -50%,
-    $lightness: -20%
+    $lightness: $lightness
   );
   @return $border-color;
 }
@@ -47,3 +48,51 @@
     width: 100%;
   }
 }
+
+/// Adds a border to the page.
+/// @param $base-color The base colour.
+/// @param $length The length of the border.
+@mixin border($base-color, $length: 30%) {
+  %border {
+    margin: 0;
+    position: absolute;
+    width: $length;
+  
+    svg {
+      $color: get-border($base-color, -65%);
+      fill: $color;
+      height: 100%;
+      stroke: $color;
+      stroke-width: 5;
+      width: 100%;
+    }
+  }
+
+  figure.border-top-left {
+    @extend %border;
+    left: 10px;
+    top: 10px;
+  }
+  
+  figure.border-top-right {
+    @extend %border;
+    right: 10px;
+    top: 10px;
+    transform: scaleX(-1);
+  }
+  
+  figure.border-bottom-left {
+    @extend %border;
+    bottom: 10px;
+    left: 10px;
+    transform: scaleY(-1);
+  }
+  
+  figure.border-bottom-right {
+    @extend %border;
+    bottom: 10px;
+    right: 10px;
+    transform: scale(-1);
+  }
+}
+

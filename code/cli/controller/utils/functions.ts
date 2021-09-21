@@ -70,7 +70,7 @@ export function clean() {
  */
 export function error(err: any) {
   if (err) {
-    console.error(err.message);
+    console.error('Error: ' + err.message);
     process.exit(0);
   }
 }

@@ -1,4 +1,5 @@
 main.index {
+  @include border($color-body-index, 40%);
   @include pager($color-body-index);
   text-align: center;
 
@@ -6,6 +7,7 @@ main.index {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    padding: 3em 0;
   }
 
   section {
@@ -17,26 +19,34 @@ main.index {
   }
 }
 
-div.banner {
+figure.banner {
   margin: 0 auto;
   max-width: 400px;
   width: 100%;
 
   svg {
-    $color: get-border($color-body-index);
+    $color: rgba(0, 0, 0, 0.9);
     fill: $color;
     height: 100%;
     stroke: $color;
-    stroke-width: 5;
+    stroke-width: 8;
     width: 100%;
   }
+}
+
+figure.banner-bottom {
+  transform: scaleY(-1);
+}
+
+p.guest-intro {
+  font-size: 1.1em;
 }
 
 h1.guest-name {
   font-family: $font-name;
   font-size: 5em;
   font-weight: bold;
-  padding: 0.3em 0;
+  padding: 0.1em 0;
   text-align: center;
 }
 
@@ -55,6 +65,11 @@ h1.headline {
   font-weight: 100;
   letter-spacing: 1px;
   line-height: 1;
-  padding: 0.4em 0;
+  padding: 0.3em 0;
   text-align: center;
+}
+
+p.headline-intro {
+  font-size: 1.1em;
+  margin-bottom: 1em;
 }

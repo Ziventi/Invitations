@@ -1,9 +1,10 @@
 main.info {
+  @include border($color-body-info);
   @include pager($color-body-info);
   font-family: $font-info-body;
 
   > div {
-    padding: 3em;
+    padding: 4em;
   }
 
   div.signature {
