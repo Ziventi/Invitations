@@ -13,7 +13,7 @@
 
 html,
 body {
-  font-family: $font-body;
+  font-family: $font-subheading;
   margin: 0;
   padding: 0;
 }
@@ -26,12 +26,14 @@ div#root {
 
 h1 {
   margin: 0;
+  text-align: center;
 }
 
 p {
   color: #000;
   font-size: 1.5em;
   margin: 0;
+  position: relative;
 }
 
 *,

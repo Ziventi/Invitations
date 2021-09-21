@@ -1,7 +1,7 @@
 main.info {
   @include border($color-body-info);
   @include pager($color-body-info);
-  font-family: $font-info-body;
+  font-family: $font-body;
 
   > div {
     padding: 4em;

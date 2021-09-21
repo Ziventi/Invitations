@@ -57,7 +57,7 @@
     margin: 0;
     position: absolute;
     width: $length;
-  
+
     svg {
       $color: get-border($base-color, -65%);
       fill: $color;
@@ -73,21 +73,21 @@
     left: 10px;
     top: 10px;
   }
-  
+
   figure.border-top-right {
     @extend %border;
     right: 10px;
     top: 10px;
     transform: scaleX(-1);
   }
-  
+
   figure.border-bottom-left {
     @extend %border;
     bottom: 10px;
     left: 10px;
     transform: scaleY(-1);
   }
-  
+
   figure.border-bottom-right {
     @extend %border;
     bottom: 10px;
@@ -95,4 +95,3 @@
     transform: scale(-1);
   }
 }
-

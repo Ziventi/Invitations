@@ -43,7 +43,7 @@ p.guest-intro {
 }
 
 h1.guest-name {
-  font-family: $font-name;
+  font-family: $font-guest;
   font-size: 5em;
   font-weight: bold;
   padding: 0.1em 0;
@@ -51,7 +51,7 @@ h1.guest-name {
 }
 
 p.guest-tagline {
-  font-family: $font-body;
+  font-family: $font-subheading;
   font-size: 1.6em;
   font-weight: bold;
   margin: 0 auto;

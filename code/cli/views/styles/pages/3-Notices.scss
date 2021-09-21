@@ -1,10 +1,14 @@
 main.notices {
   @include border($color-body-notices);
   @include pager($color-body-notices);
-  font-family: $font-info-body;
+  font-family: $font-body;
 
   > div {
-    padding: 4em;
+    padding: 5em;
+  }
+
+  ol {
+    padding-inline-start: 0;
   }
 
   ol li {
