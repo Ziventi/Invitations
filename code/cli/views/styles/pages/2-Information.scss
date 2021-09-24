@@ -18,9 +18,19 @@ main.info {
     margin: 0.5em 0;
   }
 
+  a {
+    font-weight: bold;
+  }
+
   p {
     font-size: 1.2em;
     line-height: 1.75;
+  }
+
+  small {
+    display: block;
+    font-size: 0.9em;
+    padding-top: 1em;
   }
 
   div.signature {
