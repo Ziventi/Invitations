@@ -46,17 +46,19 @@ h1.guest-name {
   font-family: $font-guest;
   font-size: 5em;
   font-weight: bold;
-  padding: 0.1em 0;
+  margin: 0 auto;
+  max-width: 550px;
+  padding: 0.2em 0;
   text-align: center;
   transform: none;
 }
 
 p.guest-tagline {
   font-family: $font-subheading;
-  font-size: 1.6em;
+  font-size: 1em;
   font-weight: bold;
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 400px;
   text-align: center;
 }
 
