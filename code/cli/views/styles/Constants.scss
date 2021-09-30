@@ -12,5 +12,4 @@ $color-body-index: #fcffeb;
 $color-body-info: adjust-hue($color-body-index, $delta);
 $color-body-lists: adjust-hue($color-body-info, $delta);
 $color-body-notices: adjust-hue($color-body-lists, $delta);
-$color-body-menu: adjust-hue($color-body-notices, $delta);
-$color-body-agenda: adjust-hue($color-body-menu, $delta);
+$color-body-agenda: adjust-hue($color-body-notices, $delta);

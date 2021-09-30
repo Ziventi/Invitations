@@ -13,15 +13,15 @@ export default async function update(options: UpdateOptions) {
   const rows = guests
     .filter((g) => g.rank <= Rank.D)
     .sort((a, b) => a.name > b.name ? 1 : -1)
-    .map(({ name, origin, confirmed }) => {
+    .map(({ name, confirmed }) => {
       const hasConfirmed = confirmed ? 'Yes' : '';
-      return [name, origin, hasConfirmed];
+      return [name, hasConfirmed];
     });
 
   const spreadsheet = await getSpreadsheet(process.env.SS_PUBLIC_LISTS_ID!);
   const [sheet] = spreadsheet.sheetsByIndex;
   await sheet.clear();
-  await sheet.setHeaderRow(['Name', 'Origin', 'Confirmed?']);
+  await sheet.setHeaderRow(['Name', 'Confirmed', 'Dietary Requirements']);
   await sheet.addRows(rows);
 }
 

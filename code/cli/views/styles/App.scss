@@ -5,8 +5,7 @@
 @import 'pages/2-Information';
 @import 'pages/3-Lists';
 @import 'pages/4-Notices';
-@import 'pages/5-Menu';
-@import 'pages/6-Agenda';
+@import 'pages/5-Agenda';
 
 ////////////////////
 //// Boilerplate
@@ -31,6 +30,10 @@ h1 {
   margin: 0;
   text-align: center;
   transform: scaleX(1.15);
+}
+
+a {
+  color: blue;
 }
 
 p {

@@ -35,9 +35,7 @@ let imageServer: Server;
 const resources: Record<string, unknown> = {};
 
 (async () => {
-  const menu = await import(`${Paths.RESOURCES_DIR}/menu.json`);
   const notices = await import(`${Paths.RESOURCES_DIR}/notices.json`);
-  resources.menu = menu.default;
   resources.notices = notices.default;
 })();
 

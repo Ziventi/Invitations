@@ -8,11 +8,15 @@
     "description": "If you're not going to be around, it's too much effort for you to make it to the location, or there's no familiar face on the guest list, it's absolutely fine. If it were me, I wouldn't come either. Besides, it's a win-win; you're either blessing me with your presence or blessing my wallet with your absence."
   },
   {
-    "summary": "Plus ones.",
-    "description": "They're not permitted. No exceptions."
+    "summary": "No plus-ones.",
+    "description": "They're not permitted. No exceptions. But I'll take bribe: £32 for your plus-one's seat + £18 for emotional insurance. Yes. Emotional insurance. If we have a deal, transfer £50 to my account before Monday 1st November and they'll get an invite too. Good doing business with ya."
   },
   {
-    "summary": "Lateness.",
-    "description": "If you plan on turning up more than 15 minutes late, I'll only see that as a sign of disrespect of my time and money. You'd be better off staying at home. Don't bother yourself. Really."
+    "summary": "I take lateness seriously.",
+    "description": "If you plan on turning up more than 20 minutes late, I'll only see that as a sign of disrespect of my time and money. You'd be better off staying at home. Don't bother yourself. Really."
+  },
+  {
+    "summary": "Read the room.",
+    "description": "If you plan on turning up more than 20 minutes late, I'll only see that as a sign of disrespect of my time and money. You'd be better off staying at home. Don't bother yourself. Really."
   }
 ]
