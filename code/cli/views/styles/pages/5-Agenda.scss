@@ -11,9 +11,14 @@ main.agenda {
     margin: -0.4em 0;
   }
 
-  h2 {
+  ol {
+    list-style-type: none;
+  }
+
+  ol li {
     font-family: $font-subheading;
     font-size: 2em;
+    font-weight: bold;
     margin: 0.6em 0;
   }
 }

@@ -14,68 +14,79 @@ main.index {
     padding: 1em 0;
   }
 
-  div.signature {
-    @include signature-color($color-body-index);
+  a {
+    color: get-border($color-body-index, -65%);
   }
-}
 
-figure.banner {
-  margin: 0 auto;
-  max-width: 500px;
-  width: 100%;
-
-  svg {
-    $color: rgba(0, 0, 0, 0.9);
-    fill: $color;
-    height: 100%;
-    stroke: $color;
-    stroke-width: 8;
+  figure.banner {
+    margin: 0 auto;
+    max-width: 500px;
     width: 100%;
+  
+    svg {
+      $color: rgba(0, 0, 0, 0.9);
+      fill: $color;
+      height: 100%;
+      stroke: $color;
+      stroke-width: 8;
+      width: 100%;
+    }
   }
-}
+  
+  figure.banner-bottom {
+    transform: scaleY(-1);
+  }
+  
+  p.guest-intro {
+    font-size: 1.1em;
+  }
+  
+  h1.guest-name {
+    font-family: $font-guest;
+    font-size: 5em;
+    font-weight: bold;
+    margin: 0 auto;
+    max-width: 550px;
+    padding: 0.2em 0;
+    text-align: center;
+    transform: none;
+  }
+  
+  p.guest-tagline {
+    font-family: $font-subheading;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0 auto;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h1.headline {
+    font-family: $font-headline;
+    font-size: 5em;
+    font-weight: 100;
+    line-height: 1;
+    padding: 0.3em 0;
+    text-align: center;
+  }
+  
+  p.headline-intro {
+    font-size: 1.1em;
+    margin-bottom: 1em;
+  }
+  
+  section.address p {
+    font-family: $font-subheading;
+  }
 
-figure.banner-bottom {
-  transform: scaleY(-1);
-}
+  p.address-last {
+    align-items: end;
+    display: flex;
+    justify-content: center;
+  }
 
-p.guest-intro {
-  font-size: 1.1em;
-}
-
-h1.guest-name {
-  font-family: $font-guest;
-  font-size: 5em;
-  font-weight: bold;
-  margin: 0 auto;
-  max-width: 550px;
-  padding: 0.2em 0;
-  text-align: center;
-  transform: none;
-}
-
-p.guest-tagline {
-  font-family: $font-subheading;
-  font-size: 1em;
-  font-weight: bold;
-  margin: 0 auto;
-  max-width: 400px;
-  text-align: center;
-}
-
-h1.headline {
-  font-family: $font-headline;
-  font-size: 5em;
-  font-weight: 100;
-  line-height: 1;
-  padding: 0.3em 0;
-  text-align: center;
-}
-
-p.headline-intro {
-  font-size: 1.1em;
-  margin-bottom: 1em;
-}
-
-p.address {
-  font-family: $font-subheading;
+  svg.marker {
+    margin: 0 0.3em;
+  }
+  
 }

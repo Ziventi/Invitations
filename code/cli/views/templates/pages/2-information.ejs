@@ -11,15 +11,17 @@
           target="_blank"
           rel="noopener noreferrer"
           href="https://calendar.google.com/event?action=TEMPLATE&amp;tmeid=dG1uYjNoZHZmYThrZjRqZ29tdjFpcDJmYzQgemF2aWRlZ2J1ZUBt&amp;tmsrc=zavidegbue%40gmail.com"
-          >calendar event</a
         >
+          calendar event
+          <span class="icon"><%- include('/images/hyperlink.svg') %></span>
+        </a>
         to automatically add this event to your calendar. This will remind you
         about the event closer to the date and let you know of any updates such
         as date changes or cancellations.
       </p>
       <small
-        >(<strong>Note:</strong
-        > This event is subject to changes in COVID restrictions.)</small
+        >(<strong>Note:</strong> This event is subject to changes in COVID
+        restrictions.)</small
       >
     </section>
 
@@ -35,19 +37,32 @@
     <section>
       <h2>Parking</h2>
       <p>
-        There is a secure underground car park on-site. 50 available
-        spaces which cannot be reserved. Just a good reason for you to be on
-        time. Parking is discounted at <strong>£7.00</strong> for banquet guests.
+        There is a secure underground car park on-site. 50 available spaces
+        which cannot be reserved. Just a good reason for you to be on time.
+        Parking is discounted at <strong>£7.00</strong> for banquet guests.
       </p>
     </section>
 
     <section>
       <h2>Points of Contact</h2>
-      <p>Closer to the date, it would be much less stressful if the multitude of you were not all hounding me at once. For any questions or enquiries, please endeavour to contact one of the following three of my most trusted friends:</p>
-      <ul>
-        <li><a href="tel:<%= contacts.Bola %>">Bola Sunday-Martins</a></li>
-        <li><a href="tel:<%= contacts.Chidera %>">Chidera Onyeukwu</a></li>
-        <li><a href="tel:<%= contacts.Deborah %>">Deborah Owusu-Ansah</a></li>
+      <p>
+        Closer to the date, it would be much less stressful if the multitude of
+        you were not all hounding me at once. For any questions or enquiries,
+        please contact one of the following three of my most trusted friends:
+      </p>
+      <ul class="contacts">
+        <li>
+          <span class="icon">&#128242;</span>
+          <a href="tel:<%= contacts.Bola %>">Bola Sunday-Martins</a>
+        </li>
+        <li>
+          <span class="icon">&#128242;</span>
+          <a href="tel:<%= contacts.Chidera %>">Chidera Onyeukwu</a>
+        </li>
+        <li>
+          <span class="icon">&#128242;</span>
+          <a href="tel:<%= contacts.Deborah %>">Deborah Owusu-Ansah</a>
+        </li>
       </ul>
     </section>
   </div>

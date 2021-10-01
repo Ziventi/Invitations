@@ -19,6 +19,8 @@ main.info {
   }
 
   a {
+    color: #00f;
+    display: inline-flex;
     font-weight: bold;
   }
 
@@ -31,6 +33,11 @@ main.info {
     display: block;
     font-size: 0.9em;
     padding-top: 1em;
+  }
+
+  ul.contacts {
+    list-style-type: none;
+    padding-inline-start: 10px;
   }
 
   div.signature {
