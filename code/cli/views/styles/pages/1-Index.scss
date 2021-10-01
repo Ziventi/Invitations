@@ -14,15 +14,11 @@ main.index {
     padding: 1em 0;
   }
 
-  a {
-    color: get-border($color-body-index, -65%);
-  }
-
   figure.banner {
     margin: 0 auto;
     max-width: 500px;
     width: 100%;
-  
+
     svg {
       $color: rgba(0, 0, 0, 0.9);
       fill: $color;
@@ -32,15 +28,15 @@ main.index {
       width: 100%;
     }
   }
-  
+
   figure.banner-bottom {
     transform: scaleY(-1);
   }
-  
+
   p.guest-intro {
     font-size: 1.1em;
   }
-  
+
   h1.guest-name {
     font-family: $font-guest;
     font-size: 5em;
@@ -51,7 +47,7 @@ main.index {
     text-align: center;
     transform: none;
   }
-  
+
   p.guest-tagline {
     font-family: $font-subheading;
     font-size: 1em;
@@ -60,7 +56,7 @@ main.index {
     max-width: 400px;
     text-align: center;
   }
-  
+
   h1.headline {
     font-family: $font-headline;
     font-size: 5em;
@@ -69,24 +65,36 @@ main.index {
     padding: 0.3em 0;
     text-align: center;
   }
-  
+
   p.headline-intro {
     font-size: 1.1em;
     margin-bottom: 1em;
   }
-  
-  section.address p {
-    font-family: $font-subheading;
-  }
 
-  p.address-last {
-    align-items: end;
-    display: flex;
-    justify-content: center;
+  section.address {
+    font-family: $font-subheading;
+
+    time,
+    address {
+      color: #000;
+      font-size: 21px;
+      font-style: normal;
+    }
+
+    small {
+      align-items: flex-end;
+      display: inline-flex;
+      margin-top: 0.6em;
+    }
+
+    a {
+      color: get-border($color-body-index, -85%);
+      font-family: $font-body;
+      font-size: 13px;
+    }
   }
 
   svg.marker {
     margin: 0 0.3em;
   }
-  
 }
