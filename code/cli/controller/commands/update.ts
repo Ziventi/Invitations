@@ -11,7 +11,8 @@ export default async function update(options: UpdateOptions) {
 
   const guests = await Utils.loadGuestList(refreshCache);
   const rows = guests
-    .filter((g) => g.rank <= Rank.D)
+    .filter((g) => g.invited)
+    // .filter((g) => g.rank <= Rank.D)
     .sort((a, b) => a.name > b.name ? 1 : -1)
     .map(({ name, confirmed }) => {
       const hasConfirmed = confirmed ? 'Yes' : '';

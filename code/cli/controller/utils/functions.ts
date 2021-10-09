@@ -31,6 +31,7 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
       guest.name = record['Name'];
       guest.rank = Rank[record['Rank']];
       guest.origin = record['Origin'];
+      guest.invited = !!record['Invited'];
       guest.confirmed = !!record['Confirmed'];
       guest.wlid = record['WLID'];
 
