@@ -1,15 +1,25 @@
 <main class="agenda">
   <%- include('/templates/partials/header.ejs') %>
   <div>
-    <section>
-      <h1>Agenda</h1>
-      <ol>
-        <li>Arrivals</li>
-        <li>Icebreakers</li>
-        <li>Dining</li>
-        <li>Speeches</li>
-        <li>Vibes</li>
-      </ol>
-    </section>
+    <h1>Agenda</h1>
+    <div class="main">
+      <section>
+        <ol>
+          <li>Arrivals</li>
+          <li>Icebreakers</li>
+          <li>Dining</li>
+          <li>Speeches / Tributes*</li>
+          <li>Vibes</li>
+        </ol>
+      </section>
+      <section>
+        <p>
+          * If you wish to make a speech / tribute on the night, simply message
+          my sister <a href="tel:<%= contacts.Deborah %>">Deborah</a> and let
+          her know between now and the date of the event. I won't be aware of
+          anybody who contacts her until the day.
+        </p>
+      </section>
+    </div>
   </div>
 </main>

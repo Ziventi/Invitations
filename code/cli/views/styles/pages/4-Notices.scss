@@ -8,7 +8,7 @@ main.notices {
   }
 
   h1 {
-    margin: -0.5em -0.2em 0;
+    margin: -0.7em -0.2em 0;
   }
 
   dt {
@@ -31,5 +31,14 @@ main.notices {
     font-size: 11px;
     line-height: 1.7;
     margin-top: 0.4em;
+  }
+
+  ul.contacts {
+    display: flex;
+    font-size: 90%;
+    font-weight: bold;
+    justify-content: space-between;
+    list-style-type: none;
+    padding-inline-start: 0;
   }
 }

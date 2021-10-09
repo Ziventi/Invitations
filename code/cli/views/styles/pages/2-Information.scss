@@ -1,5 +1,5 @@
 main.info {
-  @include border($color-body-info, 25%);
+  @include border($color-body-info, 30%);
   @include pager($color-body-info);
   font-family: $font-body;
 
@@ -8,7 +8,7 @@ main.info {
   }
 
   h1 {
-    margin: -0.4em -0.2em 0;
+    margin: -0.6em -0.2em 0;
   }
 
   h2 {
@@ -34,10 +34,5 @@ main.info {
     display: block;
     font-size: 0.9em;
     padding-top: 1em;
-  }
-
-  ul.contacts {
-    list-style-type: none;
-    padding-inline-start: 10px;
   }
 }
