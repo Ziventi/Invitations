@@ -1,0 +1,19 @@
+main.rsvp {
+  @include border($color-body-rsvp, 50%);
+  @include pager($color-body-rsvp);
+  display: flex;
+  font-family: $font-body;
+  justify-content: center;
+
+  > div {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 4em;
+    width: 100%;
+  }
+
+  h1 {
+    line-height: 1;
+  }
+}

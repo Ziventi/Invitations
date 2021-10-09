@@ -17,13 +17,19 @@ main.notices {
   }
 
   dd {
-    font-size: 1.1em;
-    line-height: 1.7;
+    margin-bottom: 0.5em;
     margin-inline-start: 35px;
-    padding: 0.3em 0.5em;
+    padding: 6px 8px;
   }
 
-  div.signature {
-    @include signature-color($color-body-notices);
+  dd p.description {
+    font-size: 1.1em;
+    line-height: 1.7;
+  }
+
+  dd p.footnote {
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 0.4em;
   }
 }

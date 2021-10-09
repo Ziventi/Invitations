@@ -1,5 +1,5 @@
 main.info {
-  @include border($color-body-info);
+  @include border($color-body-info, 25%);
   @include pager($color-body-info);
   font-family: $font-body;
 
@@ -38,9 +38,5 @@ main.info {
   ul.contacts {
     list-style-type: none;
     padding-inline-start: 10px;
-  }
-
-  div.signature {
-    @include signature-color($color-body-info);
   }
 }

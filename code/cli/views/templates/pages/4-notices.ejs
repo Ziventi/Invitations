@@ -3,7 +3,7 @@
   <div class="main">
     <section>
       <h1>Notices</h1>
-      <dl class="notices">
+      <dl>
         <% resources.notices.forEach((rule, key) => { %>
         <dt>
           <table>
@@ -13,9 +13,14 @@
             </tr>
           </table>
         </dt>
-          <dd><%= rule.description %></</dd>
+        <dd>
+          <p class="description"><%= rule.description %></p>
+          <% if(rule.footnote){ %>
+          <p class="footnote"><%= rule.footnote %></p>
+          <% } %>
+        </dd>
         <% }); %>
-          </dl>
+      </dl>
     </section>
   </div>
 </main>

@@ -39,11 +39,5 @@ main.lists {
     tbody {
       text-align: center;
     }
-    // display: flex;
-    // justify-content: center;
-  }
-
-  div.signature {
-    @include signature-color($color-body-lists);
   }
 }

@@ -13,3 +13,4 @@ $color-body-info: adjust-hue($color-body-index, $delta);
 $color-body-lists: adjust-hue($color-body-info, $delta);
 $color-body-notices: adjust-hue($color-body-lists, $delta);
 $color-body-agenda: adjust-hue($color-body-notices, $delta);
+$color-body-rsvp: adjust-hue($color-body-agenda, $delta);
