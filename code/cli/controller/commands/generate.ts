@@ -46,12 +46,15 @@ const resources: Record<string, unknown> = {};
  * @param options The options supplied via the CLI.
  */
 export default async function generate(options: GenerateOptions) {
-  const { all, refresh, withPdf } = options;
-  const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
+  const { all, name, refreshCache, withPdf } = options;
 
   Utils.setup();
   transpileSass();
-  await generateHTMLFiles({ all, refreshCache });
+  await generateHTMLFiles({
+    all,
+    name,
+    refreshCache: refreshCache || !fs.existsSync(Paths.CACHED_DATA)
+  });
   if (withPdf) {
     await generatePDFFiles();
   }
@@ -77,20 +80,35 @@ function transpileSass() {
 
 /**
  * Generates the HTML files for each member on the guest list from the template.
- * @param refreshCache Indicates whether the data cache should be refreshed.
+ * @param options The options for generating HTML.
  * @returns A promise fulfilled when all HTML files have been generated.
  */
 async function generateHTMLFiles({
   all,
+  name,
   refreshCache
 }: GenerateHTMLOptions): Promise<void> {
   console.info('Generating HTML files...');
   const TEST_NUMBER = 17;
 
   let guests = await Utils.loadGuestList(refreshCache);
-  if (!all) {
+  if (name) {
+    try {
+      const matchingGuest = guests.find((g) =>
+        g.name.toLowerCase().startsWith(name.toLowerCase())
+      );
+      if (matchingGuest) {
+        guests = [matchingGuest];
+      } else {
+        throw new Error(`No guest found with name starting with '${name}'.`);
+      }
+    } catch (e) {
+      Utils.error(e);
+    }
+  } else if (!all) {
     guests = guests.slice(TEST_NUMBER, TEST_NUMBER + 1);
   }
+
   const promises = guests.map((guest) => {
     const outputFile = `${Paths.OUTPUT_DIR}/html/${guest.name}.html`;
     return createHTMLPage(Paths.TEMPLATE_FILE, outputFile, guest);
@@ -191,13 +209,12 @@ async function createPDFPage(
   }
 }
 
-type GenerateOptions = {
-  all?: boolean;
-  refresh?: boolean;
+interface GenerateOptions extends Partial<GenerateHTMLOptions> {
   withPdf?: boolean;
-};
+}
 
-type GenerateHTMLOptions = {
+interface GenerateHTMLOptions {
   all?: boolean;
+  name?: string;
   refreshCache: boolean;
-};
+}
