@@ -188,7 +188,7 @@ async function createPDFPage(
   name: string,
   pageCount: number
 ): Promise<void> {
-  const outputPath = `${Paths.OUTPUT_DIR}/pdf/Invitation to ${name}.pdf`;
+  const outputPath = `${Paths.OUTPUT_DIR}/pdf/#Z25 Invitation to ${name}.pdf`;
   try {
     const page = await browser.newPage();
     await page.goto(`data:text/html,${encodeURIComponent(html)}`);
