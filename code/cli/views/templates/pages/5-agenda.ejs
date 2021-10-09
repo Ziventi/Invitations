@@ -4,13 +4,12 @@
     <h1>Agenda</h1>
     <div class="main">
       <section>
-        <ol>
-          <li>Arrivals</li>
-          <li>Icebreakers</li>
-          <li>Dining</li>
-          <li>Speeches / Tributes*</li>
-          <li>Vibes</li>
-        </ol>
+        <dl>
+          <% resources.agenda.forEach((item, key) => { %>
+          <dt><%= item.title %></dt>
+          <dd><%= item.description %></dd>
+          <% }); %>
+        </dl>
       </section>
       <section>
         <p>

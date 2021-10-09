@@ -36,7 +36,9 @@ const resources: Record<string, unknown> = {};
 
 (async () => {
   const notices = await import(`${Paths.RESOURCES_DIR}/notices.json`);
+  const agenda = await import(`${Paths.RESOURCES_DIR}/agenda.json`);
   resources.notices = notices.default;
+  resources.agenda = agenda.default;
 })();
 
 /**
@@ -168,7 +170,7 @@ async function createPDFPage(
   name: string,
   pageCount: number
 ): Promise<void> {
-  const outputPath = `${Paths.OUTPUT_DIR}/pdf/${name}.pdf`;
+  const outputPath = `${Paths.OUTPUT_DIR}/pdf/Invitation to ${name}.pdf`;
   try {
     const page = await browser.newPage();
     await page.goto(`data:text/html,${encodeURIComponent(html)}`);

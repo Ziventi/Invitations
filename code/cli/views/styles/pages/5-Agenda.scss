@@ -1,5 +1,5 @@
 main.agenda {
-  @include border($color-body-agenda);
+  @include border($color-body-agenda, 30%);
   @include pager($color-body-agenda);
   font-family: $font-body;
 
@@ -15,17 +15,34 @@ main.agenda {
   }
 
   h1 {
-    margin: -0.4em 0;
+    margin: -0.7em -0.2em -0.1em;
   }
 
-  ol {
-    list-style-type: none;
-  }
-
-  ol li {
+  dl {
     font-family: $font-subheading;
-    font-size: 2em;
+    margin: 0 auto;
+    max-width: 400px;
+    padding-inline-start: 0;
+    text-align: center;
+  }
+
+  dt {
+    font-size: 2.5em;
     font-weight: bold;
-    margin: 0.6em 0;
+  }
+
+  dd {
+    font-size: 0.9em;
+    margin: 1em 0 2em;
+    margin-inline-start: 0;
+  }
+
+  p {
+    font-size: 0.9em;
+    font-weight: bold;
+    margin: 0 auto;
+    max-width: 600px;
+    padding-bottom: 1em;
+    text-align: center;
   }
 }
