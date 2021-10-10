@@ -21,20 +21,23 @@ main.motivation {
 
   p {
     font-size: 1.2em;
+    line-height: 1.8;
     margin-top: 1em;
     max-width: 500px;
     text-align: center;
   }
 
   p:first-child {
+    font-size: 2em;
     font-weight: bold;
+    line-height: 1.2;
   }
 
   svg.signature {
     $color: get-border($color-body-motivation, -65%);
     bottom: 0;
     fill: $color;
-    max-width: 150px;
+    max-width: 120px;
     position: absolute;
     right: 15%;
     stroke: $color;
