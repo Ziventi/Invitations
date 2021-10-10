@@ -1,6 +1,6 @@
-main.rsvp {
-  @include border($color-body-rsvp, 49.5%);
-  @include pager($color-body-rsvp);
+main.motivation {
+  @include border($color-body-motivation, 49.5%);
+  @include pager($color-body-motivation);
   display: flex;
   font-family: $font-body;
   justify-content: center;
@@ -26,14 +26,17 @@ main.rsvp {
     text-align: center;
   }
 
+  p:first-child {
+    font-weight: bold;
+  }
+
   svg.signature {
-    $color: get-border($color-body-rsvp, -65%);
+    $color: get-border($color-body-motivation, -65%);
+    bottom: 0;
     fill: $color;
-    left: 0;
-    margin: 0 auto;
-    max-width: 300px;
+    max-width: 150px;
     position: absolute;
-    right: 0;
+    right: 15%;
     stroke: $color;
     stroke-width: 3;
   }
