@@ -5,9 +5,9 @@ export class Guest {
   rank = 0;
   tagline = '';
   origin = '';
-  confirmed = false;
   invited = true;
-  wlid = ''
+  confirmStatus: ConfirmStatus = 'awaiting';
+  wlid = '';
 }
 
 export class GuestRecord extends GoogleSpreadsheetRow {
@@ -15,8 +15,8 @@ export class GuestRecord extends GoogleSpreadsheetRow {
   Rank = '';
   Tagline = '';
   Origin = '';
-  Invited = false;
-  Confirmed = false;
+  Invited = '';
+  Confirmed = '';
   WLID = '';
 }
 
@@ -29,3 +29,5 @@ export const Rank: Record<string, number> = {
   E: 5,
   F: 6
 };
+
+export type ConfirmStatus = 'awaiting' | 'tentative' | 'confirmed';

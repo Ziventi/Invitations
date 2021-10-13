@@ -8,7 +8,7 @@ import puppeteer, { Browser } from 'puppeteer';
 
 import { Server } from 'http';
 
-import { Guest } from '../utils/classes';
+import { Guest, Rank } from '../utils/classes';
 import * as Utils from '../utils/functions';
 import * as Paths from '../utils/paths';
 

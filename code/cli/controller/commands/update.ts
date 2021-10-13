@@ -1,10 +1,16 @@
 import fs from 'fs-extra';
-
-import { Rank } from '../utils/classes';
+import { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import * as Utils from '../utils/functions';
 import * as Paths from '../utils/paths';
 import { getSpreadsheet } from '../utils/spreadsheet';
 
+let sheet: GoogleSpreadsheetWorksheet;
+
+/**
+ * Updates the public spreadsheet with the currently invited and confirmed
+ * guests.
+ * @param options The update options.
+ */
 export default async function update(options: UpdateOptions) {
   const { refresh } = options;
   const refreshCache = refresh || !fs.existsSync(Paths.CACHED_DATA);
@@ -12,24 +18,54 @@ export default async function update(options: UpdateOptions) {
   const guests = await Utils.loadGuestList(refreshCache);
   const rows = guests
     .filter((g) => g.invited)
-    // .filter((g) => g.rank <= Rank.D)
     .sort((a, b) => (a.name > b.name ? 1 : -1))
-    .map(({ name, confirmed }) => {
-      const hasConfirmed = confirmed ? 'Yes' : '';
-      return [name, hasConfirmed];
+    .map(({ name, confirmStatus }) => {
+      let status = '';
+      switch (confirmStatus) {
+        case 'confirmed':
+          status = '\u2714 Confirmed';
+          break;
+        case 'tentative':
+          status = '\uD83D\uDD38 Tentative';
+          break;
+        case 'awaiting':
+        default:
+          status = '\u2B55 Awaiting response';
+          break;
+      }
+      return [name, status];
     });
 
   const spreadsheet = await getSpreadsheet(process.env.SS_PUBLIC_LISTS_ID!);
-  const [sheet] = spreadsheet.sheetsByIndex;
+  sheet = spreadsheet.sheetsByIndex[0];
   await sheet.clear();
-  await sheet.setHeaderRow(['Name', 'Confirmed', 'Dietary Requirements']);
+  await sheet.setHeaderRow(['Name', 'Status']);
   await sheet.addRows(rows);
 
-  await sheet.loadCells('D3:E7');
-  const helpCell = await sheet.getCellByA1('D3');
-  helpCell.value =
-    'Only people who have received invites so far will appear here; this list will be updated gradually. Check back here occasionally to see people you know whom you can tag along with.';
+  await sheet.loadCells('D3:E10');
+  setCellText(
+    'D3',
+    'Only people who have received invites so far will appear here; this list will be updated gradually. Check back here occasionally to see people you know whom you can tag along with.'
+  );
+  setCellText('D9', 'Current Number of Invitees:');
+  setCellText('E9', guests.filter((g) => g.invited).length.toString());
+  setCellText('D10', 'Current Number of Confirmed:');
+  setCellText(
+    'E10',
+    guests.filter((g) => g.confirmStatus === 'confirmed').length.toString()
+  );
+
   await sheet.saveUpdatedCells();
+}
+
+/**
+ * Set the text of a specified spreadsheet cell.
+ * @param cellId The ID of the cell.
+ * @param text The text to set as the value.
+ */
+function setCellText(cellId: string, text: string) {
+  const cell = sheet.getCellByA1(cellId);
+  cell.value = text;
 }
 
 type UpdateOptions = {

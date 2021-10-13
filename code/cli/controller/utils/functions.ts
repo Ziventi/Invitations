@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 import fs from 'fs-extra';
 
-import { Guest, GuestRecord, Rank } from './classes';
+import { ConfirmStatus, Guest, GuestRecord, Rank } from './classes';
 import * as Paths from './paths';
 import { getSpreadsheet } from './spreadsheet';
 
@@ -26,22 +26,39 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
       error(err);
     }
 
-    const guests = records.map((record) => {
-      const guest = new Guest();
-      guest.name = record['Name'];
-      guest.rank = Rank[record['Rank']];
-      guest.origin = record['Origin'];
-      guest.invited = !!record['Invited'];
-      guest.confirmed = !!record['Confirmed'];
-      guest.wlid = record['WLID'];
+    const guests = records
+      .map((record) => {
+        let confirmStatus: ConfirmStatus;
 
-      const tagline = record['Tagline'];
-      if (tagline) {
-        guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
-      }
+        switch (record['Confirmed']) {
+          case 'x':
+            confirmStatus = 'confirmed';
+            break;
+          case 'T':
+            confirmStatus = 'tentative';
+            break;
+          default:
+            confirmStatus = 'awaiting';
+            break;
+        }
 
-      return guest;
-    });
+        const guest = new Guest();
+        guest.name = record['Name'];
+        guest.rank = Rank[record['Rank']];
+        guest.origin = record['Origin'];
+        guest.invited = record['Invited'] === 'x';
+        guest.confirmStatus = confirmStatus;
+        guest.wlid = record['WLID'];
+
+        const tagline = record['Tagline'];
+        if (tagline) {
+          guest.tagline =
+            tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
+        }
+
+        return guest;
+      })
+      .filter((g) => g.tagline);
 
     fs.outputFileSync(Paths.CACHED_DATA, JSON.stringify(guests, null, 2));
   }
