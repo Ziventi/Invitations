@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
-import { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
+import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
+
 import * as Utils from '../utils/functions';
 import * as Paths from '../utils/paths';
 import { getSpreadsheet } from '../utils/spreadsheet';
@@ -28,9 +29,12 @@ export default async function update(options: UpdateOptions) {
         case 'tentative':
           status = '\uD83D\uDD38 Tentative';
           break;
+        case 'unavailable':
+          status = '\u274C Unavailable';
+          break;
         case 'awaiting':
         default:
-          status = '\u2B55 Awaiting response';
+          status = '\uD83D\uDD57 Awaiting response';
           break;
       }
       return [name, status];

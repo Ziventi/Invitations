@@ -8,7 +8,7 @@ import puppeteer, { Browser } from 'puppeteer';
 
 import { Server } from 'http';
 
-import { Guest, Rank } from '../utils/classes';
+import { Guest } from '../utils/classes';
 import * as Utils from '../utils/functions';
 import * as Paths from '../utils/paths';
 
@@ -107,6 +107,8 @@ async function generateHTMLFiles({
     }
   } else if (!all) {
     guests = guests.slice(TEST_NUMBER, TEST_NUMBER + 1);
+  } else {
+    guests = guests.filter((g) => g.confirmStatus === 'awaiting');
   }
 
   const promises = guests.map((guest) => {

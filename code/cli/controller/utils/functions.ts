@@ -37,6 +37,9 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
           case 'T':
             confirmStatus = 'tentative';
             break;
+          case 'D':
+            confirmStatus = 'unavailable';
+            break;
           default:
             confirmStatus = 'awaiting';
             break;

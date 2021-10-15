@@ -30,4 +30,8 @@ export const Rank: Record<string, number> = {
   F: 6
 };
 
-export type ConfirmStatus = 'awaiting' | 'tentative' | 'confirmed';
+export type ConfirmStatus =
+  | 'awaiting'
+  | 'tentative'
+  | 'confirmed'
+  | 'unavailable';
