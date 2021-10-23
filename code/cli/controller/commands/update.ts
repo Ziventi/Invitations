@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 
+import { Rank } from '../utils/classes';
 import * as Utils from '../utils/functions';
 import * as Paths from '../utils/paths';
 import { getSpreadsheet } from '../utils/spreadsheet';
@@ -46,17 +47,46 @@ export default async function update(options: UpdateOptions) {
   await sheet.setHeaderRow(['Name', 'Status']);
   await sheet.addRows(rows);
 
-  await sheet.loadCells('D3:E10');
+  await updateInformation();
+}
+
+/**
+ * Updates the information cells on the spreadsheet.
+ */
+async function updateInformation() {
+  const guests = await Utils.loadGuestList(false);
+  await sheet.loadCells('D3:E14');
+
   setCellText(
     'D3',
     'Only people who have received invites so far will appear here; this list will be updated gradually. Check back here occasionally to see people you know whom you can tag along with.'
   );
-  setCellText('D9', 'Current Number of Invitees:');
+  setCellText('D9', 'Current Total of Invitees:');
   setCellText('E9', guests.filter((g) => g.invited).length.toString());
-  setCellText('D10', 'Current Number of Confirmed:');
+  setCellText('D10', '\u2714 No. of Confirmed:');
   setCellText(
     'E10',
-    guests.filter((g) => g.confirmStatus === 'confirmed').length.toString()
+    guests.filter((g) => g.invited && g.confirmStatus === 'confirmed').length.toString()
+  );
+  setCellText('D11', '\uD83D\uDD38 No. of Tentative:');
+  setCellText(
+    'E11',
+    guests.filter((g) => g.invited && g.confirmStatus === 'tentative').length.toString()
+  );
+  setCellText('D12', '\uD83D\uDD57 No. of Awaiting:');
+  setCellText(
+    'E12',
+    guests.filter((g) => g.invited && g.confirmStatus === 'awaiting').length.toString()
+  );
+  setCellText('D13', '\u274C No. of Unavailable:');
+  setCellText(
+    'E13',
+    guests.filter((g) => g.invited && g.confirmStatus === 'unavailable').length.toString()
+  );
+  setCellText('D14', 'No. of Invites Remaining:');
+  setCellText(
+    'E14',
+    guests.filter((g) => !g.invited && g.rank <= Rank.D).length.toString()
   );
 
   await sheet.saveUpdatedCells();

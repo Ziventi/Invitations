@@ -108,7 +108,7 @@ async function generateHTMLFiles({
   } else if (!all) {
     guests = guests.slice(TEST_NUMBER, TEST_NUMBER + 1);
   } else {
-    guests = guests.filter((g) => g.confirmStatus === 'awaiting');
+    guests = guests.filter((g) => g.invited && g.confirmStatus === 'awaiting');
   }
 
   const promises = guests.map((guest) => {

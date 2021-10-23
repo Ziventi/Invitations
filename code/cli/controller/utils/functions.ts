@@ -26,42 +26,39 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
       error(err);
     }
 
-    const guests = records
-      .map((record) => {
-        let confirmStatus: ConfirmStatus;
+    const guests = records.map((record) => {
+      let confirmStatus: ConfirmStatus;
 
-        switch (record['Confirmed']) {
-          case 'x':
-            confirmStatus = 'confirmed';
-            break;
-          case 'T':
-            confirmStatus = 'tentative';
-            break;
-          case 'D':
-            confirmStatus = 'unavailable';
-            break;
-          default:
-            confirmStatus = 'awaiting';
-            break;
-        }
+      switch (record['Confirmed']) {
+        case 'x':
+          confirmStatus = 'confirmed';
+          break;
+        case 'T':
+          confirmStatus = 'tentative';
+          break;
+        case 'D':
+          confirmStatus = 'unavailable';
+          break;
+        default:
+          confirmStatus = 'awaiting';
+          break;
+      }
 
-        const guest = new Guest();
-        guest.name = record['Name'];
-        guest.rank = Rank[record['Rank']];
-        guest.origin = record['Origin'];
-        guest.invited = record['Invited'] === 'x';
-        guest.confirmStatus = confirmStatus;
-        guest.wlid = record['WLID'];
+      const guest = new Guest();
+      guest.name = record['Name'];
+      guest.rank = Rank[record['Rank']];
+      guest.origin = record['Origin'];
+      guest.invited = record['Invited'] === 'x';
+      guest.confirmStatus = confirmStatus;
+      guest.wlid = record['WLID'];
 
-        const tagline = record['Tagline'];
-        if (tagline) {
-          guest.tagline =
-            tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
-        }
+      const tagline = record['Tagline'];
+      if (tagline) {
+        guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
+      }
 
-        return guest;
-      })
-      .filter((g) => g.tagline);
+      return guest;
+    });
 
     fs.outputFileSync(Paths.CACHED_DATA, JSON.stringify(guests, null, 2));
   }
