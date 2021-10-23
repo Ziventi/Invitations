@@ -1,13 +1,7 @@
 node_modules
-
-# Secrets
 .env
 key.json
-
-# Directories
 .cache
-.next
-css
 .out
 .dist
-.saves
+css

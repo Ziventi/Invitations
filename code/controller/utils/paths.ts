@@ -1,19 +1,18 @@
 import path from 'path';
 
-export const ROOT = path.resolve(__dirname, '../../..');
-const CLI_ROOT = `${ROOT}/cli`;
+export const ROOT = path.resolve(__dirname, '../..');
 const CACHE_DIR = `${ROOT}/.cache`;
 
-export const VIEWS_DIR = `${CLI_ROOT}/views`;
+export const VIEWS_DIR = `${ROOT}/views`;
 
-export const OUTPUT_DIR = `${CLI_ROOT}/.out`;
+export const OUTPUT_DIR = `${ROOT}/.out`;
 export const IMAGES_DIR = `${VIEWS_DIR}/images`;
 export const RESOURCES_DIR = `${VIEWS_DIR}/resources`;
 export const STYLES_DIR = `${VIEWS_DIR}/styles`;
 export const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
-export const KEY_JSON = `${CLI_ROOT}/key.json`;
+export const KEY_JSON = `${ROOT}/key.json`;
 export const STYLES_INPUT_FILE = `${STYLES_DIR}/App.scss`;
 export const STYLES_OUTPUT_FILE = `${OUTPUT_DIR}/css/main.css`;
 export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;

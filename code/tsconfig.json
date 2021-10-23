@@ -9,12 +9,19 @@
       "dom.iterable",
       "esnext"
     ],
+    "isolatedModules": false,
+    "module": "commonjs",
     "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": "./.dist",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es5",
+    "target": "es5"
   },
+  "include": [
+    "controller/*.ts",
+  ],
   "exclude": [
     "**/node_modules"
   ]
