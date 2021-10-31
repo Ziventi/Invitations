@@ -1,7 +1,13 @@
 import * as dotenv from 'dotenv';
 import fs from 'fs-extra';
 
-import { ConfirmStatus, Guest, GuestRecord, Rank } from './classes';
+import {
+  ConfirmStatus,
+  Guest,
+  GuestSpreadsheetRow,
+  HotelStatus,
+  Rank
+} from './classes';
 import * as Paths from './paths';
 import { getSpreadsheet } from './spreadsheet';
 
@@ -14,20 +20,21 @@ dotenv.config();
 export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
   if (refreshCache) {
     console.info('Refreshing cache...');
-    let records: GuestRecord[] = [];
+    let records: GuestSpreadsheetRow[] = [];
 
     try {
       const spreadsheet = await getSpreadsheet(
         process.env.SS_PRIVATE_GUESTLIST_ID!
       );
       const [sheet] = spreadsheet.sheetsByIndex;
-      records = <GuestRecord[]>await sheet.getRows();
+      records = <GuestSpreadsheetRow[]>await sheet.getRows();
     } catch (err) {
       error(err);
     }
 
     const guests = records.map((record) => {
       let confirmStatus: ConfirmStatus;
+      let hotelStatus: HotelStatus;
 
       switch (record['Confirmed']) {
         case 'x':
@@ -44,12 +51,25 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
           break;
       }
 
+      switch (record['Hotel']) {
+        case 'x':
+          hotelStatus = 'booked';
+          break;
+        case 'T':
+          hotelStatus = 'tentative';
+          break;
+        default:
+          hotelStatus = 'none';
+          break;
+      }
+
       const guest = new Guest();
       guest.name = record['Name'];
       guest.rank = Rank[record['Rank']];
       guest.origin = record['Origin'];
       guest.invited = record['Invited'] === 'x';
       guest.confirmStatus = confirmStatus;
+      guest.hotelStatus = hotelStatus;
       guest.wlid = record['WLID'];
 
       const tagline = record['Tagline'];
