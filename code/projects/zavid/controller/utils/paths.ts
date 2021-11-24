@@ -12,7 +12,7 @@ export const STYLES_DIR = `${VIEWS_DIR}/styles`;
 export const TEMPLATES_DIR = `${VIEWS_DIR}/templates`;
 
 export const CACHED_DATA = `${CACHE_DIR}/data.json`;
-export const KEY_JSON = `${ROOT}/key.json`;
+export const KEY_JSON = `${ROOT}/../../key.json`;
 export const STYLES_INPUT_FILE = `${STYLES_DIR}/App.scss`;
 export const STYLES_OUTPUT_FILE = `${OUTPUT_DIR}/css/main.css`;
 export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;

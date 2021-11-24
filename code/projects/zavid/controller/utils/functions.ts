@@ -5,7 +5,6 @@ import {
   ConfirmStatus,
   Guest,
   GuestSpreadsheetRow,
-  HotelStatus,
   Rank
 } from './classes';
 import * as Paths from './paths';
@@ -34,7 +33,6 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
 
     const guests = records.map((record) => {
       let confirmStatus: ConfirmStatus;
-      let hotelStatus: HotelStatus;
 
       switch (record['Confirmed']) {
         case 'x':
@@ -51,25 +49,12 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
           break;
       }
 
-      switch (record['Hotel']) {
-        case 'x':
-          hotelStatus = 'booked';
-          break;
-        case 'T':
-          hotelStatus = 'tentative';
-          break;
-        default:
-          hotelStatus = 'none';
-          break;
-      }
-
       const guest = new Guest();
       guest.name = record['Name'];
       guest.rank = Rank[record['Rank']];
       guest.origin = record['Origin'];
       guest.invited = record['Invited'] === 'x';
       guest.confirmStatus = confirmStatus;
-      guest.hotelStatus = hotelStatus;
       guest.wlid = record['WLID'];
 
       const tagline = record['Tagline'];
