@@ -10,6 +10,7 @@
     "prebuild": "rm -rf .dist",
     "build": "tsc",
     "cli": "node .dist/main.js",
+    "clean": "find . -type d -name .dist -delete",
     "dev": "nodemon --watch views --ext ejs,scss,json,svg .dist/main.js -- generate",
     "eslint": "eslint --ext .ts,.tsx .",
     "stylelint": "stylelint **/*.scss"
