@@ -1,0 +1,64 @@
+@import 'Constants';
+@import 'Mixins';
+
+@import 'pages/1-Index';
+@import 'pages/2-Information';
+@import 'pages/3-Lists';
+@import 'pages/4-Notices';
+@import 'pages/5-Agenda';
+@import 'pages/6-RSVP';
+@import 'pages/7-Motivation';
+
+svg.hyperlink {
+  fill: none;
+  stroke: #00f;
+  stroke-width: 3;
+}
+
+span.icon {
+  margin-left: 0.2em;
+  text-decoration: none;
+}
+
+////////////////////
+//// Boilerplate
+////////////////////
+
+html,
+body {
+  font-family: $font-subheading;
+  margin: 0;
+  padding: 0;
+}
+
+div#root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-family: $font-headline;
+  font-size: 4em;
+  margin: 0;
+  text-align: center;
+  transform: scaleX(1.15);
+}
+
+a {
+  position: relative;
+  z-index: 5;
+}
+
+p {
+  color: #000;
+  font-size: 1.5em;
+  margin: 0;
+  position: relative;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
