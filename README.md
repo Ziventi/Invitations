@@ -1,3 +1,3 @@
-# Birthday Invite Generator
+# Ziventi
 
-Dynamically generates birthday invites for each member of the guest list from a spreadsheet.
+The home for invitation projects developed under Ziventi.
