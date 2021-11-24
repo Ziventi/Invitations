@@ -13,7 +13,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": false,
-    "outDir": "./.dist",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,

@@ -21,9 +21,8 @@ export default async function update(options: UpdateOptions) {
   const rows = guests
     .filter((g) => g.invited)
     .sort((a, b) => (a.name > b.name ? 1 : -1))
-    .map(({ name, confirmStatus, hotelStatus }) => {
+    .map(({ name, confirmStatus }) => {
       let attendance = '';
-      let hotel = '';
 
       switch (confirmStatus) {
         case 'confirmed':
@@ -41,26 +40,13 @@ export default async function update(options: UpdateOptions) {
           break;
       }
 
-      switch (hotelStatus) {
-        case 'booked':
-          hotel = '\u2705 Booked';
-          break;
-        case 'tentative':
-          hotel = '\u23F3 Pending';
-          break;
-        case 'none':
-        default:
-          hotel = '-';
-          break;
-      }
-
-      return [name, attendance, hotel];
+      return [name, attendance];
     });
 
   const spreadsheet = await getSpreadsheet(process.env.SS_PUBLIC_LISTS_ID!);
   sheet = spreadsheet.sheetsByIndex[0];
   await sheet.clear();
-  await sheet.setHeaderRow(['Name', 'Attendance', 'Accommodation']);
+  await sheet.setHeaderRow(['Name', 'Attendance']);
   await sheet.addRows(rows);
 
   await updateInformation();
@@ -71,37 +57,37 @@ export default async function update(options: UpdateOptions) {
  */
 async function updateInformation() {
   const guests = await Utils.loadGuestList(false);
-  await sheet.loadCells('E3:F14');
+  await sheet.loadCells('D3:E14');
 
   setCellText(
-    'E3',
+    'D3',
     'Only people who have received invites so far will appear here; this list will be updated gradually. Check back here occasionally to see people you know whom you can tag along with.'
   );
-  setCellText('E9', 'Current Total of Invitees:');
-  setCellText('F9', guests.filter((g) => g.invited).length.toString());
-  setCellText('E10', '\u2714  No. of Confirmed:');
+  setCellText('D9', 'Current Total of Invitees:');
+  setCellText('E9', guests.filter((g) => g.invited).length.toString());
+  setCellText('D10', '\u2714  No. of Confirmed:');
   setCellText(
-    'F10',
+    'E10',
     guests.filter((g) => g.invited && g.confirmStatus === 'confirmed').length.toString()
   );
-  setCellText('E11', '\uD83D\uDD38 No. of Tentative:');
+  setCellText('D11', '\uD83D\uDD38 No. of Tentative:');
   setCellText(
-    'F11',
+    'E11',
     guests.filter((g) => g.invited && g.confirmStatus === 'tentative').length.toString()
   );
-  setCellText('E12', '\uD83D\uDD57 No. of Awaiting:');
+  setCellText('D12', '\uD83D\uDD57 No. of Awaiting:');
   setCellText(
-    'F12',
+    'E12',
     guests.filter((g) => g.invited && g.confirmStatus === 'awaiting').length.toString()
   );
-  setCellText('E13', '\u274C No. of Unavailable:');
+  setCellText('D13', '\u274C No. of Unavailable:');
   setCellText(
-    'F13',
+    'E13',
     guests.filter((g) => g.invited && g.confirmStatus === 'unavailable').length.toString()
   );
-  setCellText('E14', 'No. of Invites Remaining:');
+  setCellText('D14', 'No. of Invites Remaining:');
   setCellText(
-    'F14',
+    'E14',
     guests.filter((g) => !g.invited && g.rank <= Rank.D).length.toString()
   );
 

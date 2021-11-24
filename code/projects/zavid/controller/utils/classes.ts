@@ -7,7 +7,6 @@ export class Guest {
   origin = '';
   invited = true;
   confirmStatus: ConfirmStatus = 'awaiting';
-  hotelStatus: HotelStatus = 'none';
   wlid = '';
 }
 
@@ -18,7 +17,6 @@ export class GuestSpreadsheetRow extends GoogleSpreadsheetRow {
   Origin = '';
   Invited = '';
   Confirmed = '';
-  Hotel = '';
   WLID = '';
 }
 
@@ -37,5 +35,3 @@ export type ConfirmStatus =
   | 'tentative'
   | 'confirmed'
   | 'unavailable';
-
-export type HotelStatus = 'booked' | 'tentative' | 'none';
