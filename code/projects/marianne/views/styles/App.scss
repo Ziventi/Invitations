@@ -1,24 +1,6 @@
 @import 'Constants';
-@import 'Mixins';
 
 @import 'pages/1-Index';
-@import 'pages/2-Information';
-@import 'pages/3-Lists';
-@import 'pages/4-Notices';
-@import 'pages/5-Agenda';
-@import 'pages/6-RSVP';
-@import 'pages/7-Motivation';
-
-svg.hyperlink {
-  fill: none;
-  stroke: #00f;
-  stroke-width: 3;
-}
-
-span.icon {
-  margin-left: 0.2em;
-  text-decoration: none;
-}
 
 ////////////////////
 //// Boilerplate

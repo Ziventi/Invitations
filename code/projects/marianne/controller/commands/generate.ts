@@ -15,13 +15,7 @@ import * as Paths from '../utils/paths';
 dotenv.config();
 
 const app = express();
-const {
-  NUMBER_BOLA,
-  NUMBER_CHIDERA,
-  NUMBER_DEBORAH,
-  SS_PUBLIC_LISTS_ID,
-  SS_WISHLIST_SHEET_ID
-} = process.env;
+const { SS_PUBLIC_LISTS_ID, SS_WISHLIST_SHEET_ID } = process.env;
 
 app.use(express.static(Paths.IMAGES_DIR));
 
@@ -32,15 +26,6 @@ let browser: Browser;
 let exiftool: ExifTool;
 let imageServer: Server;
 
-const resources: Record<string, unknown> = {};
-
-(async () => {
-  const notices = await import(`${Paths.RESOURCES_DIR}/notices.json`);
-  const agenda = await import(`${Paths.RESOURCES_DIR}/agenda.json`);
-  resources.notices = notices.default;
-  resources.agenda = agenda.default;
-})();
-
 /**
  * Generates the invitation files.
  * @param options The options supplied via the CLI.
@@ -50,6 +35,7 @@ export default async function generate(options: GenerateOptions) {
 
   Utils.setup();
   transpileSass();
+  copyImages();
   await generateHTMLFiles({
     all,
     name,
@@ -59,6 +45,19 @@ export default async function generate(options: GenerateOptions) {
     await generatePDFFiles();
   }
   Utils.tearDown();
+}
+
+/**
+ * Copies images to output folder.
+ */
+function copyImages() {
+  console.info('Copying images to output...');
+  fs.ensureDirSync(Paths.IMAGES_OUTPUT_DIR);
+  try {
+    fs.copySync(Paths.IMAGES_DIR, Paths.IMAGES_OUTPUT_DIR);
+  } catch (e) {
+    Utils.error(e);
+  }
 }
 
 /**
@@ -160,14 +159,8 @@ async function createHTMLPage(
     const template = ejs.compile(data, { root: Paths.VIEWS_DIR });
 
     const html = template({
-      contacts: {
-        Bola: NUMBER_BOLA,
-        Chidera: NUMBER_CHIDERA,
-        Deborah: NUMBER_DEBORAH
-      },
       cssFile: Paths.STYLES_OUTPUT_FILE,
       guest,
-      resources,
       lists: {
         guest: PUBLIC_LISTS_URL,
         wish: WISHLIST_URL
