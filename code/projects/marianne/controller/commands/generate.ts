@@ -35,7 +35,6 @@ export default async function generate(options: GenerateOptions) {
 
   Utils.setup();
   transpileSass();
-  copyImages();
   await generateHTMLFiles({
     all,
     name,
@@ -45,19 +44,6 @@ export default async function generate(options: GenerateOptions) {
     await generatePDFFiles();
   }
   Utils.tearDown();
-}
-
-/**
- * Copies images to output folder.
- */
-function copyImages() {
-  console.info('Copying images to output...');
-  fs.ensureDirSync(Paths.IMAGES_OUTPUT_DIR);
-  try {
-    fs.copySync(Paths.IMAGES_DIR, Paths.IMAGES_OUTPUT_DIR);
-  } catch (e) {
-    Utils.error(e);
-  }
 }
 
 /**
@@ -160,6 +146,7 @@ async function createHTMLPage(
 
     const html = template({
       cssFile: Paths.STYLES_OUTPUT_FILE,
+      fontsUrl: Paths.FONTS_URL,
       guest,
       lists: {
         guest: PUBLIC_LISTS_URL,

@@ -18,5 +18,10 @@ export const STYLES_OUTPUT_FILE = `${OUTPUT_DIR}/css/main.css`;
 export const IMAGES_OUTPUT_DIR = `${OUTPUT_DIR}/images`;
 export const TEMPLATE_FILE = `${TEMPLATES_DIR}/index.ejs`;
 
-export const FONTS_URL =
-  'https://fonts.googleapis.com/css2?family=Courgette&family=Great+Vibes&family=Style+Script&family=Tangerine:wght@400;700&family=Poppins:wght@400;700&display=swap';
+const url = new URL('https://fonts.googleapis.com/css2');
+url.searchParams.append('family', 'Tangerine:wght@400;700');
+url.searchParams.append('family', 'Courgette:wght@400;700');
+url.searchParams.append('family', 'Montserrat:wght@400;700');
+url.searchParams.append('family', 'Playball');
+url.searchParams.append('display', 'swap');
+export const FONTS_URL = url.href;
