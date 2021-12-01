@@ -5,7 +5,8 @@ import {
   ConfirmStatus,
   Guest,
   GuestSpreadsheetRow,
-  Rank
+  InviteRound,
+  Category
 } from './classes';
 import * as Paths from './paths';
 import { getSpreadsheet } from './spreadsheet';
@@ -32,35 +33,14 @@ export async function loadGuestList(refreshCache: boolean): Promise<Guest[]> {
     }
 
     const guests = records.map((record) => {
-      let confirmStatus: ConfirmStatus;
-
-      switch (record['Confirmed']) {
-        case 'x':
-          confirmStatus = 'confirmed';
-          break;
-        case 'T':
-          confirmStatus = 'tentative';
-          break;
-        case 'D':
-          confirmStatus = 'unavailable';
-          break;
-        default:
-          confirmStatus = 'awaiting';
-          break;
-      }
-
-      const guest = new Guest();
-      guest.name = record['Name'];
-      guest.rank = Rank[record['Rank']];
-      guest.origin = record['Origin'];
-      guest.invited = record['Invited'] === 'x';
-      guest.confirmStatus = confirmStatus;
-      guest.wlid = record['WLID'];
-
-      const tagline = record['Tagline'];
-      if (tagline) {
-        guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
-      }
+      const guest: Guest = {
+        name: record['Name'],
+        category: record['Category'] as Category,
+        from: record['From'],
+        round: InviteRound[record['Invite Round'] as keyof typeof InviteRound],
+        wlid: record['Wishlist ID'],
+        status: record['Status'] as ConfirmStatus
+      };
 
       return guest;
     });

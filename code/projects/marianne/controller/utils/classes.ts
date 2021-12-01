@@ -1,37 +1,32 @@
 import { GoogleSpreadsheetRow } from 'google-spreadsheet';
 
 export class Guest {
-  name = '';
-  rank = 0;
-  tagline = '';
-  origin = '';
-  invited = true;
-  confirmStatus: ConfirmStatus = 'awaiting';
-  wlid = '';
+  name!: string;
+  category?: Category;
+  from?: string;
+  round?: number;
+  wlid?: string;
+  status?: ConfirmStatus;
 }
 
 export class GuestSpreadsheetRow extends GoogleSpreadsheetRow {
-  Name = '';
-  Rank = '';
-  Tagline = '';
-  Origin = '';
-  Invited = '';
-  Confirmed = '';
-  WLID = '';
+  Name!: string;
+  Category!: string;
+  From!: string;
+  'Invite Round'!: string;
+  'Wishlist ID'!: string;
+  Status!: string;
 }
 
-export const Rank: Record<string, number> = {
-  S: 0,
+export const InviteRound = {
   A: 1,
   B: 2,
-  C: 3,
-  D: 4,
-  E: 5,
-  F: 6
+  C: 3
 };
 
+export type Category = 'Friends' | 'Family';
 export type ConfirmStatus =
-  | 'awaiting'
-  | 'tentative'
-  | 'confirmed'
-  | 'unavailable';
+  | 'Awaiting'
+  | 'Tentative'
+  | 'Confirmed'
+  | 'Unavailable';

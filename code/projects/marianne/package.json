@@ -5,6 +5,7 @@
   "scripts": {
     "prebuild": "rm -rf .dist",
     "build": "tsc",
+    "build:watch": "tsc -w",
     "cli": "node .dist/main.js",
     "dev": "nodemon --watch views --ext ejs,scss,json,svg .dist/main.js -- generate"
   },
