@@ -1,0 +1,21 @@
+{
+  "name": "@ziventi/utils",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "google-spreadsheet": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/google-spreadsheet": "^3.1.5",
+    "typescript": "^4.5.2"
+  }
+}

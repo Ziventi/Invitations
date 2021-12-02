@@ -1,3 +1,6 @@
+/**
+ * @type {import('eslint').ESLint.Options}
+ */
 module.exports = {
   extends: '@zzavidd/eslint-config',
   root: true,
@@ -13,5 +16,8 @@ module.exports = {
   },
   settings: {
     react: 'latest'
+  },
+  rules: {
+    '@typescript-eslint/no-namespace': 'off'
   }
 };
