@@ -14,7 +14,7 @@ const ZLoader = new Loader({
  * guests.
  * @param options The update options.
  */
-export default async function update(options: PublishOptions) {
+export default async function publish(options: PublishOptions) {
   const { refreshCache } = options;
 
   const guests = (await ZLoader.load(refreshCache))

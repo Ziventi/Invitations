@@ -1,4 +1,5 @@
 import type { ConfirmStatus } from '@ziventi/utils';
+
 import { Guest, GuestRow, Rank } from './classes';
 
 export function marshalGuests(records: GuestRow[]): Guest[] {

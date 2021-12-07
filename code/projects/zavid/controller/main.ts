@@ -1,8 +1,8 @@
 import { CLI } from '@ziventi/utils';
 
 import generate from './commands/generate';
-import update from './commands/update';
+import publish from './commands/publish';
 
 (async () => {
-  CLI({ generate, publish: update });
+  CLI({ generate, publish: publish });
 })();
