@@ -9,6 +9,7 @@
     "dev": "nodemon --watch views --ext ejs,scss,json,svg .dist/main.js -- generate"
   },
   "dependencies": {
+    "@ziventi/utils": "file:../../utils",
     "commander": "^8.1.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",

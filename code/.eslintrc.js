@@ -8,6 +8,7 @@ module.exports = {
     '.eslintrc.js',
     '**/.dist/**',
     '**/.out/**',
+    '**/dist/**',
     '**/next-env.d.ts'
   ],
   parserOptions: {

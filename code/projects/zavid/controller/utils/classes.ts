@@ -1,23 +1,23 @@
-import { GoogleSpreadsheetRow } from 'google-spreadsheet';
+import type { TGuest, TGuestRow, ConfirmStatus } from '@ziventi/utils';
 
-export class Guest {
-  name = '';
-  rank = 0;
-  tagline = '';
-  origin = '';
-  invited = true;
-  confirmStatus: ConfirmStatus = 'awaiting';
-  wlid = '';
+export class Guest implements TGuest {
+  name!: string;
+  status!: ConfirmStatus;
+  rank!: typeof Rank[string];
+  origin!: string;
+  invited!: boolean;
+  wlid!: string;
+  tagline?: string;
 }
 
-export class GuestSpreadsheetRow extends GoogleSpreadsheetRow {
-  Name = '';
-  Rank = '';
-  Tagline = '';
-  Origin = '';
-  Invited = '';
-  Confirmed = '';
-  WLID = '';
+export class GuestRow implements TGuestRow {
+  Name!: string;
+  Rank!: string;
+  Origin!: string;
+  Invited!: string;
+  Status!: string;
+  WLID!: string;
+  Tagline?: string;
 }
 
 export const Rank: Record<string, number> = {
@@ -29,9 +29,3 @@ export const Rank: Record<string, number> = {
   E: 5,
   F: 6
 };
-
-export type ConfirmStatus =
-  | 'awaiting'
-  | 'tentative'
-  | 'confirmed'
-  | 'unavailable';

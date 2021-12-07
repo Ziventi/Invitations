@@ -1,0 +1,42 @@
+import { Command } from 'commander';
+
+import { Utils } from './utils';
+
+import { CLIOptions } from '../../types';
+
+export async function CLI(options: CLIOptions = {}): Promise<void> {
+  const { generate, publish } = options;
+  const program = new Command();
+
+  if (generate) {
+    program
+      .command('generate')
+      .description('Generates the invitations from the templates.')
+      .option(
+        '-a, --all',
+        'Generates files for all guests. Void if name is specified.',
+        false
+      )
+      .option('-n, --name <name>', 'The name of a guest to specify')
+      .option('-p, --with-pdf', 'Also generate the PDF files.', false)
+      .option(
+        '-r, --refresh-cache',
+        'Reload and cache the external dataset.',
+        false
+      )
+      .action(generate);
+  }
+
+  if (publish) {
+    program
+      .command('publish')
+      .description('Publishes to the public guest list.')
+      .option('-r, --refresh-cache', 'Reload and cache the external dataset.', false)
+      .action(publish);
+  }
+
+  program.command('clean').action(Utils.clean);
+  program.addHelpCommand(false);
+
+  await program.parseAsync();
+}

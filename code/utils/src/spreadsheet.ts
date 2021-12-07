@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-import * as Paths from './paths';
+import { Paths } from './paths';
 
 let spreadsheet: GoogleSpreadsheet;
 
@@ -20,5 +20,14 @@ export namespace Spreadsheet {
     await spreadsheet.useServiceAccountAuth(credentials);
     await spreadsheet.loadInfo();
     return spreadsheet;
+  }
+
+  /**
+   * Retrieves the full accessible spreadsheet URL using a specified ID.
+   * @param spreadsheetID The spreadsheet ID.
+   * @returns The full URL of the spreadsheet.
+   */
+  export function getSpreadsheetUrl(spreadsheetID: string) {
+    return `https://docs.google.com/spreadsheets/d/${spreadsheetID}`;
   }
 }
