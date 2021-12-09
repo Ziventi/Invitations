@@ -1,0 +1,20 @@
+{
+  "name": "zavid",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild": "rm -rf .dist",
+    "build": "tsc",
+    "cli": "node .dist/main.js",
+    "dev": "nodemon --watch views --ext ejs,scss,json,svg .dist/main.js -- generate"
+  },
+  "dependencies": {
+    "@ziventi/utils": "file:../../utils",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.10",
+    "nodemon": "^2.0.12",
+    "typescript": "^4.3.5"
+  }
+}

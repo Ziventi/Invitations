@@ -1,0 +1,32 @@
+main.index {
+  background-image: url('../images/card.png'),
+    url('http://localhost:3000/card.png');
+  background-size: cover;
+  height: $height;
+  overflow-x: hidden;
+  position: relative;
+  width: $width;
+
+  > div {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 90%;
+    overflow: hidden;
+  }
+
+  .name {
+    align-items: center;
+    color: #a3a396;
+    display: flex;
+    font-family: 'Tangerine', cursive;
+    font-size: 85px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  p {
+    margin: 0;
+  }
+}

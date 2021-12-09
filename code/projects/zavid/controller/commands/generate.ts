@@ -51,6 +51,7 @@ const ZGenerator = new Generator({
     namer: (name) => `#Z25 Invitation to ${name}`
   },
   paths: {
+    imagesDir: Paths.IMAGES_DIR,
     fontsUrl: Paths.FONTS_URL,
     outputDir: Paths.OUTPUT_DIR,
     stylesInputFile: Paths.STYLES_INPUT_FILE,
@@ -74,7 +75,7 @@ export default async function generate(options: GenerateOptions) {
   const { all, name, refreshCache, withPdf } = options;
 
   Utils.setup(Paths.OUTPUT_DIR);
-  // Filer.transpileSass();
+  ZGenerator.transpileSass();
   const guests = await ZLoader.load(refreshCache);
   await ZGenerator.generateHTMLFiles(guests, {
     all,

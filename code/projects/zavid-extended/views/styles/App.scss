@@ -1,0 +1,41 @@
+@import 'Constants';
+@import 'Index';
+
+.signature {
+  bottom: 10px;
+  fill: #a3a396;
+  height: 50px;
+  position: absolute;
+  right: 10px;
+  width: fit-content;
+
+  path {
+    stroke: #a3a396;
+    stroke-width: 5;
+  }
+}
+
+////////////////////
+//// Boilerplate
+////////////////////
+
+html,
+body {
+  background-color: rgb(29, 29, 29);
+  height: $height;
+  margin: 0;
+  padding: 0;
+  width: $width;
+}
+
+div#root {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
