@@ -12,6 +12,7 @@ import { Paths } from '../../paths';
 import { Utils } from '../utils';
 
 const app = express();
+app.use(express.static(`${Paths.ROOT}/projects/zavid-extended/views/images`));
 
 export class Generator<G extends TGuest = TGuest> {
   browser!: Browser;
@@ -19,10 +20,14 @@ export class Generator<G extends TGuest = TGuest> {
   imageServer!: Server;
 
   htmlOptions: HTMLOptions;
-  paths: Paths;
+  paths: ResourcePaths;
   pdfOptions: PDFOptions;
 
-  constructor({ htmlOptions, paths, pdfOptions }: FileConstructor) {
+  /**
+   * Constructors a new generator.
+   * @param options The generator constructor options.
+   */
+  constructor({ htmlOptions, paths, pdfOptions }: GeneratorConstructor) {
     this.htmlOptions = htmlOptions;
     this.paths = paths;
     this.pdfOptions = pdfOptions;
@@ -32,16 +37,16 @@ export class Generator<G extends TGuest = TGuest> {
    * Generates the HTML files for each member on the guest list from the template.
    * @param guests The list of guests to generate files for.
    * @param options The options for generating HTML.
-   * @returns A promise fulfilled when all HTML files have been generated.
    */
-  async generateHTMLFiles(
-    guests: G[],
-    { all, name }: GenerateHTMLOptions
-  ): Promise<void> {
+  generateHTMLFiles(guests: G[], { all, name }: GenerateHTMLOptions): void {
     const { outputDir, templatesDir } = this.paths;
 
     console.info('Generating HTML files...');
-    const TEST_NUMBER = 17;
+    const TEST_NUMBER = 8;
+
+    if (!guests.length) {
+      throw new Error('No guests.');
+    }
 
     if (name) {
       try {
@@ -59,26 +64,15 @@ export class Generator<G extends TGuest = TGuest> {
     } else if (!all) {
       guests = guests.slice(TEST_NUMBER, TEST_NUMBER + 1);
     }
-    // else {
-    //   guests = guests.filter(
-    //     (g) => g.invited && g.confirmStatus === 'awaiting'
-    //   );
-    // }
 
-    const promises = guests.map((guest) => {
+    guests.forEach((guest) => {
       const outputFile = `${outputDir}/html/${guest.name}.html`;
-      return this.createHTMLPage(
-        `${templatesDir}/index.ejs`,
-        outputFile,
-        guest
-      );
+      this.createHTMLPage(`${templatesDir}/index.ejs`, outputFile, guest);
     });
-    await Promise.all(promises);
   }
 
   /**
    * Generates the PDF files from each of the guest HTML files.
-   * @param refreshCache Indicates whether the data cache should be refreshed.
    */
   async generatePDFFiles(): Promise<void> {
     const { outputDir, templatesDir } = this.paths;
@@ -105,26 +99,45 @@ export class Generator<G extends TGuest = TGuest> {
   }
 
   /**
+   * Generates the PNG files from each of the guest HTML files.
+   */
+  async generatePNGFiles(): Promise<void> {
+    const { outputDir } = this.paths;
+
+    fs.ensureDirSync(`${outputDir}/png`);
+    console.info('Generating PNG files...');
+
+    this.browser = await puppeteer.launch();
+    this.imageServer = app.listen(3000);
+
+    const filenames = fs.readdirSync(`${outputDir}/html`);
+    const promises = filenames.map((filename) => {
+      const [name] = filename.split('.');
+      const html = Utils.readFileContent(`${outputDir}/html/${name}.html`);
+      return this.createPNGFile(html, name);
+    });
+
+    await Promise.all(promises);
+    await this.browser.close();
+    this.imageServer.close();
+  }
+
+  /**
    * Helper function for generating HTML pages.
    * @param templateFile The input template EJS file.
    * @param outputFile The HTML file output path.
    * @param guest The guest whose details will go on the invite.
    */
-  async createHTMLPage<T>(
-    templateFile: string,
-    outputFile: string,
-    guest: T
-  ): Promise<void> {
+  createHTMLPage<T>(templateFile: string, outputFile: string, guest: T): void {
     const { viewsDir } = this.paths;
     try {
-      const data = await fs.readFile(templateFile, 'utf8');
+      const data = fs.readFileSync(templateFile, 'utf8');
       const template = ejs.compile(data, { root: viewsDir });
-
       const html = template({
         guest,
         ...this.htmlOptions.locals
       });
-      await fs.outputFile(outputFile, html);
+      fs.outputFileSync(outputFile, html);
     } catch (err) {
       Utils.error(err);
     }
@@ -134,7 +147,7 @@ export class Generator<G extends TGuest = TGuest> {
    * Creates a single PDF file for a guest from the HTML file.
    * @param html The HTML string to be used for generating the PDF.
    * @param name The name of the guest.
-   * @param pageCount The number of pages to print..
+   * @param pageCount The number of pages to print.
    */
   async createPDFPage(
     html: string,
@@ -145,7 +158,9 @@ export class Generator<G extends TGuest = TGuest> {
 
     const pdfFileName = this.pdfOptions.namer(name);
     const outputPath = `${outputDir}/pdf/${pdfFileName}.pdf`;
-    if (!this.browser) return;
+    if (!this.browser) {
+      throw new Error('No browser.');
+    }
 
     try {
       const page = await this.browser.newPage();
@@ -159,12 +174,33 @@ export class Generator<G extends TGuest = TGuest> {
         pageRanges: `1-${pageCount}`,
         printBackground: true
       });
+    } catch (err) {
+      Utils.error(err);
+    }
+  }
 
-      if (this.exiftool) {
-        await this.exiftool.write(outputPath, { Title: pdfFileName }, [
-          '-overwrite_original'
-        ]);
-      }
+  async createPNGFile(html: string, name: string) {
+    const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
+
+    const filename = this.pdfOptions.namer(name);
+    const outputPath = `${outputDir}/png/${filename}.png`;
+    if (!this.browser) return;
+
+    try {
+      const page = await this.browser.newPage();
+      await page.goto(`data:text/html,${encodeURIComponent(html)}`);
+      await page.addStyleTag({ url: fontsUrl });
+      await page.addStyleTag({ path: stylesOutputFile });
+      await page.setViewport({
+        width: 672,
+        height: 384,
+        deviceScaleFactor: 4
+      });
+      await page.evaluateHandle('document.fonts.ready');
+      await page.screenshot({
+        type: 'png',
+        path: outputPath
+      });
     } catch (err) {
       Utils.error(err);
     }
@@ -173,7 +209,7 @@ export class Generator<G extends TGuest = TGuest> {
   /**
    * Transpiles the SCSS files to CSS.
    */
-  transpileSass() {
+  transpileSass(): void {
     const { outputDir, stylesInputFile, stylesOutputFile } = this.paths;
     console.info('Transpiling SCSS to CSS...');
     fs.ensureDirSync(`${outputDir}/css`);
@@ -187,11 +223,27 @@ export class Generator<G extends TGuest = TGuest> {
       Utils.error(e);
     }
   }
+
+  /**
+   * Copies images to output folder.
+   */
+  copyImages(): void {
+    const { outputDir, imagesDir } = this.paths;
+    const imagesOutputDir = `${outputDir}/images`;
+
+    console.info('Copying images to output...');
+    fs.ensureDirSync(imagesOutputDir);
+    try {
+      fs.copySync(imagesDir, imagesOutputDir);
+    } catch (e) {
+      Utils.error(e);
+    }
+  }
 }
 
-interface FileConstructor {
+interface GeneratorConstructor {
   htmlOptions: HTMLOptions;
-  paths: Paths;
+  paths: ResourcePaths;
   pdfOptions: PDFOptions;
 }
 
@@ -203,11 +255,12 @@ interface PDFOptions {
   namer: (name: string) => string;
 }
 
-interface Paths {
+interface ResourcePaths {
   fontsUrl: string;
+  imagesDir: string;
   outputDir: string;
-  templatesDir: string;
   stylesInputFile: string;
   stylesOutputFile: string;
+  templatesDir: string;
   viewsDir: string;
 }
