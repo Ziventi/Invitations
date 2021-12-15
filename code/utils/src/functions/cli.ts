@@ -17,13 +17,14 @@ export async function CLI(options: CLIOptions = {}): Promise<void> {
         'Generates files for all guests. Void if name is specified.',
         false
       )
+      .option('-f, --format <format>', 'The rich format of files to generate')
       .option('-n, --name <name>', 'The name of a guest to specify')
-      .option('-p, --with-pdf', 'Also generate the PDF files.', false)
       .option(
         '-r, --refresh-cache',
         'Reload and cache the external dataset.',
         false
       )
+
       .action(generate);
   }
 
@@ -31,7 +32,11 @@ export async function CLI(options: CLIOptions = {}): Promise<void> {
     program
       .command('publish')
       .description('Publishes to the public guest list.')
-      .option('-r, --refresh-cache', 'Reload and cache the external dataset.', false)
+      .option(
+        '-r, --refresh-cache',
+        'Reload and cache the external dataset.',
+        false
+      )
       .action(publish);
   }
 

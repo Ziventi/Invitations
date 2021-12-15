@@ -1,5 +1,5 @@
 import type { GenerateOptions } from '@ziventi/utils';
-import { Generator, Loader, Utils } from '@ziventi/utils';
+import { ZGenerator, Loader, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import * as Paths from '../utils/paths';
@@ -7,7 +7,9 @@ import { marshalGuests } from '../utils/shared';
 
 dotenv.config();
 
-const ZGenerator = new Generator({
+const fileNamer = (name: string) => name;
+
+const Generator = new ZGenerator({
   htmlOptions: {
     locals: {
       cssFile: Paths.STYLES_OUTPUT_FILE,
@@ -15,7 +17,15 @@ const ZGenerator = new Generator({
     }
   },
   pdfOptions: {
-    namer: (name) => name
+    fileNamer
+  },
+  pngOptions: {
+    fileNamer,
+    viewportOptions: {
+      width: 672,
+      height: 384,
+      deviceScaleFactor: 4
+    }
   },
   paths: {
     imagesDir: Paths.IMAGES_DIR,
@@ -39,19 +49,26 @@ const ZLoader = new Loader({
  * @param options The options supplied via the CLI.
  */
 export default async function generate(options: GenerateOptions) {
-  const { all, name, refreshCache, withPdf } = options;
+  const { all, format, name, refreshCache } = options;
 
   Utils.setup(Paths.OUTPUT_DIR);
-  ZGenerator.transpileSass();
-  ZGenerator.copyImages();
+  Generator.transpileSass();
+
+  if (format) {
+    Generator.copyImages();
+  }
+
   const guests = (await ZLoader.load(refreshCache)).filter(
     (g) => g.status === 'Confirmed'
   );
 
-  ZGenerator.generateHTMLFiles(guests, { all, name });
+  Generator.generateHTMLFiles(guests, { all, name });
 
-  if (withPdf) {
-    await ZGenerator.generatePNGFiles();
+  if (format === 'png') {
+    await Generator.generatePNGFiles();
+  } else if (format === 'pdf') {
+    await Generator.generatePDFFiles();
   }
+
   Utils.tearDown();
 }

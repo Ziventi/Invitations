@@ -3,7 +3,7 @@ import { ExifTool } from 'exiftool-vendored';
 import express from 'express';
 import fs from 'fs-extra';
 import sass from 'node-sass';
-import puppeteer, { Browser } from 'puppeteer';
+import puppeteer, { Browser, PaperFormat, Viewport } from 'puppeteer';
 
 import { Server } from 'http';
 
@@ -14,23 +14,30 @@ import { Utils } from '../utils';
 const app = express();
 app.use(express.static(`${Paths.ROOT}/projects/zavid-extended/views/images`));
 
-export class Generator<G extends TGuest = TGuest> {
+export class ZGenerator<G extends TGuest = TGuest> {
   browser!: Browser;
   exiftool!: ExifTool;
   imageServer!: Server;
 
   htmlOptions: HTMLOptions;
   paths: ResourcePaths;
-  pdfOptions: PDFOptions;
+  pdfOptions?: PDFOptions;
+  pngOptions?: PNGOptions;
 
   /**
    * Constructors a new generator.
    * @param options The generator constructor options.
    */
-  constructor({ htmlOptions, paths, pdfOptions }: GeneratorConstructor) {
+  constructor({
+    htmlOptions,
+    pdfOptions,
+    pngOptions,
+    paths
+  }: GeneratorConstructor) {
     this.htmlOptions = htmlOptions;
-    this.paths = paths;
     this.pdfOptions = pdfOptions;
+    this.pngOptions = pngOptions;
+    this.paths = paths;
   }
 
   /**
@@ -39,14 +46,12 @@ export class Generator<G extends TGuest = TGuest> {
    * @param options The options for generating HTML.
    */
   generateHTMLFiles(guests: G[], { all, name }: GenerateHTMLOptions): void {
-    const { outputDir, templatesDir } = this.paths;
-
-    console.info('Generating HTML files...');
-    const TEST_NUMBER = 8;
-
     if (!guests.length) {
       throw new Error('No guests.');
     }
+
+    const { outputDir, templatesDir } = this.paths;
+    console.info('Generating HTML files...');
 
     if (name) {
       try {
@@ -62,7 +67,7 @@ export class Generator<G extends TGuest = TGuest> {
         Utils.error(e);
       }
     } else if (!all) {
-      guests = guests.slice(TEST_NUMBER, TEST_NUMBER + 1);
+      guests = guests.slice(0, 10);
     }
 
     guests.forEach((guest) => {
@@ -154,9 +159,12 @@ export class Generator<G extends TGuest = TGuest> {
     name: string,
     pageCount: number
   ): Promise<void> {
+    if (!this.pdfOptions) return;
+
+    const { fileNamer, format = 'a4' } = this.pdfOptions;
     const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
 
-    const pdfFileName = this.pdfOptions.namer(name);
+    const pdfFileName = fileNamer(name);
     const outputPath = `${outputDir}/pdf/${pdfFileName}.pdf`;
     if (!this.browser) {
       throw new Error('No browser.');
@@ -169,7 +177,7 @@ export class Generator<G extends TGuest = TGuest> {
       await page.addStyleTag({ path: stylesOutputFile });
       await page.evaluateHandle('document.fonts.ready');
       await page.pdf({
-        format: 'a4',
+        format,
         path: outputPath,
         pageRanges: `1-${pageCount}`,
         printBackground: true
@@ -179,23 +187,21 @@ export class Generator<G extends TGuest = TGuest> {
     }
   }
 
-  async createPNGFile(html: string, name: string) {
-    const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
+  async createPNGFile(html: string, guestName: string) {
+    if (!this.pngOptions) return;
 
-    const filename = this.pdfOptions.namer(name);
+    const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
+    const { fileNamer, viewportOptions } = this.pngOptions;
+
+    const filename = fileNamer(guestName);
     const outputPath = `${outputDir}/png/${filename}.png`;
-    if (!this.browser) return;
 
     try {
       const page = await this.browser.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
       await page.addStyleTag({ url: fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
-      await page.setViewport({
-        width: 672,
-        height: 384,
-        deviceScaleFactor: 4
-      });
+      await page.setViewport(viewportOptions);
       await page.evaluateHandle('document.fonts.ready');
       await page.screenshot({
         type: 'png',
@@ -244,15 +250,24 @@ export class Generator<G extends TGuest = TGuest> {
 interface GeneratorConstructor {
   htmlOptions: HTMLOptions;
   paths: ResourcePaths;
-  pdfOptions: PDFOptions;
+  pdfOptions?: PDFOptions;
+  pngOptions?: PNGOptions;
 }
 
 interface HTMLOptions {
   locals: Record<string, unknown>;
 }
 
-interface PDFOptions {
-  namer: (name: string) => string;
+interface FormatOptions {
+  fileNamer: (name: string) => string;
+}
+
+interface PDFOptions extends FormatOptions {
+  format?: PaperFormat;
+}
+
+interface PNGOptions extends FormatOptions {
+  viewportOptions: Pick<Viewport, 'width' | 'height' | 'deviceScaleFactor'>;
 }
 
 interface ResourcePaths {
