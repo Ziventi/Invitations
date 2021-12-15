@@ -3,7 +3,7 @@ import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import type { TGuest } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
 
-export class Publisher<G extends TGuest = TGuest> {
+export class ZPublisher<G extends TGuest = TGuest> {
   sheet!: GoogleSpreadsheetWorksheet;
 
   /**

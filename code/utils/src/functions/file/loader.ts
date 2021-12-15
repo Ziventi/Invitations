@@ -5,7 +5,7 @@ import { Paths } from '../../paths';
 import { Spreadsheet } from '../../spreadsheet';
 import { Utils } from '../utils';
 
-export class Loader<
+export class ZLoader<
   G extends TGuest = TGuest,
   R extends TGuestRow = TGuestRow
 > {

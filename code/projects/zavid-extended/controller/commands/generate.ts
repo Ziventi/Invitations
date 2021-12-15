@@ -1,5 +1,5 @@
 import type { GenerateOptions } from '@ziventi/utils';
-import { ZGenerator, Loader, Utils } from '@ziventi/utils';
+import { ZGenerator, ZLoader, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import * as Paths from '../utils/paths';
@@ -38,7 +38,7 @@ const Generator = new ZGenerator({
   }
 });
 
-const ZLoader = new Loader({
+const Loader = new ZLoader({
   cacheName: 'zavid-extended',
   spreadsheetId: process.env.SS_PRIVATE_GUESTLIST_ID!,
   guestMarshaler: marshalGuests
@@ -58,7 +58,7 @@ export default async function generate(options: GenerateOptions) {
     Generator.copyImages();
   }
 
-  const guests = (await ZLoader.load(refreshCache)).filter(
+  const guests = (await Loader.load(refreshCache)).filter(
     (g) => g.status === 'Confirmed'
   );
 
