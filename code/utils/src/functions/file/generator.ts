@@ -4,6 +4,7 @@ import express from 'express';
 import fs from 'fs-extra';
 import sass from 'node-sass';
 import puppeteer, { Browser, PaperFormat, Viewport } from 'puppeteer';
+import invariant from 'tiny-invariant';
 
 import { Server } from 'http';
 
@@ -46,9 +47,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param options The options for generating HTML.
    */
   generateHTMLFiles(guests: G[], { all, name }: GenerateHTMLOptions): void {
-    if (!guests.length) {
-      throw new Error('No guests.');
-    }
+    invariant(guests.length, 'There are no guests to generate files for.');
 
     const { outputDir, templatesDir } = this.paths;
     console.info('Generating HTML files...');
@@ -58,11 +57,11 @@ export class ZGenerator<G extends TGuest = TGuest> {
         const matchingGuest = guests.find((g) =>
           g.name.toLowerCase().startsWith(name.toLowerCase())
         );
-        if (matchingGuest) {
-          guests = [matchingGuest];
-        } else {
-          throw new Error(`No guest found with name starting with '${name}'.`);
-        }
+        invariant(
+          matchingGuest,
+          `No guest found with name starting with '${name}'.`
+        );
+        guests = [matchingGuest];
       } catch (e) {
         Utils.error(e);
       }
@@ -159,16 +158,13 @@ export class ZGenerator<G extends TGuest = TGuest> {
     name: string,
     pageCount: number
   ): Promise<void> {
-    if (!this.pdfOptions) return;
+    invariant(this.pdfOptions, 'No PDF options specified.');
 
     const { fileNamer, format = 'a4' } = this.pdfOptions;
     const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
 
     const pdfFileName = fileNamer(name);
     const outputPath = `${outputDir}/pdf/${pdfFileName}.pdf`;
-    if (!this.browser) {
-      throw new Error('No browser.');
-    }
 
     try {
       const page = await this.browser.newPage();
@@ -188,7 +184,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   }
 
   async createPNGFile(html: string, guestName: string) {
-    if (!this.pngOptions) return;
+    invariant(this.pngOptions, 'No PNG options specified.');
 
     const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
     const { fileNamer, viewportOptions } = this.pngOptions;
