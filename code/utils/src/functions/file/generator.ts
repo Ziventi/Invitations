@@ -42,18 +42,14 @@ export class ZGenerator<G extends TGuest = TGuest> {
     console.info('Generating HTML files...');
 
     if (name) {
-      try {
-        const matchingGuest = guests.find((g) =>
-          g.name.toLowerCase().startsWith(name.toLowerCase())
-        );
-        invariant(
-          matchingGuest,
-          `No guest found with name starting with '${name}'.`
-        );
-        guests = [matchingGuest];
-      } catch (e) {
-        Utils.error(e);
-      }
+      const matchingGuest = guests.find((g) => {
+        return g.name.toLowerCase().startsWith(name.toLowerCase());
+      });
+      invariant(
+        matchingGuest,
+        `No guest found with name starting with '${name}'.`
+      );
+      guests = [matchingGuest];
     } else if (!all) {
       guests = guests.slice(0, 10);
     }
