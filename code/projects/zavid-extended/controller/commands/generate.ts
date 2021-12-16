@@ -9,6 +9,7 @@ dotenv.config();
 
 const Generator = new ZGenerator({
   htmlOptions: {
+    fontsUrl: Paths.FONTS_URL,
     locals: {
       cssFile: Paths.STYLES_OUTPUT_FILE,
       fontsUrl: Paths.FONTS_URL
@@ -16,7 +17,6 @@ const Generator = new ZGenerator({
   },
   formatOptions: {
     nomenclator: (name: string) => name,
-    serveImagesFrom: `${Paths.VIEWS_DIR}/images`,
     pngOptions: {
       viewportOptions: {
         width: 672,
@@ -25,15 +25,7 @@ const Generator = new ZGenerator({
       }
     }
   },
-  paths: {
-    imagesDir: Paths.IMAGES_DIR,
-    fontsUrl: Paths.FONTS_URL,
-    outputDir: Paths.OUTPUT_DIR,
-    stylesInputFile: Paths.STYLES_INPUT_FILE,
-    stylesOutputFile: Paths.STYLES_OUTPUT_FILE,
-    templatesDir: Paths.TEMPLATES_DIR,
-    viewsDir: Paths.VIEWS_DIR
-  }
+  root: Paths.PROJECT_ROOT
 });
 
 const Loader = new ZLoader({

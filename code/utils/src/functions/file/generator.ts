@@ -18,20 +18,31 @@ export class ZGenerator<G extends TGuest = TGuest> {
   imageServer!: Server;
 
   htmlOptions: HTMLOptions;
-  paths: ResourcePaths;
   formatOptions: FormatOptions;
+  paths: ResourcePaths;
 
   /**
    * Constructors a new generator.
    * @param options The generator constructor options.
    */
-  constructor({ htmlOptions, formatOptions, paths }: GeneratorConstructor) {
+  constructor({ htmlOptions, formatOptions, root }: GeneratorConstructor) {
+    const outputDir = `${root}/.out`;
+    const viewsDir = `${root}/views`;
+    const imagesDir = `${viewsDir}/images`;
+
     this.app = express();
-    this.app.use(express.static(formatOptions.serveImagesFrom));
-    
+    this.app.use(express.static(viewsDir));
+
     this.htmlOptions = htmlOptions;
     this.formatOptions = formatOptions;
-    this.paths = paths;
+    this.paths = {
+      outputDir,
+      viewsDir,
+      imagesDir,
+      templatesDir: `${viewsDir}/templates`,
+      stylesInputFile: `${viewsDir}/styles/App.scss`,
+      stylesOutputFile: `${outputDir}/css/main.css`
+    };
   }
 
   /**
@@ -42,8 +53,8 @@ export class ZGenerator<G extends TGuest = TGuest> {
   generateHTMLFiles(guests: G[], { all, name }: GenerateHTMLOptions): void {
     invariant(guests.length, 'There are no guests to generate files for.');
 
-    const { outputDir, templatesDir } = this.paths;
     console.info('Generating HTML files...');
+    const { outputDir, templatesDir } = this.paths;
 
     if (name) {
       const matchingGuest = guests.find((g) => {
@@ -127,13 +138,16 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param guest The guest whose details will go on the invite.
    */
   createHTMLPage<T>(templateFile: string, outputFile: string, guest: T): void {
-    const { viewsDir } = this.paths;
+    const { fontsUrl, locals } = this.htmlOptions;
+    const { viewsDir, stylesOutputFile } = this.paths;
     try {
       const data = fs.readFileSync(templateFile, 'utf8');
       const template = ejs.compile(data, { root: viewsDir });
       const html = template({
         guest,
-        ...this.htmlOptions.locals
+        cssFile: stylesOutputFile,
+        fontsUrl,
+        ...locals
       });
       fs.outputFileSync(outputFile, html);
     } catch (err) {
@@ -152,7 +166,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     name: string,
     pageCount: number
   ): Promise<void> {
-    const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
+    const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator, pdfOptions } = this.formatOptions;
 
     const pdfFileName = nomenclator(name);
@@ -161,7 +175,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     try {
       const page = await this.browser.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
-      await page.addStyleTag({ url: fontsUrl });
+      await page.addStyleTag({ url: this.htmlOptions.fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
       await page.evaluateHandle('document.fonts.ready');
       await page.pdf({
@@ -176,7 +190,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   }
 
   async createPNGFile(html: string, guestName: string) {
-    const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
+    const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator, pngOptions } = this.formatOptions;
 
     const filename = nomenclator(guestName);
@@ -185,7 +199,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     try {
       const page = await this.browser.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
-      await page.addStyleTag({ url: fontsUrl });
+      await page.addStyleTag({ url: this.htmlOptions.fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
       await page.setViewport(pngOptions!.viewportOptions);
       await page.evaluateHandle('document.fonts.ready');
@@ -235,11 +249,12 @@ export class ZGenerator<G extends TGuest = TGuest> {
 
 interface GeneratorConstructor {
   htmlOptions: HTMLOptions;
-  paths: ResourcePaths;
   formatOptions: FormatOptions;
+  root: string;
 }
 
 interface HTMLOptions {
+  fontsUrl: string;
   locals: Record<string, unknown>;
 }
 
@@ -247,7 +262,6 @@ interface FormatOptions {
   nomenclator: (name: string) => string;
   pdfOptions?: PDFOptions;
   pngOptions?: PNGOptions;
-  serveImagesFrom: string;
 }
 
 interface PDFOptions {
@@ -259,11 +273,10 @@ interface PNGOptions {
 }
 
 interface ResourcePaths {
-  fontsUrl: string;
-  imagesDir: string;
   outputDir: string;
+  viewsDir: string;
+  imagesDir: string;
+  templatesDir: string;
   stylesInputFile: string;
   stylesOutputFile: string;
-  templatesDir: string;
-  viewsDir: string;
 }
