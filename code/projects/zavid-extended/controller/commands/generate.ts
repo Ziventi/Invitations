@@ -7,8 +7,6 @@ import { marshalGuests } from '../utils/shared';
 
 dotenv.config();
 
-const fileNamer = (name: string) => name;
-
 const Generator = new ZGenerator({
   htmlOptions: {
     locals: {
@@ -16,15 +14,15 @@ const Generator = new ZGenerator({
       fontsUrl: Paths.FONTS_URL
     }
   },
-  pdfOptions: {
-    fileNamer
-  },
-  pngOptions: {
-    fileNamer,
-    viewportOptions: {
-      width: 672,
-      height: 384,
-      deviceScaleFactor: 4
+  formatOptions: {
+    nomenclator: (name: string) => name,
+    serveImagesFrom: `${Paths.VIEWS_DIR}/images`,
+    pngOptions: {
+      viewportOptions: {
+        width: 672,
+        height: 384,
+        deviceScaleFactor: 4
+      }
     }
   },
   paths: {

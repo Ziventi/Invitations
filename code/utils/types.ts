@@ -6,7 +6,7 @@ export type Generate = (options: GenerateOptions) => void;
 export type Publish = (options: PublishOptions) => void;
 
 export interface GenerateOptions extends Partial<GenerateHTMLOptions> {
-  format?: FileFormat;
+  format?: 'pdf' | 'png';
   refreshCache?: boolean;
 }
 
@@ -34,5 +34,3 @@ export type ConfirmStatus =
   | 'Tentative'
   | 'Confirmed'
   | 'Unavailable';
-
-type FileFormat = 'pdf' | 'png';

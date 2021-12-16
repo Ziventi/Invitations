@@ -9,11 +9,7 @@ import invariant from 'tiny-invariant';
 import { Server } from 'http';
 
 import { GenerateHTMLOptions, TGuest } from '../../../types';
-import { Paths } from '../../paths';
 import { Utils } from '../utils';
-
-const app = express();
-app.use(express.static(`${Paths.ROOT}/projects/zavid-extended/views/images`));
 
 export class ZGenerator<G extends TGuest = TGuest> {
   browser!: Browser;
@@ -22,22 +18,15 @@ export class ZGenerator<G extends TGuest = TGuest> {
 
   htmlOptions: HTMLOptions;
   paths: ResourcePaths;
-  pdfOptions?: PDFOptions;
-  pngOptions?: PNGOptions;
+  formatOptions: FormatOptions;
 
   /**
    * Constructors a new generator.
    * @param options The generator constructor options.
    */
-  constructor({
-    htmlOptions,
-    pdfOptions,
-    pngOptions,
-    paths
-  }: GeneratorConstructor) {
+  constructor({ htmlOptions, formatOptions, paths }: GeneratorConstructor) {
     this.htmlOptions = htmlOptions;
-    this.pdfOptions = pdfOptions;
-    this.pngOptions = pngOptions;
+    this.formatOptions = formatOptions;
     this.paths = paths;
   }
 
@@ -80,9 +69,15 @@ export class ZGenerator<G extends TGuest = TGuest> {
    */
   async generatePDFFiles(): Promise<void> {
     const { outputDir, templatesDir } = this.paths;
+    const { serveImagesFrom, pdfOptions } = this.formatOptions;
+
+    invariant(pdfOptions, 'No PDF options specified.');
 
     fs.ensureDirSync(`${outputDir}/pdf`);
     console.info('Generating PDF files...');
+
+    const app = express();
+    app.use(express.static(serveImagesFrom));
 
     this.browser = await puppeteer.launch();
     this.exiftool = new ExifTool();
@@ -107,9 +102,14 @@ export class ZGenerator<G extends TGuest = TGuest> {
    */
   async generatePNGFiles(): Promise<void> {
     const { outputDir } = this.paths;
+    const { serveImagesFrom, pngOptions } = this.formatOptions;
+    invariant(pngOptions, 'No PNG options specified.');
 
     fs.ensureDirSync(`${outputDir}/png`);
     console.info('Generating PNG files...');
+
+    const app = express();
+    app.use(express.static(serveImagesFrom));
 
     this.browser = await puppeteer.launch();
     this.imageServer = app.listen(3000);
@@ -158,12 +158,10 @@ export class ZGenerator<G extends TGuest = TGuest> {
     name: string,
     pageCount: number
   ): Promise<void> {
-    invariant(this.pdfOptions, 'No PDF options specified.');
-
-    const { fileNamer, format = 'a4' } = this.pdfOptions;
     const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
+    const { nomenclator, pdfOptions } = this.formatOptions;
 
-    const pdfFileName = fileNamer(name);
+    const pdfFileName = nomenclator(name);
     const outputPath = `${outputDir}/pdf/${pdfFileName}.pdf`;
 
     try {
@@ -173,7 +171,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
       await page.addStyleTag({ path: stylesOutputFile });
       await page.evaluateHandle('document.fonts.ready');
       await page.pdf({
-        format,
+        format: pdfOptions!.format || 'a4',
         path: outputPath,
         pageRanges: `1-${pageCount}`,
         printBackground: true
@@ -184,12 +182,10 @@ export class ZGenerator<G extends TGuest = TGuest> {
   }
 
   async createPNGFile(html: string, guestName: string) {
-    invariant(this.pngOptions, 'No PNG options specified.');
-
     const { outputDir, fontsUrl, stylesOutputFile } = this.paths;
-    const { fileNamer, viewportOptions } = this.pngOptions;
+    const { nomenclator, pngOptions } = this.formatOptions;
 
-    const filename = fileNamer(guestName);
+    const filename = nomenclator(guestName);
     const outputPath = `${outputDir}/png/${filename}.png`;
 
     try {
@@ -197,7 +193,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
       await page.addStyleTag({ url: fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
-      await page.setViewport(viewportOptions);
+      await page.setViewport(pngOptions!.viewportOptions);
       await page.evaluateHandle('document.fonts.ready');
       await page.screenshot({
         type: 'png',
@@ -246,8 +242,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
 interface GeneratorConstructor {
   htmlOptions: HTMLOptions;
   paths: ResourcePaths;
-  pdfOptions?: PDFOptions;
-  pngOptions?: PNGOptions;
+  formatOptions: FormatOptions;
 }
 
 interface HTMLOptions {
@@ -255,14 +250,17 @@ interface HTMLOptions {
 }
 
 interface FormatOptions {
-  fileNamer: (name: string) => string;
+  nomenclator: (name: string) => string;
+  pdfOptions?: PDFOptions;
+  pngOptions?: PNGOptions;
+  serveImagesFrom: string;
 }
 
-interface PDFOptions extends FormatOptions {
+interface PDFOptions {
   format?: PaperFormat;
 }
 
-interface PNGOptions extends FormatOptions {
+interface PNGOptions {
   viewportOptions: Pick<Viewport, 'width' | 'height' | 'deviceScaleFactor'>;
 }
 
