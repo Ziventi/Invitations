@@ -1,6 +1,6 @@
 import ejs from 'ejs';
 import { ExifTool } from 'exiftool-vendored';
-import express from 'express';
+import express, { Express } from 'express';
 import fs from 'fs-extra';
 import sass from 'node-sass';
 import puppeteer, { Browser, PaperFormat, Viewport } from 'puppeteer';
@@ -12,6 +12,7 @@ import { GenerateHTMLOptions, TGuest } from '../../../types';
 import { Utils } from '../utils';
 
 export class ZGenerator<G extends TGuest = TGuest> {
+  app!: Express;
   browser!: Browser;
   exiftool!: ExifTool;
   imageServer!: Server;
@@ -25,6 +26,9 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param options The generator constructor options.
    */
   constructor({ htmlOptions, formatOptions, paths }: GeneratorConstructor) {
+    this.app = express();
+    this.app.use(express.static(formatOptions.serveImagesFrom));
+    
     this.htmlOptions = htmlOptions;
     this.formatOptions = formatOptions;
     this.paths = paths;
@@ -65,19 +69,16 @@ export class ZGenerator<G extends TGuest = TGuest> {
    */
   async generatePDFFiles(): Promise<void> {
     const { outputDir, templatesDir } = this.paths;
-    const { serveImagesFrom, pdfOptions } = this.formatOptions;
+    const { pdfOptions } = this.formatOptions;
 
     invariant(pdfOptions, 'No PDF options specified.');
 
     fs.ensureDirSync(`${outputDir}/pdf`);
     console.info('Generating PDF files...');
 
-    const app = express();
-    app.use(express.static(serveImagesFrom));
-
     this.browser = await puppeteer.launch();
     this.exiftool = new ExifTool();
-    this.imageServer = app.listen(3000);
+    this.imageServer = this.app.listen(3000);
 
     const filenames = fs.readdirSync(`${outputDir}/html`);
     const pageCount = fs.readdirSync(`${templatesDir}/pages`).length;
@@ -98,17 +99,14 @@ export class ZGenerator<G extends TGuest = TGuest> {
    */
   async generatePNGFiles(): Promise<void> {
     const { outputDir } = this.paths;
-    const { serveImagesFrom, pngOptions } = this.formatOptions;
+    const { pngOptions } = this.formatOptions;
     invariant(pngOptions, 'No PNG options specified.');
 
     fs.ensureDirSync(`${outputDir}/png`);
     console.info('Generating PNG files...');
 
-    const app = express();
-    app.use(express.static(serveImagesFrom));
-
     this.browser = await puppeteer.launch();
-    this.imageServer = app.listen(3000);
+    this.imageServer = this.app.listen(3000);
 
     const filenames = fs.readdirSync(`${outputDir}/html`);
     const promises = filenames.map((filename) => {
