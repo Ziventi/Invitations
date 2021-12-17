@@ -1,20 +1,22 @@
 import type { GenerateOptions } from '@ziventi/utils';
-import { ZGenerator, ZLoader, Utils } from '@ziventi/utils';
+import { Utils, ZGenerator, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
-import * as Paths from '../utils/paths';
+import path from 'path';
+
 import { marshalGuests } from '../utils/shared';
 
 dotenv.config();
 
+const PROJECT_ROOT = path.resolve(__dirname, '../..');
+
+const url = new URL('https://fonts.googleapis.com/css2');
+url.searchParams.append('family', 'Tangerine:wght@400;700');
+url.searchParams.append('display', 'swap');
+export const FONTS_URL = url.href;
+
 const Generator = new ZGenerator({
-  htmlOptions: {
-    fontsUrl: Paths.FONTS_URL,
-    locals: {
-      cssFile: Paths.STYLES_OUTPUT_FILE,
-      fontsUrl: Paths.FONTS_URL
-    }
-  },
+  fontsUrl: FONTS_URL,
   formatOptions: {
     nomenclator: (name: string) => name,
     pngOptions: {
@@ -25,7 +27,7 @@ const Generator = new ZGenerator({
       }
     }
   },
-  root: Paths.PROJECT_ROOT
+  root: PROJECT_ROOT
 });
 
 const Loader = new ZLoader({
@@ -41,7 +43,7 @@ const Loader = new ZLoader({
 export default async function generate(options: GenerateOptions) {
   const { all, format, name, refreshCache } = options;
 
-  Utils.setup(Paths.OUTPUT_DIR);
+  Utils.setup(`${PROJECT_ROOT}/.out`);
   Generator.transpileSass();
 
   if (format) {

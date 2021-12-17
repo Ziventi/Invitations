@@ -17,15 +17,17 @@ export class ZGenerator<G extends TGuest = TGuest> {
   exiftool!: ExifTool;
   imageServer!: Server;
 
-  htmlOptions: HTMLOptions;
-  formatOptions: FormatOptions;
+  fontsUrl: string;
+  formatOptions?: FormatOptions;
+  htmlOptions?: HTMLOptions;
   paths: ResourcePaths;
 
   /**
    * Constructors a new generator.
    * @param options The generator constructor options.
    */
-  constructor({ htmlOptions, formatOptions, root }: GeneratorConstructor) {
+  constructor(options: GeneratorConstructor) {
+    const { fontsUrl, formatOptions, htmlOptions, root } = options;
     const outputDir = `${root}/.out`;
     const viewsDir = `${root}/views`;
     const imagesDir = `${viewsDir}/images`;
@@ -33,8 +35,9 @@ export class ZGenerator<G extends TGuest = TGuest> {
     this.app = express();
     this.app.use(express.static(viewsDir));
 
-    this.htmlOptions = htmlOptions;
+    this.fontsUrl = fontsUrl;
     this.formatOptions = formatOptions;
+    this.htmlOptions = htmlOptions;
     this.paths = {
       outputDir,
       viewsDir,
@@ -79,6 +82,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * Generates the PDF files from each of the guest HTML files.
    */
   async generatePDFFiles(): Promise<void> {
+    if (!this.formatOptions) return;
     const { outputDir, templatesDir } = this.paths;
     const { pdfOptions } = this.formatOptions;
 
@@ -109,6 +113,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * Generates the PNG files from each of the guest HTML files.
    */
   async generatePNGFiles(): Promise<void> {
+    if (!this.formatOptions) return;
     const { outputDir } = this.paths;
     const { pngOptions } = this.formatOptions;
     invariant(pngOptions, 'No PNG options specified.');
@@ -138,7 +143,6 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param guest The guest whose details will go on the invite.
    */
   createHTMLPage<T>(templateFile: string, outputFile: string, guest: T): void {
-    const { fontsUrl, locals } = this.htmlOptions;
     const { viewsDir, stylesOutputFile } = this.paths;
     try {
       const data = fs.readFileSync(templateFile, 'utf8');
@@ -146,8 +150,8 @@ export class ZGenerator<G extends TGuest = TGuest> {
       const html = template({
         guest,
         cssFile: stylesOutputFile,
-        fontsUrl,
-        ...locals
+        fontsUrl: this.fontsUrl,
+        ...this.htmlOptions?.locals
       });
       fs.outputFileSync(outputFile, html);
     } catch (err) {
@@ -166,6 +170,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     name: string,
     pageCount: number
   ): Promise<void> {
+    if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator, pdfOptions } = this.formatOptions;
 
@@ -175,7 +180,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     try {
       const page = await this.browser.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
-      await page.addStyleTag({ url: this.htmlOptions.fontsUrl });
+      await page.addStyleTag({ url: this.fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
       await page.evaluateHandle('document.fonts.ready');
       await page.pdf({
@@ -190,6 +195,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   }
 
   async createPNGFile(html: string, guestName: string) {
+    if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator, pngOptions } = this.formatOptions;
 
@@ -199,7 +205,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     try {
       const page = await this.browser.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
-      await page.addStyleTag({ url: this.htmlOptions.fontsUrl });
+      await page.addStyleTag({ url: this.fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
       await page.setViewport(pngOptions!.viewportOptions);
       await page.evaluateHandle('document.fonts.ready');
@@ -248,14 +254,14 @@ export class ZGenerator<G extends TGuest = TGuest> {
 }
 
 interface GeneratorConstructor {
-  htmlOptions: HTMLOptions;
-  formatOptions: FormatOptions;
+  fontsUrl: string;
   root: string;
+  htmlOptions?: HTMLOptions;
+  formatOptions?: FormatOptions;
 }
 
 interface HTMLOptions {
-  fontsUrl: string;
-  locals: Record<string, unknown>;
+  locals?: Record<string, unknown>;
 }
 
 interface FormatOptions {
