@@ -1,8 +1,18 @@
 import type { ConfirmStatus } from '@ziventi/utils';
+import { ZLoader } from '@ziventi/utils';
+import * as dotenv from 'dotenv';
 
 import { Guest, GuestRow, Rank } from './classes';
 
-export function marshalGuests(records: GuestRow[]): Guest[] {
+dotenv.config();
+
+export const Loader = new ZLoader({
+  cacheName: 'zavid-extended',
+  spreadsheetId: process.env.SS_PRIVATE_GUESTLIST_ID!,
+  guestMarshaler: marshalGuests
+});
+
+function marshalGuests(records: GuestRow[]): Guest[] {
   return records.map((record) => {
     let confirmStatus: ConfirmStatus;
 

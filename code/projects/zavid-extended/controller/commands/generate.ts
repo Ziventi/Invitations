@@ -1,13 +1,10 @@
 import type { GenerateOptions } from '@ziventi/utils';
-import { ZGenerator, ZLoader } from '@ziventi/utils';
-import * as dotenv from 'dotenv';
+import { ZGenerator } from '@ziventi/utils';
 
 import path from 'path';
 
 import { GuestRow } from '../utils/classes';
-import { marshalGuests } from '../utils/shared';
-
-dotenv.config();
+import { Loader } from '../utils/shared';
 
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
 
@@ -29,12 +26,6 @@ const Generator = new ZGenerator({
     }
   },
   root: PROJECT_ROOT
-});
-
-const Loader = new ZLoader({
-  cacheName: 'zavid-extended',
-  spreadsheetId: process.env.SS_PRIVATE_GUESTLIST_ID!,
-  guestMarshaler: marshalGuests
 });
 
 /**
