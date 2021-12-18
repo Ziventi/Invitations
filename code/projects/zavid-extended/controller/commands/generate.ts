@@ -1,5 +1,5 @@
 import type { GenerateOptions } from '@ziventi/utils';
-import { ZGenerator } from '@ziventi/utils';
+import { Utils, ZGenerator } from '@ziventi/utils';
 
 import path from 'path';
 
@@ -7,11 +7,7 @@ import { GuestRow } from '../utils/classes';
 import { Loader } from '../utils/shared';
 
 const PROJECT_ROOT = path.resolve(__dirname, '../..');
-
-const url = new URL('https://fonts.googleapis.com/css2');
-url.searchParams.append('family', 'Tangerine:wght@400;700');
-url.searchParams.append('display', 'swap');
-export const FONTS_URL = url.href;
+const FONTS_URL = Utils.buildFontUrl({ Tangerine: 'wght@400;700' });
 
 const Generator = new ZGenerator({
   fontsUrl: FONTS_URL,

@@ -2,6 +2,19 @@ import fs from 'fs-extra';
 
 export namespace Utils {
   /**
+   * Builds the Google Fonts URL with specified fonts parameters.
+   * @returns The full URL.
+   */
+  export function buildFontUrl(fonts: Record<string, string>): string {
+    const url = new URL('https://fonts.googleapis.com/css2');
+    Object.entries(fonts).forEach(([font, weights]) => {
+      url.searchParams.append('family', `${font}:${weights}`);
+    });
+    url.searchParams.append('display', 'swap');
+    return url.href;
+  }
+
+  /**
    * Cleans the output directory.
    * @param outDir The path to the output directory.
    */
