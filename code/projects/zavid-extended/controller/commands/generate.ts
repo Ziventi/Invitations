@@ -1,12 +1,9 @@
 import type { GenerateOptions } from '@ziventi/utils';
 import { Utils, ZGenerator } from '@ziventi/utils';
 
-import path from 'path';
-
 import { GuestRow } from '../utils/classes';
-import { Loader } from '../utils/shared';
+import { Loader, PROJECT_ROOT } from '../utils/shared';
 
-const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const FONTS_URL = Utils.buildFontUrl({ Tangerine: 'wght@400;700' });
 
 const Generator = new ZGenerator({
