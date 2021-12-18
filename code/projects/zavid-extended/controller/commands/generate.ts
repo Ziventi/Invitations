@@ -12,8 +12,9 @@ const Generator = new ZGenerator({
     nomenclator: (name: string) => name,
     pngOptions: {
       viewportOptions: {
-        width: 672,
-        height: 384,
+        width: '3.5in',
+        height: '2in',
+        scale: 2,
         deviceScaleFactor: 4
       }
     }

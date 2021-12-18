@@ -3,7 +3,7 @@ import { ExifTool } from 'exiftool-vendored';
 import express, { Express } from 'express';
 import fs from 'fs-extra';
 import sass from 'node-sass';
-import puppeteer, { Browser, PaperFormat, Viewport } from 'puppeteer';
+import puppeteer, { Browser } from 'puppeteer';
 import invariant from 'tiny-invariant';
 
 import { Server } from 'http';
@@ -236,13 +236,14 @@ export class ZGenerator<G extends TGuest = TGuest> {
 
     const filename = nomenclator(guestName);
     const outputPath = `${outputDir}/png/${filename}.png`;
+    const viewport = translateViewportOptions(pngOptions!.viewportOptions);
 
     try {
       const page = await this.browser.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
       await page.addStyleTag({ url: this.fontsUrl });
       await page.addStyleTag({ path: stylesOutputFile });
-      await page.setViewport(pngOptions!.viewportOptions);
+      await page.setViewport(viewport);
       await page.evaluateHandle('document.fonts.ready');
       await page.screenshot({
         type: 'png',
@@ -288,6 +289,34 @@ export class ZGenerator<G extends TGuest = TGuest> {
   }
 }
 
+/**
+ * Translates the incoming viewport options to values acceptable by puppeteer.
+ * @param options The viewport options.
+ * @returns The puppeteer viewport options.
+ */
+function translateViewportOptions(
+  options: ViewportOptions
+): puppeteer.Viewport {
+  const CONVERSION_FACTOR = 96;
+  const { deviceScaleFactor = 1, scale = 1 } = options;
+
+  const convert = (measurement: number | string): number => {
+    if (typeof measurement === 'string') {
+      measurement = parseFloat(measurement.replace('in', '')) * CONVERSION_FACTOR;
+    }
+    return measurement * scale;
+  };
+
+  const width = convert(options.width);
+  const height = convert(options.height);
+
+  return {
+    width,
+    height,
+    deviceScaleFactor
+  };
+}
+
 interface GeneratorConstructor {
   fontsUrl: string;
   root: string;
@@ -311,12 +340,19 @@ interface FormatOptions {
 }
 
 interface PDFOptions {
-  format?: PaperFormat;
+  format?: puppeteer.PaperFormat;
 }
 
 interface PNGOptions {
-  viewportOptions: Pick<Viewport, 'width' | 'height' | 'deviceScaleFactor'>;
+  viewportOptions: ViewportOptions;
 }
+
+type ViewportOptions = {
+  width: number | string;
+  height: number | string;
+  scale?: number;
+  deviceScaleFactor?: number;
+};
 
 interface ResourcePaths {
   outputDir: string;
