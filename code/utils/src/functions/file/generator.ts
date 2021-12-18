@@ -344,7 +344,6 @@ interface FormatOptions {
   pdfOptions?: PDFOptions;
   pngOptions?: PNGOptions;
 }
-
 interface PDFOptions {
   format?: puppeteer.PaperFormat;
 }

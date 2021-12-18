@@ -4,10 +4,8 @@ import { Utils, ZGenerator } from '@ziventi/utils';
 import { GuestRow } from '../utils/classes';
 import { Loader, PROJECT_ROOT } from '../utils/shared';
 
-const FONTS_URL = Utils.buildFontUrl({ Tangerine: 'wght@400;700' });
-
 const Generator = new ZGenerator({
-  fontsUrl: FONTS_URL,
+  fontsUrl: Utils.buildFontUrl({ Tangerine: 'wght@400;700' }),
   formatOptions: {
     nomenclator: (name: string) => name,
     pngOptions: {

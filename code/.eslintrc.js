@@ -9,7 +9,7 @@ module.exports = {
     '**/.dist/**',
     '**/.out/**',
     '**/dist/**',
-    '**/next-env.d.ts'
+    '**/next-env.d.ts',
   ],
   parserOptions: {
     tsconfigRootDir: __dirname,

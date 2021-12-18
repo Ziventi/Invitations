@@ -8,6 +8,7 @@
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "clean": "find . -type d \\( -name \".dist\" -o -name \".cache\" \\) -exec rm -rf {} \\;",
+    "watch": "node watch.js",
     "eslint": "eslint --ext .ts,.tsx .",
     "stylelint": "stylelint **/*.scss"
   },
@@ -17,10 +18,12 @@
     "@zzavidd/eslint-config": "^0.3.2",
     "@zzavidd/prettier-config": "^0.3.2",
     "@zzavidd/stylelint-config": "^0.3.2",
+    "chokidar": "^3.5.2",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "log4js": "^6.3.0",
     "prettier": "^2.3.2",
     "stylelint": "^13.13.1",
     "stylelint-config-sass-guidelines": "^8.0.0",
