@@ -8,6 +8,9 @@ import invariant from 'tiny-invariant';
 
 import { Server } from 'http';
 
+import { ZLoader } from './loader';
+
+import { GenerateOptions, TGuestRow } from '../../..';
 import { GenerateHTMLOptions, TGuest } from '../../../types';
 import { Utils } from '../utils';
 
@@ -33,7 +36,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     const imagesDir = `${viewsDir}/images`;
 
     this.app = express();
-    this.app.use(express.static(viewsDir));
+    this.app.use(express.static(imagesDir));
 
     this.fontsUrl = fontsUrl;
     this.formatOptions = formatOptions;
@@ -46,6 +49,41 @@ export class ZGenerator<G extends TGuest = TGuest> {
       stylesInputFile: `${viewsDir}/styles/App.scss`,
       stylesOutputFile: `${outputDir}/css/main.css`
     };
+  }
+
+  /**
+   * Triggers the generate method.
+   * @param options The generate CLI options.
+   * @param loadingOptions The generate loading options.
+   */
+  async execute<R extends TGuestRow>(
+    options: GenerateOptions,
+    loadingOptions: GenerateLoadingOptions<G, R>
+  ): Promise<void> {
+    const { all, format, name, refreshCache } = options;
+    const { loader, filter } = loadingOptions;
+
+    Utils.setup(this.paths.outputDir);
+    this.transpileSass();
+
+    if (format) {
+      this.copyImages();
+    }
+
+    let guests = await loader.load(refreshCache);
+    if (filter) {
+      guests = guests.filter(filter);
+    }
+
+    this.generateHTMLFiles(guests, { all, name });
+
+    if (format === 'png') {
+      await this.generatePNGFiles();
+    } else if (format === 'pdf') {
+      await this.generatePDFFiles();
+    }
+
+    Utils.tearDown();
   }
 
   /**
@@ -74,7 +112,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
 
     guests.forEach((guest) => {
       const outputFile = `${outputDir}/html/${guest.name}.html`;
-      this.createHTMLPage(`${templatesDir}/index.ejs`, outputFile, guest);
+      this.createHTMLFile(`${templatesDir}/index.ejs`, outputFile, guest);
     });
   }
 
@@ -83,11 +121,9 @@ export class ZGenerator<G extends TGuest = TGuest> {
    */
   async generatePDFFiles(): Promise<void> {
     if (!this.formatOptions) return;
+    invariant(this.formatOptions.pdfOptions, 'No PDF options specified.');
+
     const { outputDir, templatesDir } = this.paths;
-    const { pdfOptions } = this.formatOptions;
-
-    invariant(pdfOptions, 'No PDF options specified.');
-
     fs.ensureDirSync(`${outputDir}/pdf`);
     console.info('Generating PDF files...');
 
@@ -100,7 +136,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     const promises = filenames.map((filename) => {
       const [name] = filename.split('.');
       const html = Utils.readFileContent(`${outputDir}/html/${name}.html`);
-      return this.createPDFPage(html, name, pageCount);
+      return this.createPDFFile(html, name, pageCount);
     });
 
     await Promise.all(promises);
@@ -114,10 +150,9 @@ export class ZGenerator<G extends TGuest = TGuest> {
    */
   async generatePNGFiles(): Promise<void> {
     if (!this.formatOptions) return;
-    const { outputDir } = this.paths;
-    const { pngOptions } = this.formatOptions;
-    invariant(pngOptions, 'No PNG options specified.');
+    invariant(this.formatOptions.pngOptions, 'No PNG options specified.');
 
+    const { outputDir } = this.paths;
     fs.ensureDirSync(`${outputDir}/png`);
     console.info('Generating PNG files...');
 
@@ -142,7 +177,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param outputFile The HTML file output path.
    * @param guest The guest whose details will go on the invite.
    */
-  createHTMLPage<T>(templateFile: string, outputFile: string, guest: T): void {
+  createHTMLFile(templateFile: string, outputFile: string, guest: G): void {
     const { viewsDir, stylesOutputFile } = this.paths;
     try {
       const data = fs.readFileSync(templateFile, 'utf8');
@@ -162,19 +197,19 @@ export class ZGenerator<G extends TGuest = TGuest> {
   /**
    * Creates a single PDF file for a guest from the HTML file.
    * @param html The HTML string to be used for generating the PDF.
-   * @param name The name of the guest.
+   * @param guestName The name of the guest.
    * @param pageCount The number of pages to print.
    */
-  async createPDFPage(
+  async createPDFFile(
     html: string,
-    name: string,
+    guestName: string,
     pageCount: number
   ): Promise<void> {
     if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator, pdfOptions } = this.formatOptions;
 
-    const pdfFileName = nomenclator(name);
+    const pdfFileName = nomenclator(guestName);
     const outputPath = `${outputDir}/pdf/${pdfFileName}.pdf`;
 
     try {
@@ -259,6 +294,11 @@ interface GeneratorConstructor {
   htmlOptions?: HTMLOptions;
   formatOptions?: FormatOptions;
 }
+
+type GenerateLoadingOptions<G extends TGuest, R extends TGuestRow> = {
+  loader: ZLoader<G, R>;
+  filter?: (g: G) => boolean;
+};
 
 interface HTMLOptions {
   locals?: Record<string, unknown>;

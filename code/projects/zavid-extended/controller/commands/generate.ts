@@ -1,9 +1,10 @@
 import type { GenerateOptions } from '@ziventi/utils';
-import { Utils, ZGenerator, ZLoader } from '@ziventi/utils';
+import { ZGenerator, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import path from 'path';
 
+import { GuestRow } from '../utils/classes';
 import { marshalGuests } from '../utils/shared';
 
 dotenv.config();
@@ -41,26 +42,8 @@ const Loader = new ZLoader({
  * @param options The options supplied via the CLI.
  */
 export default async function generate(options: GenerateOptions) {
-  const { all, format, name, refreshCache } = options;
-
-  Utils.setup(`${PROJECT_ROOT}/.out`);
-  Generator.transpileSass();
-
-  if (format) {
-    Generator.copyImages();
-  }
-
-  const guests = (await Loader.load(refreshCache)).filter(
-    (g) => g.status === 'Confirmed'
-  );
-
-  Generator.generateHTMLFiles(guests, { all, name });
-
-  if (format === 'png') {
-    await Generator.generatePNGFiles();
-  } else if (format === 'pdf') {
-    await Generator.generatePDFFiles();
-  }
-
-  Utils.tearDown();
+  Generator.execute<GuestRow>(options, {
+    loader: Loader,
+    filter: (g) => g.status === 'Confirmed'
+  });
 }
