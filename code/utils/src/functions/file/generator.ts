@@ -229,6 +229,11 @@ export class ZGenerator<G extends TGuest = TGuest> {
     }
   }
 
+  /**
+   * Creates a single PNG file for a guest from the HTML file.
+   * @param html The HTML string to be used for generating the PDF.
+   * @param guestName The name of the guest.
+   */
   async createPNGFile(html: string, guestName: string) {
     if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
@@ -302,7 +307,8 @@ function translateViewportOptions(
 
   const convert = (measurement: number | string): number => {
     if (typeof measurement === 'string') {
-      measurement = parseFloat(measurement.replace('in', '')) * CONVERSION_FACTOR;
+      measurement =
+        parseFloat(measurement.replace('in', '')) * CONVERSION_FACTOR;
     }
     return measurement * scale;
   };
@@ -324,10 +330,10 @@ interface GeneratorConstructor {
   formatOptions?: FormatOptions;
 }
 
-type GenerateLoadingOptions<G extends TGuest, R extends TGuestRow> = {
+interface GenerateLoadingOptions<G extends TGuest, R extends TGuestRow> {
   loader: ZLoader<G, R>;
   filter?: (g: G) => boolean;
-};
+}
 
 interface HTMLOptions {
   locals?: Record<string, unknown>;
@@ -347,12 +353,12 @@ interface PNGOptions {
   viewportOptions: ViewportOptions;
 }
 
-type ViewportOptions = {
+interface ViewportOptions {
   width: number | string;
   height: number | string;
   scale?: number;
   deviceScaleFactor?: number;
-};
+}
 
 interface ResourcePaths {
   outputDir: string;
