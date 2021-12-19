@@ -17,6 +17,11 @@ export const Loader = new ZLoader({
   guestMarshaler: marshalGuests
 });
 
+/**
+ * Marshals records to guest objects.
+ * @param records The guest spreadsheet records.
+ * @returns The list of marshaled guests.
+ */
 function marshalGuests(records: GuestRow[]): Guest[] {
   return records.map((record) => {
     let confirmStatus: ConfirmStatus;
