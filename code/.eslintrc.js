@@ -7,7 +7,6 @@ module.exports = {
   ignorePatterns: [
     '**/.dist/**',
     '**/.out/**',
-    '**/dist/**',
     '**/next-env.d.ts',
   ],
   parserOptions: {

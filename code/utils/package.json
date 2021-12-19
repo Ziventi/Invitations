@@ -1,12 +1,12 @@
 {
   "name": "@ziventi/utils",
   "version": "1.0.0",
-  "main": "./dist/index.js",
+  "main": "./.dist/index.js",
   "author": "",
   "license": "ISC",
   "description": "",
   "scripts": {
-    "prebuild": "rm -rf dist",
+    "prebuild": "rm -rf .dist",
     "build": "tsc"
   },
   "dependencies": {

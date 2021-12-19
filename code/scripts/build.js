@@ -4,7 +4,10 @@ const path = require('path');
 const logger = require('./logger');
 
 const projectName = process.argv[2];
-const PROJECT_DIR = path.join(process.cwd(), 'projects', projectName);
+const PROJECT_DIR =
+  projectName === 'utils'
+    ? path.join(process.cwd(), projectName)
+    : path.join(process.cwd(), 'projects', projectName);
 
 logger.info(`Building project '${projectName}'...`);
 

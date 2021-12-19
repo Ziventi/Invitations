@@ -2,9 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./.dist",
-    "rootDir": "controller"
   },
   "include": [
-    "controller/*.ts",
+    "**/*.ts",
   ]
 }

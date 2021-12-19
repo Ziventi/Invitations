@@ -1,15 +1,15 @@
-import { GoogleSpreadsheetRow } from 'google-spreadsheet';
+import { TGuest, TGuestRow } from '@ziventi/utils';
 
-export class Guest {
+export class Guest implements TGuest {
   name!: string;
   category?: Category;
   from?: string;
   round?: number;
   wlid?: string;
-  status?: ConfirmStatus;
+  status!: ConfirmStatus;
 }
 
-export class GuestSpreadsheetRow extends GoogleSpreadsheetRow {
+export class GuestRow implements TGuestRow {
   Name!: string;
   Category!: string;
   From!: string;

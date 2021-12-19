@@ -1,31 +1,30 @@
-import { Command } from 'commander';
+import type { GenerateOptions } from '@ziventi/utils';
+import { CLI, Utils, ZGenerator } from '@ziventi/utils';
 
-import generate from './commands/generate';
-import update from './commands/update';
-import { clean } from './utils/functions';
+import { GuestRow } from './classes';
+import { Loader } from './settings';
 
-main();
+(async () => {
+  const Generator = new ZGenerator({
+    fontsUrl: Utils.buildFontUrl({
+      Tangerine: 'wght@400;700',
+      Courgette: 'wght@400;700',
+      Montserrat: 'wght@400;700',
+      Playball: ''
+    }),
+    formatOptions: {
+      nomenclator: (name: string) => name,
+      pdfOptions: {
+        format: 'a4'
+      }
+    }
+  });
 
-async function main() {
-  const program = new Command();
-
-  program
-    .command('generate')
-    .description('Generates the invitations from the templates.')
-    .option('-a, --all', 'Generates files for all guests. Void if name is specified.', false)
-    .option('-n, --name <name>', 'The name of a guest to specify')
-    .option('-p, --with-pdf', 'Also generate the PDF files.', false)
-    .option('-r, --refresh-cache', 'Reload and cache the external dataset.', false)
-    .action(generate);
-
-  program
-    .command('update')
-    .description('Updates the public guest list.')
-    .option('-r, --refresh', 'Reload and cache the external dataset.', false)
-    .action(update);
-
-  program.command('clean').action(clean);
-  program.addHelpCommand(false);
-
-  await program.parseAsync();
-}
+  CLI({
+    generate: (options: GenerateOptions) => {
+      Generator.execute<GuestRow>(options, {
+        loader: Loader
+      });
+    }
+  });
+})();
