@@ -3,7 +3,7 @@ const chokidar = require('chokidar');
 const { spawn } = require('child_process');
 const path = require('path');
 
-const logger = require('./common/logger');
+const logger = require('./logger');
 
 const ROOT = path.resolve(__dirname, '..');
 let rebuildInProgress = false;
