@@ -7,6 +7,7 @@ export type Publish = (options: PublishOptions) => void;
 
 export interface GenerateOptions extends Partial<GenerateHTMLOptions> {
   format?: 'pdf' | 'png';
+  open?: boolean;
   refreshCache?: boolean;
 }
 

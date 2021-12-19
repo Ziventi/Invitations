@@ -6,6 +6,7 @@ import sass from 'node-sass';
 import puppeteer, { Browser } from 'puppeteer';
 import invariant from 'tiny-invariant';
 
+import { spawnSync } from 'child_process';
 import { Server } from 'http';
 
 import { ZLoader } from './loader';
@@ -61,7 +62,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
     options: GenerateOptions,
     loadingOptions: GenerateLoadingOptions<G, R>
   ): Promise<void> {
-    const { all, format, name, refreshCache } = options;
+    const { all, format, name, open, refreshCache } = options;
     const { loader, filter } = loadingOptions;
 
     Utils.setup(this.paths.outputDir);
@@ -85,6 +86,22 @@ export class ZGenerator<G extends TGuest = TGuest> {
     }
 
     Utils.tearDown();
+    if (open) {
+      this.openFileInBrowser(format);
+    }
+  }
+
+  openFileInBrowser(format?: GenerateOptions['format']) {
+    const openFile = (ext: string) => {
+      const outputDir = `${this.paths.outputDir}/${ext}`;
+      const firstFile = fs.readdirSync(outputDir)[0];
+      spawnSync('open', ['-a', 'Google Chrome', firstFile], { cwd: outputDir });
+    };
+
+    openFile('html');
+    if (format === 'pdf') {
+      openFile('pdf');
+    }
   }
 
   /**
