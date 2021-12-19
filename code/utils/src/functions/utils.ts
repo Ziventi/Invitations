@@ -5,7 +5,7 @@ export namespace Utils {
    * Builds the Google Fonts URL with specified fonts parameters.
    * @returns The full URL.
    */
-  export function buildFontUrl(fonts: Record<string, string>): string {
+  export function buildFontUrl(fonts: Record<string, string | null>): string {
     const url = new URL('https://fonts.googleapis.com/css2');
     Object.entries(fonts).forEach(([font, weights]) => {
       const fontWeights = weights ? `${font}:${weights}` : font;

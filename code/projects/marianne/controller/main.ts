@@ -10,7 +10,7 @@ import { Loader } from './settings';
       Tangerine: 'wght@400;700',
       Courgette: 'wght@400;700',
       Montserrat: 'wght@400;700',
-      Playball: ''
+      Playball: null
     }),
     formatOptions: {
       nomenclator: (name: string) => name,
