@@ -9,8 +9,8 @@ const ROOT = path.resolve(__dirname, '..');
 
 /** @type {import('child_process').ChildProcessWithoutNullStreams} */
 let child = null;
-let rebuildInProgress = false;
-let processInterrupted = false;
+const projectsRebuilding = new Set();
+const processesInterrupted = new Set();
 
 chokidar
   .watch(['**/*.ts', '*/**/tsconfig.json'], {
@@ -22,26 +22,26 @@ chokidar
   .on('ready', () => {
     logger.info('Watching for TS file changes...');
   })
-  .on('change', async (path) => {
-    if (rebuildInProgress) {
-      processInterrupted = true;
-      child.kill('SIGINT');
-    }
-    await rebuildProject(path);
-    rebuildInProgress = false;
-  });
+  .on('change', rebuildProject);
 
 /**
  * Runs a build on the project of a changed file.
  * @param {string} filePath The path of the changed file.
  */
 async function rebuildProject(filePath) {
-  rebuildInProgress = true;
-  const [superDir, project] = filePath.split('/');
+  const [baseDirectory, projectName] = filePath.split('/');
 
-  const isProject = superDir === 'projects';
-  const cwd = isProject ? path.join(superDir, project) : superDir;
-  const name = isProject ? project : superDir;
+  const isProject = baseDirectory === 'projects';
+  const cwd = isProject ? path.join(baseDirectory, projectName) : baseDirectory;
+  const name = isProject ? projectName : baseDirectory;
+
+  // Kill a build if already running and rerun.
+  if (projectsRebuilding.has(name)) {
+    processesInterrupted.add(name);
+    child.kill('SIGINT');
+  } else {
+    projectsRebuilding.add(name);
+  }
 
   await new Promise((resolve) => {
     logger.info(`Rebuilding project '${name}'...`);
@@ -52,8 +52,8 @@ async function rebuildProject(filePath) {
     child.stdout.pipe(process.stdout);
 
     child.on('exit', (err) => {
-      if (processInterrupted) {
-        processInterrupted = false;
+      if (processesInterrupted.has(name)) {
+        processesInterrupted.delete(name);
       } else {
         if (!err) {
           logger.info('Finished rebuilding.');
@@ -63,4 +63,6 @@ async function rebuildProject(filePath) {
       resolve();
     });
   });
+
+  projectsRebuilding.delete(name);
 }
