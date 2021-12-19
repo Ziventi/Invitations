@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const chokidar = require('chokidar');
 const log4js = require('log4js');
 
@@ -12,7 +11,7 @@ let rebuildInProgress = false;
 
 chokidar
   .watch(['**/*.ts', '*/**/tsconfig.json'], {
-    cwd: '.',
+    cwd: '..',
     ignored: '**/node_modules/**',
     persistent: true,
     awaitWriteFinish: false

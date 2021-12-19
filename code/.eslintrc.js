@@ -19,6 +19,7 @@ module.exports = {
     react: 'latest'
   },
   rules: {
-    '@typescript-eslint/no-namespace': 'off'
+    '@typescript-eslint/no-namespace': 'off',
+    '@typescript-eslint/no-var-requires': 'off'
   }
 };
