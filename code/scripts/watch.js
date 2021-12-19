@@ -4,9 +4,11 @@ const log4js = require('log4js');
 const { spawn } = require('child_process');
 const path = require('path');
 
+const APPENDER_NAME = 'ziventi';
+
 log4js.configure({
   appenders: {
-    Ziventi: {
+    [APPENDER_NAME]: {
       type: 'console',
       layout: {
         type: 'pattern',
@@ -27,7 +29,7 @@ log4js.configure({
     }
   },
   categories: {
-    default: { appenders: ['Ziventi'], level: 'debug' }
+    default: { appenders: [APPENDER_NAME], level: 'debug' }
   }
 });
 const logger = log4js.getLogger('cheese');
