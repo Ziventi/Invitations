@@ -7,17 +7,12 @@ const logger = require('./logger');
 const PROJECTS_DIR = path.join(process.cwd(), 'projects');
 
 logger.info('Cleaning caches...');
-
 spawnSync('rm', ['-rf', '.cache']);
 
 logger.info('Cleaning output directories...');
-
-fs.readdirSync(PROJECTS_DIR)
-  .map((name) => path.join(PROJECTS_DIR, name))
-  .forEach((directory) => {
-    spawnSync('rm', ['-rf', '.dist', '.out'], {
-      cwd: directory
-    });
-  });
+fs.readdirSync(PROJECTS_DIR).forEach((directory) => {
+  const cwd = path.join(PROJECTS_DIR, directory);
+  spawnSync('rm', ['-rf', '.dist', '.out'], { cwd });
+});
 
 logger.info('Finished.');
