@@ -1,9 +1,9 @@
 const chokidar = require('chokidar');
 
-const { spawn } = require('child_process');
 const path = require('path');
 
-const logger = require('./logger');
+const logger = require('./lib/logger');
+const { run } = require('./lib/runner')('.');
 
 const ROOT = path.resolve(__dirname, '..');
 
@@ -43,11 +43,7 @@ async function rebuildProject(filePath) {
 
   await new Promise((resolve) => {
     logger.info(`Rebuilding project '${name}'...`);
-    child = spawn('node', ['./scripts/build.js', name]);
-
-    child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);
-
+    child = run('node', ['./scripts/build.js', name]);
     child.on('exit', (err) => {
       if (processesInterrupted.has(name)) {
         processesInterrupted.delete(name);

@@ -2,7 +2,7 @@ const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const logger = require('./logger');
+const logger = require('./lib/logger');
 
 const PROJECTS_DIR = path.join(process.cwd(), 'projects');
 
