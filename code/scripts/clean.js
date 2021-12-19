@@ -8,9 +8,7 @@ const PROJECTS_DIR = path.join(process.cwd(), 'projects');
 
 logger.info('Cleaning caches...');
 
-spawnSync('rm', ['-rf', '.dist', '.out'], {
-  cwd: path.join(process.cwd(), '.cache')
-});
+spawnSync('rm', ['-rf', '.cache']);
 
 logger.info('Cleaning output directories...');
 

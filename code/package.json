@@ -7,10 +7,17 @@
   },
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
+    "build": "node scripts/build.js",
+    "cli": "node scripts/cli.js",
     "clean": "node scripts/clean.js",
+    "dev": "node scripts/dev.js",
     "watch": "node scripts/watch.js",
     "eslint": "eslint --ext .ts,.tsx .",
     "stylelint": "stylelint **/*.scss"
+  },
+  "dependencies": {
+    "@ziventi/utils": "file:utils",
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.29.0",
@@ -24,6 +31,7 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "log4js": "^6.3.0",
+    "nodemon": "^2.0.15",
     "prettier": "^2.3.2",
     "stylelint": "^13.13.1",
     "stylelint-config-sass-guidelines": "^8.0.0",

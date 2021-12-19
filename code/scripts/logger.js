@@ -2,6 +2,9 @@ const log4js = require('log4js');
 
 const APPENDER_NAME = 'ziventi';
 
+/** @type {'debug' | 'info'} */
+const LOGGER_LEVEL = 'debug';
+
 log4js.configure({
   appenders: {
     [APPENDER_NAME]: {
@@ -29,6 +32,6 @@ log4js.configure({
   }
 });
 const logger = log4js.getLogger('cheese');
-logger.level = 'info';
+logger.level = LOGGER_LEVEL;
 
 module.exports = logger;

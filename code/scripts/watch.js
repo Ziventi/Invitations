@@ -30,9 +30,7 @@ chokidar
  */
 async function rebuildProject(filePath) {
   const [baseDirectory, projectName] = filePath.split('/');
-
   const isProject = baseDirectory === 'projects';
-  const cwd = isProject ? path.join(baseDirectory, projectName) : baseDirectory;
   const name = isProject ? projectName : baseDirectory;
 
   // Kill a build if already running and rerun.
@@ -45,11 +43,10 @@ async function rebuildProject(filePath) {
 
   await new Promise((resolve) => {
     logger.info(`Rebuilding project '${name}'...`);
-    child = spawn('npm', ['run', 'build'], {
-      cwd: path.join(ROOT, cwd)
-    });
+    child = spawn('node', ['./scripts/build.js', name]);
 
     child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
 
     child.on('exit', (err) => {
       if (processesInterrupted.has(name)) {
