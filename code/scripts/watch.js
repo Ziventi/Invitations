@@ -6,7 +6,11 @@ const path = require('path');
 const logger = require('./logger');
 
 const ROOT = path.resolve(__dirname, '..');
+
+/** @type {import('child_process').ChildProcessWithoutNullStreams} */
+let child = null;
 let rebuildInProgress = false;
+let processInterrupted = false;
 
 chokidar
   .watch(['**/*.ts', '*/**/tsconfig.json'], {
@@ -19,10 +23,12 @@ chokidar
     logger.info('Watching for TS file changes...');
   })
   .on('change', async (path) => {
-    if (!rebuildInProgress) {
-      await rebuildProject(path);
-      rebuildInProgress = false;
+    if (rebuildInProgress) {
+      processInterrupted = true;
+      child.kill('SIGINT');
     }
+    await rebuildProject(path);
+    rebuildInProgress = false;
   });
 
 /**
@@ -39,17 +45,21 @@ async function rebuildProject(filePath) {
 
   await new Promise((resolve) => {
     logger.info(`Rebuilding project '${name}'...`);
-    const child = spawn('npm', ['run', 'build'], {
+    child = spawn('npm', ['run', 'build'], {
       cwd: path.join(ROOT, cwd)
     });
 
     child.stdout.pipe(process.stdout);
 
     child.on('exit', (err) => {
-      if (!err) {
-        logger.info('Finished rebuilding.');
+      if (processInterrupted) {
+        processInterrupted = false;
+      } else {
+        if (!err) {
+          logger.info('Finished rebuilding.');
+        }
+        logger.info('Watching for TS file changes...');
       }
-      logger.info('Watching for TS file changes...');
       resolve();
     });
   });
