@@ -1,42 +1,11 @@
 const chokidar = require('chokidar');
-const log4js = require('log4js');
 
 const { spawn } = require('child_process');
 const path = require('path');
 
-const APPENDER_NAME = 'ziventi';
-
-log4js.configure({
-  appenders: {
-    [APPENDER_NAME]: {
-      type: 'console',
-      layout: {
-        type: 'pattern',
-        pattern: '%[[%x{ln} %p]%] - %m',
-        tokens: {
-          ln: () => {
-            const pad = (value, length = 2) =>
-              value.toString().padStart(length, '0');
-            const dt = new Date();
-            const hour = pad(dt.getHours());
-            const min = pad(dt.getMinutes());
-            const seconds = pad(dt.getSeconds());
-            const ms = pad(dt.getMilliseconds(), 3);
-            return `${pad(hour)}:${pad(min)}:${pad(seconds)}.${ms}`;
-          }
-        }
-      }
-    }
-  },
-  categories: {
-    default: { appenders: [APPENDER_NAME], level: 'debug' }
-  }
-});
-const logger = log4js.getLogger('cheese');
-logger.level = 'info';
+const logger = require('./common/logger');
 
 const ROOT = path.resolve(__dirname, '..');
-
 let rebuildInProgress = false;
 
 chokidar
@@ -64,10 +33,12 @@ async function rebuildProject(filePath) {
   rebuildInProgress = true;
   const [superDir, project] = filePath.split('/');
 
-  const cwd = superDir === 'projects' ? path.join(superDir, project) : superDir;
+  const isProject = superDir === 'projects';
+  const cwd = isProject ? path.join(superDir, project) : superDir;
+  const name = isProject ? project : superDir;
 
   await new Promise((resolve) => {
-    logger.info(`Rebuilding project '${cwd}'...'`);
+    logger.info(`Rebuilding project '${name}'...`);
     const child = spawn('npm', ['run', 'build'], {
       cwd: path.join(ROOT, cwd)
     });
@@ -76,8 +47,9 @@ async function rebuildProject(filePath) {
 
     child.on('exit', (err) => {
       if (!err) {
-        logger.info(`Rebuilt '${cwd}'.'`);
+        logger.info('Finished rebuilding.');
       }
+      logger.info('Watching for TS file changes...');
       resolve();
     });
   });
