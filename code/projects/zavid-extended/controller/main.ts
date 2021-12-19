@@ -2,7 +2,7 @@ import type { GenerateOptions } from '@ziventi/utils';
 import { CLI, Utils, ZGenerator } from '@ziventi/utils';
 
 import { GuestRow } from './classes';
-import { Loader, PROJECT_ROOT } from './settings';
+import { Loader } from './settings';
 
 (async () => {
   const Generator = new ZGenerator({
@@ -17,10 +17,9 @@ import { Loader, PROJECT_ROOT } from './settings';
           deviceScaleFactor: 4
         }
       }
-    },
-    root: PROJECT_ROOT
+    }
   });
-  
+
   CLI({
     generate: (options: GenerateOptions) => {
       Generator.execute<GuestRow>(options, {

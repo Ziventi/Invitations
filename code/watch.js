@@ -11,7 +11,7 @@ logger.level = 'info';
 let rebuildInProgress = false;
 
 chokidar
-  .watch('**/*.ts', {
+  .watch(['**/*.ts', '*/**/tsconfig.json'], {
     cwd: '.',
     ignored: '**/node_modules/**',
     persistent: true,

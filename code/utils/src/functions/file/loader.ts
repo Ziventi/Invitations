@@ -1,5 +1,7 @@
 import fs from 'fs-extra';
 
+import path from 'path';
+
 import { TGuest, TGuestRow } from '../../../types';
 import { Paths } from '../../paths';
 import { Spreadsheet } from '../../spreadsheet';
@@ -20,7 +22,8 @@ export class ZLoader<
    * @returns A promise which resolves to the list of guest records.
    */
   async load(refreshCache?: boolean): Promise<G[]> {
-    const { cacheName, guestMarshaler, spreadsheetId } = this.loadOptions;
+    const { guestMarshaler, spreadsheetId } = this.loadOptions;
+    const cacheName = path.basename(process.cwd());
     const cachePath = `${Paths.CACHE_DIR}/${cacheName}.json`;
 
     if (refreshCache || !fs.existsSync(cachePath)) {
@@ -44,7 +47,6 @@ export class ZLoader<
 }
 
 interface LoadOptions<G, R> {
-  cacheName: string;
   spreadsheetId: string;
   guestMarshaler: (records: R[]) => G[];
 }

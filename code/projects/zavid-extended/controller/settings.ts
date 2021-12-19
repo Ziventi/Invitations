@@ -2,17 +2,11 @@ import type { ConfirmStatus } from '@ziventi/utils';
 import { ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
-import path from 'path';
-
 import { Guest, GuestRow, Rank } from './classes';
 
 dotenv.config();
 
-export const PROJECT_ROOT = path.resolve(__dirname, '../..');
-const CACHE_NAME = path.basename(PROJECT_ROOT);
-
 export const Loader = new ZLoader({
-  cacheName: CACHE_NAME,
   spreadsheetId: process.env.SS_PRIVATE_GUESTLIST_ID!,
   guestMarshaler: marshalGuests
 });

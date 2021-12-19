@@ -30,7 +30,8 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param options The generator constructor options.
    */
   constructor(options: GeneratorConstructor) {
-    const { fontsUrl, formatOptions, htmlOptions, root } = options;
+    const { fontsUrl, formatOptions, htmlOptions } = options;
+    const root = process.cwd();
     const outputDir = `${root}/.out`;
     const viewsDir = `${root}/views`;
     const imagesDir = `${viewsDir}/images`;
@@ -325,7 +326,6 @@ function translateViewportOptions(
 
 interface GeneratorConstructor {
   fontsUrl: string;
-  root: string;
   htmlOptions?: HTMLOptions;
   formatOptions?: FormatOptions;
 }
