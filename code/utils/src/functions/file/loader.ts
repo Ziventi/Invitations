@@ -11,7 +11,7 @@ export class ZLoader<
   G extends TGuest = TGuest,
   R extends TGuestRow = TGuestRow
 > {
-  loadOptions: LoadOptions<G, R>;
+  private loadOptions: LoadOptions<G, R>;
 
   constructor(options: LoadOptions<G, R>) {
     this.loadOptions = options;
@@ -21,7 +21,7 @@ export class ZLoader<
    * Retrieves the full guest list.
    * @returns A promise which resolves to the list of guest records.
    */
-  async load(refreshCache?: boolean): Promise<G[]> {
+  public async load(refreshCache?: boolean): Promise<G[]> {
     const { guestMarshaler, spreadsheetId } = this.loadOptions;
     const cacheName = path.basename(process.cwd());
     const cachePath = `${Paths.CACHE_DIR}/${cacheName}.json`;

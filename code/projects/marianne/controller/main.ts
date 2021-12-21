@@ -1,11 +1,17 @@
-import type { GenerateOptions } from '@ziventi/utils';
-import { CLI, Utils, ZGenerator } from '@ziventi/utils';
+import {
+  CLI,
+  GenerateOptions,
+  PublishOptions,
+  Utils,
+  ZGenerator,
+  ZPublisher
+} from '@ziventi/utils';
 
-import { GuestRow } from './classes';
+import { Guest, GuestRow } from './classes';
 import { Loader } from './settings';
 
 (async () => {
-  const Generator = new ZGenerator({
+  const Generator = new ZGenerator<Guest, GuestRow>({
     fontsUrl: Utils.buildFontUrl({
       Tangerine: 'wght@400;700',
       Courgette: 'wght@400;700',
@@ -20,10 +26,24 @@ import { Loader } from './settings';
     }
   });
 
+  const Publisher = new ZPublisher<Guest, GuestRow>();
+
   CLI({
     generate: (options: GenerateOptions) => {
-      Generator.execute<GuestRow>(options, {
+      Generator.execute(options, {
         loader: Loader
+      });
+    },
+    publish: (options: PublishOptions) => {
+      Publisher.execute(options, {
+        loader: Loader,
+        reducer: {
+          property: 'category',
+          sheetMap: {
+            Family: 'Guest List (Family)',
+            Friends: 'Guest List (Friends)'
+          }
+        }
       });
     }
   });

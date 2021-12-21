@@ -1,48 +1,89 @@
-import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
+import type { GoogleSpreadsheet } from 'google-spreadsheet';
 
-import type { TGuest } from '../../../types';
+import { LoadingOptions, PublishOptions } from '../../..';
+import type { TGuest, TGuestRow } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
 
-export class ZPublisher<G extends TGuest = TGuest> {
-  sheet!: GoogleSpreadsheetWorksheet;
+export class ZPublisher<
+  G extends TGuest = TGuest,
+  R extends TGuestRow = TGuestRow
+> {
+  private spreadsheet!: GoogleSpreadsheet;
 
   /**
    * Updates the public spreadsheet with the currently invited and confirmed
    * guests.
    * @param options The update options.
    */
-  async publish(guests: G[]) {
-    const rows = guests.map(({ name, status }) => {
-      let attendance = '';
+  public async execute(
+    options: PublishOptions,
+    loadingOptions: LoadingOptions<G, R>
+  ) {
+    const { refreshCache } = options;
+    const { loader, filter, reducer } = loadingOptions;
 
-      switch (status) {
-        case 'Confirmed':
-          attendance = '\u2714  Confirmed';
-          break;
-        case 'Tentative':
-          attendance = '\uD83D\uDD38 Tentative';
-          break;
-        case 'Unavailable':
-          attendance = '\u274C Unavailable';
-          break;
-        case 'Awaiting':
-        default:
-          attendance = '\uD83D\uDD57 Awaiting response';
-          break;
-      }
+    let guests = await loader.load(refreshCache);
+    if (filter) {
+      guests = guests.filter(filter);
+    }
 
-      return [name, attendance];
-    });
+    let guestCollection: Record<string, G[]> = {};
+    if (reducer) {
+      const { property, sheetMap } = reducer;
 
-    const spreadsheet = await Spreadsheet.getSpreadsheet(
+      guestCollection = guests.reduce((builder, guest) => {
+        const sheetKey = String(guest[property]);
+        const sheetName = sheetMap[sheetKey];
+        const currentPropertyState = builder[sheetName] || [];
+        return {
+          ...builder,
+          [sheetName]: [...currentPropertyState, guest]
+        };
+      }, {} as Record<string, G[]>);
+    } else {
+      guestCollection['Sheet1'] = guests;
+    }
+
+    this.spreadsheet = await Spreadsheet.getSpreadsheet(
       process.env.SS_PUBLIC_LISTS_ID!
     );
-    this.sheet = spreadsheet.sheetsByIndex[0];
-    await this.sheet.clear();
-    await this.sheet.setHeaderRow(['Name', 'Attendance']);
-    await this.sheet.addRows(rows);
 
-    // await updateInformation();
+    const promises = Object.entries(guestCollection).map(
+      ([sheetName, guests]) => {
+        const rows = guests.map(({ name, status }) => {
+          let attendance = '';
+
+          switch (status) {
+            case 'Confirmed':
+              attendance = '\u2714  Confirmed';
+              break;
+            case 'Tentative':
+              attendance = '\uD83D\uDD38 Tentative';
+              break;
+            case 'Unavailable':
+              attendance = '\u274C Unavailable';
+              break;
+            case 'Awaiting':
+            default:
+              attendance = '\uD83D\uDD57 Awaiting response';
+              break;
+          }
+
+          return [name, attendance];
+        });
+
+        const sheet = this.spreadsheet.sheetsByTitle[sheetName];
+        if (!sheet) return;
+
+        return (async () => {
+          await sheet.clear();
+          await sheet.setHeaderRow(['Name', 'Attendance']);
+          await sheet.addRows(rows);
+        })();
+      }
+    );
+
+    await Promise.all(promises);
   }
 
   /**

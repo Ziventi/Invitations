@@ -1,3 +1,5 @@
+import { ZLoader } from '.';
+
 export type CLIOptions = {
   generate?: Generate;
   publish?: Publish;
@@ -18,6 +20,15 @@ export interface GenerateHTMLOptions {
 
 export interface PublishOptions {
   refreshCache?: boolean;
+}
+
+export interface LoadingOptions<G extends TGuest, R extends TGuestRow> {
+  loader: ZLoader<G, R>;
+  filter?: (g: G) => boolean;
+  reducer?: {
+    property: keyof G;
+    sheetMap: Record<string, string>;
+  };
 }
 
 export interface TGuest {

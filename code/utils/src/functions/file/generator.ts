@@ -9,22 +9,23 @@ import invariant from 'tiny-invariant';
 import { spawnSync } from 'child_process';
 import { Server } from 'http';
 
-import { ZLoader } from './loader';
-
 import { GenerateOptions, TGuestRow } from '../../..';
-import { GenerateHTMLOptions, TGuest } from '../../../types';
+import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../../types';
 import { Utils } from '../utils';
 
-export class ZGenerator<G extends TGuest = TGuest> {
-  app!: Express;
-  browser!: Browser;
-  exiftool!: ExifTool;
-  imageServer!: Server;
+export class ZGenerator<
+  G extends TGuest = TGuest,
+  R extends TGuestRow = TGuestRow
+> {
+  private app!: Express;
+  private browser!: Browser;
+  private exiftool!: ExifTool;
+  private imageServer!: Server;
 
-  fontsUrl: string;
-  formatOptions?: FormatOptions;
-  htmlOptions?: HTMLOptions;
-  paths: ResourcePaths;
+  private fontsUrl: string;
+  private formatOptions?: FormatOptions;
+  private htmlOptions?: HTMLOptions;
+  private paths: ResourcePaths;
 
   /**
    * Constructors a new generator.
@@ -58,9 +59,9 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param options The generate CLI options.
    * @param loadingOptions The generate loading options.
    */
-  async execute<R extends TGuestRow>(
+  public async execute(
     options: GenerateOptions,
-    loadingOptions: GenerateLoadingOptions<G, R>
+    loadingOptions: LoadingOptions<G, R>
   ): Promise<void> {
     const { all, format, name, open, refreshCache } = options;
     const { loader, filter } = loadingOptions;
@@ -91,7 +92,11 @@ export class ZGenerator<G extends TGuest = TGuest> {
     }
   }
 
-  openFileInBrowser(format?: GenerateOptions['format']) {
+  /**
+   * Opens the first generated file in Chrome.
+   * @param format The format of the file to open.
+   */
+  private openFileInBrowser(format?: GenerateOptions['format']): void {
     const openFile = (ext: string) => {
       const outputDir = `${this.paths.outputDir}/${ext}`;
       const firstFile = fs.readdirSync(outputDir)[0];
@@ -109,7 +114,10 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param guests The list of guests to generate files for.
    * @param options The options for generating HTML.
    */
-  generateHTMLFiles(guests: G[], { all, name }: GenerateHTMLOptions): void {
+  private generateHTMLFiles(
+    guests: G[],
+    { all, name }: GenerateHTMLOptions
+  ): void {
     invariant(guests.length, 'There are no guests to generate files for.');
 
     console.info('Generating HTML files...');
@@ -137,7 +145,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   /**
    * Generates the PDF files from each of the guest HTML files.
    */
-  async generatePDFFiles(): Promise<void> {
+  private async generatePDFFiles(): Promise<void> {
     if (!this.formatOptions) return;
     invariant(this.formatOptions.pdfOptions, 'No PDF options specified.');
 
@@ -166,7 +174,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   /**
    * Generates the PNG files from each of the guest HTML files.
    */
-  async generatePNGFiles(): Promise<void> {
+  private async generatePNGFiles(): Promise<void> {
     if (!this.formatOptions) return;
     invariant(this.formatOptions.pngOptions, 'No PNG options specified.');
 
@@ -195,7 +203,11 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param outputFile The HTML file output path.
    * @param guest The guest whose details will go on the invite.
    */
-  createHTMLFile(templateFile: string, outputFile: string, guest: G): void {
+  private createHTMLFile(
+    templateFile: string,
+    outputFile: string,
+    guest: G
+  ): void {
     const { viewsDir, stylesOutputFile } = this.paths;
     try {
       const data = fs.readFileSync(templateFile, 'utf8');
@@ -218,7 +230,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param guestName The name of the guest.
    * @param pageCount The number of pages to print.
    */
-  async createPDFFile(
+  private async createPDFFile(
     html: string,
     guestName: string,
     pageCount: number
@@ -252,14 +264,14 @@ export class ZGenerator<G extends TGuest = TGuest> {
    * @param html The HTML string to be used for generating the PDF.
    * @param guestName The name of the guest.
    */
-  async createPNGFile(html: string, guestName: string) {
+  private async createPNGFile(html: string, guestName: string) {
     if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator, pngOptions } = this.formatOptions;
 
     const filename = nomenclator(guestName);
     const outputPath = `${outputDir}/png/${filename}.png`;
-    const viewport = translateViewportOptions(pngOptions!.viewportOptions);
+    const viewport = this.translateViewportOptions();
 
     try {
       const page = await this.browser.newPage();
@@ -280,7 +292,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   /**
    * Transpiles the SCSS files to CSS.
    */
-  transpileSass(): void {
+  private transpileSass(): void {
     const { outputDir, stylesInputFile, stylesOutputFile } = this.paths;
     console.info('Transpiling SCSS to CSS...');
     fs.ensureDirSync(`${outputDir}/css`);
@@ -298,7 +310,7 @@ export class ZGenerator<G extends TGuest = TGuest> {
   /**
    * Copies images to output folder.
    */
-  copyImages(): void {
+  private copyImages(): void {
     const { outputDir, imagesDir } = this.paths;
     const imagesOutputDir = `${outputDir}/images`;
 
@@ -310,46 +322,38 @@ export class ZGenerator<G extends TGuest = TGuest> {
       Utils.error(e);
     }
   }
-}
 
-/**
- * Translates the incoming viewport options to values acceptable by puppeteer.
- * @param options The viewport options.
- * @returns The puppeteer viewport options.
- */
-function translateViewportOptions(
-  options: ViewportOptions
-): puppeteer.Viewport {
-  const CONVERSION_FACTOR = 96;
-  const { deviceScaleFactor = 1, scale = 1 } = options;
+  /**
+   * Translates the incoming viewport options to values acceptable by puppeteer.
+   * @returns The puppeteer viewport options.
+   */
+  private translateViewportOptions(): puppeteer.Viewport {
+    const {
+      width,
+      height,
+      deviceScaleFactor = 1,
+      scale = 1
+    } = this.formatOptions!.pngOptions!.viewportOptions;
 
-  const convert = (measurement: number | string): number => {
-    if (typeof measurement === 'string') {
-      measurement =
-        parseFloat(measurement.replace('in', '')) * CONVERSION_FACTOR;
-    }
-    return measurement * scale;
-  };
+    const convert = (measurement: number | string): number => {
+      if (typeof measurement === 'string') {
+        measurement = parseFloat(measurement.replace('in', '')) * 96;
+      }
+      return measurement * scale;
+    };
 
-  const width = convert(options.width);
-  const height = convert(options.height);
-
-  return {
-    width,
-    height,
-    deviceScaleFactor
-  };
+    return {
+      width: convert(width),
+      height: convert(height),
+      deviceScaleFactor
+    };
+  }
 }
 
 interface GeneratorConstructor {
   fontsUrl: string;
   htmlOptions?: HTMLOptions;
   formatOptions?: FormatOptions;
-}
-
-interface GenerateLoadingOptions<G extends TGuest, R extends TGuestRow> {
-  loader: ZLoader<G, R>;
-  filter?: (g: G) => boolean;
 }
 
 interface HTMLOptions {
