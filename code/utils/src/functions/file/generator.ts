@@ -13,26 +13,25 @@ import { GenerateOptions, TGuestRow } from '../../..';
 import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../../types';
 import { Utils } from '../utils';
 
-export class ZGenerator<
-  G extends TGuest = TGuest,
-  R extends TGuestRow = TGuestRow
-> {
+export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private app!: Express;
   private browser!: Browser;
   private exiftool!: ExifTool;
   private imageServer!: Server;
 
   private fontsUrl: string;
+  private loadingOptions: LoadingOptions<G, R>;
+  private paths: ResourcePaths;
+
   private formatOptions?: FormatOptions;
   private htmlOptions?: HTMLOptions;
-  private paths: ResourcePaths;
 
   /**
    * Constructors a new generator.
    * @param options The generator constructor options.
    */
-  constructor(options: GeneratorConstructor) {
-    const { fontsUrl, formatOptions, htmlOptions } = options;
+  constructor(options: GeneratorConstructor<G, R>) {
+    const { fontsUrl, formatOptions, htmlOptions, loadingOptions } = options;
     const root = process.cwd();
     const outputDir = `${root}/.out`;
     const viewsDir = `${root}/views`;
@@ -43,6 +42,7 @@ export class ZGenerator<
 
     this.fontsUrl = fontsUrl;
     this.formatOptions = formatOptions;
+    this.loadingOptions = loadingOptions;
     this.htmlOptions = htmlOptions;
     this.paths = {
       outputDir,
@@ -57,14 +57,10 @@ export class ZGenerator<
   /**
    * Triggers the generate method.
    * @param options The generate CLI options.
-   * @param loadingOptions The generate loading options.
    */
-  public async execute(
-    options: GenerateOptions,
-    loadingOptions: LoadingOptions<G, R>
-  ): Promise<void> {
+  public async execute(options: GenerateOptions): Promise<void> {
     const { all, format, name, open, refreshCache } = options;
-    const { loader, filter } = loadingOptions;
+    const { loader, filter } = this.loadingOptions;
 
     Utils.setup(this.paths.outputDir);
     this.transpileSass();
@@ -267,7 +263,7 @@ export class ZGenerator<
   private async createPNGFile(html: string, guestName: string) {
     if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
-    const { nomenclator, pngOptions } = this.formatOptions;
+    const { nomenclator } = this.formatOptions;
 
     const filename = nomenclator(guestName);
     const outputPath = `${outputDir}/png/${filename}.png`;
@@ -350,8 +346,9 @@ export class ZGenerator<
   }
 }
 
-interface GeneratorConstructor {
+interface GeneratorConstructor<G extends TGuest, R extends TGuestRow> {
   fontsUrl: string;
+  loadingOptions: LoadingOptions<G, R>;
   htmlOptions?: HTMLOptions;
   formatOptions?: FormatOptions;
 }

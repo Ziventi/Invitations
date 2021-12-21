@@ -1,26 +1,27 @@
 import type { GoogleSpreadsheet } from 'google-spreadsheet';
+import invariant from 'tiny-invariant';
 
 import { LoadingOptions, PublishOptions } from '../../..';
 import type { TGuest, TGuestRow } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
 
-export class ZPublisher<
-  G extends TGuest = TGuest,
-  R extends TGuestRow = TGuestRow
-> {
+export class ZPublisher<G extends TGuest, R extends TGuestRow> {
+  private loadingOptions: LoadingOptions<G, R>;
   private spreadsheet!: GoogleSpreadsheet;
+
+  constructor(options: PublisherConstructor<G, R>) {
+    const { loadingOptions } = options;
+    this.loadingOptions = loadingOptions;
+  }
 
   /**
    * Updates the public spreadsheet with the currently invited and confirmed
    * guests.
    * @param options The update options.
    */
-  public async execute(
-    options: PublishOptions,
-    loadingOptions: LoadingOptions<G, R>
-  ) {
+  public async execute(options: PublishOptions): Promise<void> {
     const { refreshCache } = options;
-    const { loader, filter, reducer } = loadingOptions;
+    const { loader, filter, reducer } = this.loadingOptions;
 
     let guests = await loader.load(refreshCache);
     if (filter) {
@@ -87,62 +88,29 @@ export class ZPublisher<
   }
 
   /**
-   * Updates the information cells on the spreadsheet.
+   * Directly updates cells on a specified worksheet.
+   * @param sheetName The name of the worksheet.
+   * @param range The range of cells to load.
+   * @param valuesByCell The list of cell id-value pairs.
    */
-  // async function updateInformation() {
-  //   const guests = await Utils.loadGuestList(false);
-  //   await sheet.loadCells('D3:E14');
+  public async updateCells(
+    sheetName: string,
+    range: string,
+    valuesByCell: [string, string][]
+  ): Promise<void> {
+    const sheet = this.spreadsheet.sheetsByTitle[sheetName];
+    invariant(sheet, `No sheet exists with name '${sheetName}'.`);
+    await sheet.loadCells(range);
 
-  //   setCellText(
-  //     'D3',
-  //     'Only people who have received invites so far will appear here; this list will be updated gradually. Check back here occasionally to see people you know whom you can tag along with.'
-  //   );
-  //   setCellText('D9', 'Current Total of Invitees:');
-  //   setCellText('E9', guests.filter((g) => g.invited).length.toString());
-  //   setCellText('D10', '\u2714  No. of Confirmed:');
-  //   setCellText(
-  //     'E10',
-  //     guests
-  //       .filter((g) => g.invited && g.confirmStatus === 'confirmed')
-  //       .length.toString()
-  //   );
-  //   setCellText('D11', '\uD83D\uDD38 No. of Tentative:');
-  //   setCellText(
-  //     'E11',
-  //     guests
-  //       .filter((g) => g.invited && g.confirmStatus === 'tentative')
-  //       .length.toString()
-  //   );
-  //   setCellText('D12', '\uD83D\uDD57 No. of Awaiting:');
-  //   setCellText(
-  //     'E12',
-  //     guests
-  //       .filter((g) => g.invited && g.confirmStatus === 'awaiting')
-  //       .length.toString()
-  //   );
-  //   setCellText('D13', '\u274C No. of Unavailable:');
-  //   setCellText(
-  //     'E13',
-  //     guests
-  //       .filter((g) => g.invited && g.confirmStatus === 'unavailable')
-  //       .length.toString()
-  //   );
-  //   setCellText('D14', 'No. of Invites Remaining:');
-  //   setCellText(
-  //     'E14',
-  //     guests.filter((g) => !g.invited && g.rank <= Rank.D).length.toString()
-  //   );
+    valuesByCell.forEach(([cellId, text]) => {
+      const cell = sheet.getCellByA1(cellId);
+      cell.value = text;
+    });
 
-  //   await sheet.saveUpdatedCells();
+    await sheet.saveUpdatedCells();
+  }
 }
 
-// /**
-//  * Set the text of a specified spreadsheet cell.
-//  * @param cellId The ID of the cell.
-//  * @param text The text to set as the value.
-//  */
-// function setCellText(cellId: string, text: string) {
-//   const cell = sheet.getCellByA1(cellId);
-//   cell.value = text;
-
-// }
+interface PublisherConstructor<G extends TGuest, R extends TGuestRow> {
+  loadingOptions: LoadingOptions<G, R>;
+}

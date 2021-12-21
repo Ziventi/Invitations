@@ -1,11 +1,4 @@
-import {
-  CLI,
-  GenerateOptions,
-  PublishOptions,
-  Utils,
-  ZGenerator,
-  ZPublisher
-} from '@ziventi/utils';
+import { CLI, Utils, ZGenerator, ZPublisher } from '@ziventi/utils';
 
 import { Guest, GuestRow } from './classes';
 import { Loader } from './settings';
@@ -23,28 +16,27 @@ import { Loader } from './settings';
       pdfOptions: {
         format: 'a4'
       }
+    },
+    loadingOptions: {
+      loader: Loader
     }
   });
 
-  const Publisher = new ZPublisher<Guest, GuestRow>();
+  const Publisher = new ZPublisher<Guest, GuestRow>({
+    loadingOptions: {
+      loader: Loader,
+      reducer: {
+        property: 'category',
+        sheetMap: {
+          Family: 'Guest List (Family)',
+          Friends: 'Guest List (Friends)'
+        }
+      }
+    }
+  });
 
   CLI({
-    generate: (options: GenerateOptions) => {
-      Generator.execute(options, {
-        loader: Loader
-      });
-    },
-    publish: (options: PublishOptions) => {
-      Publisher.execute(options, {
-        loader: Loader,
-        reducer: {
-          property: 'category',
-          sheetMap: {
-            Family: 'Guest List (Family)',
-            Friends: 'Guest List (Friends)'
-          }
-        }
-      });
-    }
+    generate: Generator.execute,
+    publish: Publisher.execute
   });
 })();
