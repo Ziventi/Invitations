@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 /**
  * Times a class method.
  */
@@ -9,9 +11,11 @@ export function Timed(
   const originalMethod = descriptor.value;
 
   descriptor.value = async function (...args: any) {
-    console.time('Time');
+    const startTime = Date.now();
     const result = await originalMethod.apply(this, args);
-    console.timeEnd('Time');
+    const endTime = Date.now();
+    const difference = (endTime - startTime) / 1000;
+    logger.info(`Finished in ${difference.toFixed(2)}s.`);
     return result;
   };
 
