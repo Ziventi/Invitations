@@ -11,6 +11,7 @@ import { Server } from 'http';
 
 import { GenerateOptions, TGuestRow } from '../../..';
 import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../../types';
+import { Timed } from '../decorators';
 import { logger } from '../logger';
 import { Utils } from '../utils';
 
@@ -61,6 +62,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * Triggers the generate method.
    * @param options The generate CLI options.
    */
+  @Timed
   public async execute(options: GenerateOptions): Promise<void> {
     const { all, format, name, open, refreshCache } = options;
     const { loader, filter } = this.loadingOptions;
@@ -85,7 +87,6 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       await this.generatePDFFiles();
     }
 
-    Utils.tearDown();
     if (open) {
       this.openFileInBrowser(format);
     }

@@ -50,15 +50,7 @@ export namespace Utils {
    * @param outDir The path to the output directory.
    */
   export function setup(outDir: string): void {
-    console.time('Time');
     clean(outDir);
     fs.ensureDirSync(outDir);
-  }
-
-  /**
-   * Stop and display execution timer.
-   */
-  export function tearDown(): void {
-    console.timeEnd('Time');
   }
 }

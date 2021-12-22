@@ -15,7 +15,7 @@ export class ZLoader<
   private loadOptions: LoadOptions<G, R>;
 
   constructor(options: LoadOptions<G, R>) {
-    logger.debug('Constructing ZLoader...');
+    logger.trace('Constructing ZLoader...');
     this.loadOptions = options;
   }
 
@@ -24,7 +24,7 @@ export class ZLoader<
    * @returns A promise which resolves to the list of guest records.
    */
   public async execute(refreshCache?: boolean): Promise<G[]> {
-    logger.debug('Executing ZLoader...');
+    logger.trace('Executing ZLoader...');
     const { guestMarshaler, spreadsheetId } = this.loadOptions;
     const cacheName = path.basename(process.cwd());
     const cachePath = `${Paths.CACHE_DIR}/${cacheName}.json`;
