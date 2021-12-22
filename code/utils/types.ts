@@ -32,13 +32,15 @@ export interface LoadingOptions<
 
 export interface PublishLoadingOptions<G extends TGuest, R extends TGuestRow>
   extends LoadingOptions<G, R> {
-  sheet:
-    | string
-    | {
-        property: keyof G;
-        sheetMap: Record<string, string>;
-      };
+  sheet: PublishSheet<G>;
 }
+
+export type PublishSheet<G> =
+  | string
+  | {
+      property: keyof G;
+      sheetMap: Record<string, string>;
+    };
 
 export interface TGuest {
   name: string;

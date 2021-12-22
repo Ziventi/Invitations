@@ -1,7 +1,14 @@
 import type { GoogleSpreadsheet } from 'google-spreadsheet';
 import invariant from 'tiny-invariant';
 
-import { PublishLoadingOptions, PublishOptions, TGuestRow } from '../../..';
+import path from 'path';
+
+import {
+  PublishLoadingOptions,
+  PublishOptions,
+  PublishSheet,
+  TGuestRow
+} from '../../..';
 import type { TGuest } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
 import { Timed } from '../decorators';
@@ -9,11 +16,13 @@ import { logger } from '../logger';
 
 export class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: PublishLoadingOptions<G, R>;
+  private postPublish?: PostPublish<G>;
   private spreadsheet!: GoogleSpreadsheet;
 
   constructor(options: PublisherConstructor<G, R>) {
-    const { loadingOptions } = options;
+    const { loadingOptions, postPublish } = options;
     this.loadingOptions = loadingOptions;
+    this.postPublish = postPublish;
     this.execute = this.execute.bind(this);
   }
 
@@ -33,7 +42,54 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
       guests = processor(guests);
     }
 
+    logger.info(
+      `Publishing guest list for '${path.basename(process.cwd())}'...`
+    );
+    await this.marshalGuestsToRows(sheet, guests);
+    logger.info(`Guest list published.`);
+
+    if (this.postPublish) {
+      logger.info(`Executing post-publish...`);
+      const { sheet, range, updater } = this.postPublish;
+      await this.updateCells(sheet, range, updater(guests));
+      logger.info(`Post post-publish complete.`);
+    }
+  }
+
+  /**
+   * Directly updates cells on a specified worksheet.
+   * @param sheetName The name of the worksheet.
+   * @param range The range of cells to load.
+   * @param valuesByCell The map of cell id-value pairs.
+   */
+  private async updateCells(
+    sheetName: string,
+    range: string,
+    valuesByCell: Record<string, string>
+  ): Promise<void> {
+    const sheet = this.spreadsheet.sheetsByTitle[sheetName];
+    invariant(sheet, `No sheet exists with name '${sheetName}'.`);
+    await sheet.loadCells(range);
+
+    Object.entries(valuesByCell).forEach(([cellId, text]) => {
+      const cell = sheet.getCellByA1(cellId);
+      cell.value = text;
+    });
+
+    await sheet.saveUpdatedCells();
+  }
+
+  /**
+   * Marshals guests to rows to publish on a specified sheet.
+   * @param sheet The sheet(s) to publish to.
+   * @param guests The list of guests.
+   */
+  private async marshalGuestsToRows(
+    sheet: PublishSheet<G>,
+    guests: G[]
+  ): Promise<void> {
     let guestCollection: Record<string, G[]> = {};
+
     if (typeof sheet === 'string') {
       guestCollection[sheet] = guests;
     } else {
@@ -91,31 +147,15 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
 
     await Promise.all(promises);
   }
-
-  /**
-   * Directly updates cells on a specified worksheet.
-   * @param sheetName The name of the worksheet.
-   * @param range The range of cells to load.
-   * @param valuesByCell The map of cell id-value pairs.
-   */
-  public async updateCells(
-    sheetName: string,
-    range: string,
-    valuesByCell: Record<string, string>
-  ): Promise<void> {
-    const sheet = this.spreadsheet.sheetsByTitle[sheetName];
-    invariant(sheet, `No sheet exists with name '${sheetName}'.`);
-    await sheet.loadCells(range);
-
-    Object.entries(valuesByCell).forEach(([cellId, text]) => {
-      const cell = sheet.getCellByA1(cellId);
-      cell.value = text;
-    });
-
-    await sheet.saveUpdatedCells();
-  }
 }
 
 interface PublisherConstructor<G extends TGuest, R extends TGuestRow> {
   loadingOptions: PublishLoadingOptions<G, R>;
+  postPublish?: PostPublish<G>;
+}
+
+interface PostPublish<G> {
+  sheet: string;
+  range: string;
+  updater: (guests: G[]) => Record<string, string>;
 }

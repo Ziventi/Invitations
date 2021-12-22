@@ -8,6 +8,7 @@ import invariant from 'tiny-invariant';
 
 import { spawnSync } from 'child_process';
 import { Server } from 'http';
+import path from 'path';
 
 import { GenerateOptions, TGuestRow } from '../../..';
 import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../../types';
@@ -66,6 +67,16 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   public async execute(options: GenerateOptions): Promise<void> {
     const { all, format, name, open, refreshCache } = options;
     const { loader, processor } = this.loadingOptions;
+
+    logger.info(`Generating files for '${path.basename(process.cwd())}'...`);
+
+    if (all && format) {
+      logger.warn('Generating format files for all guests.');
+    }
+
+    if (open) {
+      logger.warn('Will open first file after generation.');
+    }
 
     Utils.setup(this.paths.outputDir);
     this.transpileSass();
