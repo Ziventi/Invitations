@@ -1,14 +1,14 @@
 import type { GoogleSpreadsheet } from 'google-spreadsheet';
 import invariant from 'tiny-invariant';
 
-import { LoadingOptions, PublishOptions } from '../../..';
-import type { TGuest, TGuestRow } from '../../../types';
+import { PublishLoadingOptions, PublishOptions, TGuestRow } from '../../..';
+import type { TGuest } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
 import { Timed } from '../decorators';
 import { logger } from '../logger';
 
 export class ZPublisher<G extends TGuest, R extends TGuestRow> {
-  private loadingOptions: LoadingOptions<G, R>;
+  private loadingOptions: PublishLoadingOptions<G, R>;
   private spreadsheet!: GoogleSpreadsheet;
 
   constructor(options: PublisherConstructor<G, R>) {
@@ -22,11 +22,11 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
    * guests.
    * @param options The update options.
    */
-   @Timed
+  @Timed
   public async execute(options: PublishOptions): Promise<void> {
     logger.trace('Executing ZPublisher...');
     const { refreshCache } = options;
-    const { loader, filter, reducer } = this.loadingOptions;
+    const { loader, filter, sheet } = this.loadingOptions;
 
     let guests = await loader.execute(refreshCache);
     if (filter) {
@@ -34,8 +34,10 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
     }
 
     let guestCollection: Record<string, G[]> = {};
-    if (reducer) {
-      const { property, sheetMap } = reducer;
+    if (typeof sheet === 'string') {
+      guestCollection[sheet] = guests;
+    } else {
+      const { property, sheetMap } = sheet;
 
       guestCollection = guests.reduce((builder, guest) => {
         const sheetKey = String(guest[property]);
@@ -46,8 +48,6 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
           [sheetName]: [...currentPropertyState, guest]
         };
       }, {} as Record<string, G[]>);
-    } else {
-      guestCollection['Sheet1'] = guests;
     }
 
     this.spreadsheet = await Spreadsheet.getSpreadsheet(
@@ -117,5 +117,5 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
 }
 
 interface PublisherConstructor<G extends TGuest, R extends TGuestRow> {
-  loadingOptions: LoadingOptions<G, R>;
+  loadingOptions: PublishLoadingOptions<G, R>;
 }

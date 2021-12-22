@@ -1,5 +1,7 @@
 import fs from 'fs-extra';
 
+import path from 'path';
+
 import { logger } from './logger';
 
 export namespace Utils {
@@ -15,6 +17,20 @@ export namespace Utils {
     });
     url.searchParams.append('display', 'swap');
     return url.href;
+  }
+
+  export function compileResources(): Record<string, any> {
+    const resources: Record<string, any> = {};
+    const resourcesDir = path.join(process.cwd(), './views/resources');
+
+    fs.readdirSync(resourcesDir).forEach((filename) => {
+      const filePath = path.join(resourcesDir, filename);
+      const file = fs.readFileSync(filePath, { encoding: 'utf8' });
+      const { name } = path.parse(filePath);
+      resources[name] = JSON.parse(file);
+    });
+
+    return resources;
   }
 
   /**

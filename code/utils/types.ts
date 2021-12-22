@@ -22,13 +22,22 @@ export interface PublishOptions {
   refreshCache?: boolean;
 }
 
-export interface LoadingOptions<G extends TGuest, R extends TGuestRow> {
+export interface LoadingOptions<
+  G extends TGuest = TGuest,
+  R extends TGuestRow = TGuestRow
+> {
   loader: ZLoader<G, R>;
   filter?: (g: G) => boolean;
-  reducer?: {
-    property: keyof G;
-    sheetMap: Record<string, string>;
-  };
+}
+
+export interface PublishLoadingOptions<G extends TGuest, R extends TGuestRow>
+  extends LoadingOptions<G, R> {
+  sheet:
+    | string
+    | {
+        property: keyof G;
+        sheetMap: Record<string, string>;
+      };
 }
 
 export interface TGuest {
