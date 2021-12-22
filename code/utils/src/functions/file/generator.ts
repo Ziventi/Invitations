@@ -52,6 +52,8 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       stylesInputFile: `${viewsDir}/styles/App.scss`,
       stylesOutputFile: `${outputDir}/css/main.css`
     };
+
+    this.execute = this.execute.bind(this);
   }
 
   /**
@@ -69,7 +71,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       this.copyImages();
     }
 
-    let guests = await loader.load(refreshCache);
+    let guests = await loader.execute(refreshCache);
     if (filter) {
       guests = guests.filter(filter);
     }
@@ -93,7 +95,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * @param format The format of the file to open.
    */
   private openFileInBrowser(format?: GenerateOptions['format']): void {
-    const openFile = (ext: string) => {
+    const openFile = (ext: string): void => {
       const outputDir = `${this.paths.outputDir}/${ext}`;
       const firstFile = fs.readdirSync(outputDir)[0];
       spawnSync('open', ['-a', 'Google Chrome', firstFile], { cwd: outputDir });
@@ -260,7 +262,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * @param html The HTML string to be used for generating the PDF.
    * @param guestName The name of the guest.
    */
-  private async createPNGFile(html: string, guestName: string) {
+  private async createPNGFile(html: string, guestName: string): Promise<void> {
     if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
     const { nomenclator } = this.formatOptions;

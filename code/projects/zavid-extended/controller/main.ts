@@ -1,7 +1,5 @@
-import type { GenerateOptions } from '@ziventi/utils';
 import { CLI, Utils, ZGenerator } from '@ziventi/utils';
 
-import { GuestRow } from './classes';
 import { Loader } from './settings';
 
 (async () => {
@@ -17,15 +15,14 @@ import { Loader } from './settings';
           deviceScaleFactor: 4
         }
       }
+    },
+    loadingOptions: {
+      loader: Loader,
+      filter: (g) => g.status === 'Confirmed'
     }
   });
 
-  CLI({
-    generate: (options: GenerateOptions) => {
-      Generator.execute<GuestRow>(options, {
-        loader: Loader,
-        filter: (g) => g.status === 'Confirmed'
-      });
-    }
+  await CLI({
+    generate: Generator.execute
   });
 })();

@@ -4,6 +4,7 @@ import invariant from 'tiny-invariant';
 import { LoadingOptions, PublishOptions } from '../../..';
 import type { TGuest, TGuestRow } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
+import logger from '../logger';
 
 export class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: LoadingOptions<G, R>;
@@ -12,6 +13,7 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
   constructor(options: PublisherConstructor<G, R>) {
     const { loadingOptions } = options;
     this.loadingOptions = loadingOptions;
+    this.execute = this.execute.bind(this);
   }
 
   /**
@@ -20,10 +22,11 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
    * @param options The update options.
    */
   public async execute(options: PublishOptions): Promise<void> {
+    logger.debug('Executing ZPublisher...');
     const { refreshCache } = options;
     const { loader, filter, reducer } = this.loadingOptions;
 
-    let guests = await loader.load(refreshCache);
+    let guests = await loader.execute(refreshCache);
     if (filter) {
       guests = guests.filter(filter);
     }

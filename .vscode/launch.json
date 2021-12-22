@@ -5,16 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Watch",
+      "name": "Debug Code",
+      "port": 9229,
       "type": "pwa-node",
-      "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}/code/scripts/watch.js",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
       "outFiles": [
-        "${workspaceFolder}/**/*.js"
-      ]
+        "${workspaceFolder}/**/*.js",
+        "!**/node_modules/**"
+      ],
+      "sourceMaps": true,
     }
   ]
 }

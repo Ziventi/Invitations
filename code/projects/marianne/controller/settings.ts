@@ -1,9 +1,7 @@
-import type { ConfirmStatus } from '@ziventi/utils';
-import { ZLoader } from '@ziventi/utils';
-
+import { ConfirmStatus, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
-import { Guest, GuestRow, InviteRound, Category } from './classes';
+import { Category, Guest, GuestRow, InviteRound } from './classes';
 
 dotenv.config();
 
