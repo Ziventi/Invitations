@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant';
 import { LoadingOptions, PublishOptions } from '../../..';
 import type { TGuest, TGuestRow } from '../../../types';
 import { Spreadsheet } from '../../spreadsheet';
-import logger from '../logger';
+import { logger } from '../logger';
 
 export class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: LoadingOptions<G, R>;

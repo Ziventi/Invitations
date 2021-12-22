@@ -1,5 +1,7 @@
 import fs from 'fs-extra';
 
+import { logger } from './logger';
+
 export namespace Utils {
   /**
    * Builds the Google Fonts URL with specified fonts parameters.
@@ -29,7 +31,7 @@ export namespace Utils {
    */
   export function error(err: any): void {
     if (err) {
-      console.error('Error: ' + err.message);
+      logger.error('Error: ' + err.message);
       process.exit(0);
     }
   }

@@ -3,7 +3,7 @@ import log4js from 'log4js';
 const LOGGER_LEVEL = 'debug';
 const APPENDER_NAME = 'ziventi';
 
-const logger = log4js
+const ZLogger = log4js
   .configure({
     appenders: {
       [APPENDER_NAME]: {
@@ -32,6 +32,6 @@ const logger = log4js
     }
   })
   .getLogger('cheese');
-logger.level = LOGGER_LEVEL;
+  ZLogger.level = LOGGER_LEVEL;
 
-export default logger;
+export const logger = ZLogger;

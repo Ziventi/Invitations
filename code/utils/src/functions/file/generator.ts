@@ -11,6 +11,7 @@ import { Server } from 'http';
 
 import { GenerateOptions, TGuestRow } from '../../..';
 import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../../types';
+import { logger } from '../logger';
 import { Utils } from '../utils';
 
 export class ZGenerator<G extends TGuest, R extends TGuestRow> {
@@ -118,7 +119,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   ): void {
     invariant(guests.length, 'There are no guests to generate files for.');
 
-    console.info('Generating HTML files...');
+    logger.info('Generating HTML files...');
     const { outputDir, templatesDir } = this.paths;
 
     if (name) {
@@ -149,7 +150,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     const { outputDir, templatesDir } = this.paths;
     fs.ensureDirSync(`${outputDir}/pdf`);
-    console.info('Generating PDF files...');
+    logger.info('Generating PDF files...');
 
     this.browser = await puppeteer.launch();
     this.exiftool = new ExifTool();
@@ -178,7 +179,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     const { outputDir } = this.paths;
     fs.ensureDirSync(`${outputDir}/png`);
-    console.info('Generating PNG files...');
+    logger.info('Generating PNG files...');
 
     this.browser = await puppeteer.launch();
     this.imageServer = this.app.listen(3000);
@@ -292,7 +293,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   private transpileSass(): void {
     const { outputDir, stylesInputFile, stylesOutputFile } = this.paths;
-    console.info('Transpiling SCSS to CSS...');
+    logger.info('Transpiling SCSS to CSS...');
     fs.ensureDirSync(`${outputDir}/css`);
     try {
       const output = sass.renderSync({
@@ -312,7 +313,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const { outputDir, imagesDir } = this.paths;
     const imagesOutputDir = `${outputDir}/images`;
 
-    console.info('Copying images to output...');
+    logger.info('Copying images to output...');
     fs.ensureDirSync(imagesOutputDir);
     try {
       fs.copySync(imagesDir, imagesOutputDir);

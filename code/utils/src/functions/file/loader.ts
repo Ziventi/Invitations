@@ -5,7 +5,7 @@ import path from 'path';
 import { TGuest, TGuestRow } from '../../../types';
 import { Paths } from '../../paths';
 import { Spreadsheet } from '../../spreadsheet';
-import logger from '../logger';
+import { logger } from '../logger';
 import { Utils } from '../utils';
 
 export class ZLoader<
