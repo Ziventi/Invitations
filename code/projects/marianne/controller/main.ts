@@ -1,10 +1,9 @@
 import { CLI, Utils, ZGenerator, ZPublisher } from '@ziventi/utils';
 
-import { Guest, GuestRow } from './classes';
 import { Loader } from './settings';
 
 (async () => {
-  const Generator = new ZGenerator<Guest, GuestRow>({
+  const Generator = new ZGenerator({
     fontsUrl: Utils.buildFontUrl({
       Tangerine: 'wght@400;700',
       Courgette: 'wght@400;700',
@@ -22,7 +21,7 @@ import { Loader } from './settings';
     }
   });
 
-  const Publisher = new ZPublisher<Guest, GuestRow>({
+  const Publisher = new ZPublisher({
     loadingOptions: {
       loader: Loader,
       reducer: {
@@ -35,7 +34,7 @@ import { Loader } from './settings';
     }
   });
 
-  CLI({
+  await CLI({
     generate: Generator.execute,
     publish: Publisher.execute
   });

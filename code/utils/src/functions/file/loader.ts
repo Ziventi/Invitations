@@ -5,6 +5,7 @@ import path from 'path';
 import { TGuest, TGuestRow } from '../../../types';
 import { Paths } from '../../paths';
 import { Spreadsheet } from '../../spreadsheet';
+import logger from '../logger';
 import { Utils } from '../utils';
 
 export class ZLoader<
@@ -14,6 +15,7 @@ export class ZLoader<
   private loadOptions: LoadOptions<G, R>;
 
   constructor(options: LoadOptions<G, R>) {
+    logger.debug('Constructing ZLoader...');
     this.loadOptions = options;
   }
 
@@ -21,13 +23,14 @@ export class ZLoader<
    * Retrieves the full guest list.
    * @returns A promise which resolves to the list of guest records.
    */
-  public async load(refreshCache?: boolean): Promise<G[]> {
+  public async execute(refreshCache?: boolean): Promise<G[]> {
+    logger.debug('Executing ZLoader...');
     const { guestMarshaler, spreadsheetId } = this.loadOptions;
     const cacheName = path.basename(process.cwd());
     const cachePath = `${Paths.CACHE_DIR}/${cacheName}.json`;
 
     if (refreshCache || !fs.existsSync(cachePath)) {
-      console.info('Refreshing cache...');
+      logger.info('Refreshing cache...');
       let records: R[] = [];
 
       try {
