@@ -13,6 +13,4 @@ Validator.ensureProjectExists(PROJECT_DIR);
 const { run } = runner(PROJECT_DIR);
 
 logger.info('Running CLI command...');
-run('node', ['./.dist/main.js', ...args], () => {
-  logger.info('Finished.');
-});
+run('node', ['./.dist/main.js', ...args]);

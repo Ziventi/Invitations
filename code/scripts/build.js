@@ -14,10 +14,10 @@ const PROJECT_DIR =
 
 Validator.ensureProjectExists(PROJECT_DIR);
 
-const { run, runSync } = runner(PROJECT_DIR);
+const { run, runSilent } = runner(PROJECT_DIR);
 
 logger.info(`Building project '${projectName}'...`);
-runSync('rm', ['-rf', '.dist']);
+runSilent('rm', ['-rf', '.dist']);
 run('tsc', ['--outDir', path.join(PROJECT_DIR, './.dist')], () => {
   logger.info('Finished build.');
 });

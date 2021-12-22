@@ -93,23 +93,6 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   }
 
   /**
-   * Opens the first generated file in Chrome.
-   * @param format The format of the file to open.
-   */
-  private openFileInBrowser(format?: GenerateOptions['format']): void {
-    const openFile = (ext: string): void => {
-      const outputDir = `${this.paths.outputDir}/${ext}`;
-      const firstFile = fs.readdirSync(outputDir)[0];
-      spawnSync('open', ['-a', 'Google Chrome', firstFile], { cwd: outputDir });
-    };
-
-    openFile('html');
-    if (format === 'pdf') {
-      openFile('pdf');
-    }
-  }
-
-  /**
    * Generates the HTML files for each member on the guest list from the template.
    * @param guests The list of guests to generate files for.
    * @param options The options for generating HTML.
@@ -320,6 +303,23 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       fs.copySync(imagesDir, imagesOutputDir);
     } catch (e) {
       Utils.error(e);
+    }
+  }
+
+  /**
+   * Opens the first generated file in Chrome.
+   * @param format The format of the file to open.
+   */
+   private openFileInBrowser(format?: GenerateOptions['format']): void {
+    const openFile = (ext: string): void => {
+      const outputDir = `${this.paths.outputDir}/${ext}`;
+      const firstFile = fs.readdirSync(outputDir)[0];
+      spawnSync('open', ['-a', 'Google Chrome', firstFile], { cwd: outputDir });
+    };
+
+    openFile('html');
+    if (format === 'pdf') {
+      openFile('pdf');
     }
   }
 

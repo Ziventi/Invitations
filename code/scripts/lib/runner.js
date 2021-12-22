@@ -24,12 +24,12 @@ module.exports = (cwd) => {
    * @param {*} cmd The base command.
    * @param {*} args The command arguments.
    */
-  function runSync(cmd, args) {
+  function runSilent(cmd, args) {
     spawnSync(cmd, args, { cwd });
   }
 
   return {
     run,
-    runSync
+    runSilent
   };
 };
