@@ -2,11 +2,11 @@ import fs from 'fs-extra';
 
 import path from 'path';
 
-import { TGuest, TGuestRow } from '../../../types';
-import { Paths } from '../../paths';
-import { Spreadsheet } from '../../spreadsheet';
-import { logger } from '../logger';
-import { Utils } from '../utils';
+import { TGuest, TGuestRow } from '../../types';
+import { Paths } from '../constants/paths';
+import { Utils } from '../utils/functions';
+import { logger } from '../utils/logger';
+import { Spreadsheet } from '../utils/spreadsheet';
 
 export class ZLoader<
   G extends TGuest = TGuest,

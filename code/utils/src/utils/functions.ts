@@ -19,6 +19,10 @@ export namespace Utils {
     return url.href;
   }
 
+  /**
+   * Compiles the list of resource files for use as EJS locals.
+   * @returns The map of resource names to contents.
+   */
   export function compileResources(): Record<string, any> {
     const resources: Record<string, any> = {};
     const resourcesDir = path.join(process.cwd(), './views/resources');

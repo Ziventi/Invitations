@@ -10,11 +10,11 @@ import { spawnSync } from 'child_process';
 import { Server } from 'http';
 import path from 'path';
 
-import { GenerateOptions, TGuestRow } from '../../..';
-import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../../types';
-import { Timed } from '../decorators';
-import { logger } from '../logger';
-import { Utils } from '../utils';
+import { GenerateOptions, TGuestRow } from '../..';
+import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../types';
+import { Timed } from '../utils/decorators';
+import { Utils } from '../utils/functions';
+import { logger } from '../utils/logger';
 
 export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private app!: Express;

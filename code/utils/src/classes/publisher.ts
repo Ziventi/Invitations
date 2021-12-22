@@ -8,11 +8,11 @@ import {
   PublishOptions,
   PublishSheet,
   TGuestRow
-} from '../../..';
-import type { TGuest } from '../../../types';
-import { Spreadsheet } from '../../spreadsheet';
-import { Timed } from '../decorators';
-import { logger } from '../logger';
+} from '../..';
+import type { TGuest } from '../../types';
+import { Timed } from '../utils/decorators';
+import { logger } from '../utils/logger';
+import { Spreadsheet } from '../utils/spreadsheet';
 
 export class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: PublishLoadingOptions<G, R>;

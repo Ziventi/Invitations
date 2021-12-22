@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-import { Paths } from './paths';
+import { Paths } from '../constants/paths';
 
 let spreadsheet: GoogleSpreadsheet;
 
@@ -10,7 +10,9 @@ export namespace Spreadsheet {
    * @param spreadsheetId The Google Sheets spreadsheet ID.
    * @returns The spreadsheet instance
    */
-  export async function getSpreadsheet(spreadsheetId: string) {
+  export async function getSpreadsheet(
+    spreadsheetId: string
+  ): Promise<GoogleSpreadsheet> {
     if (spreadsheet && spreadsheet.spreadsheetId === spreadsheetId) {
       return spreadsheet;
     }
@@ -27,7 +29,7 @@ export namespace Spreadsheet {
    * @param spreadsheetID The spreadsheet ID.
    * @returns The full URL of the spreadsheet.
    */
-  export function getSpreadsheetUrl(spreadsheetID: string) {
+  export function getSpreadsheetUrl(spreadsheetID: string): string {
     return `https://docs.google.com/spreadsheets/d/${spreadsheetID}`;
   }
 }

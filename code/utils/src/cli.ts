@@ -1,8 +1,8 @@
 import { Command } from 'commander';
 
-import { Utils } from './utils';
+import { Utils } from './utils/functions';
 
-import { CLIOptions } from '../../types';
+import { CLIOptions } from '../types';
 
 export async function CLI(options: CLIOptions = {}): Promise<void> {
   const { generate, publish } = options;
