@@ -7,7 +7,7 @@
     {
       "name": "Debug Code",
       "port": 9229,
-      "type": "pwa-node",
+      "type": "node",
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "outFiles": [

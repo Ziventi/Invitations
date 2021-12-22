@@ -9,10 +9,10 @@
   "scripts": {
     "build": "node scripts/build.js",
     "cli": "node scripts/cli.js",
-    "cli:debug": "node --inspect scripts/cli.js",
     "clean": "node scripts/clean.js",
     "dev": "node scripts/dev.js",
     "watch": "node scripts/watch.js",
+    "debug:cli": "node --inspect scripts/cli.js",
     "eslint": "eslint --ext .ts,.tsx .",
     "stylelint": "stylelint **/*.scss"
   },
