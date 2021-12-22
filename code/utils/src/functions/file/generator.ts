@@ -65,7 +65,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   @Timed
   public async execute(options: GenerateOptions): Promise<void> {
     const { all, format, name, open, refreshCache } = options;
-    const { loader, filter } = this.loadingOptions;
+    const { loader, processor } = this.loadingOptions;
 
     Utils.setup(this.paths.outputDir);
     this.transpileSass();
@@ -75,8 +75,8 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     }
 
     let guests = await loader.execute(refreshCache);
-    if (filter) {
-      guests = guests.filter(filter);
+    if (processor) {
+      guests = processor(guests);
     }
 
     this.generateHTMLFiles(guests, { all, name });
@@ -310,7 +310,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * Opens the first generated file in Chrome.
    * @param format The format of the file to open.
    */
-   private openFileInBrowser(format?: GenerateOptions['format']): void {
+  private openFileInBrowser(format?: GenerateOptions['format']): void {
     const openFile = (ext: string): void => {
       const outputDir = `${this.paths.outputDir}/${ext}`;
       const firstFile = fs.readdirSync(outputDir)[0];

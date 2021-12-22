@@ -27,7 +27,7 @@ export interface LoadingOptions<
   R extends TGuestRow = TGuestRow
 > {
   loader: ZLoader<G, R>;
-  filter?: (g: G) => boolean;
+  processor?: (guests: G[]) => G[];
 }
 
 export interface PublishLoadingOptions<G extends TGuest, R extends TGuestRow>

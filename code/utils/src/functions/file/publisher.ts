@@ -26,11 +26,11 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
   public async execute(options: PublishOptions): Promise<void> {
     logger.trace('Executing ZPublisher...');
     const { refreshCache } = options;
-    const { loader, filter, sheet } = this.loadingOptions;
+    const { loader, processor, sheet } = this.loadingOptions;
 
     let guests = await loader.execute(refreshCache);
-    if (filter) {
-      guests = guests.filter(filter);
+    if (processor) {
+      guests = processor(guests);
     }
 
     let guestCollection: Record<string, G[]> = {};
@@ -96,18 +96,18 @@ export class ZPublisher<G extends TGuest, R extends TGuestRow> {
    * Directly updates cells on a specified worksheet.
    * @param sheetName The name of the worksheet.
    * @param range The range of cells to load.
-   * @param valuesByCell The list of cell id-value pairs.
+   * @param valuesByCell The map of cell id-value pairs.
    */
   public async updateCells(
     sheetName: string,
     range: string,
-    valuesByCell: [string, string][]
+    valuesByCell: Record<string, string>
   ): Promise<void> {
     const sheet = this.spreadsheet.sheetsByTitle[sheetName];
     invariant(sheet, `No sheet exists with name '${sheetName}'.`);
     await sheet.loadCells(range);
 
-    valuesByCell.forEach(([cellId, text]) => {
+    Object.entries(valuesByCell).forEach(([cellId, text]) => {
       const cell = sheet.getCellByA1(cellId);
       cell.value = text;
     });

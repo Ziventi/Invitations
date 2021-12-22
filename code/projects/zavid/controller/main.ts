@@ -1,11 +1,13 @@
 import {
   CLI,
+  ConfirmStatus,
   Spreadsheet,
   Utils,
   ZGenerator,
   ZPublisher
 } from '@ziventi/utils';
 
+import { Guest, Rank } from './classes';
 import { Loader } from './settings';
 
 const {
@@ -18,6 +20,7 @@ const {
 
 const PUBLIC_LISTS_URL = Spreadsheet.getSpreadsheetUrl(SS_PUBLIC_LISTS_ID!);
 const WISHLIST_URL = `${PUBLIC_LISTS_URL}#gid=${SS_WISHLIST_SHEET_ID!}`;
+const SHEET_NAME = 'Guest List';
 
 (async () => {
   const Generator = new ZGenerator({
@@ -56,12 +59,50 @@ const WISHLIST_URL = `${PUBLIC_LISTS_URL}#gid=${SS_WISHLIST_SHEET_ID!}`;
   const Publisher = new ZPublisher({
     loadingOptions: {
       loader: Loader,
-      sheet: 'Guest List'
+      processor: (guests: Guest[]) => {
+        return guests
+          .filter((g) => g.invited)
+          .sort((a, b) => (a.name > b.name ? 1 : -1));
+      },
+      sheet: SHEET_NAME
     }
   });
 
   await CLI({
     generate: Generator.execute,
-    publish: Publisher.execute
+    publish: async (options) => {
+      await Publisher.execute(options);
+
+      const guests = await Loader.execute(false);
+      const getTotalMatching = (
+        matcher: ConfirmStatus | ((g: Guest) => boolean)
+      ): string => {
+        return guests
+          .filter((g) => {
+            if (typeof matcher === 'function') {
+              return matcher(g);
+            } else {
+              return g.invited && g.status === matcher;
+            }
+          })
+          .length.toString();
+      };
+
+      await Publisher.updateCells(SHEET_NAME, 'D3:E14', {
+        D3: 'Only people who have received invites so far will appear here; this list will be updated gradually. Check back here occasionally to see people you know whom you can tag along with.',
+        D9: 'Current Total of Invitees:',
+        E9: getTotalMatching((g) => g.invited),
+        D10: '\u2714  No. of Confirmed:',
+        E10: getTotalMatching('Confirmed'),
+        D11: '\uD83D\uDD38 No. of Tentative:',
+        E11: getTotalMatching('Tentative'),
+        D12: '\uD83D\uDD57 No. of Awaiting:',
+        E12: getTotalMatching('Awaiting'),
+        D13: '\u274C No. of Unavailable:',
+        E13: getTotalMatching('Unavailable'),
+        D14: 'No. of Invites Remaining:',
+        E14: getTotalMatching((g) => !g.invited && g.rank <= Rank.D)
+      });
+    }
   });
 })();

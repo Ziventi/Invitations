@@ -24,7 +24,7 @@ import { Loader } from './settings';
   const Publisher = new ZPublisher({
     loadingOptions: {
       loader: Loader,
-      reducer: {
+      sheet: {
         property: 'category',
         sheetMap: {
           Family: 'Guest List (Family)',
