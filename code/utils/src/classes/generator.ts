@@ -132,7 +132,12 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     guests.forEach((guest) => {
       const outputFile = `${outputDir}/html/${guest.name}.html`;
-      this.createHTMLFile(`${templatesDir}/index.ejs`, outputFile, guest);
+      this.createHTMLFile(
+        `${templatesDir}/index.ejs`,
+        outputFile,
+        guest,
+        guests
+      );
     });
   }
 
@@ -195,12 +200,14 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * Helper function for generating HTML pages.
    * @param templateFile The input template EJS file.
    * @param outputFile The HTML file output path.
-   * @param guest The guest whose details will go on the invite.
+   * @param guest The current guest whose details will go on the invite.
+   * @param allGuests The list of all guests.
    */
   private createHTMLFile(
     templateFile: string,
     outputFile: string,
-    guest: G
+    guest: G,
+    allGuests: G[]
   ): void {
     const { viewsDir, stylesOutputFile } = this.paths;
     try {
@@ -208,6 +215,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       const template = ejs.compile(data, { root: viewsDir });
       const html = template({
         guest,
+        allGuests,
         cssFile: stylesOutputFile,
         fontsUrl: this.fontsUrl,
         ...this.htmlOptions?.locals
@@ -288,6 +296,12 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   private transpileSass(): void {
     const { outputDir, stylesInputFile, stylesOutputFile } = this.paths;
+
+    if (!fs.existsSync(stylesInputFile!)) {
+      logger.warn('Skipping transpilation of SCSS as no style file found.');
+      return;
+    }
+
     logger.info('Transpiling SCSS to CSS...');
     fs.ensureDirSync(`${outputDir}/css`);
     try {

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title><%= guest.name %> | Ziventi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+
+  <body style="background-color: black; color: white">
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Abidemi Ajayi</td>
+          <td>
+            <button onclick="sendHash(this);" value="Confirmed">
+              Confirmed
+            </button>
+          </td>
+          <td>
+            <button onclick="sendHash(this);" value="Tentative">
+              Tentative
+            </button>
+          </td>
+          <td>
+            <button onclick="sendHash(this);" value="Unavailable">
+              Unavailable
+            </button>
+          </td>
+          <td>
+            <button onclick="sendHash(this);" value="Awaiting">Awaiting</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

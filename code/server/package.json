@@ -1,19 +1,17 @@
 {
   "name": "@ziventi/server",
   "version": "1.0.0",
-  "main": "./.dist/index.js",
+  "private": true,
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --watch *.ts index.ts "
+    "dev": "nodemon --watch *.ts index.ts"
   },
   "dependencies": {
     "@ziventi/utils": "file:../utils",
-    "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.2"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.0.2",
     "log4js": "^6.3.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",

@@ -9,7 +9,7 @@ const logger = require('./logger');
  */
 exports.ensureProjectSpecified = (project) => {
   if (!project) {
-    logger.fatal('No project specified.');
+    logger.error('No project specified.');
     process.exit(0);
   }
 };
@@ -20,7 +20,7 @@ exports.ensureProjectSpecified = (project) => {
  */
 exports.ensureProjectExists = (project) => {
   if (!fs.existsSync(project)) {
-    logger.fatal(`Project '${path.basename(project)}' does not exist.`);
+    logger.error(`Project '${path.basename(project)}' does not exist.`);
     process.exit(0);
   }
 };

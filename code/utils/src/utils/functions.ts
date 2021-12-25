@@ -1,8 +1,11 @@
+import CryptoJS from 'crypto-js';
 import fs from 'fs-extra';
 
 import path from 'path';
 
 import { logger } from './logger';
+
+const ENCRYPTION_KEY = 'key';
 
 export namespace Utils {
   /**
@@ -35,6 +38,32 @@ export namespace Utils {
     });
 
     return resources;
+  }
+
+  /**
+   * Encrypts JSON and forms a URL-encoded hash.
+   * @param json The JSON to encrypt.
+   * @returns The encrypted hash.
+   */
+  export function encryptJSON<T>(json: T): string {
+    const jsonString = JSON.stringify(json);
+    const hash = CryptoJS.AES.encrypt(jsonString, ENCRYPTION_KEY).toString();
+    const component = encodeURIComponent(hash);
+    return component;
+  }
+  
+  /**
+   * Decrypts an encrypted component with the encryption key.
+   * @param hash The hash to decrypt.
+   * @returns The decrypted JSON.
+   */
+  export function decryptJSON<T>(hash: string): T {
+    const component = decodeURIComponent(hash);
+    const value = CryptoJS.AES.decrypt(component, ENCRYPTION_KEY).toString(
+      CryptoJS.enc.Utf8
+    );
+    const json = JSON.parse(value);
+    return json;
   }
 
   /**

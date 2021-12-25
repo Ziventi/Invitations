@@ -1,66 +1,86 @@
-import { ConfirmStatus, logger, Spreadsheet } from '@ziventi/utils';
-import CryptoJS from 'crypto-js';
-import dotenv from 'dotenv';
+import {
+  ConfirmStatus,
+  Emojis,
+  logger,
+  Spreadsheet,
+  Utils
+} from '@ziventi/utils';
 import express from 'express';
+
+import path from 'path';
 
 const app = express();
 const port = 3000;
 
-dotenv.config();
+if (!isProduction()) {
+  app.use('/', express.static(__dirname));
+  app.use(express.json());
 
-const { SS_PRIVATE_ID, SS_PUBLIC_ID } = process.env;
-const ENCRYPTION_KEY = 'key';
+  app.get('/', (_, res) => {
+    res.sendFile(path.resolve(__dirname, './test/index.html'));
+  });
 
-(async () => {
-  const privateSpreadsheet = await Spreadsheet.getSpreadsheet(SS_PRIVATE_ID!);
-  const privateSheet = privateSpreadsheet.sheetsByTitle['Guests'];
-  const privateSheetRows = await privateSheet.getRows();
+  app.post('/api/raw', (req, res) => {
+    const { json } = req.body;
+    const hash = Utils.encryptJSON(json);
+    res.redirect(`/api/${hash}`);
+  });
+}
 
-  const guestName: string = privateSheetRows[0]['Name'];
-  const hash = encodeURIComponent(
-    CryptoJS.AES.encrypt(guestName, ENCRYPTION_KEY).toString()
-  );
-  logger.debug('Hash:', hash);
+app.get('/api/:hash', async (req, res) => {
+  const { hash } = req.params;
 
-  const decryptedName = CryptoJS.AES.decrypt(
-    decodeURIComponent(hash),
-    ENCRYPTION_KEY
-  ).toString(CryptoJS.enc.Utf8);
-  logger.debug('Name:', decryptedName);
+  try {
+    const json = Utils.decryptJSON<HashParams>(hash);
+    logger.debug(json);
 
-  const publicSpreadsheet = await Spreadsheet.getSpreadsheet(SS_PUBLIC_ID!);
-  const publicSheet = publicSpreadsheet.sheetsByTitle['Guest List'];
-  const publicSheetRows = await publicSheet.getRows();
-  const { rowIndex } = publicSheetRows.find(
-    (row) => row['Name'] === decryptedName
-  )!;
-  const cellToEdit = `B${rowIndex}`;
-  await publicSheet.loadCells(cellToEdit);
+    const { guestName, status, spreadsheetId, sheetTitle } = json;
 
-  const status: ConfirmStatus = 'Confirmed';
+    logger.trace(`Loading public spreadsheet...`);
+    const publicSpreadsheet = await Spreadsheet.getSpreadsheet(spreadsheetId);
+    const publicSheet = publicSpreadsheet.sheetsByTitle[sheetTitle];
+    const publicSheetRows = await publicSheet.getRows();
+    const { rowIndex } = publicSheetRows.find(
+      (row) => row['Name'] === guestName
+    )!;
 
-  const cell = publicSheet.getCellByA1(cellToEdit);
-  cell.value = status;
+    logger.trace(`Loading cell to edit...`);
+    const cellToEdit = `B${rowIndex}`;
+    await publicSheet.loadCells(cellToEdit);
 
-  await publicSheet.saveUpdatedCells();
-  logger.info(`Updated guest '${decryptedName}' with status ${status}.`);
-})();
+    logger.trace(`Editing cell...`);
+    const cell = publicSheet.getCellByA1(cellToEdit);
+    cell.value = Emojis.getStatusText(status);
+    await publicSheet.saveUpdatedCells();
+    logger.info(`Updated guest '${guestName}' with status '${status}'.`);
 
-app.get('/', (req, res) => {
-  if (isProduction()) {
-    // const sheetUrl = Spreadsheet.getSpreadsheetUrl(SS_PUBLIC_ID!);
-    // res.redirect(sheetUrl);
-  } else {
-    res.send(
-      '<body style="background-color:black;"><p style="color:white;">Yooo</p></body>'
-    );
+    if (isProduction()) {
+      const sheetUrl = Spreadsheet.getSpreadsheetUrl(spreadsheetId);
+      return res.redirect(sheetUrl);
+    } else {
+      return res.sendStatus(200);
+    }
+  } catch (e) {
+    logger.error(e);
+    res.status(400).send({ message: e });
   }
 });
 
 app.listen(port, () => {
-  logger.info(`Listening at http://localhost:${port}`);
+  console.info(`Listening at http://localhost:${port}`);
 });
 
+/**
+ * Checks if service is running in production.
+ * @returns True if in production.
+ */
 function isProduction(): boolean {
   return process.env.NODE_ENV === 'production';
+}
+
+interface HashParams {
+  guestName: string;
+  status: ConfirmStatus;
+  spreadsheetId: string;
+  sheetTitle: string;
 }
