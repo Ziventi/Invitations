@@ -17,27 +17,18 @@
         <th>Status</th>
       </thead>
       <tbody>
+        <% allGuests.forEach((guest, key) => { %>
         <tr>
-          <td>Abidemi Ajayi</td>
+          <td><%= guest.name %></td>
+          <% Object.entries(guest._hashes).forEach(([status, hash]) => { %>
           <td>
-            <button onclick="sendHash(this);" value="Confirmed">
-              Confirmed
-            </button>
+            <a href="<%= `http://localhost:3000/api/${hash}` %> ">
+              <%= status %>
+            </a>
           </td>
-          <td>
-            <button onclick="sendHash(this);" value="Tentative">
-              Tentative
-            </button>
-          </td>
-          <td>
-            <button onclick="sendHash(this);" value="Unavailable">
-              Unavailable
-            </button>
-          </td>
-          <td>
-            <button onclick="sendHash(this);" value="Awaiting">Awaiting</button>
-          </td>
+          <% }); %>
         </tr>
+        <% }); %>
       </tbody>
     </table>
   </body>

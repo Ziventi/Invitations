@@ -6,8 +6,5 @@
   "dependencies": {
     "@ziventi/utils": "file:../utils",
     "dotenv": "^10.0.0"
-  },
-  "devDependencies": {
-    "typescript": "^4.5.4"
   }
 }

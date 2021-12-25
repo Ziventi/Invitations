@@ -12,6 +12,7 @@
     "cli": "node scripts/cli.js",
     "clean": "node scripts/clean.js",
     "dev": "node scripts/dev.js",
+    "dev:server": "nodemon --watch server/*.ts server/index.ts",
     "watch": "node scripts/watch.js",
     "debug:cli": "node --inspect scripts/cli.js",
     "eslint": "eslint --ext .ts,.tsx .",

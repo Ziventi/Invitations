@@ -5,6 +5,12 @@ import { Loader } from './settings';
 
 (async () => {
   const Generator = new ZGenerator({
+    htmlOptions: {
+      hashParams: {
+        spreadsheetId: process.env.SS_PUBLIC_ID!,
+        sheetTitle: 'Guest List'
+      }
+    },
     fontsUrl: Utils.buildFontUrl({ Tangerine: 'wght@400;700' }),
     formatOptions: {
       nomenclator: (name: string) => name,

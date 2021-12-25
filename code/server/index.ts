@@ -1,51 +1,37 @@
-import {
-  ConfirmStatus,
-  Emojis,
-  logger,
-  Spreadsheet,
-  Utils
-} from '@ziventi/utils';
+import { Emojis, HashParams, logger, Spreadsheet, Utils } from '@ziventi/utils';
 import express from 'express';
-
-import path from 'path';
+import invariant from 'tiny-invariant';
 
 const app = express();
 const port = 3000;
-
-if (!isProduction()) {
-  app.use('/', express.static(__dirname));
-  app.use(express.json());
-
-  app.get('/', (_, res) => {
-    res.sendFile(path.resolve(__dirname, './test/index.html'));
-  });
-
-  app.post('/api/raw', (req, res) => {
-    const { json } = req.body;
-    const hash = Utils.encryptJSON(json);
-    res.redirect(`/api/${hash}`);
-  });
-}
 
 app.get('/api/:hash', async (req, res) => {
   const { hash } = req.params;
 
   try {
     const json = Utils.decryptJSON<HashParams>(hash);
-    logger.debug(json);
-
     const { guestName, status, spreadsheetId, sheetTitle } = json;
 
     logger.trace(`Loading public spreadsheet...`);
     const publicSpreadsheet = await Spreadsheet.getSpreadsheet(spreadsheetId);
+    invariant(
+      publicSpreadsheet,
+      'No spreadsheet found with specified spreadsheet ID.'
+    );
     const publicSheet = publicSpreadsheet.sheetsByTitle[sheetTitle];
+    invariant(publicSheet, `No sheet found matching title '${sheetTitle}'.`);
+
     const publicSheetRows = await publicSheet.getRows();
-    const { rowIndex } = publicSheetRows.find(
+    const matchingRow = publicSheetRows.find(
       (row) => row['Name'] === guestName
-    )!;
+    );
+    invariant(
+      matchingRow,
+      `No row found with 'Name' column matching '${guestName}'.`
+    );
 
     logger.trace(`Loading cell to edit...`);
-    const cellToEdit = `B${rowIndex}`;
+    const cellToEdit = `B${matchingRow.rowIndex}`;
     await publicSheet.loadCells(cellToEdit);
 
     logger.trace(`Editing cell...`);
@@ -58,7 +44,7 @@ app.get('/api/:hash', async (req, res) => {
       const sheetUrl = Spreadsheet.getSpreadsheetUrl(spreadsheetId);
       return res.redirect(sheetUrl);
     } else {
-      return res.sendStatus(200);
+      return res.status(200).send({ message: 'ok' });
     }
   } catch (e) {
     logger.error(e);
@@ -76,11 +62,4 @@ app.listen(port, () => {
  */
 function isProduction(): boolean {
   return process.env.NODE_ENV === 'production';
-}
-
-interface HashParams {
-  guestName: string;
-  status: ConfirmStatus;
-  spreadsheetId: string;
-  sheetTitle: string;
 }

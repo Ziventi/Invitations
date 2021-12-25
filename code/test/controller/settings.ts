@@ -5,8 +5,6 @@ import { Guest, GuestRow, Rank } from './classes';
 
 dotenv.config();
 
-console.log(process.env.SS_PRIVATE_ID);
-
 export const Loader = new ZLoader({
   spreadsheetId: process.env.SS_PRIVATE_ID!,
   guestMarshaler: marshalGuests

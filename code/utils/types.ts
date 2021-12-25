@@ -52,6 +52,13 @@ export interface TGuestRow {
   Status: string;
 }
 
+export interface HashParams {
+  guestName: string;
+  status: ConfirmStatus;
+  spreadsheetId: string;
+  sheetTitle: string;
+}
+
 export type ConfirmStatus =
   | 'Awaiting'
   | 'Tentative'
