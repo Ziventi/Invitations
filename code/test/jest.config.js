@@ -2,9 +2,9 @@ const { Paths } = require('@ziventi/utils');
 
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  coverageDirectory: './test/.coverage',
-  collectCoverage: true,
-  collectCoverageFrom: ['**/utils/**/*.ts'],
-  rootDir: Paths.PROJECT_ROOT,
+  coverageDirectory: './.coverage',
+  // collectCoverage: true,
+  collectCoverageFrom: ['../utils/**/*.ts'],
+  preset: 'jest-puppeteer',
   watchman: false
 };
