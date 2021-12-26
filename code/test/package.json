@@ -1,10 +1,10 @@
 {
   "name": "ziventi-test",
+  "main": "./.dist/main.js",
   "scripts": {
     "cli": "node ./.dist/main.js"
   },
   "dependencies": {
-    "@ziventi/utils": "file:../utils",
     "dotenv": "^10.0.0"
   }
 }
