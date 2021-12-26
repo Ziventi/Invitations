@@ -1,4 +1,4 @@
-import { ZLoader } from '.';
+import { ZLoader } from '..';
 
 export type CLIOptions = {
   generate?: Generate;
@@ -50,6 +50,13 @@ export interface TGuest {
 export interface TGuestRow {
   Name: string;
   Status: string;
+}
+
+export interface HashParams {
+  guestName: string;
+  status: ConfirmStatus;
+  spreadsheetId: string;
+  sheetTitle: string;
 }
 
 export type ConfirmStatus =

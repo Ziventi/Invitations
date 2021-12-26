@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title><%= guest.name %> | Ziventi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+
+  <body style="background-color: black; color: white">
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <% allGuests.forEach((guest, key) => { %>
+        <tr>
+          <td><%= guest.name %></td>
+          <% Object.entries(guest._hashes).forEach(([status, hash]) => { %>
+          <td>
+            <a href="<%= `http://localhost:3000/api/${hash}` %> ">
+              <%= status %>
+            </a>
+          </td>
+          <% }); %>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+</html>

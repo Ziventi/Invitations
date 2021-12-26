@@ -7,11 +7,7 @@ const Validator = require('./lib/validator');
 const projectName = process.argv[2];
 Validator.ensureProjectSpecified(projectName);
 
-const PROJECT_DIR =
-  projectName === 'utils'
-    ? path.join(process.cwd(), projectName)
-    : path.join(process.cwd(), 'projects', projectName);
-
+const PROJECT_DIR = Validator.getProjectPath(projectName);
 Validator.ensureProjectExists(PROJECT_DIR);
 
 const { run, runSilent } = runner(PROJECT_DIR);

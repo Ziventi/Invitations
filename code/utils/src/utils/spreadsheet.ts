@@ -26,10 +26,10 @@ export namespace Spreadsheet {
 
   /**
    * Retrieves the full accessible spreadsheet URL using a specified ID.
-   * @param spreadsheetID The spreadsheet ID.
+   * @param spreadsheetId The spreadsheet ID.
    * @returns The full URL of the spreadsheet.
    */
-  export function getSpreadsheetUrl(spreadsheetID: string): string {
-    return `https://docs.google.com/spreadsheets/d/${spreadsheetID}`;
+  export function getSpreadsheetUrl(spreadsheetId: string): string {
+    return `https://docs.google.com/spreadsheets/d/${spreadsheetId}`;
   }
 }

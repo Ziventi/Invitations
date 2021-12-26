@@ -15,7 +15,7 @@ const processesInterrupted = new Set();
 chokidar
   .watch(['**/*.ts', '*/**/tsconfig.json'], {
     cwd: ROOT,
-    ignored: '**/node_modules/**',
+    ignored: ['**/node_modules/**', '**/server/**'],
     persistent: true,
     awaitWriteFinish: false
   })

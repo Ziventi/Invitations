@@ -10,17 +10,17 @@ import { spawnSync } from 'child_process';
 import { Server } from 'http';
 import path from 'path';
 
-import { GenerateOptions, TGuestRow } from '../..';
+import { ConfirmStatus, GenerateOptions, HashParams, TGuestRow } from '../..';
 import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../types';
 import { Timed } from '../utils/decorators';
 import { Utils } from '../utils/functions';
 import { logger } from '../utils/logger';
 
 export class ZGenerator<G extends TGuest, R extends TGuestRow> {
-  private app!: Express;
-  private browser!: Browser;
-  private exiftool!: ExifTool;
-  private imageServer!: Server;
+  private app?: Express;
+  private browser?: Browser;
+  private exiftool?: ExifTool;
+  private imageServer?: Server;
 
   private fontsUrl: string;
   private loadingOptions: LoadingOptions<G, R>;
@@ -40,8 +40,10 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const viewsDir = `${root}/views`;
     const imagesDir = `${viewsDir}/images`;
 
-    this.app = express();
-    this.app.use(express.static(imagesDir));
+    if (fs.existsSync(imagesDir)) {
+      this.app = express();
+      this.app.use(express.static(imagesDir));
+    }
 
     this.fontsUrl = fontsUrl;
     this.formatOptions = formatOptions;
@@ -132,7 +134,12 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     guests.forEach((guest) => {
       const outputFile = `${outputDir}/html/${guest.name}.html`;
-      this.createHTMLFile(`${templatesDir}/index.ejs`, outputFile, guest);
+      this.createHTMLFile(
+        `${templatesDir}/index.ejs`,
+        outputFile,
+        guest,
+        guests
+      );
     });
   }
 
@@ -147,12 +154,13 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     fs.ensureDirSync(`${outputDir}/pdf`);
     logger.info('Generating PDF files...');
 
-    this.browser = await puppeteer.launch();
-    this.exiftool = new ExifTool();
-    this.imageServer = this.app.listen(3000);
+    await this.startInstances('pdf');
 
+    const pagesDir = `${templatesDir}/pages`;
+    const pageCount = fs.existsSync(pagesDir)
+      ? fs.readdirSync(pagesDir).length
+      : 1;
     const filenames = fs.readdirSync(`${outputDir}/html`);
-    const pageCount = fs.readdirSync(`${templatesDir}/pages`).length;
     const promises = filenames.map((filename) => {
       const [name] = filename.split('.');
       const html = Utils.readFileContent(`${outputDir}/html/${name}.html`);
@@ -160,9 +168,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     });
 
     await Promise.all(promises);
-    await this.browser.close();
-    await this.exiftool.end();
-    this.imageServer.close();
+    await this.stopInstances();
   }
 
   /**
@@ -176,8 +182,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     fs.ensureDirSync(`${outputDir}/png`);
     logger.info('Generating PNG files...');
 
-    this.browser = await puppeteer.launch();
-    this.imageServer = this.app.listen(3000);
+    await this.startInstances('png');
 
     const filenames = fs.readdirSync(`${outputDir}/html`);
     const promises = filenames.map((filename) => {
@@ -187,31 +192,59 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     });
 
     await Promise.all(promises);
-    await this.browser.close();
-    this.imageServer.close();
+    await this.stopInstances();
   }
 
   /**
    * Helper function for generating HTML pages.
    * @param templateFile The input template EJS file.
    * @param outputFile The HTML file output path.
-   * @param guest The guest whose details will go on the invite.
+   * @param guest The current guest whose details will go on the invite.
+   * @param allGuests The list of all guests.
    */
   private createHTMLFile(
     templateFile: string,
     outputFile: string,
-    guest: G
+    guest: G,
+    allGuests: G[]
   ): void {
     const { viewsDir, stylesOutputFile } = this.paths;
+    let locals: Record<string, any> = {};
+
+    if (this.htmlOptions) {
+      const { hashParams, ejsLocals } = this.htmlOptions;
+      locals = {
+        guest,
+        allGuests,
+        cssFile: stylesOutputFile,
+        fontsUrl: this.fontsUrl,
+        ...ejsLocals
+      };
+
+      if (hashParams) {
+        const statuses: ConfirmStatus[] = [
+          'Confirmed',
+          'Tentative',
+          'Unavailable'
+        ];
+        statuses.forEach((status) => {
+          const params: HashParams = {
+            guestName: guest.name,
+            status,
+            ...hashParams
+          };
+          locals.guest._hashes = {
+            ...(locals.guest._hashes || {}),
+            [status]: Utils.encryptJSON(params)
+          };
+        });
+      }
+    }
+
     try {
       const data = fs.readFileSync(templateFile, 'utf8');
       const template = ejs.compile(data, { root: viewsDir });
-      const html = template({
-        guest,
-        cssFile: stylesOutputFile,
-        fontsUrl: this.fontsUrl,
-        ...this.htmlOptions?.locals
-      });
+      const html = template(locals);
       fs.outputFileSync(outputFile, html);
     } catch (err) {
       Utils.error(err);
@@ -237,10 +270,12 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const outputPath = `${outputDir}/pdf/${pdfFileName}.pdf`;
 
     try {
-      const page = await this.browser.newPage();
+      const page = await this.browser!.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
       await page.addStyleTag({ url: this.fontsUrl });
-      await page.addStyleTag({ path: stylesOutputFile });
+      if (fs.existsSync(stylesOutputFile)) {
+        await page.addStyleTag({ path: stylesOutputFile });
+      }
       await page.evaluateHandle('document.fonts.ready');
       await page.pdf({
         format: pdfOptions!.format || 'a4',
@@ -268,10 +303,12 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const viewport = this.translateViewportOptions();
 
     try {
-      const page = await this.browser.newPage();
+      const page = await this.browser!.newPage();
       await page.goto(`data:text/html,${encodeURIComponent(html)}`);
       await page.addStyleTag({ url: this.fontsUrl });
-      await page.addStyleTag({ path: stylesOutputFile });
+      if (fs.existsSync(stylesOutputFile)) {
+        await page.addStyleTag({ path: stylesOutputFile });
+      }
       await page.setViewport(viewport);
       await page.evaluateHandle('document.fonts.ready');
       await page.screenshot({
@@ -288,6 +325,12 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   private transpileSass(): void {
     const { outputDir, stylesInputFile, stylesOutputFile } = this.paths;
+
+    if (!fs.existsSync(stylesInputFile!)) {
+      logger.warn('Skipping transpilation of SCSS since no style file found.');
+      return;
+    }
+
     logger.info('Transpiling SCSS to CSS...');
     fs.ensureDirSync(`${outputDir}/css`);
     try {
@@ -307,6 +350,11 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private copyImages(): void {
     const { outputDir, imagesDir } = this.paths;
     const imagesOutputDir = `${outputDir}/images`;
+
+    if (!fs.existsSync(imagesDir)) {
+      logger.warn('Skipping copying of images since no images found.');
+      return;
+    }
 
     logger.info('Copying images to output...');
     fs.ensureDirSync(imagesOutputDir);
@@ -359,6 +407,38 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       deviceScaleFactor
     };
   }
+
+  /**
+   * Start the Puppeteer browser, the Exiftool if generating PDFs, and the
+   * Express server if images require hosting.
+   * @param format The file format.
+   */
+  private async startInstances(
+    format: GenerateOptions['format']
+  ): Promise<void> {
+    this.browser = await puppeteer.launch();
+    if (format === 'pdf') {
+      this.exiftool = new ExifTool();
+    }
+    if (this.app) {
+      this.imageServer = this.app.listen(3000);
+    }
+  }
+
+  /**
+   * Stops the instances Puppeteer browser, Exiftool and Express server.
+   */
+  private async stopInstances(): Promise<void> {
+    if (this.browser) {
+      await this.browser.close();
+    }
+    if (this.exiftool) {
+      await this.exiftool.end();
+    }
+    if (this.imageServer) {
+      this.imageServer.close();
+    }
+  }
 }
 
 interface GeneratorConstructor<G extends TGuest, R extends TGuestRow> {
@@ -369,7 +449,8 @@ interface GeneratorConstructor<G extends TGuest, R extends TGuestRow> {
 }
 
 interface HTMLOptions {
-  locals?: Record<string, unknown>;
+  ejsLocals?: Record<string, unknown>;
+  hashParams?: Required<Pick<HashParams, 'spreadsheetId' | 'sheetTitle'>>;
 }
 
 interface FormatOptions {

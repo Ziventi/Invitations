@@ -1,0 +1,10 @@
+{
+  "name": "@ziventi/server",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@ziventi/utils": "file:../utils",
+    "express": "^4.17.2",
+    "tiny-invariant": "^1.2.0"
+  }
+}
