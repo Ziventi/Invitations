@@ -2,9 +2,17 @@
   "name": "ziventi-test",
   "main": "./.dist/main.js",
   "scripts": {
-    "cli": "node ./.dist/main.js"
+    "cli": "node ./.dist/main.js",
+    "test": "jest"
   },
   "dependencies": {
     "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.5"
   }
 }
