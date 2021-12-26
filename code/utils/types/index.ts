@@ -1,4 +1,4 @@
-import { ZLoader } from '.';
+import { ZLoader } from '..';
 
 export type CLIOptions = {
   generate?: Generate;

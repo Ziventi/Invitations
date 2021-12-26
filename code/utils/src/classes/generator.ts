@@ -18,9 +18,9 @@ import { logger } from '../utils/logger';
 
 export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private app?: Express;
-  private imageServer?: Server;
   private browser?: Browser;
   private exiftool?: ExifTool;
+  private imageServer?: Server;
 
   private fontsUrl: string;
   private loadingOptions: LoadingOptions<G, R>;
