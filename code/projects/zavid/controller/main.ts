@@ -25,7 +25,7 @@ const SHEET_NAME = 'Guest List';
 (async () => {
   const Generator = new ZGenerator({
     htmlOptions: {
-      locals: {
+      ejsLocals: {
         contacts: {
           Bola: NUMBER_BOLA,
           Chidera: NUMBER_CHIDERA,

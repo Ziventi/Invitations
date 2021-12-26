@@ -8,7 +8,7 @@
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "build": "node scripts/build.js",
-    "check": "node scripts/check.js",
+    "check": "tsc --noEmit",
     "cli": "node scripts/cli.js",
     "clean": "node scripts/clean.js",
     "dev": "node scripts/dev.js",
