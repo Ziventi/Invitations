@@ -44,13 +44,10 @@ async function rebuildProject(filePath) {
   await new Promise((resolve) => {
     logger.info(`Rebuilding project '${name}'...`);
     child = run('node', ['./scripts/build.js', name]);
-    child.on('exit', (err) => {
+    child.on('exit', () => {
       if (processesInterrupted.has(name)) {
         processesInterrupted.delete(name);
       } else {
-        if (!err) {
-          logger.info('Finished rebuilding.');
-        }
         logger.info('Watching for TS file changes...');
       }
       resolve();

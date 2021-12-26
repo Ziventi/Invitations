@@ -10,7 +10,7 @@
     "build": "node scripts/build.js",
     "check": "tsc --noEmit",
     "cli": "node scripts/cli.js",
-    "clean": "node scripts/clean.js",
+    "clean": "rm -rfv .cache **/.dist **/.out",
     "dev": "node scripts/dev.js",
     "dev:server": "nodemon --watch server/*.ts server/index.ts",
     "watch": "node scripts/watch.js",

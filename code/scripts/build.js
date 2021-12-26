@@ -4,16 +4,18 @@ const logger = require('./lib/logger');
 const runner = require('./lib/runner');
 const Validator = require('./lib/validator');
 
-const projectName = process.argv[2];
-Validator.ensureProjectSpecified(projectName);
+const [, , ...projectNames] = process.argv;
 
-const PROJECT_DIR = Validator.getProjectPath(projectName);
-Validator.ensureProjectExists(PROJECT_DIR);
+Validator.ensureProjectSpecified(projectNames[0]);
 
-const { run, runSilent } = runner(PROJECT_DIR);
+projectNames.forEach((projectName) => {
+  const PROJECT_DIR = Validator.getProjectPath(projectName);
+  Validator.ensureProjectExists(PROJECT_DIR);
+  const { run, runSilent } = runner(PROJECT_DIR);
 
-logger.info(`Building project '${projectName}'...`);
-runSilent('rm', ['-rf', '.dist']);
-run('tsc', ['--outDir', path.join(PROJECT_DIR, './.dist')], () => {
-  logger.info('Finished build.');
+  logger.info(`Building project '${projectName}'...`);
+  runSilent('rm', ['-rf', '.dist']);
+  run('tsc', ['--outDir', path.join(PROJECT_DIR, './.dist')], () => {
+    logger.info(`Finished building '${projectName}.`);
+  });
 });
