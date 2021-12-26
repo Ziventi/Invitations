@@ -4,14 +4,13 @@ import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-describe('Google', () => {
+describe('PDF Tests', () => {
   beforeAll(async () => {
     const cwd = path.resolve(process.cwd(), 'project');
     spawnSync('rm', ['-rf', '.dist', '.out'], { cwd });
     spawnSync('tsc', { cwd });
     spawnSync('node', ['./.dist/main.js', 'generate', '-n', 'Aruna'], {
-      cwd,
-      encoding: 'utf8'
+      cwd
     });
 
     const filePath = path.resolve(
@@ -22,11 +21,11 @@ describe('Google', () => {
     await page.goto(`data:text/html,${encodeURIComponent(html)}`);
   });
 
-  it('Should have correct title', async () => {
+  it('Page should have correct title', async () => {
     await expect(page.title()).resolves.toMatch('Aruna Jalloh | Ziventi');
   });
 
-  it('Should click hyperlinks', async () => {
+  it('Status hyperlinks', async () => {
     await page.$eval('body', (element) => element.innerHTML);
     await Promise.all([page.click('a#unavailable'), page.waitForNavigation()]);
     const htmlBody = await page.$eval('body', (element) => element.textContent);
