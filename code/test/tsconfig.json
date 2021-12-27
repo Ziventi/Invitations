@@ -7,5 +7,5 @@
       "expect-puppeteer"
     ]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.test.ts"]
 }

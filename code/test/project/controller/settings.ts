@@ -1,9 +1,13 @@
-import { ConfirmStatus, ZLoader } from '@ziventi/utils';
+import { ConfirmStatus, logger, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
+
+import path from 'path';
 
 import { Guest, GuestRow, Rank } from './classes';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+logger.debug(process.env.SS_PRIVATE_ID);
 
 export const Loader = new ZLoader({
   spreadsheetId: process.env.SS_PRIVATE_ID!,

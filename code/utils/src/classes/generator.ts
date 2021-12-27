@@ -34,8 +34,9 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * @param options The generator constructor options.
    */
   constructor(options: GeneratorConstructor<G, R>) {
-    const { fontsUrl, formatOptions, htmlOptions, loadingOptions } = options;
-    const root = process.cwd();
+    const { fontsUrl, formatOptions, htmlOptions, loadingOptions, rootDir } =
+      options;
+    const root = rootDir || process.cwd();
     const outputDir = `${root}/.out`;
     const viewsDir = `${root}/views`;
     const imagesDir = `${viewsDir}/images`;
@@ -446,6 +447,7 @@ interface GeneratorConstructor<G extends TGuest, R extends TGuestRow> {
   loadingOptions: LoadingOptions<G, R>;
   htmlOptions?: HTMLOptions;
   formatOptions?: FormatOptions;
+  rootDir?: string;
 }
 
 interface HTMLOptions {

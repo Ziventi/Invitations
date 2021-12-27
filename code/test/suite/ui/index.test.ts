@@ -1,18 +1,19 @@
-import { logger } from '@ziventi/utils';
-
 import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
+import main from '../../project/controller/main';
+
 describe('PDF Tests', () => {
   beforeAll(async () => {
-    const cwd = path.resolve(process.cwd(), 'project');
+    const cwd = path.resolve(process.cwd(), 'test/project');
     const run = (cmd: string, args: string[] = []): void => {
       spawnSync(cmd, args, { cwd });
     };
     run('rm', ['-rf', '.dist', '.out']);
     run('tsc');
-    run('node', ['./.dist/main.js', 'generate', '-n', 'Aruna']);
+
+    await main();
 
     const filePath = path.resolve(cwd, './.out/html/Aruna Jalloh.html');
     const html = fs.readFileSync(filePath, { encoding: 'utf8' });
