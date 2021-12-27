@@ -1,9 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./.dist"
+    "types": [
+      "puppeteer",
+      "jest-environment-puppeteer",
+      "expect-puppeteer"
+    ]
   },
-  "include": [
-    "**/*.ts",
-  ]
+  "include": ["**/*.test.ts"]
 }

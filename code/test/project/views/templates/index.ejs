@@ -22,7 +22,10 @@
           <td><%= guest.name %></td>
           <% Object.entries(guest._hashes).forEach(([status, hash]) => { %>
           <td>
-            <a href="<%= `http://localhost:3000/api/${hash}` %> ">
+            <a
+              id="<%= status.toLowerCase() %>"
+              href="<%= `http://localhost:3000/api/${hash}` %>"
+            >
               <%= status %>
             </a>
           </td>
