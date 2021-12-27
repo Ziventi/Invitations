@@ -16,7 +16,7 @@
     "watch": "node scripts/watch.js",
     "debug:cli": "node --inspect scripts/cli.js",
     "test": "jest",
-    "eslint": "eslint --ext .ts,.tsx .",
+    "eslint": "eslint --ext .ts .",
     "stylelint": "stylelint **/*.scss"
   },
   "dependencies": {

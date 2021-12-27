@@ -4,14 +4,11 @@ import path from 'path';
 
 import main from '../../project/controller/main';
 
-describe('PDF Tests', () => {
+describe('PDF Generation', () => {
   beforeAll(async () => {
     const cwd = path.resolve(process.cwd(), 'test/project');
-    const run = (cmd: string, args: string[] = []): void => {
-      spawnSync(cmd, args, { cwd });
-    };
-    run('rm', ['-rf', '.dist', '.out']);
-    run('tsc');
+    spawnSync('rm', ['-rf', '.dist', '.out'], { cwd });
+    spawnSync('tsc', { cwd});
 
     await main();
 
@@ -20,11 +17,11 @@ describe('PDF Tests', () => {
     await page.goto(`data:text/html,${encodeURIComponent(html)}`);
   });
 
-  it('Page should have correct title', async () => {
+  test('Page should have correct title', async () => {
     await expect(page.title()).resolves.toMatch('Aruna Jalloh | Ziventi');
   });
 
-  it('Status hyperlinks', async () => {
+  test('Status hyperlinks', async () => {
     await page.$eval('body', (element) => element.innerHTML);
     await Promise.all([page.click('a#unavailable'), page.waitForNavigation()]);
     const htmlBody = await page.$eval('body', (element) => element.textContent);
