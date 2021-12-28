@@ -18,6 +18,11 @@ export async function CLI(options: CLIOptions = {}): Promise<void> {
         false
       )
       .option('-f, --format <format>', 'The rich format of files to generate')
+      .option(
+        '-l, --limit <limit>',
+        'The limit or quantity of files to generate',
+        '10'
+      )
       .option('-n, --name <name>', 'The name of a guest to specify')
       .option('-o, --open', 'Open the generated files in the browser.', false)
       .option(

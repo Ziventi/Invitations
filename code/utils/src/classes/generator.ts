@@ -68,13 +68,13 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   @Timed
   public async execute(options: GenerateOptions): Promise<void> {
-    const { all, format, name, open, refreshCache } = options;
+    const { all, format, limit, name, open, refreshCache } = options;
     const { loader, processor } = this.loadingOptions;
 
     logger.info(`Generating files for '${path.basename(process.cwd())}'...`);
 
     if (all && format) {
-      logger.warn('Generating format files for all guests.');
+      logger.warn(`Generating ${format.toUpperCase()} files for ALL guests.`);
     }
 
     if (open) {
@@ -93,7 +93,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       guests = processor(guests);
     }
 
-    this.generateHTMLFiles(guests, { all, name });
+    this.generateHTMLFiles(guests, { all, limit, name });
 
     if (format === 'png') {
       await this.generatePNGFiles();
@@ -113,7 +113,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   private generateHTMLFiles(
     guests: G[],
-    { all, name }: GenerateHTMLOptions
+    { all, limit, name }: GenerateHTMLOptions
   ): void {
     invariant(guests.length, 'There are no guests to generate files for.');
 
@@ -121,16 +121,19 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const { outputDir, templatesDir } = this.paths;
 
     if (name) {
-      const matchingGuest = guests.find((g) => {
+      const matchingGuests = guests.filter((g) => {
         return g.name.toLowerCase().startsWith(name.toLowerCase());
       });
       invariant(
-        matchingGuest,
-        `No guest found with name starting with '${name}'.`
+        matchingGuests.length > 0,
+        `No guests found with name starting with '${name}'.`
       );
-      guests = [matchingGuest];
-    } else if (!all) {
-      guests = guests.slice(0, 10);
+      guests = matchingGuests;
+    }
+
+    if (!all) {
+      const quantity = Number(limit);
+      guests = guests.slice(0, quantity);
     }
 
     guests.forEach((guest) => {
@@ -373,15 +376,26 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * @param format The format of the file to open.
    */
   private openFileInBrowser(format?: GenerateOptions['format']): void {
-    const openFile = (ext: string): void => {
+    const openFile = (ext: string, app: 'chrome' | 'vscode'): void => {
       const outputDir = `${this.paths.outputDir}/${ext}`;
       const firstFile = fs.readdirSync(outputDir)[0];
-      spawnSync('open', ['-a', 'Google Chrome', firstFile], { cwd: outputDir });
+      if (app === 'chrome') {
+        spawnSync('open', ['-a', 'Google Chrome', firstFile], {
+          cwd: outputDir
+        });
+      } else {
+        spawnSync('code', [firstFile], { cwd: outputDir });
+      }
     };
 
-    openFile('html');
-    if (format === 'pdf') {
-      openFile('pdf');
+    if (format) {
+      if (format === 'pdf') {
+        openFile('pdf', 'chrome');
+      } else if (format === 'png') {
+        openFile('png', 'vscode');
+      }
+    } else {
+      openFile('html', 'chrome');
     }
   }
 

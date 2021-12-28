@@ -7,7 +7,7 @@ export type CLIOptions = {
 export type Generate = (options: GenerateOptions) => void;
 export type Publish = (options: PublishOptions) => void;
 
-export interface GenerateOptions extends Partial<GenerateHTMLOptions> {
+export interface GenerateOptions extends GenerateHTMLOptions {
   format?: 'pdf' | 'png';
   open?: boolean;
   refreshCache?: boolean;
@@ -15,6 +15,7 @@ export interface GenerateOptions extends Partial<GenerateHTMLOptions> {
 
 export interface GenerateHTMLOptions {
   all?: boolean;
+  limit?: string;
   name?: string;
 }
 
