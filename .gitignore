@@ -1,7 +1,7 @@
 **/node_modules
 **/.env
 **/key.json
-**/.cache
+**/.cache.json
 **/.out
 **/.dist
 **/css

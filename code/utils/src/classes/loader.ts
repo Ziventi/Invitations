@@ -26,8 +26,7 @@ export class ZLoader<
   public async execute(refreshCache?: boolean): Promise<G[]> {
     logger.trace('Executing ZLoader...');
     const { guestMarshaler, spreadsheetId } = this.loadOptions;
-    const cacheName = path.basename(process.cwd());
-    const cachePath = `${Paths.CACHE_DIR}/${cacheName}.json`;
+    const cachePath = `${process.cwd()}/.cache.json`;
 
     if (refreshCache || !fs.existsSync(cachePath)) {
       logger.info('Refreshing cache...');
