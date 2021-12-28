@@ -9,13 +9,20 @@
     <link rel="stylesheet" href="<%= cssFile %>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="<%= fontsUrl %>"
-      rel="stylesheet"
-    />
+    <link href="<%= fontsUrl %>" rel="stylesheet" />
   </head>
 
   <body>
-    <div id="root"><%- include('/templates/pages/1-index.ejs') %></div>
+    <div id="root">
+      <main class="index">
+        <div>
+          <div class="empty"></div>
+          <div class="name">
+            <p><%= guest.name %></p>
+          </div>
+        </div>
+        <%- include('/images/signature.svg') %>
+      </main>
+    </div>
   </body>
 </html>
