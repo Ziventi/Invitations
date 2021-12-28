@@ -10,7 +10,13 @@ import { spawnSync } from 'child_process';
 import { Server } from 'http';
 import path from 'path';
 
-import { ConfirmStatus, GenerateOptions, HashParams, TGuestRow } from '../..';
+import {
+  ConfirmStatus,
+  GenerateOptions,
+  HashParams,
+  Paths,
+  TGuestRow
+} from '../..';
 import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../types';
 import { Timed } from '../utils/decorators';
 import { Utils } from '../utils/functions';
@@ -249,7 +255,10 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     try {
       const data = fs.readFileSync(templateFile, 'utf8');
-      const template = ejs.compile(data, { root: viewsDir });
+      const template = ejs.compile(data, {
+        root: viewsDir,
+        views: [Paths.LIB_DIR]
+      });
       const html = template(locals);
       fs.outputFileSync(outputFile, html);
     } catch (err) {
