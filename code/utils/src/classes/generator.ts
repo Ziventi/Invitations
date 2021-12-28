@@ -210,15 +210,17 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     allGuests: G[]
   ): void {
     const { viewsDir, stylesOutputFile } = this.paths;
-    let locals: Record<string, any> = {};
+    let locals: Record<string, any> = {
+      guest,
+      allGuests,
+      cssFile: stylesOutputFile,
+      fontsUrl: this.fontsUrl
+    };
 
     if (this.htmlOptions) {
       const { hashParams, ejsLocals } = this.htmlOptions;
       locals = {
-        guest,
-        allGuests,
-        cssFile: stylesOutputFile,
-        fontsUrl: this.fontsUrl,
+        ...locals,
         ...ejsLocals
       };
 
