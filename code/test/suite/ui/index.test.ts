@@ -12,13 +12,13 @@ describe('PDF Generation', () => {
 
     await main();
 
-    const filePath = path.resolve(cwd, './.out/html/Aruna Jalloh.html');
+    const filePath = path.resolve(cwd, './.out/html/Abidemi Ajayi.html');
     const html = fs.readFileSync(filePath, { encoding: 'utf8' });
     await page.goto(`data:text/html,${encodeURIComponent(html)}`);
   });
 
   test('Page should have correct title', async () => {
-    await expect(page.title()).resolves.toMatch('Aruna Jalloh | Ziventi');
+    await expect(page.title()).resolves.toMatch('Abidemi Ajayi | Ziventi');
   });
 
   test('Status hyperlinks', async () => {

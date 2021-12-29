@@ -30,6 +30,6 @@ export default async function main(): Promise<void> {
   });
 
   await Generator.execute({
-    name: 'Aruna'
+    limit: '1'
   });
 }
