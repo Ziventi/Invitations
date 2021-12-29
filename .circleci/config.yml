@@ -23,6 +23,7 @@ commands:
           name: Consolidate package-lock.json files
           command: packages=(. utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
           working_directory: ./code
+      - puppeteer/install
       - restore_cache:
           keys:
             - app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
@@ -35,17 +36,10 @@ commands:
           name: Install utils dependencies
           command: npm install
           working_directory: ./code/utils
-      - puppeteer/install
       - run:
           name: Build utils
           command: npm run build -- utils
           working_directory: ./code
-
-jobs:
-  build:
-    executor: node
-    steps:
-      - install_dependencies
       - save_cache:
           paths:
             - ~/project/code/node_modules
@@ -53,6 +47,7 @@ jobs:
             - ~/project/code/utils/node_modules
           key: app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
 
+jobs:
   inspect:
     executor: node
     steps:
