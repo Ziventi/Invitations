@@ -17,6 +17,7 @@ commands:
           name: Consolidate package-lock.json files
           command: packages=(. utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
           working_directory: ./code
+      - sudo apt-get update
       - puppeteer/install
       - restore_cache:
           keys:
