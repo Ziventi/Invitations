@@ -3,12 +3,6 @@ version: 2.1
 orbs: 
   puppeteer: threetreeslight/puppeteer@0.1.2
 
-# Only run job on main branch.
-main_only: &main_only
-  filters:
-    branches:
-      only: main
-
 executors:
   node:
     docker:
@@ -80,8 +74,5 @@ jobs:
 workflows:
   build-inspect-test:
     jobs:
-      - build:
-          <<: *main_only
-      - inspect:
-          <<: *main_only
+      - inspect
       - test
