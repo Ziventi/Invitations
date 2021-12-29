@@ -50,6 +50,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     if (fs.existsSync(imagesDir)) {
       this.app = express();
       this.app.use(express.static(imagesDir));
+      this.app.use(express.static(Paths.LIB_DIR));
     }
 
     this.fontsUrl = fontsUrl;
@@ -89,10 +90,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     Utils.setup(this.paths.outputDir);
     this.transpileSass();
-
-    if (format) {
-      this.copyImages();
-    }
+    this.copyImages();
 
     let guests = await loader.execute(refreshCache);
     if (processor) {
@@ -366,15 +364,15 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const { outputDir, imagesDir } = this.paths;
     const imagesOutputDir = `${outputDir}/images`;
 
-    if (!fs.existsSync(imagesDir)) {
-      logger.warn('Skipping copying of images since no images found.');
-      return;
-    }
-
-    logger.info('Copying images to output...');
-    fs.ensureDirSync(imagesOutputDir);
     try {
-      fs.copySync(imagesDir, imagesOutputDir);
+      fs.ensureDirSync(imagesOutputDir);
+      if (fs.existsSync(imagesDir)) {
+        logger.info('Copying project images to output...');
+        fs.copySync(imagesDir, imagesOutputDir);
+      }
+
+      logger.info('Copying library images to output...');
+      fs.copySync(`${Paths.LIB_DIR}/svg`, imagesOutputDir);
     } catch (e) {
       Utils.error(e);
     }
@@ -447,6 +445,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       this.exiftool = new ExifTool();
     }
     if (this.app) {
+      logger.trace('Starting Express image server...');
       this.imageServer = this.app.listen(3000);
     }
   }
@@ -462,6 +461,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       await this.exiftool.end();
     }
     if (this.imageServer) {
+      logger.trace('Stopping Express image server...');
       this.imageServer.close();
     }
   }
