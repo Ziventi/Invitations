@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs: 
+  puppeteer: threetreeslight/puppeteer@0.1.2
+
 # Only run job on main branch.
 main_only: &main_only
   filters:
@@ -72,7 +75,7 @@ jobs:
       - install_dependencies
       # - run: mkdir -p ~/test-results
       - run:
-          name: Run tests tests
+          name: Run tests
           command: npm run test
           working_directory: ./code
       # - store_test_results:
