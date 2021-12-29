@@ -1,4 +1,4 @@
-/** @typedef {import('@jest/types').Config.InitialOptions} */
+/** @type {import('@jest/types').Config.InitialOptions} */
 const options = {
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   collectCoverageFrom: [
