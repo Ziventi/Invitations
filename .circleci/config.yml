@@ -35,6 +35,7 @@ commands:
           name: Install utils dependencies
           command: npm install
           working_directory: ./code/utils
+      - puppeteer/install
       - run:
           name: Build utils
           command: npm run build -- utils
