@@ -18,7 +18,7 @@ commands:
       - checkout
       - run:
           name: Consolidate package-lock.json files
-          command: packages=(. server test utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
+          command: packages=(. utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
           working_directory: ./code
       - restore_cache:
           keys:
