@@ -29,12 +29,12 @@ commands:
           command: npm install
           working_directory: ./code
       - run:
-          name: Install subpackage dependencies
-          command: npm run bootstrap
-          working_directory: ./code
+          name: Install utils dependencies
+          command: npm install
+          working_directory: ./code/utils
       - run:
-          name: Build utility library
-          command: npm run build:utils
+          name: Build utils
+          command: npm run build -- utils
           working_directory: ./code
 
 jobs:
@@ -45,8 +45,6 @@ jobs:
       - save_cache:
           paths:
             - ~/project/code/node_modules
-            - ~/project/code/server/node_modules
-            - ~/project/code/test/node_modules
             - ~/project/code/utils/dist
             - ~/project/code/utils/node_modules
           key: app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
@@ -72,9 +70,9 @@ jobs:
     executor: node
     steps:
       - install_dependencies
-      - run: mkdir -p ~/test-results
+      # - run: mkdir -p ~/test-results
       - run:
-          name: Run utility tests
+          name: Run tests tests
           command: npm run test
           working_directory: ./code
       # - store_test_results:
