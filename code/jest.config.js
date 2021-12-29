@@ -8,7 +8,7 @@ const options = {
   ],
   coverageReporters: ['lcov', 'text', 'text-summary'],
   preset: 'jest-puppeteer',
-  testTimeout: 10 * 1000,
+  setupFilesAfterEnv: ['<rootDir>/test/jest.setup.js'],
   watchman: false
 };
 
