@@ -1,0 +1,90 @@
+version: 2.1
+
+# Only run job on main branch.
+main_only: &main_only
+  filters:
+    branches:
+      only: main
+
+executors:
+  node:
+    docker:
+      - image: cimg/node:16.3
+
+commands:
+  install_dependencies:
+    description: 'Installs all project dependencies.'
+    steps:
+      - checkout
+      - run:
+          name: Consolidate package-lock.json files
+          command: packages=(. server test utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
+          working_directory: ./code
+      - restore_cache:
+          keys:
+            - app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
+            - app-
+      - run:
+          name: Install root dependencies
+          command: npm install
+          working_directory: ./code
+      - run:
+          name: Install subpackage dependencies
+          command: npm run bootstrap
+          working_directory: ./code
+      - run:
+          name: Build utility library
+          command: npm run build:utils
+          working_directory: ./code
+
+jobs:
+  build:
+    executor: node
+    steps:
+      - install_dependencies
+      - save_cache:
+          paths:
+            - ~/project/code/node_modules
+            - ~/project/code/server/node_modules
+            - ~/project/code/test/node_modules
+            - ~/project/code/utils/dist
+            - ~/project/code/utils/node_modules
+          key: app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
+
+  inspect:
+    executor: node
+    steps:
+      - install_dependencies
+      - run:
+          name: Run TypeScript checks
+          command: npm run check
+          working_directory: ./code
+      - run:
+          name: Run ESLint
+          command: npm run eslint -- --max-warnings 0
+          working_directory: ./code
+      - run:
+          name: Run Stylelint
+          command: npm run stylelint
+          working_directory: ./code
+
+  test:
+    executor: node
+    steps:
+      - install_dependencies
+      - run: mkdir -p ~/test-results
+      - run:
+          name: Run utility tests
+          command: npm run test
+          working_directory: ./code
+      # - store_test_results:
+      #     path: ~/test-results
+
+workflows:
+  build-inspect-test:
+    jobs:
+      - build:
+          <<: *main_only
+      - inspect:
+          <<: *main_only
+      - test
