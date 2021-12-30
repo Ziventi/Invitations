@@ -1,5 +1,5 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
+const options = {
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   collectCoverageFrom: [
     '<rootDir>/**/*.ts',
@@ -8,6 +8,11 @@ module.exports = {
   ],
   coverageReporters: ['lcov', 'text', 'text-summary'],
   preset: 'jest-puppeteer',
-  testTimeout: 10 * 1000,
   watchman: false
 };
+
+if (process.env.CIRCLECI) {
+  options.maxWorkers = 2;
+}
+
+module.exports = options;

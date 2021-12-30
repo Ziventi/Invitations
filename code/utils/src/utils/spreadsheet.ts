@@ -17,7 +17,10 @@ export namespace Spreadsheet {
       return spreadsheet;
     }
 
-    const credentials = await import(Paths.KEY_JSON);
+    const credentials = process.env.CIRCLECI
+      ? JSON.parse(process.env.KEY_JSON!)
+      : await import(Paths.KEY_JSON);
+
     spreadsheet = new GoogleSpreadsheet(spreadsheetId);
     await spreadsheet.useServiceAccountAuth(credentials);
     await spreadsheet.loadInfo();
