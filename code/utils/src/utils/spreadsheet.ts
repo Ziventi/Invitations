@@ -1,7 +1,4 @@
-import {
-  GoogleSpreadsheet,
-  ServiceAccountCredentials
-} from 'google-spreadsheet';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 import { Paths } from '../constants/paths';
 
