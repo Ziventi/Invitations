@@ -46,7 +46,6 @@ export async function CLI(options: CLIOptions = {}): Promise<void> {
       .action(publish);
   }
 
-  program.command('clean').action(Utils.clean);
   program.addHelpCommand(false);
 
   await program.parseAsync();
