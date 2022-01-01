@@ -51,7 +51,7 @@ export namespace Utils {
     const component = encodeURIComponent(hash);
     return component;
   }
-  
+
   /**
    * Decrypts an encrypted component with the encryption key.
    * @param hash The hash to decrypt.
@@ -64,14 +64,6 @@ export namespace Utils {
     );
     const json = JSON.parse(value);
     return json;
-  }
-
-  /**
-   * Cleans the output directory.
-   * @param outDir The path to the output directory.
-   */
-  export function clean(outDir: string): void {
-    fs.removeSync(outDir);
   }
 
   /**
@@ -92,14 +84,5 @@ export namespace Utils {
    */
   export function readFileContent(file: string): string {
     return fs.readFileSync(file, { encoding: 'utf8' });
-  }
-
-  /**
-   * Start execution timer, clean and ensure output directory exists.
-   * @param outDir The path to the output directory.
-   */
-  export function setup(outDir: string): void {
-    clean(outDir);
-    fs.ensureDirSync(outDir);
   }
 }

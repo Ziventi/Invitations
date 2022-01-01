@@ -82,6 +82,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
   public async execute(options: GenerateOptions): Promise<void> {
     const { all, format, limit, name, open, refreshCache } = options;
     const { loader, processor } = this.loadingOptions;
+    const { outputDir } = this.paths;
 
     logger.info(`Generating files for '${path.basename(process.cwd())}'...`);
 
@@ -93,7 +94,9 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       logger.warn('Will open first file after generation.');
     }
 
-    Utils.setup(this.paths.outputDir);
+    fs.removeSync(outputDir);
+    fs.ensureDirSync(outputDir);
+    
     this.transpileSass();
     this.copyImages();
 
