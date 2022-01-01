@@ -1,4 +1,4 @@
-import { FileFormat, Utils, ZLoader } from '@ziventi/utils';
+import { FileFormat, ZLoader } from '@ziventi/utils';
 
 import fs from 'fs';
 import path from 'path';
@@ -8,16 +8,6 @@ import main from '../project/controller/main';
 const cwd = path.resolve(process.cwd(), 'test/project');
 const outDir = `${cwd}/.out`;
 const htmlOutDir = `${outDir}/html`;
-
-beforeAll(() => {
-  jest.spyOn(Utils, 'error').mockImplementation((err) => {
-    throw new Error(err);
-  });
-});
-
-afterAll(() => {
-  jest.restoreAllMocks();
-});
 
 describe('Generation', () => {
   test('Generates correct number of files on specified limit', async () => {

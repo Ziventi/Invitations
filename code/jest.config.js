@@ -8,6 +8,8 @@ const options = {
   ],
   coverageReporters: ['lcov', 'text', 'text-summary'],
   preset: 'jest-puppeteer',
+  setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
+  slowTestThreshold: 8,
   testMatch: ['**/*.test.ts'],
   verbose: true,
   watchman: false
