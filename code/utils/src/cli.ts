@@ -1,7 +1,5 @@
 import { Command } from 'commander';
 
-import { Utils } from './utils/functions';
-
 import { CLIOptions } from '../types';
 
 export async function CLI(options: CLIOptions = {}): Promise<void> {
