@@ -1,4 +1,3 @@
-import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -9,8 +8,6 @@ jest.setTimeout(10000);
 describe('PDF Interaction', () => {
   beforeAll(async () => {
     const cwd = path.resolve(process.cwd(), 'test/project');
-    spawnSync('rm', ['-rf', '.out'], { cwd });
-
     await main({ limit: 1 });
 
     const filePath = path.resolve(cwd, './.out/html/Abidemi Ajayi.html');
@@ -22,7 +19,7 @@ describe('PDF Interaction', () => {
     await expect(page.title()).resolves.toMatch('Abidemi Ajayi | Ziventi');
   });
 
-  test('Status hyperlinks', async () => {
+  test('Click status hyperlinks', async () => {
     await page.$eval('body', (element) => element.innerHTML);
     await Promise.all([page.click('a#unavailable'), page.waitForNavigation()]);
     const htmlBody = await page.$eval('body', (element) => element.textContent);
