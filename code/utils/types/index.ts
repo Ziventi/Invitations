@@ -8,10 +8,12 @@ export type Generate = (options: GenerateOptions) => void;
 export type Publish = (options: PublishOptions) => void;
 
 export interface GenerateOptions extends GenerateHTMLOptions {
-  format?: 'pdf' | 'png';
+  format?: FileFormat;
   open?: boolean;
   refreshCache?: boolean;
 }
+
+export type FileFormat = 'pdf' | 'png';
 
 export interface GenerateHTMLOptions {
   all?: boolean;

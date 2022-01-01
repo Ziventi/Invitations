@@ -1,4 +1,4 @@
-import { GenerateOptions, Utils } from '@ziventi/utils';
+import { FileFormat, Utils, ZLoader } from '@ziventi/utils';
 
 import fs from 'fs';
 import path from 'path';
@@ -27,7 +27,7 @@ describe('Generation', () => {
     expect(numberOfFiles).toBe(Number(limit));
   });
 
-  test('Generates correct files for specified name', async () => {
+  test('Generates correct file for specified name', async () => {
     const name = 'Abidemi Ajayi';
     await main({ name });
     const [file] = fs.readdirSync(htmlOutDir);
@@ -35,8 +35,17 @@ describe('Generation', () => {
     expect(filename).toBe(name);
   });
 
-  test.each(['pdf', 'png'])('Generate %s files', async (fileType) => {
-    const format = fileType as GenerateOptions['format'];
+  test.each([true, false])(
+    'Refreshes cache when flag is %s',
+    async (shouldRefresh) => {
+      const spy = jest.spyOn(ZLoader.prototype, 'execute');
+      await main({ refreshCache: shouldRefresh });
+      expect(spy).toBeCalledWith(shouldRefresh);
+    }
+  );
+
+  test.each(['PDF', 'PNG'])('Generate %s files', async (fileType) => {
+    const format = fileType.toLowerCase() as FileFormat;
     await main({ limit: 1, format });
 
     const pdfOutDir = `${outDir}/${format}`;

@@ -17,7 +17,12 @@ import {
   Paths,
   TGuestRow
 } from '../..';
-import { GenerateHTMLOptions, LoadingOptions, TGuest } from '../../types';
+import {
+  FileFormat,
+  GenerateHTMLOptions,
+  LoadingOptions,
+  TGuest
+} from '../../types';
 import { Timed } from '../utils/decorators';
 import { Utils } from '../utils/functions';
 import { logger } from '../utils/logger';
@@ -377,7 +382,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * Opens the first generated file in Chrome.
    * @param format The format of the file to open.
    */
-  private openFileInBrowser(format?: GenerateOptions['format']): void {
+  private openFileInBrowser(format?: FileFormat): void {
     const openFile = (ext: string, app: 'chrome' | 'vscode'): void => {
       const outputDir = `${this.paths.outputDir}/${ext}`;
       const firstFile = fs.readdirSync(outputDir)[0];
@@ -432,9 +437,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * Express server if images require hosting.
    * @param format The file format.
    */
-  private async startInstances(
-    format: GenerateOptions['format']
-  ): Promise<void> {
+  private async startInstances(format: FileFormat): Promise<void> {
     this.browser = await puppeteer.launch();
     if (format === 'pdf') {
       this.exiftool = new ExifTool();
