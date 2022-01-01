@@ -7,13 +7,22 @@ const { run } = require('./lib/runner')('.');
 
 const ROOT = path.resolve(__dirname, '..');
 
+const [, , ...projectNames] = process.argv;
+
 /** @type {import('child_process').ChildProcessWithoutNullStreams} */
 let child = null;
 const projectsRebuilding = new Set();
 const processesInterrupted = new Set();
 
+// If projects are specified, only watch files under them.
+const watchedProjects = projectNames.length
+  ? projectNames.flatMap((projectName) => {
+      return [`**/${projectName}/**/*.ts`, `**/${projectName}/**/tsconfig.json`];
+    })
+  : ['**/*.ts', '*/**/tsconfig.json'];
+
 chokidar
-  .watch(['**/*.ts', '*/**/tsconfig.json'], {
+  .watch(watchedProjects, {
     cwd: ROOT,
     ignored: ['**/node_modules/**', '**/server/**'],
     persistent: true,
@@ -42,7 +51,6 @@ async function rebuildProject(filePath) {
   }
 
   await new Promise((resolve) => {
-    logger.info(`Rebuilding project '${name}'...`);
     child = run('node', ['./scripts/build.js', name]);
     child.on('exit', () => {
       if (processesInterrupted.has(name)) {
