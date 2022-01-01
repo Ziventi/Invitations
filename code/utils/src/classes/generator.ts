@@ -117,7 +117,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   private generateHTMLFiles(
     guests: G[],
-    { all, limit, name }: GenerateHTMLOptions
+    { all, limit = 10, name }: GenerateHTMLOptions
   ): void {
     invariant(guests.length, 'There are no guests to generate files for.');
 
@@ -140,14 +140,15 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
       guests = guests.slice(0, quantity);
     }
 
+    const templateEjs = fs.readFileSync(`${templatesDir}/index.ejs`, 'utf8');
+    const templater = ejs.compile(templateEjs, {
+      root: this.paths.viewsDir,
+      views: [Paths.LIB_DIR]
+    });
+
     guests.forEach((guest) => {
       const outputFile = `${outputDir}/html/${guest.name}.html`;
-      this.createHTMLFile(
-        `${templatesDir}/index.ejs`,
-        outputFile,
-        guest,
-        guests
-      );
+      this.createHTMLFile(templater, outputFile, guest, guests);
     });
   }
 
@@ -205,22 +206,21 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
   /**
    * Helper function for generating HTML pages.
-   * @param templateFile The input template EJS file.
+   * @param templater The EJS template function.
    * @param outputFile The HTML file output path.
    * @param guest The current guest whose details will go on the invite.
    * @param allGuests The list of all guests.
    */
   private createHTMLFile(
-    templateFile: string,
+    templater: ejs.TemplateFunction,
     outputFile: string,
     guest: G,
     allGuests: G[]
   ): void {
-    const { viewsDir, stylesOutputFile } = this.paths;
     let locals: Record<string, any> = {
       guest,
       allGuests,
-      cssFile: stylesOutputFile,
+      cssFile: this.paths.stylesOutputFile,
       fontsUrl: this.fontsUrl
     };
 
@@ -252,12 +252,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
     }
 
     try {
-      const data = fs.readFileSync(templateFile, 'utf8');
-      const template = ejs.compile(data, {
-        root: viewsDir,
-        views: [Paths.LIB_DIR]
-      });
-      const html = template(locals);
+      const html = templater(locals);
       fs.outputFileSync(outputFile, html);
     } catch (err) {
       Utils.error(err);

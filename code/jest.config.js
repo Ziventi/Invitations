@@ -8,6 +8,8 @@ const options = {
   ],
   coverageReporters: ['lcov', 'text', 'text-summary'],
   preset: 'jest-puppeteer',
+  testMatch: ['**/*.test.ts'],
+  verbose: true,
   watchman: false
 };
 

@@ -15,7 +15,7 @@ export interface GenerateOptions extends GenerateHTMLOptions {
 
 export interface GenerateHTMLOptions {
   all?: boolean;
-  limit?: string;
+  limit?: number | string;
   name?: string;
 }
 

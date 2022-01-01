@@ -5,7 +5,23 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Code",
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "port": 9229,
+      "cwd": "${workspaceFolder}/code",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceFolder}/code/node_modules/.bin/jest",
+        "--runInBand",
+        "--silent"
+      ],
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnFirstSessionStart",
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug Code (Beta)",
       "port": 9229,
       "type": "node",
       "request": "attach",

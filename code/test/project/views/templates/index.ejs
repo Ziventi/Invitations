@@ -17,10 +17,11 @@
         <th>Status</th>
       </thead>
       <tbody>
-        <% allGuests.forEach((guest, key) => { %>
+        <% allGuests.forEach((eachGuest, key) => { %>
         <tr>
-          <td><%= guest.name %></td>
-          <% Object.entries(guest._hashes).forEach(([status, hash]) => { %>
+          <td><%= eachGuest.name %></td>
+          <% if (eachGuest._hashes) {
+          Object.entries(eachGuest._hashes).forEach(([status, hash]) => { %>
           <td>
             <a
               id="<%= status.toLowerCase() %>"
@@ -29,7 +30,7 @@
               <%= status %>
             </a>
           </td>
-          <% }); %>
+          <% }); } %>
         </tr>
         <% }); %>
       </tbody>

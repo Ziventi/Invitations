@@ -2,15 +2,16 @@ import { spawnSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import main from '../../project/controller/main';
+import main from '../project/controller/main';
 
-describe('PDF Generation', () => {
+jest.setTimeout(10000);
+
+describe('PDF Interaction', () => {
   beforeAll(async () => {
     const cwd = path.resolve(process.cwd(), 'test/project');
-    spawnSync('rm', ['-rf', '.dist', '.out'], { cwd });
-    spawnSync('tsc', { cwd});
+    spawnSync('rm', ['-rf', '.out'], { cwd });
 
-    await main();
+    await main({ limit: 1 });
 
     const filePath = path.resolve(cwd, './.out/html/Abidemi Ajayi.html');
     const html = fs.readFileSync(filePath, { encoding: 'utf8' });

@@ -1,11 +1,9 @@
-import path from 'path';
-
 import { Guest } from './classes';
-import { Loader } from './settings';
+import { Loader, rootDir } from './settings';
 
-import { Utils, ZGenerator } from '../../../utils';
+import { GenerateOptions, Utils, ZGenerator } from '../../../utils';
 
-export default async function main(): Promise<void> {
+export default async function main(options: GenerateOptions): Promise<void> {
   const Generator = new ZGenerator({
     htmlOptions: {
       hashParams: {
@@ -18,6 +16,12 @@ export default async function main(): Promise<void> {
       nomenclator: (name: string) => name,
       pdfOptions: {
         format: 'a4'
+      },
+      pngOptions: {
+        viewportOptions: {
+          height: '11.75in',
+          width: '8.25in'
+        }
       }
     },
     loadingOptions: {
@@ -26,10 +30,8 @@ export default async function main(): Promise<void> {
         return guests.filter((g) => g.status === 'Confirmed');
       }
     },
-    rootDir: path.resolve(__dirname, '..')
+    rootDir
   });
 
-  await Generator.execute({
-    limit: '1'
-  });
+  await Generator.execute(options);
 }
