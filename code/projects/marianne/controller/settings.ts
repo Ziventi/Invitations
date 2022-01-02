@@ -1,9 +1,10 @@
-import { ConfirmStatus, ZLoader } from '@ziventi/utils';
+import { ConfirmStatus, ZLoader, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import { Category, Guest, GuestRow, InviteRound } from './classes';
 
-dotenv.config();
+const dotenvOutput = dotenv.config();
+Utils.checkDotenv(dotenvOutput);
 
 export const Loader = new ZLoader({
   spreadsheetId: process.env.SS_PRIVATE_GUESTLIST_ID!,

@@ -1,11 +1,14 @@
-import { ConfirmStatus, ZLoader } from '@ziventi/utils';
+import { ConfirmStatus, Utils, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import path from 'path';
 
 import { Guest, GuestRow, Rank } from './classes';
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+const dotenvOutput = dotenv.config({
+  path: path.resolve(__dirname, '../.env')
+});
+Utils.checkDotenv(dotenvOutput);
 
 export const rootDir = path.resolve(__dirname, '..');
 

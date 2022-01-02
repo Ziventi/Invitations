@@ -1,13 +1,22 @@
 import CryptoJS from 'crypto-js';
+import dotenv from 'dotenv';
 import fs from 'fs-extra';
 
 import path from 'path';
 
 import { logger } from './logger';
 
-const ENCRYPTION_KEY = 'key';
+import { Paths } from '../constants/paths';
 
 export namespace Utils {
+  checkDotenv(
+    dotenv.config({
+      path: `${Paths.PROJECT_ROOT}/utils/.env`
+    })
+  );
+
+  const { ENCRYPTION_KEY } = process.env;
+
   /**
    * Builds the Google Fonts URL with specified fonts parameters.
    * @returns The full URL.
@@ -46,10 +55,14 @@ export namespace Utils {
    * @returns The encrypted hash.
    */
   export function encryptJSON<T>(json: T): string {
-    const jsonString = JSON.stringify(json);
-    const hash = CryptoJS.AES.encrypt(jsonString, ENCRYPTION_KEY).toString();
-    const component = encodeURIComponent(hash);
-    return component;
+    try {
+      const jsonString = JSON.stringify(json);
+      const hash = CryptoJS.AES.encrypt(jsonString, ENCRYPTION_KEY!).toString();
+      const component = encodeURIComponent(hash);
+      return component;
+    } catch (e) {
+      Utils.error(e);
+    }
   }
 
   /**
@@ -58,23 +71,25 @@ export namespace Utils {
    * @returns The decrypted JSON.
    */
   export function decryptJSON<T>(hash: string): T {
-    const component = decodeURIComponent(hash);
-    const value = CryptoJS.AES.decrypt(component, ENCRYPTION_KEY).toString(
-      CryptoJS.enc.Utf8
-    );
-    const json = JSON.parse(value);
-    return json;
+    try {
+      const component = decodeURIComponent(hash);
+      const value = CryptoJS.AES.decrypt(component, ENCRYPTION_KEY!).toString(
+        CryptoJS.enc.Utf8
+      );
+      const json = JSON.parse(value);
+      return json;
+    } catch (e) {
+      Utils.error(e);
+    }
   }
 
   /**
    * Catch error, log to console and exit process.
    * @param err The caught error.
    */
-  export function error(err: any): void {
-    if (err) {
-      logger.error('Error: ' + err.message);
-      process.exit(0);
-    }
+  export function error(err: any): never {
+    logger.error('Error: ' + err.message);
+    process.exit(0);
   }
 
   /**
@@ -84,5 +99,10 @@ export namespace Utils {
    */
   export function readFileContent(file: string): string {
     return fs.readFileSync(file, { encoding: 'utf8' });
+  }
+
+  export function checkDotenv({ error }: dotenv.DotenvConfigOutput): void {
+    const envs = ['development', 'test'];
+    if (envs.includes(process.env.NODE_ENV!) && error) throw error;
   }
 }
