@@ -103,6 +103,7 @@ export namespace Utils {
 
   export function checkDotenv({ error }: dotenv.DotenvConfigOutput): void {
     const envs = ['development', 'test'];
+    if (process.env.CIRCLECI) return;
     if (envs.includes(process.env.NODE_ENV!) && error) throw error;
   }
 }
