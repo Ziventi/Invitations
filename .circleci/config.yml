@@ -33,11 +33,11 @@ commands:
             - app-
       - run:
           name: Install root dependencies
-          command: npm install
+          command: npm ci
           working_directory: ./code
       - run:
           name: Install utils dependencies
-          command: npm install
+          command: npm ci
           working_directory: ./code/utils
       - run:
           name: Build utils
