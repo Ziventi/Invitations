@@ -12,17 +12,15 @@ import path from 'path';
 
 import {
   ConfirmStatus,
-  GenerateOptions,
-  HashParams,
-  Paths,
-  TGuestRow
-} from '../..';
-import {
   FileFormat,
   GenerateHTMLOptions,
+  GenerateOptions,
+  HashParams,
   LoadingOptions,
-  TGuest
+  TGuest,
+  TGuestRow
 } from '../../types';
+import { Paths } from '../constants/paths';
 import { Timed } from '../utils/decorators';
 import { Utils } from '../utils/functions';
 import { logger } from '../utils/logger';
@@ -96,7 +94,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     fs.removeSync(outputDir);
     fs.ensureDirSync(outputDir);
-    
+
     this.transpileSass();
     this.copyImages();
 

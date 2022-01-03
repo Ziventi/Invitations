@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 
 export namespace Paths {
   export const PROJECT_ROOT = path.resolve(__dirname, '../../../..');

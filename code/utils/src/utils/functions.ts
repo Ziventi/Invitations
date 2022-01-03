@@ -1,8 +1,9 @@
-import CryptoJS from 'crypto-js';
-import dotenv from 'dotenv';
+import * as AES from 'crypto-js/aes';
+import * as UTF8 from 'crypto-js/enc-utf8';
+import * as dotenv from 'dotenv';
 import fs from 'fs-extra';
 
-import path from 'path';
+import * as path from 'path';
 
 import { logger } from './logger';
 
@@ -57,7 +58,7 @@ export namespace Utils {
   export function encryptJSON<T>(json: T): string {
     try {
       const jsonString = JSON.stringify(json);
-      const hash = CryptoJS.AES.encrypt(jsonString, ENCRYPTION_KEY!).toString();
+      const hash = AES.encrypt(jsonString, ENCRYPTION_KEY!).toString();
       const component = encodeURIComponent(hash);
       return component;
     } catch (e) {
@@ -73,9 +74,7 @@ export namespace Utils {
   export function decryptJSON<T>(hash: string): T {
     try {
       const component = decodeURIComponent(hash);
-      const value = CryptoJS.AES.decrypt(component, ENCRYPTION_KEY!).toString(
-        CryptoJS.enc.Utf8
-      );
+      const value = AES.decrypt(component, ENCRYPTION_KEY!).toString(UTF8);
       const json = JSON.parse(value);
       return json;
     } catch (e) {

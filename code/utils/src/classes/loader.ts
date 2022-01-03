@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 
-import { TGuest, TGuestRow } from '../../types';
+import type { TGuest, TGuestRow } from '../../types';
 import { Utils } from '../utils/functions';
 import { logger } from '../utils/logger';
 import { Spreadsheet } from '../utils/spreadsheet';

@@ -1,4 +1,4 @@
-import { ConfirmStatus } from '../..';
+import { ConfirmStatus } from '../../types';
 
 export namespace Emojis {
   export const CONFIRMED = '\u2714';
