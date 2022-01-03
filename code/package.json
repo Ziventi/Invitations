@@ -13,6 +13,8 @@
     "clean": "node scripts/clean.js",
     "dev": "node scripts/dev.js",
     "dev:server": "nodemon --watch server/*.ts server/index.ts",
+    "preprod": "tsc -p server/tsconfig.json && tsc -p utils/tsconfig.json",
+    "prod": "NODE_ENV=production node server/.dist/index.js",
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
     "debug:cli": "node --inspect scripts/cli.js",
@@ -21,8 +23,7 @@
   },
   "dependencies": {
     "@ziventi/utils": "file:utils",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.2"
+    "dotenv": "^10.0.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.16.5",

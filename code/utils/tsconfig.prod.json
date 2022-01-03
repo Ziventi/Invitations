@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./.dist",
+    "sourceMap": false
+  },
+  "include": ["**/constants/**.ts", "**/utils/**.ts", "types/**.ts", "index.prod.ts"]
+}

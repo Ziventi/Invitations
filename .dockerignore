@@ -1,0 +1,10 @@
+**/node_modules
+**/.dist
+**/.out
+
+**/lib
+**/projects
+**/scripts
+**/test
+
+**/*.config.js
