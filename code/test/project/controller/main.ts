@@ -1,9 +1,11 @@
 import { Guest } from './classes';
 import { Loader, rootDir } from './settings';
 
-import { GenerateOptions, Utils, ZGenerator } from '../../../utils';
+import Ziventi, { Utils, ZGenerator } from '../../../utils';
 
-export default async function main(options: GenerateOptions): Promise<void> {
+export default async function main(
+  options: Ziventi.GenerateOptions
+): Promise<void> {
   const Generator = new ZGenerator({
     htmlOptions: {
       hashParams: {

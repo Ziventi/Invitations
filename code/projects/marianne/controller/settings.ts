@@ -1,4 +1,4 @@
-import { ConfirmStatus, ZLoader, Utils } from '@ziventi/utils';
+import Ziventi, { ZLoader, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import { Category, Guest, GuestRow, InviteRound } from './classes';
@@ -24,7 +24,7 @@ function marshalGuests(records: GuestRow[]): Guest[] {
       from: record['From'],
       round: InviteRound[record['Invite Round'] as keyof typeof InviteRound],
       wlid: record['Wishlist ID'],
-      status: record['Status'] as ConfirmStatus
+      status: record['Status'] as Ziventi.ConfirmStatus
     };
 
     return guest;

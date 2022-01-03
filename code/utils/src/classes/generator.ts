@@ -20,12 +20,12 @@ import {
   TGuest,
   TGuestRow
 } from '../../types';
-import { Paths } from '../constants/paths';
+import { Paths } from '../constants';
 import { Timed } from '../utils/decorators';
-import { Utils } from '../utils/functions';
+import * as Utils from '../utils/functions';
 import { logger } from '../utils/logger';
 
-export class ZGenerator<G extends TGuest, R extends TGuestRow> {
+export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private app?: Express;
   private browser?: Browser;
   private exiftool?: ExifTool;

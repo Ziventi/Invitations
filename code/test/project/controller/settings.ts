@@ -1,4 +1,4 @@
-import { ConfirmStatus, Utils, ZLoader } from '@ziventi/utils';
+import Ziventi, { Utils, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import path from 'path';
@@ -25,7 +25,7 @@ export const Loader = new ZLoader({
  */
 function marshalGuests(records: GuestRow[]): Guest[] {
   return records.map((record) => {
-    let confirmStatus: ConfirmStatus;
+    let confirmStatus: Ziventi.ConfirmStatus;
 
     switch (record['Status']) {
       case 'x':

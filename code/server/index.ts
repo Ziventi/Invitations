@@ -1,4 +1,4 @@
-import { Emojis, HashParams, logger, Spreadsheet, Utils } from '@ziventi/utils';
+import Ziventi, { Emojis, logger, Spreadsheet, Utils } from '@ziventi/utils';
 import express from 'express';
 import invariant from 'tiny-invariant';
 
@@ -6,10 +6,9 @@ const app = express();
 const port = 3000;
 
 app.get('/api/:hash', async (req, res) => {
-  const { hash } = req.params;
-
   try {
-    const json = Utils.decryptJSON<HashParams>(hash);
+    const { hash } = req.params;
+    const json = Utils.decryptJSON<Ziventi.HashParams>(hash);
     const { guestName, status, spreadsheetId, sheetTitle } = json;
 
     logger.trace(`Loading public spreadsheet...`);

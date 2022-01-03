@@ -1,6 +1,6 @@
-import { TGuest, TGuestRow } from '@ziventi/utils';
+import type Ziventi from '@ziventi/utils';
 
-export class Guest implements TGuest {
+export class Guest implements Ziventi.TGuest {
   name!: string;
   category?: Category;
   from?: string;
@@ -9,7 +9,7 @@ export class Guest implements TGuest {
   status!: ConfirmStatus;
 }
 
-export class GuestRow implements TGuestRow {
+export class GuestRow implements Ziventi.TGuestRow {
   Name!: string;
   Category!: string;
   From!: string;

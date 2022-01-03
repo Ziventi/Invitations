@@ -1,11 +1,11 @@
 import fs from 'fs-extra';
 
 import type { TGuest, TGuestRow } from '../../types';
-import { Utils } from '../utils/functions';
+import * as Utils from '../utils/functions';
 import { logger } from '../utils/logger';
-import { Spreadsheet } from '../utils/spreadsheet';
+import * as Spreadsheet from '../utils/spreadsheet';
 
-export class ZLoader<
+export default class ZLoader<
   G extends TGuest = TGuest,
   R extends TGuestRow = TGuestRow
 > {

@@ -1,6 +1,5 @@
-import {
+import Ziventi, {
   CLI,
-  ConfirmStatus,
   Spreadsheet,
   Utils,
   ZGenerator,
@@ -71,7 +70,7 @@ const SHEET_NAME = 'Guest List';
       range: 'D3:E14',
       updater: (guests: Guest[]) => {
         const getTotalMatching = (
-          matcher: ConfirmStatus | ((g: Guest) => boolean)
+          matcher: Ziventi.ConfirmStatus | ((g: Guest) => boolean)
         ): string => {
           return guests
             .filter((g) => {
