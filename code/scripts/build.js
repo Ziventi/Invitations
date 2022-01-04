@@ -15,7 +15,7 @@ projectNames.forEach((projectName) => {
 
   logger.info(`Building project '${projectName}'...`);
   runSilent('rm', ['-rf', '.dist']);
-  run('tsc', ['--outDir', path.join(PROJECT_DIR, './.dist')], () => {
+  run('tsc', ['--build'], () => {
     logger.info(`Finished building '${projectName}.`);
   });
 });

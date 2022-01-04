@@ -1,4 +1,4 @@
-import type ZLoader from '../src/classes/loader';
+import type ZLoader from '../classes/loader';
 
 export type CLIOptions = {
   generate?: Generate;

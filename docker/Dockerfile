@@ -21,4 +21,3 @@ RUN npm run build
 EXPOSE 3000
 
 CMD [ "npm", "run", "prod" ]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]

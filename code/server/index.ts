@@ -1,4 +1,4 @@
-import Ziventi, { Emojis, logger, Spreadsheet, Utils } from '@ziventi/utils/index.prod';
+import Ziventi, { Emojis, logger, Spreadsheet, Utils } from '@ziventi/utils/src/production';
 import express from 'express';
 import invariant from 'tiny-invariant';
 

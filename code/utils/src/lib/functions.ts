@@ -5,9 +5,8 @@ import fs from 'fs-extra';
 
 import * as path from 'path';
 
+import { Paths } from './constants';
 import { logger } from './logger';
-
-import { Paths } from '../constants';
 
 checkDotenv(
   dotenv.config({

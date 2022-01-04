@@ -10,6 +10,10 @@ import { spawnSync } from 'child_process';
 import { Server } from 'http';
 import path from 'path';
 
+import { Paths } from '../lib/constants';
+import { Timed } from '../lib/decorators';
+import * as Utils from '../lib/functions';
+import { logger } from '../lib/logger';
 import {
   ConfirmStatus,
   FileFormat,
@@ -19,11 +23,7 @@ import {
   LoadingOptions,
   TGuest,
   TGuestRow
-} from '../../types';
-import { Paths } from '../constants';
-import { Timed } from '../utils/decorators';
-import * as Utils from '../utils/functions';
-import { logger } from '../utils/logger';
+} from '../types';
 
 export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private app?: Express;

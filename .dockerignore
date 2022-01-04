@@ -2,7 +2,7 @@
 **/.dist
 **/.out
 
-**/lib
+**/code/lib
 **/projects
 **/scripts
 **/test

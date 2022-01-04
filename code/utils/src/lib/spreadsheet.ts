@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-import { Paths } from '../constants';
+import { Paths } from './constants';
 
 let spreadsheet: GoogleSpreadsheet;
 

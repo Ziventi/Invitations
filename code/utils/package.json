@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": ".dist/index.js",
   "exports": {
-    "./index.prod": "./.dist/index.prod.js"
+    "./src/production": "./.dist/production.js"
   },
   "scripts": {
     "prebuild": "rm -rf .dist",
