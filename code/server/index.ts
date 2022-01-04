@@ -5,12 +5,27 @@ import Ziventi, {
   Utils
 } from '@ziventi/utils/src/production';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import invariant from 'tiny-invariant';
 
 const app = express();
 const port = 3000;
-
 const logger = Log4JS.getLogger('server');
+
+app.set('trust proxy', 1);
+
+if (isProduction()) {
+  app.use(
+    '/api',
+    rateLimit({
+      legacyHeaders: false,
+      message: 'Too many requests, please try again later.',
+      max: 15,
+      standardHeaders: true,
+      windowMs: 5 * 60 * 1000
+    })
+  );
+}
 
 app.get('/api/:hash', async (req, res) => {
   try {
