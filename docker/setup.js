@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const path = require('path');
 
 const DOCKERFILE = path.resolve(__dirname, 'Dockerfile');
@@ -6,17 +6,18 @@ const CONTAINER_NAME = 'ziventi-server';
 const IMAGE_NAME = 'ziventi';
 const PORT = 3000;
 
+const CWD = path.resolve(__dirname, '..');
+
 (async () => {
   try {
     await run('docker', ['build', '-f', DOCKERFILE, '-t', IMAGE_NAME, '.']);
-    const { error: containerExists } = await run('docker', [
-      'ps',
-      '-aq',
-      '-f',
-      `name=${CONTAINER_NAME}`,
-    ]);
+    const existingContainer = spawnSync(
+      'docker',
+      ['ps', '-aq', '-f', `name=${CONTAINER_NAME}`],
+      { cwd: CWD, encoding: 'utf8' }
+    ).stdout.trim();
 
-    if (containerExists) {
+    if (existingContainer) {
       await run('docker', ['stop', CONTAINER_NAME]);
       await run('docker', ['rm', CONTAINER_NAME]);
     }
@@ -45,9 +46,7 @@ const PORT = 3000;
  */
 function run(cmd, args) {
   return new Promise((resolve, reject) => {
-    const proc = spawn(cmd, args, {
-      cwd: path.resolve(__dirname, '..'),
-    });
+    const proc = spawn(cmd, args, { cwd: CWD });
     proc.stdout.pipe(process.stdout);
     proc.stderr.pipe(process.stderr);
 
