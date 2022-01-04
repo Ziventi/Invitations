@@ -1,11 +1,21 @@
-import Ziventi, { Emojis, logger, Spreadsheet, Utils } from '@ziventi/utils/src/production';
+import Ziventi, {
+  Emojis,
+  logger,
+  Spreadsheet,
+  Utils
+} from '@ziventi/utils/src/production';
 import express from 'express';
 import invariant from 'tiny-invariant';
 
 const app = express();
 const port = 3000;
 
-app.get('/api/:hash', async (req, res) => {
+// app.use((req, res, next) => {
+//   logger.debug(req.params);
+//   next();
+// });
+
+app.get('/api/:hash', async (req, res, next) => {
   try {
     const { hash } = req.params;
     const json = Utils.decryptJSON<Ziventi.HashParams>(hash);
@@ -45,9 +55,10 @@ app.get('/api/:hash', async (req, res) => {
     } else {
       return res.status(200).send({ message: 'ok' });
     }
-  } catch (e) {
-    logger.error(e);
-    res.status(400).send({ message: e });
+  } catch (error) {
+    const { message } = error as Error;
+    logger.error(message);
+    res.status(400).send({ message });
   }
 });
 

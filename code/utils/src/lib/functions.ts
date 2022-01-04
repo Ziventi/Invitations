@@ -60,7 +60,7 @@ export function encryptJSON<T>(json: T): string {
     const component = encodeURIComponent(hash);
     return component;
   } catch (e) {
-    error(e);
+    throw new Error(e as string);
   }
 }
 
@@ -76,7 +76,7 @@ export function decryptJSON<T>(hash: string): T {
     const json = JSON.parse(value);
     return json;
   } catch (e) {
-    error(e);
+    throw new Error(e as string);
   }
 }
 
