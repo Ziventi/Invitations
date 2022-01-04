@@ -2,7 +2,7 @@ import { Command } from 'commander';
 
 import { CLIOptions } from '../types';
 
-export async function CLI(options: CLIOptions = {}): Promise<void> {
+export default async function CLI(options: CLIOptions = {}): Promise<void> {
   const { generate, publish } = options;
   const program = new Command();
 

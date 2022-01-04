@@ -19,18 +19,6 @@
       "console": "internalConsole",
       "internalConsoleOptions": "openOnFirstSessionStart",
       "sourceMaps": true
-    },
-    {
-      "name": "Debug Code (Beta)",
-      "port": 9229,
-      "type": "node",
-      "request": "attach",
-      "skipFiles": ["<node_internals>/**"],
-      "outFiles": [
-        "${workspaceFolder}/**/*.js",
-        "!**/node_modules/**"
-      ],
-      "sourceMaps": true,
     }
   ]
 }

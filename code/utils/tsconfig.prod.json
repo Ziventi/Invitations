@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "outDir": "./.dist",
+    "sourceMap": false
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "./src/classes/generator.ts",
+    "./src/classes/publisher.ts",
+    "./src/lib/cli.ts",
+    "./src/index.ts"
+  ]
+}

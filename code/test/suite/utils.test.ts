@@ -1,8 +1,8 @@
-import { HashParams, Utils } from '@ziventi/utils';
+import Ziventi, { Utils } from '@ziventi/utils';
 
 describe('Utils', () => {
   test('Encrypts and decrypts hash parameters', () => {
-    const expectedParams: HashParams = {
+    const expectedParams: Ziventi.HashParams = {
       guestName: 'Aruna Jalloh',
       status: 'Confirmed',
       sheetTitle: 'Guests',
@@ -10,7 +10,7 @@ describe('Utils', () => {
     };
 
     const hash = Utils.encryptJSON(expectedParams);
-    const actualParams = Utils.decryptJSON<HashParams>(hash);
+    const actualParams = Utils.decryptJSON<Ziventi.HashParams>(hash);
     expect(actualParams).toMatchObject(expectedParams);
   });
 

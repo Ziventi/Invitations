@@ -17,7 +17,10 @@ const processesInterrupted = new Set();
 // If projects are specified, only watch files under them.
 const watchedProjects = projectNames.length
   ? projectNames.flatMap((projectName) => {
-      return [`**/${projectName}/**/*.ts`, `**/${projectName}/**/tsconfig.json`];
+      return [
+        `**/${projectName}/**/*.ts`,
+        `**/${projectName}/**/tsconfig.json`
+      ];
     })
   : ['**/*.ts', '*/**/tsconfig.json'];
 
@@ -50,17 +53,12 @@ async function rebuildProject(filePath) {
     projectsRebuilding.add(name);
   }
 
-  await new Promise((resolve) => {
-    child = run('node', ['./scripts/build.js', name]);
-    child.on('exit', () => {
-      if (processesInterrupted.has(name)) {
-        processesInterrupted.delete(name);
-      } else {
-        logger.info('Watching for TS file changes...');
-      }
-      resolve();
-    });
-  });
+  child = await run('node', ['./scripts/build.js', name]);
+  if (processesInterrupted.has(name)) {
+    processesInterrupted.delete(name);
+  } else {
+    logger.info('Watching for TS file changes...');
+  }
 
   projectsRebuilding.delete(name);
 }

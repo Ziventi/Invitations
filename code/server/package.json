@@ -1,0 +1,22 @@
+{
+  "name": "@ziventi/server",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild": "rm -rf .dist",
+    "build": "tsc",
+    "prod": "NODE_ENV=production node .dist/index.js"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "@ziventi/utils": "file:../utils",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "tiny-invariant": "^1.2.0",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0"
+  }
+}

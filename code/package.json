@@ -13,6 +13,9 @@
     "clean": "node scripts/clean.js",
     "dev": "node scripts/dev.js",
     "dev:server": "nodemon --watch server/*.ts server/index.ts",
+    "docker": "node scripts/docker.js",
+    "preprod": "tsc -p server/tsconfig.json && tsc -p utils/tsconfig.json",
+    "prod": "NODE_ENV=production node server/.dist/index.js",
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
     "debug:cli": "node --inspect scripts/cli.js",
@@ -20,11 +23,6 @@
     "stylelint": "stylelint **/*.scss"
   },
   "dependencies": {
-    "@ziventi/utils": "file:utils",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.2"
-  },
-  "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
@@ -34,10 +32,12 @@
     "@types/puppeteer": "^5.4.4",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.2",
+    "@ziventi/utils": "file:utils",
     "@zzavidd/eslint-config": "^0.3.3",
     "@zzavidd/prettier-config": "^0.3.3",
     "@zzavidd/stylelint-config": "^0.3.3",
     "chokidar": "^3.5.2",
+    "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",

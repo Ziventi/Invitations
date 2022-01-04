@@ -10,24 +10,22 @@ import { spawnSync } from 'child_process';
 import { Server } from 'http';
 import path from 'path';
 
+import { Paths } from '../lib/constants';
+import { Timed } from '../lib/decorators';
+import * as Utils from '../lib/functions';
+import { logger } from '../lib/logger';
 import {
   ConfirmStatus,
-  GenerateOptions,
-  HashParams,
-  Paths,
-  TGuestRow
-} from '../..';
-import {
   FileFormat,
   GenerateHTMLOptions,
+  GenerateOptions,
+  HashParams,
   LoadingOptions,
-  TGuest
-} from '../../types';
-import { Timed } from '../utils/decorators';
-import { Utils } from '../utils/functions';
-import { logger } from '../utils/logger';
+  TGuest,
+  TGuestRow
+} from '../types';
 
-export class ZGenerator<G extends TGuest, R extends TGuestRow> {
+export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private app?: Express;
   private browser?: Browser;
   private exiftool?: ExifTool;
@@ -96,7 +94,7 @@ export class ZGenerator<G extends TGuest, R extends TGuestRow> {
 
     fs.removeSync(outputDir);
     fs.ensureDirSync(outputDir);
-    
+
     this.transpileSass();
     this.copyImages();
 

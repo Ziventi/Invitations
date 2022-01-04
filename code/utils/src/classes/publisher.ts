@@ -3,18 +3,18 @@ import invariant from 'tiny-invariant';
 
 import path from 'path';
 
-import {
+import { Timed } from '../lib/decorators';
+import { logger } from '../lib/logger';
+import * as Spreadsheet from '../lib/spreadsheet';
+import type {
   PublishLoadingOptions,
   PublishOptions,
   PublishSheet,
-  TGuestRow
-} from '../..';
-import type { TGuest } from '../../types';
-import { Timed } from '../utils/decorators';
-import { logger } from '../utils/logger';
-import { Spreadsheet } from '../utils/spreadsheet';
+  TGuestRow,
+  TGuest
+} from '../types';
 
-export class ZPublisher<G extends TGuest, R extends TGuestRow> {
+export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: PublishLoadingOptions<G, R>;
   private postPublish?: PostPublish<G>;
   private spreadsheet!: GoogleSpreadsheet;

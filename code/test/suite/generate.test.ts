@@ -1,4 +1,4 @@
-import { FileFormat, ZLoader } from '@ziventi/utils';
+import Ziventi, { ZLoader } from '@ziventi/utils';
 
 import fs from 'fs';
 import path from 'path';
@@ -35,7 +35,7 @@ describe('Generation', () => {
   );
 
   test.each(['PDF', 'PNG'])('Generate %s files', async (fileType) => {
-    const format = fileType.toLowerCase() as FileFormat;
+    const format = fileType.toLowerCase() as Ziventi.FileFormat;
     await main({ limit: 1, format });
 
     const pdfOutDir = `${outDir}/${format}`;
