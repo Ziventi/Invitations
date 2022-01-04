@@ -1,37 +1,40 @@
+import format from 'date-fns/format';
 import * as log4js from 'log4js';
 
 const LOGGER_LEVEL = 'debug';
-const APPENDER_NAME = 'ziventi';
 
-const ZLogger = log4js
-  .configure({
-    appenders: {
-      [APPENDER_NAME]: {
-        type: 'console',
-        layout: {
-          type: 'pattern',
-          pattern: '%[[%x{ln} %p]%] - %m',
-          tokens: {
-            ln: () => {
-              const pad = (value: number | string, length = 2): string => {
-                return value.toString().padStart(length, '0');
-              };
-              const dt = new Date();
-              const hour = pad(dt.getHours());
-              const min = pad(dt.getMinutes());
-              const seconds = pad(dt.getSeconds());
-              const ms = pad(dt.getMilliseconds(), 3);
-              return `${pad(hour)}:${pad(min)}:${pad(seconds)}.${ms}`;
-            }
+log4js.configure({
+  appenders: {
+    Default: {
+      type: 'console',
+      layout: {
+        type: 'pattern',
+        pattern: '%[[%x{ln} %p]%] - %m',
+        tokens: {
+          ln: () => {
+            return format(new Date(), 'HH:mm:ss:SSS');
           }
         }
       }
     },
-    categories: {
-      default: { appenders: [APPENDER_NAME], level: 'debug' }
+    Server: {
+      type: 'console',
+      layout: {
+        type: 'pattern',
+        pattern: '%[[%x{ln} %p]%] - %m',
+        tokens: {
+          ln: () => {
+            return format(new Date(), 'E-dd-MMM-yyyy HH:mm:ss:SSS');
+          }
+        }
+      }
     }
-  })
-  .getLogger('cheese');
-  ZLogger.level = LOGGER_LEVEL;
+  },
+  categories: {
+    default: { appenders: ['Server'], level: LOGGER_LEVEL },
+    server: { appenders: ['Server'], level: LOGGER_LEVEL }
+  }
+});
 
-export const logger = ZLogger;
+export default log4js;
+export const logger = log4js.getLogger('default');

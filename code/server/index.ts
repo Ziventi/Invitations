@@ -1,6 +1,6 @@
 import Ziventi, {
   Emojis,
-  logger,
+  Log4JS,
   Spreadsheet,
   Utils
 } from '@ziventi/utils/src/production';
@@ -10,12 +10,9 @@ import invariant from 'tiny-invariant';
 const app = express();
 const port = 3000;
 
-// app.use((req, res, next) => {
-//   logger.debug(req.params);
-//   next();
-// });
+const logger = Log4JS.getLogger('server');
 
-app.get('/api/:hash', async (req, res, next) => {
+app.get('/api/:hash', async (req, res) => {
   try {
     const { hash } = req.params;
     const json = Utils.decryptJSON<Ziventi.HashParams>(hash);
