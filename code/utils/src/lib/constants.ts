@@ -3,7 +3,7 @@ import * as path from 'path';
 import { ConfirmStatus } from '../types';
 
 export namespace Paths {
-  export const PROJECT_ROOT = path.resolve(__dirname, '../../../..');
+  export const PROJECT_ROOT = path.resolve(__dirname, '../../..');
   export const KEY_JSON = `${PROJECT_ROOT}/utils/key.json`;
   export const LIB_DIR = `${PROJECT_ROOT}/lib`;
 }

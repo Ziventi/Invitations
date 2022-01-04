@@ -6,7 +6,7 @@ import { Emojis, Paths } from './lib/constants';
 import * as Utils from './lib/functions';
 import { logger } from './lib/logger';
 import * as Spreadsheet from './lib/spreadsheet';
-import type * as Types from './types';
+import * as Types from './types';
 
 export default Types;
 
