@@ -7,25 +7,32 @@ module.exports = (cwd) => {
    * Runs a child process and pipes output to console.
    * @param {string} cmd The base command.
    * @param {string[]} args The command arguments.
-   * @param {() => void} onClose Code to run on closing the process.
    * @returns The child process instance.
    */
-  function run(cmd, args, onClose) {
-    const proc = spawn(cmd, args, { cwd });
-    proc.stdout.pipe(process.stdout);
-    proc.stderr.pipe(process.stderr);
+  function run(cmd, args) {
+    return new Promise((resolve, reject) => {
+      const proc = spawn(cmd, args, { cwd });
+      proc.stdout.pipe(process.stdout);
+      proc.stderr.pipe(process.stderr);
 
-    proc.on('error', (e) => {
-      logger.error(e);
-      process.exit(1);
-    });
+      let error = '';
 
-    if (onClose) {
-      proc.on('close', () => {
-        onClose();
+      proc.on('error', (e) => {
+        throw new Error(e);
       });
-    }
-    return proc;
+
+      proc.stderr.on('data', (chunk) => {
+        error = chunk.toString();
+      });
+
+      proc.on('exit', (code) => {
+        if (code === 0) {
+          resolve(proc);
+        } else {
+          throw new Error(error);
+        }
+      });
+    });
   }
 
   /**
@@ -34,7 +41,14 @@ module.exports = (cwd) => {
    * @param {string[]} args The command arguments.
    */
   function runSilent(cmd, args) {
-    spawnSync(cmd, args, { cwd });
+    const proc = spawnSync(cmd, args, { cwd, encoding: 'utf8' });
+
+    if (proc.error) {
+      throw proc.error;
+    } else {
+      const output = proc.output.filter((chunk) => chunk).join().trim();
+      return output;
+    }
   }
 
   return {

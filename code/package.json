@@ -13,6 +13,7 @@
     "clean": "node scripts/clean.js",
     "dev": "node scripts/dev.js",
     "dev:server": "nodemon --watch server/*.ts server/index.ts",
+    "docker": "node scripts/docker.js",
     "preprod": "tsc -p server/tsconfig.json && tsc -p utils/tsconfig.json",
     "prod": "NODE_ENV=production node server/.dist/index.js",
     "test": "jest --silent --runInBand",

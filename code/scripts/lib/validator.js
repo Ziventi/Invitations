@@ -24,7 +24,7 @@ exports.ensureEntryPointExists = (projectPath) => {
  * @returns The absolute path of the project.
  */
 exports.getProjectPath = (projectName) => {
-  const rootProjects = ['test', 'utils'];
+  const rootProjects = ['server', 'test', 'utils'];
   const projectPath = rootProjects.includes(projectName)
     ? path.join(process.cwd(), projectName)
     : path.join(process.cwd(), 'projects', projectName);

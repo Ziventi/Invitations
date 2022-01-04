@@ -13,13 +13,16 @@ Validator.ensureProjectExists(PROJECT_DIR);
 const { run } = runner(PROJECT_DIR);
 
 logger.info('Running live dev...');
-run('nodemon', [
-  '--watch',
-  'views',
-  '--ext',
-  'ejs,scss,json,svg',
-  '.dist/main.js',
-  '--',
-  'generate',
-  ...args
-]);
+
+(async () => {
+  await run('nodemon', [
+    '--watch',
+    'views',
+    '--ext',
+    'ejs,scss,json,svg',
+    '.dist/main.js',
+    '--',
+    'generate',
+    ...args
+  ]);
+})();

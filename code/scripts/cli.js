@@ -9,5 +9,6 @@ Validator.ensureProjectExists(PROJECT_DIR);
 Validator.ensureEntryPointExists(PROJECT_DIR);
 
 const { run } = runner(PROJECT_DIR);
-
-run('node', ['./.dist/main.js', ...args]);
+(async () => {
+  await run('node', ['./.dist/main.js', ...args]);
+})();

@@ -13,7 +13,9 @@ const clean = (cwd) => {
 logger.info('Cleaning project directories...');
 fs.readdirSync(PROJECTS_DIR).forEach((directory) => {
   const cwd = path.join(PROJECTS_DIR, directory);
-  clean(cwd);
+  if (fs.lstatSync(cwd).isDirectory()) {
+    clean(cwd);
+  }
 });
 
 logger.info('Cleaning test project...');
