@@ -6,9 +6,15 @@ import Ziventi, {
 } from '@ziventi/utils/src/production';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import NodeCache from 'node-cache';
 import invariant from 'tiny-invariant';
 
 const app = express();
+const cache = new NodeCache({
+  checkperiod: 3 * 60,
+  deleteOnExpire: true,
+  stdTTL: 5 * 60
+});
 const port = 3000;
 const logger = Log4JS.getLogger('server');
 
@@ -34,14 +40,19 @@ app.get('/api/:hash', async (req, res) => {
     const { guestName, status, spreadsheetId, sheetTitle } = json;
 
     logger.trace(`Loading public spreadsheet...`);
-    const publicSpreadsheet = await Spreadsheet.getSpreadsheet(spreadsheetId);
+    const publicSpreadsheet =
+      cache.get<Ziventi.Spreadsheet>(spreadsheetId) ||
+      (await Spreadsheet.getSpreadsheet(spreadsheetId));
     invariant(
       publicSpreadsheet,
       'No spreadsheet found with specified spreadsheet ID.'
     );
+    cache.set(spreadsheetId, publicSpreadsheet);
+
     const publicSheet = publicSpreadsheet.sheetsByTitle[sheetTitle];
     invariant(publicSheet, `No sheet found matching title '${sheetTitle}'.`);
 
+    // TODO: Cache rows
     const publicSheetRows = await publicSheet.getRows();
     const matchingRow = publicSheetRows.find(
       (row) => row['Name'] === guestName

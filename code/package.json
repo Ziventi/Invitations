@@ -18,7 +18,6 @@
     "prod": "NODE_ENV=production node server/.dist/index.js",
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
-    "debug:cli": "node --inspect scripts/cli.js",
     "eslint": "eslint --ext .ts .",
     "stylelint": "stylelint **/*.scss"
   },

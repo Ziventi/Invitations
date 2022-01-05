@@ -1,7 +1,7 @@
+import Ziventi, { Utils, ZGenerator } from '@ziventi/utils';
+
 import { Guest } from './classes';
 import { Loader, rootDir } from './settings';
-
-import Ziventi, { Utils, ZGenerator } from '../../../utils';
 
 export default async function main(
   options: Ziventi.GenerateOptions
