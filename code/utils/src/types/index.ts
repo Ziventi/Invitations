@@ -1,7 +1,5 @@
 import type ZLoader from '../classes/loader';
 
-export { GoogleSpreadsheet as Spreadsheet } from 'google-spreadsheet';
-
 export type CLIOptions = {
   generate?: Generate;
   publish?: Publish;

@@ -1,6 +1,11 @@
+require('dotenv').config();
+
+const { TEST_PORT } = process.env;
+
 module.exports = {
   server: {
-    command: 'ts-node ./server',
-    port: 3000
+    launchTimeout: 10000,
+    command: `PORT=${TEST_PORT} ts-node ./server`,
+    port: TEST_PORT
   }
 };
