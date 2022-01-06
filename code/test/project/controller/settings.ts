@@ -1,4 +1,4 @@
-import Ziventi, { Utils, ZLoader } from '@ziventi/utils';
+import Ziventi, { Paths, Utils, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import path from 'path';
@@ -6,14 +6,14 @@ import path from 'path';
 import { Guest, GuestRow, Rank } from './classes';
 
 const dotenvOutput = dotenv.config({
-  path: path.resolve(__dirname, '../.env')
+  path: path.resolve(Paths.PROJECT_ROOT, '.env')
 });
 Utils.checkDotenv(dotenvOutput);
 
 export const rootDir = path.resolve(__dirname, '..');
 
 export const Loader = new ZLoader({
-  spreadsheetId: process.env.SS_PRIVATE_ID!,
+  spreadsheetId: process.env.TEST_SS_PRIVATE_ID!,
   guestMarshaler: marshalGuests,
   rootDir
 });

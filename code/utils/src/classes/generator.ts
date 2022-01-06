@@ -445,7 +445,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     }
     if (this.app) {
       logger.trace('Starting Express image server...');
-      this.imageServer = this.app.listen(3000);
+      this.imageServer = this.app.listen(3333);
     }
   }
 

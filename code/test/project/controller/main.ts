@@ -1,7 +1,7 @@
+import Ziventi, { Utils, ZGenerator } from '@ziventi/utils';
+
 import { Guest } from './classes';
 import { Loader, rootDir } from './settings';
-
-import Ziventi, { Utils, ZGenerator } from '../../../utils';
 
 export default async function main(
   options: Ziventi.GenerateOptions
@@ -9,7 +9,7 @@ export default async function main(
   const Generator = new ZGenerator({
     htmlOptions: {
       hashParams: {
-        spreadsheetId: process.env.SS_PUBLIC_ID!,
+        spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
         sheetTitle: 'Guest List'
       }
     },

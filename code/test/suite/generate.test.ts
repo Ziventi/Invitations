@@ -9,6 +9,8 @@ const cwd = path.resolve(process.cwd(), 'test/project');
 const outDir = `${cwd}/.out`;
 const htmlOutDir = `${outDir}/html`;
 
+jest.setTimeout(15000);
+
 describe('Generation', () => {
   test('Generates correct number of files on specified limit', async () => {
     const limit = '3';

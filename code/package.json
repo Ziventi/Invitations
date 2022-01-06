@@ -18,7 +18,6 @@
     "prod": "NODE_ENV=production node server/.dist/index.js",
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
-    "debug:cli": "node --inspect scripts/cli.js",
     "eslint": "eslint --ext .ts .",
     "stylelint": "stylelint **/*.scss"
   },
@@ -36,6 +35,7 @@
     "@zzavidd/eslint-config": "^0.3.3",
     "@zzavidd/prettier-config": "^0.3.3",
     "@zzavidd/stylelint-config": "^0.3.3",
+    "axios": "^0.24.0",
     "chokidar": "^3.5.2",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
@@ -45,6 +45,7 @@
     "jest": "^27.4.5",
     "jest-puppeteer": "^6.0.3",
     "log4js": "^6.3.0",
+    "node-cache": "^5.1.2",
     "nodemon": "^2.0.15",
     "prettier": "^2.3.2",
     "puppeteer": "^13.0.1",

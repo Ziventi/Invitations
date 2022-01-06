@@ -1,20 +1,20 @@
 import Ziventi, {
   Emojis,
-  Log4JS,
   Spreadsheet,
   Utils
 } from '@ziventi/utils/src/production';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
-import invariant from 'tiny-invariant';
+
+import * as Helper from './helpers';
 
 const app = express();
-const port = 3000;
-const logger = Log4JS.getLogger('server');
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+const { logger } = Helper;
 
 app.set('trust proxy', 1);
 
-if (isProduction()) {
+if (Helper.isProduction()) {
   app.use(
     '/api',
     rateLimit({
@@ -30,25 +30,13 @@ if (isProduction()) {
 app.get('/api/:hash', async (req, res) => {
   try {
     const { hash } = req.params;
-    const json = Utils.decryptJSON<Ziventi.HashParams>(hash);
-    const { guestName, status, spreadsheetId, sheetTitle } = json;
+    const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
+    const { guestName, status, spreadsheetId } = payload;
 
-    logger.trace(`Loading public spreadsheet...`);
-    const publicSpreadsheet = await Spreadsheet.getSpreadsheet(spreadsheetId);
-    invariant(
-      publicSpreadsheet,
-      'No spreadsheet found with specified spreadsheet ID.'
-    );
-    const publicSheet = publicSpreadsheet.sheetsByTitle[sheetTitle];
-    invariant(publicSheet, `No sheet found matching title '${sheetTitle}'.`);
-
-    const publicSheetRows = await publicSheet.getRows();
-    const matchingRow = publicSheetRows.find(
-      (row) => row['Name'] === guestName
-    );
-    invariant(
-      matchingRow,
-      `No row found with 'Name' column matching '${guestName}'.`
+    const publicSheet = await Helper.retrievePublicWorksheet(payload);
+    const matchingRow = await Helper.retrieveRowMatchingGuest(
+      publicSheet,
+      guestName
     );
 
     logger.trace(`Loading cell to edit...`);
@@ -61,27 +49,38 @@ app.get('/api/:hash', async (req, res) => {
     await publicSheet.saveUpdatedCells();
     logger.info(`Updated guest '${guestName}' with status '${status}'.`);
 
-    if (isProduction()) {
+    if (Helper.isProduction()) {
       const sheetUrl = Spreadsheet.getSpreadsheetUrl(spreadsheetId);
-      return res.redirect(sheetUrl);
+      res.redirect(sheetUrl);
     } else {
-      return res.status(200).send({ message: 'ok' });
+      res.status(200).send({ message: 'ok' });
     }
-  } catch (error) {
-    const { message } = error as Error;
-    logger.error(message);
-    res.status(400).send({ message });
+  } catch (err) {
+    Helper.handleError(err, res);
   }
+});
+
+if (!Helper.isProduction()) {
+  app.get('/api/test/:hash', async (req, res) => {
+    try {
+      const { hash } = req.params;
+      const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
+
+      const publicSheet = await Helper.retrievePublicWorksheet(payload);
+      await Helper.retrieveRowMatchingGuest(publicSheet, payload.guestName);
+
+      res.status(200).send({ message: 'ok' });
+    } catch (err) {
+      Helper.handleError(err, res);
+    }
+  });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: any, _: Request, res: Response, __: NextFunction) => {
+  Helper.handleError(err, res);
 });
 
 app.listen(port, () => {
   console.info(`Listening at http://localhost:${port}`);
 });
-
-/**
- * Checks if service is running in production.
- * @returns True if in production.
- */
-function isProduction(): boolean {
-  return process.env.NODE_ENV === 'production';
-}
