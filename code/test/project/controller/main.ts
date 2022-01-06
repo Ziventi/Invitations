@@ -9,7 +9,7 @@ export default async function main(
   const Generator = new ZGenerator({
     htmlOptions: {
       hashParams: {
-        spreadsheetId: process.env.SS_PUBLIC_ID!,
+        spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
         sheetTitle: 'Guest List'
       }
     },

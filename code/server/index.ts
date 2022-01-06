@@ -77,7 +77,7 @@ if (!Helper.isProduction()) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use((err: any, req: Request, res: Response, __: NextFunction) => {
+app.use((err: any, _: Request, res: Response, __: NextFunction) => {
   Helper.handleError(err, res);
 });
 
