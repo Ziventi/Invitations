@@ -6,7 +6,7 @@ import path from 'path';
 
 dotenv.config({ path: path.resolve(Paths.PROJECT_ROOT, '.env') });
 
-const axios = Axios.create({ baseURL: 'http://localhost:3000/api/test' });
+const axios = Axios.create({ baseURL: 'http://localhost:4000/api/test' });
 
 describe('Server', () => {
   test('Correct payload, server responds with 200', async () => {
