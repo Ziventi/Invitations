@@ -38,7 +38,7 @@ commands:
       - run:
           name: Install server dependencies
           command: npm install
-          working_directory: ./server
+          working_directory: ./code/server
       - run:
           name: Install utils dependencies
           command: npm install
