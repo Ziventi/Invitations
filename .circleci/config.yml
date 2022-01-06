@@ -15,7 +15,7 @@ commands:
       - checkout
       - run:
           name: Consolidate package-lock.json files
-          command: packages=(. utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
+          command: packages=(. server utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
           working_directory: ./code
       - run:
           name: Install Headless Chrome dependencies
@@ -36,6 +36,10 @@ commands:
           command: npm install
           working_directory: ./code
       - run:
+          name: Install server dependencies
+          command: npm install
+          working_directory: ./server
+      - run:
           name: Install utils dependencies
           command: npm install
           working_directory: ./code/utils
@@ -46,6 +50,7 @@ commands:
       - save_cache:
           paths:
             - ~/project/code/node_modules
+            - ~/project/code/server/node_modules
             - ~/project/code/utils/dist
             - ~/project/code/utils/node_modules
           key: app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
