@@ -87,10 +87,9 @@ jobs:
     docker:
       - image: gotechnies/alpine-ssh
     steps:
-      - checkout
       - run:
           name: Deploy
-          command: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./deploy.sh"
+          command: ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./deploy.sh"
           working_directory: ./docker
 
 workflows:
