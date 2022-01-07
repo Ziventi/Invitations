@@ -24,14 +24,15 @@ exports.ensureEntryPointExists = (projectPath) => {
  * @returns The absolute path of the project.
  */
 exports.getProjectPath = (projectName) => {
+  const cwd = process.cwd();
   switch (projectName) {
     case 'test':
-      return path.join(process.cwd(), 'test', 'project');
+      return path.join(cwd, 'test', 'project');
     case 'server':
     case 'utils':
-      return path.join(process.cwd(), projectName);
+      return path.join(cwd, projectName);
     default:
-      path.join(process.cwd(), 'projects', projectName);
+      return path.join(cwd, 'projects', projectName);
   }
 };
 
