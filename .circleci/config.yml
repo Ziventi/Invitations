@@ -91,7 +91,6 @@ jobs:
       - run:
           name: Deploy
           command: ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./deploy.sh"
-          working_directory: ./docker
 
 workflows:
   build-inspect-test:
