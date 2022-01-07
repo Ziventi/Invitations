@@ -90,8 +90,8 @@ jobs:
       - checkout
       - run:
           name: Deploy
-          command: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "ls && pwd"
-          working_directory: ./code
+          command: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./deploy.sh"
+          working_directory: ./docker
 
 workflows:
   build-inspect-test:
