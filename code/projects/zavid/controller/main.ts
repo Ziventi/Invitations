@@ -45,6 +45,7 @@ const SHEET_NAME = 'Guest List';
       Tangerine: 'wght@400;700'
     }),
     formatOptions: {
+      archiveTitle: '#Z25 Invites',
       nomenclator: (guestName) => `#Z25 Invitation to ${guestName}`,
       pdfOptions: {
         format: 'a4'

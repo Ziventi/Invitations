@@ -79,7 +79,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   @Timed
   public async execute(options: GenerateOptions): Promise<void> {
-    const { all, archive, format, limit, name, open, refreshCache } = options;
+    const { all, format, limit, name, open, refreshCache, zip } = options;
     const { loader, processor } = this.loadingOptions;
     const { outputDir } = this.paths;
 
@@ -104,11 +104,13 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       await this.generatePDFFiles();
     }
 
-    if (archive && format) {
+    if (zip && format) {
+      logger.info('Archiving generate format files...');
       this.archiveOutputFiles(format);
     }
 
     if (open) {
+      logger.info('Opening first generated format file...');
       this.openFileInBrowser(format);
     }
   }
@@ -389,7 +391,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     fs.readdirSync(formatOutDir).forEach((filename) => {
       archiver.addLocalFile(path.resolve(formatOutDir, filename));
     });
-    archiver.writeZip(`${outputDir}/${archiveTitle}`);
+    archiver.writeZip(`${outputDir}/${archiveTitle}.zip`);
   }
 
   /**
@@ -483,15 +485,22 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * @param options The passed in generate options;
    */
   private showWarnings(options: GenerateOptions): void {
-    const { all, archive, format, open } = options;
+    const { all, format, open, zip } = options;
     logger.info(`Generating files for '${path.basename(process.cwd())}'...`);
 
     if (all && format) {
       logger.warn(`Generating ${format.toUpperCase()} files for ALL guests.`);
     }
 
-    if (archive) {
-      logger.warn('Will archive generated format files.');
+    if (zip) {
+      if (format) {
+        logger.warn('Will archive generated format files.');
+        if (!this.formatOptions?.archiveTitle) {
+          logger.error('No name specified for archive title.');
+        }
+      } else {
+        logger.warn('No format specified. Archiving will not be perfomed.');
+      }
     }
 
     if (open) {

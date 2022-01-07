@@ -29,7 +29,7 @@ export default async function CLI(options: CLIOptions = {}): Promise<void> {
         false
       )
       .option(
-        '-z, --zip, --archive',
+        '-z, --zip',
         'Archives the generated format files into a ZIP.',
         false
       )
