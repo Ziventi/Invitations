@@ -97,6 +97,9 @@ workflows:
       # - test
       - deploy
       # - deploy:
+      #     requires:
+      #       - inspect
+      #       - test
       #     filters:
       #       branches:
       #         only:
