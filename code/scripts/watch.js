@@ -27,7 +27,7 @@ const watchedProjects = projectNames.length
 chokidar
   .watch(watchedProjects, {
     cwd: ROOT,
-    ignored: ['**/node_modules/**', '**/server/**'],
+    ignored: ['**/node_modules/**', '**/server/**', '**/test/**'],
     persistent: true,
     awaitWriteFinish: false
   })
