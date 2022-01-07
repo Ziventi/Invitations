@@ -85,7 +85,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:16.3.0
+      - image: gotechnies/alpine-ssh
     steps:
       - checkout
       - run: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "node scripts/docker.js"
