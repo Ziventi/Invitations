@@ -90,7 +90,7 @@ jobs:
       - checkout
       - run:
           name: Deploy
-          command: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "node scripts/docker.js"
+          command: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "ls && pwd"
           working_directory: ./code
 
 workflows:
