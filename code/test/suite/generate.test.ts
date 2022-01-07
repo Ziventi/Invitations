@@ -1,4 +1,5 @@
 import Ziventi, { ZLoader } from '@ziventi/utils';
+import AdmZip from 'adm-zip';
 
 import fs from 'fs';
 import path from 'path';
@@ -27,6 +28,20 @@ describe('Generation', () => {
     expect(filename).toBe(name);
   });
 
+  test('Generates ZIP file', async () => {
+    const format = 'pdf';
+    await main({ limit: 1, format, zip: true });
+
+    const testProjectZip = `${outDir}/Test Project.zip`;
+    const zipExists = fs.existsSync(testProjectZip);
+    expect(zipExists).toBe(true);
+
+    const zip = new AdmZip(testProjectZip);
+    const file = zip.getEntries().shift();
+    expect(file).toBeDefined();
+    expect(file!.entryName).toBe('Abidemi Ajayi.pdf');
+  });
+
   test.each([true, false])(
     'Refreshes cache when flag is %s',
     async (shouldRefresh) => {
@@ -40,10 +55,10 @@ describe('Generation', () => {
     const format = fileType.toLowerCase() as Ziventi.FileFormat;
     await main({ limit: 1, format });
 
-    const pdfOutDir = `${outDir}/${format}`;
-    expect(fs.existsSync(pdfOutDir)).toBe(true);
+    const formatOutDir = `${outDir}/${format}`;
+    expect(fs.existsSync(formatOutDir)).toBe(true);
 
-    const [file] = fs.readdirSync(pdfOutDir);
+    const [file] = fs.readdirSync(formatOutDir);
     expect(file).toBeDefined();
 
     const filename = path.parse(file).ext;

@@ -15,6 +15,7 @@ export default async function main(
     },
     fontsUrl: Utils.buildFontUrl({ Tangerine: 'wght@400;700' }),
     formatOptions: {
+      archiveTitle: 'Test Project',
       nomenclator: (name: string) => name,
       pdfOptions: {
         format: 'a4'

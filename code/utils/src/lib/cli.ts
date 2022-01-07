@@ -28,7 +28,11 @@ export default async function CLI(options: CLIOptions = {}): Promise<void> {
         'Reload and cache the external dataset.',
         false
       )
-
+      .option(
+        '-z, --zip',
+        'Archives the generated format files into a ZIP.',
+        false
+      )
       .action(generate);
   }
 

@@ -11,6 +11,7 @@ export interface GenerateOptions extends GenerateHTMLOptions {
   format?: FileFormat;
   open?: boolean;
   refreshCache?: boolean;
+  zip?: boolean;
 }
 
 export type FileFormat = 'pdf' | 'png';

@@ -1,3 +1,4 @@
+import admzip from 'adm-zip';
 import ejs from 'ejs';
 import { ExifTool } from 'exiftool-vendored';
 import express, { Express } from 'express';
@@ -78,19 +79,11 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   @Timed
   public async execute(options: GenerateOptions): Promise<void> {
-    const { all, format, limit, name, open, refreshCache } = options;
+    const { all, format, limit, name, open, refreshCache, zip } = options;
     const { loader, processor } = this.loadingOptions;
     const { outputDir } = this.paths;
 
-    logger.info(`Generating files for '${path.basename(process.cwd())}'...`);
-
-    if (all && format) {
-      logger.warn(`Generating ${format.toUpperCase()} files for ALL guests.`);
-    }
-
-    if (open) {
-      logger.warn('Will open first file after generation.');
-    }
+    this.showWarnings(options);
 
     fs.removeSync(outputDir);
     fs.ensureDirSync(outputDir);
@@ -111,7 +104,13 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       await this.generatePDFFiles();
     }
 
+    if (zip && format) {
+      logger.info('Archiving generate format files...');
+      this.archiveOutputFiles(format);
+    }
+
     if (open) {
+      logger.info('Opening first generated format file...');
       this.openFileInBrowser(format);
     }
   }
@@ -380,6 +379,22 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
   }
 
   /**
+   * Archives the output format files into a single ZIP file.
+   * @param format The format of the files.
+   */
+  private archiveOutputFiles(format: FileFormat): void {
+    const { outputDir } = this.paths;
+    const { archiveTitle } = this.formatOptions!;
+
+    const archiver = new admzip();
+    const formatOutDir = `${outputDir}/${format}`;
+    fs.readdirSync(formatOutDir).forEach((filename) => {
+      archiver.addLocalFile(path.resolve(formatOutDir, filename));
+    });
+    archiver.writeZip(`${outputDir}/${archiveTitle}.zip`);
+  }
+
+  /**
    * Opens the first generated file in Chrome.
    * @param format The format of the file to open.
    */
@@ -464,6 +479,34 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       this.imageServer.close();
     }
   }
+
+  /**
+   * Shows console log / warnings.
+   * @param options The passed in generate options;
+   */
+  private showWarnings(options: GenerateOptions): void {
+    const { all, format, open, zip } = options;
+    logger.info(`Generating files for '${path.basename(process.cwd())}'...`);
+
+    if (all && format) {
+      logger.warn(`Generating ${format.toUpperCase()} files for ALL guests.`);
+    }
+
+    if (zip) {
+      if (format) {
+        logger.warn('Will archive generated format files.');
+        if (!this.formatOptions?.archiveTitle) {
+          logger.error('No name specified for archive title.');
+        }
+      } else {
+        logger.warn('No format specified. Archiving will not be perfomed.');
+      }
+    }
+
+    if (open) {
+      logger.warn('Will open first file after generation.');
+    }
+  }
 }
 
 interface GeneratorConstructor<G extends TGuest, R extends TGuestRow> {
@@ -481,6 +524,7 @@ interface HTMLOptions {
 
 interface FormatOptions {
   nomenclator: (name: string) => string;
+  archiveTitle?: string;
   pdfOptions?: PDFOptions;
   pngOptions?: PNGOptions;
 }
