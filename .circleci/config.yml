@@ -88,13 +88,13 @@ jobs:
       - image: gotechnies/alpine-ssh
     steps:
       - checkout
-      - run: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "node scripts/docker.js"
+      # - run: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "node scripts/docker.js"
 
 workflows:
   build-inspect-test:
     jobs:
-      - inspect
-      - test
+      # - inspect
+      # - test
       - deploy
       # - deploy:
       #     filters:
