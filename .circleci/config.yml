@@ -77,17 +77,27 @@ jobs:
     executor: node
     steps:
       - install_dependencies
-      # - run: mkdir -p ~/test-results
       - run:
           name: Run tests
           command: npm run test
           working_directory: ./code
           no_output_timeout: 2m
-      # - store_test_results:
-      #     path: ~/test-results
+
+  deploy:
+    docker:
+      - image: node:16.3.0-alpine
+    steps:
+      - checkout
+      - run: ssh -oStrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "node scripts/docker.js"
 
 workflows:
   build-inspect-test:
     jobs:
       - inspect
       - test
+      - deploy
+      # - deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
