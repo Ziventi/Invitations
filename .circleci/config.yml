@@ -90,7 +90,7 @@ jobs:
       - checkout
       - run:
           name: Transfer deploy script
-          command: scp ./scripts/deploy.sh circleci@ziventi.co.uk:/home/circleci
+          command: scp ./scripts/deploy.sh $SSH_USER@$SSH_ADDRESS:/home/circleci
       - run:
           name: Run deployment
           command: ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./deploy.sh"
