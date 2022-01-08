@@ -3,8 +3,8 @@ set -e
 
 ## Update the Ziventi project
 cd /var/www/ziventi
-git checkout deploy
-git pull origin deploy
+git checkout main
+git pull origin main
 
 ## Update nginx.conf
 NGINX_CONF="/etc/nginx/sites-available/ziventi.co.uk.conf"
