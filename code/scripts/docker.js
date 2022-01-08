@@ -7,6 +7,8 @@ const PROJECT_ROOT = path.resolve(__dirname, '../..');
 const { run, runSilent } = runner(PROJECT_ROOT);
 
 const DOCKERFILE = path.resolve(PROJECT_ROOT, 'docker/Dockerfile');
+console.log(PROJECT_ROOT);
+console.log(DOCKERFILE);
 const CONTAINER_NAME = 'ziventi-server';
 const IMAGE_NAME = 'ziventi';
 const PORT = 3000;
