@@ -1,5 +1,7 @@
 FROM node:16.13.1-alpine
 
+ARG PORT
+
 ## Copy root tsconfig.json
 WORKDIR /var/www/ziventi
 COPY ./code/tsconfig.json .
@@ -18,6 +20,6 @@ RUN npm ci --production
 COPY ./code/server .
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE $PORT
 
 CMD [ "npm", "run", "prod" ]
