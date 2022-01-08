@@ -88,7 +88,12 @@ jobs:
       - image: gotechnies/alpine-ssh
     steps:
       - checkout
-      - run: ./docker/scripts/transfer.sh
+      - run:
+          command: ./docker/scripts/transfer.sh
+          no_output_timeout: 2m
+          environment:
+            SSH_USER: $SSH_USER
+            SSH_ADDRESS: $SSH_ADDRESS
 
 workflows:
   build-inspect-test:
