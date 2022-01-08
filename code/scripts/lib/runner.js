@@ -1,7 +1,5 @@
 const { spawn, spawnSync } = require('child_process');
 
-const logger = require('./logger');
-
 module.exports = (cwd) => {
   /**
    * Runs a child process and pipes output to console.
@@ -10,7 +8,7 @@ module.exports = (cwd) => {
    * @returns The child process instance.
    */
   function run(cmd, args) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const proc = spawn(cmd, args, { cwd });
       proc.stdout.pipe(process.stdout);
       proc.stderr.pipe(process.stderr);
