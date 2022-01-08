@@ -3,7 +3,7 @@ set -e
 
 IMAGE_NAME=ziventi
 CONTAINER_NAME=ziventi-server
-PORT=4000
+PORT=3000
 
 echo 'Building Ziventi image...'
 if
