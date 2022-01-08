@@ -2,7 +2,8 @@
 set -e
 
 cd /var/www/ziventi/
-git checkout main
-git pull origin main
+git checkout deploy
+git pull origin deploy
 
-./build-run.sh
+cd code/
+docker/scripts/build-run.sh
