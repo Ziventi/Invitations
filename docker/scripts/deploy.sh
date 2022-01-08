@@ -7,8 +7,9 @@ git checkout deploy
 git pull origin deploy
 
 ## Update nginx.conf
-cp ./docker/nginx.conf /etc/nginx/sites-available/ziventi.co.uk.conf
-ln -s /etc/nginx/sites-available/ziventi.co.uk.conf /etc/nginx/sites-enabled/
+NGINX_CONF="/etc/nginx/sites-available/ziventi.co.uk.conf"
+cp ./docker/nginx.conf ${NGINX_CONF}
+ln -sf ${NGINX_CONF} /etc/nginx/sites-enabled/
 nginx -t
 
 ## Run the docker script
