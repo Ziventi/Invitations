@@ -10,7 +10,7 @@ git pull origin deploy
 NGINX_CONF="/etc/nginx/sites-available/ziventi.co.uk.conf"
 cp ./docker/nginx.conf ${NGINX_CONF}
 ln -sf ${NGINX_CONF} /etc/nginx/sites-enabled/
-nginx -t
+sudo nginx -t
 
 ## Run the docker script
 ./docker/scripts/build-run.sh
