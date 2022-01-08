@@ -5,4 +5,4 @@ cd /var/www/ziventi/
 git checkout main
 git pull origin main
 
-./deploy.sh
+./build-run.sh
