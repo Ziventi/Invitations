@@ -3,12 +3,10 @@ const path = require('path');
 const logger = require('./lib/logger');
 const runner = require('./lib/runner');
 
-const PROJECT_ROOT = path.resolve(__dirname, '../..');
+const PROJECT_ROOT = '../..';
 const { run, runSilent } = runner(PROJECT_ROOT);
 
 const DOCKERFILE = path.resolve(PROJECT_ROOT, 'docker/Dockerfile');
-console.log(PROJECT_ROOT);
-console.log(DOCKERFILE);
 const CONTAINER_NAME = 'ziventi-server';
 const IMAGE_NAME = 'ziventi';
 const PORT = 3000;
