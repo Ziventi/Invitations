@@ -16,7 +16,6 @@ import { Timed } from '../lib/decorators';
 import * as Utils from '../lib/functions';
 import { logger } from '../lib/logger';
 import {
-  ConfirmStatus,
   FileFormat,
   GenerateHTMLOptions,
   GenerateOptions,
