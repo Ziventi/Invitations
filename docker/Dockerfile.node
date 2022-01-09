@@ -1,5 +1,6 @@
 FROM node:16.13.1-alpine
 
+ARG COMMAND
 ARG PORT
 ARG WORKDIR
 
@@ -23,4 +24,4 @@ RUN npm run build
 
 EXPOSE $PORT
 
-CMD [ "npm", "run", "prod" ]
+CMD [ "npm", "run", $COMMAND ]

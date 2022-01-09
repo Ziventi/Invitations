@@ -11,12 +11,14 @@ if [ "$1" == "dev" ]; then
   CONTAINER_NAME=ziventi-dev-server
   PORT=3333
   WORKDIR=dev.ziventi
+  COMMAND=prod:staging
 else
   warn "Building for production."
   IMAGE_NAME=ziventi
   CONTAINER_NAME=ziventi-server
   PORT=3000
   WORKDIR=ziventi
+  COMMAND=prod
 fi
 
 
@@ -24,6 +26,7 @@ info "Building '$IMAGE_NAME' image..."
 if
   docker build -f "$CWD/../Dockerfile.node" \
     -t $IMAGE_NAME \
+    --build-arg COMMAND="$COMMAND" \
     --build-arg PORT="$PORT" \
     --build-arg WORKDIR="$WORKDIR" \
     .
