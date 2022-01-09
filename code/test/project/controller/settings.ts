@@ -1,4 +1,4 @@
-import Ziventi, { Paths, Utils, ZLoader } from '@ziventi/utils';
+import Ziventi, { Paths, Utils, ZGenerator, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import path from 'path';
@@ -10,11 +10,41 @@ const dotenvOutput = dotenv.config({
 });
 Utils.checkDotenv(dotenvOutput);
 
-export const rootDir = path.resolve(__dirname, '..');
+const rootDir = path.resolve(__dirname, '..');
 
 export const Loader = new ZLoader({
   spreadsheetId: process.env.TEST_SS_PRIVATE_ID!,
   guestMarshaler: marshalGuests,
+  rootDir
+});
+
+export const Generator = new ZGenerator({
+  htmlOptions: {
+    hashParams: {
+      spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
+      sheetTitle: 'Guest List'
+    }
+  },
+  fontsUrl: Utils.buildFontUrl({ Tangerine: 'wght@400;700' }),
+  formatOptions: {
+    archiveTitle: 'Test Project',
+    nomenclator: (name: string) => name,
+    pdfOptions: {
+      format: 'a4'
+    },
+    pngOptions: {
+      viewportOptions: {
+        height: '11.75in',
+        width: '8.25in'
+      }
+    }
+  },
+  loadingOptions: {
+    loader: Loader,
+    processor: (guests: Guest[]) => {
+      return guests.filter((g) => g.status === 'Confirmed');
+    }
+  },
   rootDir
 });
 

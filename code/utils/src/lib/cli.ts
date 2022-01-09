@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 
 import { CLIOptions } from '../types';
 
@@ -15,7 +15,12 @@ export default async function CLI(options: CLIOptions = {}): Promise<void> {
         'Generates files for all guests. Void if name is specified.',
         false
       )
-      .option('-f, --format <format>', 'The rich format of files to generate')
+      .addOption(
+        new Option(
+          '-f, --format <format>',
+          'The rich format of files to generate'
+        ).choices(['png', 'pdf'])
+      )
       .option(
         '-l, --limit <limit>',
         'The limit or quantity of files to generate',

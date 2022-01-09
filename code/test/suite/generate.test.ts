@@ -4,7 +4,7 @@ import AdmZip from 'adm-zip';
 import fs from 'fs';
 import path from 'path';
 
-import main from '../project/controller/main';
+import * as API from '../project/controller/api';
 
 const cwd = path.resolve(process.cwd(), 'test/project');
 const outDir = `${cwd}/.out`;
@@ -15,14 +15,14 @@ jest.setTimeout(15000);
 describe('Generation', () => {
   test('Generates correct number of files on specified limit', async () => {
     const limit = '3';
-    await main({ limit });
+    await API.generate({ limit });
     const numberOfFiles = fs.readdirSync(htmlOutDir).length;
     expect(numberOfFiles).toBe(Number(limit));
   });
 
   test('Generates correct file for specified name', async () => {
     const name = 'Abidemi Ajayi';
-    await main({ name });
+    await API.generate({ name });
     const [file] = fs.readdirSync(htmlOutDir);
     const filename = path.parse(file).name;
     expect(filename).toBe(name);
@@ -30,7 +30,7 @@ describe('Generation', () => {
 
   test('Generates ZIP file', async () => {
     const format = 'pdf';
-    await main({ limit: 1, format, zip: true });
+    await API.generate({ limit: 1, format, zip: true });
 
     const testProjectZip = `${outDir}/Test Project.zip`;
     const zipExists = fs.existsSync(testProjectZip);
@@ -46,14 +46,14 @@ describe('Generation', () => {
     'Refreshes cache when flag is %s',
     async (shouldRefresh) => {
       const spy = jest.spyOn(ZLoader.prototype, 'execute');
-      await main({ refreshCache: shouldRefresh });
+      await API.generate({ refreshCache: shouldRefresh });
       expect(spy).toBeCalledWith(shouldRefresh);
     }
   );
 
   test.each(['PDF', 'PNG'])('Generate %s files', async (fileType) => {
     const format = fileType.toLowerCase() as Ziventi.FileFormat;
-    await main({ limit: 1, format });
+    await API.generate({ limit: 1, format });
 
     const formatOutDir = `${outDir}/${format}`;
     expect(fs.existsSync(formatOutDir)).toBe(true);

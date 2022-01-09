@@ -1,14 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 
-import main from '../project/controller/main';
+import * as API from '../project/controller/api';
 
 jest.setTimeout(10000);
 
 describe('PDF Interaction', () => {
   beforeAll(async () => {
     const cwd = path.resolve(process.cwd(), 'test/project');
-    await main({ limit: 1 });
+    await API.generate({ limit: 1 });
 
     const filePath = path.resolve(cwd, './.out/html/Abidemi Ajayi.html');
     const html = fs.readFileSync(filePath, { encoding: 'utf8' });
