@@ -19,12 +19,6 @@ export const Loader = new ZLoader({
 });
 
 export const Generator = new ZGenerator({
-  htmlOptions: {
-    hashParams: {
-      spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
-      sheetTitle: 'Guest List'
-    }
-  },
   fontsUrl: Utils.buildFontUrl({ Tangerine: 'wght@400;700' }),
   formatOptions: {
     archiveTitle: 'Test Project',
@@ -82,8 +76,23 @@ function marshalGuests(records: GuestRow[]): Guest[] {
 
     const tagline = record['Tagline'];
     if (tagline) {
-      guest.tagline = tagline.substr(0, 1).toLowerCase() + tagline.substr(1);
+      guest.tagline =
+        tagline.substring(0, 1).toLowerCase() + tagline.substring(1);
     }
+
+    // TODO: Turn to utils function.
+    Ziventi.PublicConfirmStatuses.forEach((status) => {
+      const params: Ziventi.HashParams = {
+        guestName: guest.name,
+        status,
+        spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
+        sheetTitle: 'Guest List'
+      };
+      guest.hashes = {
+        ...(guest.hashes || {}),
+        [status]: Utils.encryptJSON(params)
+      };
+    });
 
     return guest;
   });

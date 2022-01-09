@@ -3,6 +3,7 @@ import type Ziventi from '@ziventi/utils';
 export class Guest implements Ziventi.TGuest {
   name!: string;
   status!: Ziventi.ConfirmStatus;
+  hashes!: Ziventi.GuestHashes;
   rank!: typeof Rank[string];
   origin!: string;
   invited!: boolean;

@@ -49,12 +49,15 @@ export type PublishSheet<G> =
 export interface TGuest {
   name: string;
   status: ConfirmStatus;
+  hashes: Record<ConfirmStatus, string>;
 }
 
 export interface TGuestRow {
   Name: string;
   Status: string;
 }
+
+export type GuestHashes = Record<ConfirmStatus, string>;
 
 export interface HashParams {
   guestName: string;
@@ -68,3 +71,9 @@ export type ConfirmStatus =
   | 'Tentative'
   | 'Confirmed'
   | 'Unavailable';
+
+export const PublicConfirmStatuses: ConfirmStatus[] = [
+  'Confirmed',
+  'Tentative',
+  'Unavailable'
+];

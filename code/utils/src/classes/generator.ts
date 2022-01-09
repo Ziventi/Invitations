@@ -222,39 +222,12 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     guest: G,
     allGuests: G[]
   ): void {
-    let locals: Record<string, any> = {
+    const locals: Record<string, any> = {
       guest,
       allGuests,
       cssFile: this.paths.stylesOutputFile,
       fontsUrl: this.fontsUrl
     };
-
-    if (this.htmlOptions) {
-      const { hashParams, ejsLocals } = this.htmlOptions;
-      locals = {
-        ...locals,
-        ...ejsLocals
-      };
-
-      if (hashParams) {
-        const statuses: ConfirmStatus[] = [
-          'Confirmed',
-          'Tentative',
-          'Unavailable'
-        ];
-        statuses.forEach((status) => {
-          const params: HashParams = {
-            guestName: guest.name,
-            status,
-            ...hashParams
-          };
-          locals.guest._hashes = {
-            ...(locals.guest._hashes || {}),
-            [status]: Utils.encryptJSON(params)
-          };
-        });
-      }
-    }
 
     try {
       const html = templater(locals);

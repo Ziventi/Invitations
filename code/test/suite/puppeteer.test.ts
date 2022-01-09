@@ -21,7 +21,7 @@ describe('PDF Interaction', () => {
 
   test('Click status hyperlinks', async () => {
     await page.$eval('body', (element) => element.innerHTML);
-    await Promise.all([page.click('a#unavailable'), page.waitForNavigation()]);
+    await Promise.all([page.click('a#Unavailable'), page.waitForNavigation()]);
     const htmlBody = await page.$eval('body', (element) => element.textContent);
     expect(htmlBody).toBe(JSON.stringify({ message: 'ok' }));
   });
