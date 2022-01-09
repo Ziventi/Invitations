@@ -49,7 +49,7 @@ export type PublishSheet<G> =
 export interface TGuest {
   name: string;
   status: ConfirmStatus;
-  hashes: Record<ConfirmStatus, string>;
+  hashes?: GuestHashes;
 }
 
 export interface TGuestRow {
