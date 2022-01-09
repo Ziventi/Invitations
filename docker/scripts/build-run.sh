@@ -7,20 +7,19 @@ source "$CWD"/utils.sh
 
 if [ "$1" == "dev" ]; then
   warn "Building for development."
-  IMAGE_NAME=ziventi-dev
-  CONTAINER_NAME=ziventi-dev-server
-  PORT=3333
-  WORKDIR=dev.ziventi
-  COMMAND=prod:staging
+  IMAGE_NAME='ziventi-dev'
+  CONTAINER_NAME='ziventi-dev-server'
+  PORT='3333'
+  WORKDIR='dev.ziventi'
+  COMMAND='prod:staging'
 else
-  warn "Building for production."
-  IMAGE_NAME=ziventi
-  CONTAINER_NAME=ziventi-server
-  PORT=3000
-  WORKDIR=ziventi
-  COMMAND=prod
+  warn 'Building for production.'
+  IMAGE_NAME='ziventi'
+  CONTAINER_NAME='ziventi-server'
+  PORT='3000'
+  WORKDIR='ziventi'
+  COMMAND='prod'
 fi
-
 
 info "Building '$IMAGE_NAME' image..."
 if
