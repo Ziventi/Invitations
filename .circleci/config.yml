@@ -88,36 +88,41 @@ jobs:
     steps:
       - transfer_scripts
       - run:
-          name: Run deployment
-          command: ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./scripts/deploy.dev.sh"
-          no_output_timeout: 2m
+          name: Updates secrets and run staging deployment
+          command: |
+            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS
+            echo ENCRYPTION_KEY=$ENCRYPTION_KEY >> /var/www/dev.ziventi/code/utils/.env
+            ./scripts/deploy.dev.sh
   deploy_prod:
     executor: ssh
     steps:
       - transfer_scripts
       - run:
-          name: Run deployment
-          command: ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./scripts/deploy.prod.sh"
-          no_output_timeout: 2m
+          name: Updates secrets and run production deployment
+          command: |
+            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS
+            echo ENCRYPTION_KEY=$ENCRYPTION_KEY >> /var/www/ziventi/code/utils/.env
+            ./scripts/deploy.prod.sh
 
 workflows:
   build-inspect-test:
     jobs:
-      - inspect
-      - test
-      - deploy_dev:
-          requires:
-            - inspect
-            - test
-          filters:
-            branches:
-              only:
-                - main
-      - deploy_prod:
-          requires:
-            - inspect
-            - test
-          filters:
-            branches:
-              only:
-                - production
+      # - inspect
+      # - test
+      - deploy_dev
+      # - deploy_dev:
+      #     requires:
+      #       - inspect
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+      # - deploy_prod:
+      #     requires:
+      #       - inspect
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - production
