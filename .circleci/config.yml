@@ -92,6 +92,7 @@ jobs:
           command: |
             ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS \
             "echo ENCRYPTION_KEY=$ENCRYPTION_KEY >> /var/www/dev.ziventi/code/utils/.env \
+            echo $KEY_JSON >> /var/www/dev.ziventi/code/utils/key.json \
             && ./scripts/deploy.dev.sh"
   deploy_prod:
     executor: ssh
@@ -102,6 +103,7 @@ jobs:
           command: |
             ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS \
             "echo ENCRYPTION_KEY=$ENCRYPTION_KEY >> /var/www/ziventi/code/utils/.env \
+            echo $KEY_JSON >> /var/www/ziventi/code/utils/key.json \
             && ./scripts/deploy.prod.sh"
 
 workflows:
