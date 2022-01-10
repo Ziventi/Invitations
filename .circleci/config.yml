@@ -107,22 +107,21 @@ jobs:
 workflows:
   build-inspect-test:
     jobs:
-      # - inspect
-      # - test
-      - deploy_dev
-      # - deploy_dev:
-      #     requires:
-      #       - inspect
-      #       - test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-      # - deploy_prod:
-      #     requires:
-      #       - inspect
-      #       - test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - production
+      - inspect
+      - test
+      - deploy_dev:
+          requires:
+            - inspect
+            - test
+          filters:
+            branches:
+              only:
+                - main
+      - deploy_prod:
+          requires:
+            - inspect
+            - test
+          filters:
+            branches:
+              only:
+                - production
