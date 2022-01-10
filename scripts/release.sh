@@ -16,7 +16,7 @@ git pull
 git rebase main
 git push origin $BRANCH
 
-git tag -f "v$ARG_VERSION"
-git push origin "v$ARG_VERSION"
+# git tag -f "v$ARG_VERSION"
+# git push origin "v$ARG_VERSION"
 
 git checkout main
