@@ -1,8 +1,9 @@
 FROM node:16.13.1-alpine
 
-ARG COMMAND
 ARG PORT
 ARG WORKDIR
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
 
 ## Copy root tsconfig.json
 WORKDIR /var/www/$WORKDIR
@@ -24,4 +25,4 @@ RUN npm run build
 
 EXPOSE $PORT
 
-CMD [ "npm", "run", $COMMAND ]
+CMD [ "node", ".dist/index.js", "NODE_ENV=$NODE_ENV" ]
