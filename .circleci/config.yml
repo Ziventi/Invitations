@@ -53,8 +53,6 @@ commands:
           command: scp -o StrictHostKeyChecking=no -r ./docker/scripts/* $SSH_USER@$SSH_ADDRESS:/home/circleci/scripts/
           no_output_timeout: 30s
 
-
-
 jobs:
   inspect:
     executor: node
@@ -72,7 +70,6 @@ jobs:
           name: Run Stylelint
           command: npm run stylelint
           working_directory: ./code
-
   test:
     executor: node
     steps:
@@ -90,10 +87,7 @@ jobs:
       - run:
           name: Updates secrets and run staging deployment
           command: |
-            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS \
-            "echo ENCRYPTION_KEY=$ENCRYPTION_KEY > /var/www/dev.ziventi/code/utils/.env \
-            && echo $KEY_JSON > /var/www/dev.ziventi/code/utils/key.json \
-            && ./scripts/deploy.dev.sh"
+            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./scripts/deploy.dev.sh"
   deploy_prod:
     executor: ssh
     steps:
@@ -101,10 +95,7 @@ jobs:
       - run:
           name: Updates secrets and run production deployment
           command: |
-            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS \
-            "echo ENCRYPTION_KEY=$ENCRYPTION_KEY > /var/www/ziventi/code/utils/.env \
-            && echo $KEY_JSON > /var/www/ziventi/code/utils/key.json \
-            && ./scripts/deploy.prod.sh"
+            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS ./scripts/deploy.prod.sh
 
 workflows:
   build-inspect-test:
