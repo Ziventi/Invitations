@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const logger = require('./lib/logger');
 const runner = require('./lib/runner');
 const Validator = require('./lib/validator');
