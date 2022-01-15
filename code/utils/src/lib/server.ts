@@ -1,29 +1,30 @@
-import Ziventi, { Log4JS, Spreadsheet } from '@ziventi/utils/src/production';
 import type { Response } from 'express';
 import type {
   GoogleSpreadsheet,
   GoogleSpreadsheetRow,
   GoogleSpreadsheetWorksheet
 } from 'google-spreadsheet';
-import NodeCache from 'node-cache';
+import type NodeCache from 'node-cache';
 import invariant from 'tiny-invariant';
 
-const cache = new NodeCache({
-  checkperiod: 3 * 60,
-  deleteOnExpire: true,
-  stdTTL: 5 * 60
-});
+import Log4JS from './logger';
+import * as Spreadsheet from './spreadsheet';
 
+import type { HashParams } from '../types';
+
+/** The logger for the production server. */
 export const logger = Log4JS.getLogger('server');
 
 /**
  * Retrieves a Google worksheet from the specified spreadsheet ID defined in the
  * payload hash.
+ * @param cache The cache for the payload.
  * @param payload The hash payload.
  * @returns The matching worksheet.
  */
 export async function retrievePublicWorksheet(
-  payload: Ziventi.HashParams
+  cache: NodeCache,
+  payload: HashParams
 ): Promise<GoogleSpreadsheetWorksheet> {
   const { spreadsheetId, sheetTitle } = payload;
 

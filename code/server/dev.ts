@@ -1,20 +1,19 @@
-import Ziventi, { Utils } from '@ziventi/utils/src/production';
+import Ziventi, { Server, Utils } from '@ziventi/utils/src/production';
 import type { Express } from 'express';
+import NodeCache from 'node-cache';
 
-import * as Helper from './helpers';
-
-export default function addDevEndpoints(app: Express): void {
+export default function addDevEndpoints(app: Express, cache: NodeCache): void {
   app.get('/api/test/:hash', async (req, res) => {
     try {
       const { hash } = req.params;
       const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
 
-      const publicSheet = await Helper.retrievePublicWorksheet(payload);
-      await Helper.retrieveRowMatchingGuest(publicSheet, payload.guestName);
+      const publicSheet = await Server.retrievePublicWorksheet(cache, payload);
+      await Server.retrieveRowMatchingGuest(publicSheet, payload.guestName);
 
       res.status(200).send({ message: 'ok' });
     } catch (err) {
-      Helper.handleError(err, res);
+      Server.handleError(err, res);
     }
   });
 }

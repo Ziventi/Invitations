@@ -1,21 +1,27 @@
 import Ziventi, {
   Emojis,
+  Server,
   Spreadsheet,
   Utils
 } from '@ziventi/utils/src/production';
 import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
+import NodeCache from 'node-cache';
 
 import addDevEndpoints from './dev';
-import * as Helper from './helpers';
 
 const app = express();
+const cache = new NodeCache({
+  checkperiod: 3 * 60,
+  deleteOnExpire: true,
+  stdTTL: 5 * 60
+});
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-const { logger } = Helper;
+const { logger } = Server;
 
 app.set('trust proxy', 1);
 
-if (Helper.isProduction()) {
+if (Server.isProduction()) {
   app.use(
     '/api',
     rateLimit({
@@ -27,7 +33,7 @@ if (Helper.isProduction()) {
     })
   );
 } else {
-  addDevEndpoints(app);
+  addDevEndpoints(app, cache);
 }
 
 app.get('/api/:hash', async (req, res) => {
@@ -36,8 +42,8 @@ app.get('/api/:hash', async (req, res) => {
     const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
     const { guestName, status, spreadsheetId } = payload;
 
-    const publicSheet = await Helper.retrievePublicWorksheet(payload);
-    const matchingRow = await Helper.retrieveRowMatchingGuest(
+    const publicSheet = await Server.retrievePublicWorksheet(cache, payload);
+    const matchingRow = await Server.retrieveRowMatchingGuest(
       publicSheet,
       guestName
     );
@@ -52,20 +58,20 @@ app.get('/api/:hash', async (req, res) => {
     await publicSheet.saveUpdatedCells();
     logger.info(`Updated guest '${guestName}' with status '${status}'.`);
 
-    if (Helper.isProduction()) {
+    if (Server.isProduction()) {
       const sheetUrl = Spreadsheet.getSpreadsheetUrl(spreadsheetId);
       res.redirect(sheetUrl);
     } else {
       res.status(200).send({ message: 'ok' });
     }
   } catch (err) {
-    Helper.handleError(err, res);
+    Server.handleError(err, res);
   }
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: any, _: Request, res: Response, __: NextFunction) => {
-  Helper.handleError(err, res);
+  Server.handleError(err, res);
 });
 
 app.listen(port, () => {
