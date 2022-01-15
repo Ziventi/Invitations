@@ -30,7 +30,7 @@ const SHEET_NAME = 'Guest List';
           Chidera: NUMBER_CHIDERA,
           Deborah: NUMBER_DEBORAH
         },
-        resources: Utils.compileResources(),
+        resources: Utils.compileResources(process.cwd()),
         lists: {
           guest: PUBLIC_LISTS_URL,
           wish: WISHLIST_URL
