@@ -5,9 +5,10 @@ import path from 'path';
 
 import Ziventi, { ZLoader } from '@ziventi/utils';
 
+import { TEST_PROJECT_ROOT } from '../constants';
 import * as API from '../project/controller/api';
 
-const cwd = path.resolve(process.cwd(), 'test/project');
+const cwd = TEST_PROJECT_ROOT;
 const outDir = `${cwd}/.out`;
 const htmlOutDir = `${outDir}/html`;
 

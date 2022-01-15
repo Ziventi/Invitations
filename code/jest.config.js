@@ -6,7 +6,8 @@ const options = {
     '!<rootDir>/projects/**',
     '!<rootDir>/server/**',
     '!<rootDir>/test/project/controller/main.ts',
-    '!<rootDir>/utils/src/*.ts'
+    '!<rootDir>/utils/src/*.ts',
+    '!<rootDir>/utils/src/lib/cli.ts'
   ],
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   coverageReporters: ['lcov', 'text', 'text-summary'],

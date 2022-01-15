@@ -32,11 +32,12 @@ export function buildFontUrl(fonts: Record<string, string | null>): string {
 
 /**
  * Compiles the list of resource files for use as EJS locals.
+ * @param projectRoot The root path of the project.
  * @returns The map of resource names to contents.
  */
-export function compileResources(): Record<string, any> {
+export function compileResources(projectRoot: string): Record<string, any> {
   const resources: Record<string, any> = {};
-  const resourcesDir = path.join(process.cwd(), './views/resources');
+  const resourcesDir = path.join(projectRoot || process.cwd(), './views/resources');
 
   fs.readdirSync(resourcesDir).forEach((filename) => {
     const filePath = path.join(resourcesDir, filename);
