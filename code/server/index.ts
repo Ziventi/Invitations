@@ -6,6 +6,7 @@ import Ziventi, {
 import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 
+import addDevEndpoints from './dev';
 import * as Helper from './helpers';
 
 const app = express();
@@ -25,6 +26,8 @@ if (Helper.isProduction()) {
       windowMs: 5 * 60 * 1000
     })
   );
+} else {
+  addDevEndpoints(app);
 }
 
 app.get('/api/:hash', async (req, res) => {
@@ -59,22 +62,6 @@ app.get('/api/:hash', async (req, res) => {
     Helper.handleError(err, res);
   }
 });
-
-if (!Helper.isProduction()) {
-  app.get('/api/test/:hash', async (req, res) => {
-    try {
-      const { hash } = req.params;
-      const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
-
-      const publicSheet = await Helper.retrievePublicWorksheet(payload);
-      await Helper.retrieveRowMatchingGuest(publicSheet, payload.guestName);
-
-      res.status(200).send({ message: 'ok' });
-    } catch (err) {
-      Helper.handleError(err, res);
-    }
-  });
-}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: any, _: Request, res: Response, __: NextFunction) => {
