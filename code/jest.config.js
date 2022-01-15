@@ -1,11 +1,7 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 const options = {
   collectCoverage: true,
-  collectCoverageFrom: [
-    '<rootDir>/**/*.ts',
-    '!**/projects/**',
-    '!**/test/project/**'
-  ],
+  collectCoverageFrom: ['<rootDir>/**/*.ts', '!**/projects/**'],
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   coverageReporters: ['lcov', 'text', 'text-summary'],
   moduleNameMapper: {
