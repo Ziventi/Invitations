@@ -225,7 +225,8 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       guest,
       allGuests,
       cssFile: this.paths.stylesOutputFile,
-      fontsUrl: this.fontsUrl
+      fontsUrl: this.fontsUrl,
+      ...this.htmlOptions?.ejsLocals
     };
 
     try {
