@@ -11,5 +11,10 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/no-namespace': 'off'
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {}
+    }
   }
 };
