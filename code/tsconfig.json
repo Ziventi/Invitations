@@ -5,24 +5,20 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "isolatedModules": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmit": true,
     "noEmitOnError": true,
+    "paths": {
+      "@ziventi/utils": ["./utils/src"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "esnext"
   },
-  "exclude": [
-    "**/node_modules",
-    "**/*.js"
-  ]
+  "exclude": ["**/node_modules", "**/*.js"]
 }
