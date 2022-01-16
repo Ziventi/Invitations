@@ -1,9 +1,8 @@
+import Ziventi, { ZLoader } from '@ziventi/utils';
 import AdmZip from 'adm-zip';
 
 import fs from 'fs';
 import path from 'path';
-
-import Ziventi, { ZLoader } from '@ziventi/utils';
 
 import { TEST_PROJECT_ROOT } from '../constants';
 import * as API from '../project/controller/api';

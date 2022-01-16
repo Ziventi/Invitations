@@ -1,6 +1,7 @@
+import Ziventi, { Paths, Utils } from '@ziventi/utils';
+
 import path from 'path';
 
-import Ziventi, { Paths, Utils } from '@ziventi/utils';
 import Axios, { AxiosError } from 'axios';
 import * as dotenv from 'dotenv';
 

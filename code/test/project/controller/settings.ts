@@ -1,6 +1,7 @@
+import Ziventi, { Paths, Utils, ZGenerator, ZLoader } from '@ziventi/utils';
+
 import path from 'path';
 
-import Ziventi, { Paths, Utils, ZGenerator, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
 import { Guest, GuestRow, Rank } from './classes';

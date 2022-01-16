@@ -1,7 +1,9 @@
+const zavidConfig = require('@zzavidd/eslint-config');
+
 /**
  * @type {import('eslint').ESLint.Options}
  */
-module.exports = {
+const eslintConfig = {
   extends: '@zzavidd/eslint-config',
   root: true,
   ignorePatterns: ['**/.dist/**', '**/.out/**', '**/next-env.d.ts'],
@@ -18,3 +20,22 @@ module.exports = {
     }
   }
 };
+
+eslintConfig.rules = {
+  ...eslintConfig.rules,
+  'import/order': [
+    1,
+    {
+      ...zavidConfig.rules['import/order'][1],
+      pathGroups: [
+        {
+          pattern: '@ziventi/utils',
+          group: 'external'
+        }
+      ],
+      pathGroupsExcludedImportTypes: ['parent']
+    }
+  ]
+};
+
+module.exports = eslintConfig;
