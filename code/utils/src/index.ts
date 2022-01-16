@@ -23,5 +23,5 @@ export {
   Paths,
   Server,
   Spreadsheet,
-  Utils,
+  Utils
 };

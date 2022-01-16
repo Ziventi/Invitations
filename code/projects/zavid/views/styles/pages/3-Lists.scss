@@ -2,7 +2,7 @@ main.lists {
   @include border($color-body-lists, 25%);
   @include pager($color-body-lists);
   font-family: $font-body;
-  
+
   > div {
     padding: 3.5em 4em;
   }
@@ -32,7 +32,7 @@ main.lists {
     font-size: 1.1em;
     font-weight: bold;
   }
-  
+
   table.account-details {
     width: 100%;
 

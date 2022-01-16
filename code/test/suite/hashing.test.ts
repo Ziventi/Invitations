@@ -1,4 +1,3 @@
-
 import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
 
 import Ziventi, { Paths, Server, Utils } from '@ziventi/utils';

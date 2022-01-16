@@ -36,7 +36,10 @@ export function buildFontUrl(fonts: Record<string, string | null>): string {
  */
 export function compileResources(projectRoot: string): Record<string, any> {
   const resources: Record<string, any> = {};
-  const resourcesDir = path.join(projectRoot || process.cwd(), './views/resources');
+  const resourcesDir = path.join(
+    projectRoot || process.cwd(),
+    './views/resources'
+  );
 
   fs.readdirSync(resourcesDir).forEach((filename) => {
     const filePath = path.join(resourcesDir, filename);
