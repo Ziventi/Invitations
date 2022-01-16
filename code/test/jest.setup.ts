@@ -1,6 +1,5 @@
-import { Utils } from '@ziventi/utils';
-
 import { beforeAll, afterAll, jest } from '@jest/globals';
+import { Utils } from '@ziventi/utils';
 
 beforeAll(() => {
   jest.spyOn(Utils, 'error').mockImplementation((err) => {

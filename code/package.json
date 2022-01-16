@@ -19,6 +19,7 @@
     "dev:server": "nodemon --watch server/*.ts server/index.ts",
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
+    "prettier": "prettier --check \"**/*.{js,ts,scss,json}\"",
     "eslint": "eslint --ext .ts .",
     "stylelint": "stylelint **/*.scss"
   },

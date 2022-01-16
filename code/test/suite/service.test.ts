@@ -1,9 +1,7 @@
 import Ziventi, { Paths, Utils } from '@ziventi/utils';
-import * as dotenv from 'dotenv';
-
-import path from 'path';
-
 import Axios, { AxiosError } from 'axios';
+import * as dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config({ path: path.resolve(Paths.PROJECT_ROOT, '.env') });
 

@@ -2,7 +2,6 @@ import * as AES from 'crypto-js/aes';
 import * as UTF8 from 'crypto-js/enc-utf8';
 import * as dotenv from 'dotenv';
 import fs from 'fs-extra';
-
 import * as path from 'path';
 
 import { Paths } from './constants';

@@ -1,15 +1,14 @@
 import admzip from 'adm-zip';
+import { spawnSync } from 'child_process';
 import ejs from 'ejs';
 import { ExifTool } from 'exiftool-vendored';
 import express, { Express } from 'express';
 import fs from 'fs-extra';
+import { Server } from 'http';
 import sass from 'node-sass';
+import path from 'path';
 import puppeteer, { Browser } from 'puppeteer';
 import invariant from 'tiny-invariant';
-
-import { spawnSync } from 'child_process';
-import { Server } from 'http';
-import path from 'path';
 
 import { Paths } from '../lib/constants';
 import { Timed } from '../lib/decorators';
