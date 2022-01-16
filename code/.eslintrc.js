@@ -26,14 +26,30 @@ eslintConfig.rules = {
   'import/order': [
     1,
     {
-      ...zavidConfig.rules['import/order'][1],
+      groups: [
+        'type',
+        'external',
+        'builtin',
+        'internal',
+        'parent',
+        'sibling',
+        'index'
+      ],
+      'newlines-between': 'always',
       pathGroups: [
         {
           pattern: '@ziventi/utils',
           group: 'external'
+        },
+        {
+          pattern: 'dotenv',
+          group: 'external'
         }
       ],
-      pathGroupsExcludedImportTypes: ['parent']
+      alphabetize: {
+        order: 'asc',
+        caseInsensitive: true
+      }
     }
   ]
 };

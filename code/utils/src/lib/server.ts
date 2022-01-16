@@ -1,3 +1,4 @@
+import type { HashParams } from '../types';
 import type { Response } from 'express';
 import type {
   GoogleSpreadsheet,
@@ -9,8 +10,6 @@ import invariant from 'tiny-invariant';
 
 import Log4JS from './logger';
 import * as Spreadsheet from './spreadsheet';
-
-import type { HashParams } from '../types';
 
 /** The logger for the production server. */
 export const logger = Log4JS.getLogger('server');
