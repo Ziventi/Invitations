@@ -9,7 +9,7 @@ import { logger } from './logger';
 
 checkDotenv(
   dotenv.config({
-    path: `${Paths.PROJECT_ROOT}/utils/.env`
+    path: `${Paths.PROJECT_ROOT}/utils/.env`,
   })
 );
 

@@ -22,6 +22,6 @@ logger.info('Running live dev...');
     '.dist/main.js',
     '--',
     'generate',
-    ...args
+    ...args,
   ]);
 })();

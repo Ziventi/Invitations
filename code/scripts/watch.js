@@ -20,7 +20,7 @@ const watchedProjects = projectNames.length
   ? projectNames.flatMap((projectName) => {
       return [
         `**/${projectName}/**/*.ts`,
-        `**/${projectName}/**/tsconfig.json`
+        `**/${projectName}/**/tsconfig.json`,
       ];
     })
   : ['**/*.ts', '*/**/tsconfig.json'];
@@ -30,7 +30,7 @@ chokidar
     cwd: ROOT,
     ignored: ['**/node_modules/**', '**/server/**', '**/test/**'],
     persistent: true,
-    awaitWriteFinish: false
+    awaitWriteFinish: false,
   })
   .on('ready', () => {
     logger.info('Watching for TS file changes...');

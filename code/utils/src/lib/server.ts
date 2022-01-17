@@ -3,7 +3,7 @@ import type { Response } from 'express';
 import type {
   GoogleSpreadsheet,
   GoogleSpreadsheetRow,
-  GoogleSpreadsheetWorksheet
+  GoogleSpreadsheetWorksheet,
 } from 'google-spreadsheet';
 import type NodeCache from 'node-cache';
 

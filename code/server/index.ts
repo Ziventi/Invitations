@@ -2,7 +2,7 @@ import Ziventi, {
   Emojis,
   Server,
   Spreadsheet,
-  Utils
+  Utils,
 } from '@ziventi/utils/src/production';
 import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -14,7 +14,7 @@ const app = express();
 const cache = new NodeCache({
   checkperiod: 3 * 60,
   deleteOnExpire: true,
-  stdTTL: 5 * 60
+  stdTTL: 5 * 60,
 });
 const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 const { logger } = Server;
@@ -29,7 +29,7 @@ if (Server.isProduction()) {
       message: 'Too many requests, please try again later.',
       max: 15,
       standardHeaders: true,
-      windowMs: 5 * 60 * 1000
+      windowMs: 5 * 60 * 1000,
     })
   );
 } else {

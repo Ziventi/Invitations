@@ -21,7 +21,7 @@ export class GuestRow implements Ziventi.TGuestRow {
 export const InviteRound = {
   A: 1,
   B: 2,
-  C: 3
+  C: 3,
 };
 
 export type Category = 'Friends' | 'Family';

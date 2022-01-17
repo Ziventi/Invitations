@@ -54,6 +54,6 @@ module.exports = (cwd) => {
 
   return {
     run,
-    runSilent
+    runSilent,
   };
 };

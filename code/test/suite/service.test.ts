@@ -9,7 +9,7 @@ const axios = Axios.create({ baseURL: 'http://localhost:3000/api/test' });
 const payload: Partial<Ziventi.HashParams> = {
   guestName: 'Aruna Jalloh',
   status: 'Confirmed',
-  sheetTitle: 'Guest List'
+  sheetTitle: 'Guest List',
 };
 
 describe('Server', () => {

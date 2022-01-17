@@ -21,7 +21,7 @@ import {
   HashParams,
   LoadingOptions,
   TGuest,
-  TGuestRow
+  TGuestRow,
 } from '../types';
 
 export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
@@ -65,7 +65,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       imagesDir,
       templatesDir: `${viewsDir}/templates`,
       stylesInputFile: `${viewsDir}/styles/App.scss`,
-      stylesOutputFile: `${outputDir}/css/main.css`
+      stylesOutputFile: `${outputDir}/css/main.css`,
     };
 
     this.execute = this.execute.bind(this);
@@ -146,7 +146,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     const templateEjs = fs.readFileSync(`${templatesDir}/index.ejs`, 'utf8');
     const templater = ejs.compile(templateEjs, {
       root: this.paths.viewsDir,
-      views: [Paths.LIB_DIR]
+      views: [Paths.LIB_DIR],
     });
 
     guests.forEach((guest) => {
@@ -225,7 +225,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       allGuests,
       cssFile: this.paths.stylesOutputFile,
       fontsUrl: this.fontsUrl,
-      ...this.htmlOptions?.ejsLocals
+      ...this.htmlOptions?.ejsLocals,
     };
 
     try {
@@ -266,7 +266,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
         format: pdfOptions!.format || 'a4',
         path: outputPath,
         pageRanges: `1-${pageCount}`,
-        printBackground: true
+        printBackground: true,
       });
     } catch (err) {
       Utils.error(err);
@@ -298,7 +298,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       await page.evaluateHandle('document.fonts.ready');
       await page.screenshot({
         type: 'png',
-        path: outputPath
+        path: outputPath,
       });
     } catch (err) {
       Utils.error(err);
@@ -321,7 +321,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     try {
       const output = sass.renderSync({
         file: stylesInputFile,
-        sourceMap: false
+        sourceMap: false,
       });
       fs.writeFileSync(stylesOutputFile, output.css);
     } catch (e) {
@@ -376,7 +376,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       const firstFile = fs.readdirSync(outputDir)[0];
       if (app === 'chrome') {
         spawnSync('open', ['-a', 'Google Chrome', firstFile], {
-          cwd: outputDir
+          cwd: outputDir,
         });
       } else {
         spawnSync('code', [firstFile], { cwd: outputDir });
@@ -403,7 +403,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       width,
       height,
       deviceScaleFactor = 1,
-      scale = 1
+      scale = 1,
     } = this.formatOptions!.pngOptions!.viewportOptions;
 
     const convert = (measurement: number | string): number => {
@@ -416,7 +416,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     return {
       width: convert(width),
       height: convert(height),
-      deviceScaleFactor
+      deviceScaleFactor,
     };
   }
 

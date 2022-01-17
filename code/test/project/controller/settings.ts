@@ -5,7 +5,7 @@ import path from 'path';
 import { Guest, GuestRow, Rank } from './classes';
 
 const dotenvOutput = dotenv.config({
-  path: path.resolve(Paths.PROJECT_ROOT, '.env')
+  path: path.resolve(Paths.PROJECT_ROOT, '.env'),
 });
 Utils.checkDotenv(dotenvOutput);
 
@@ -14,7 +14,7 @@ const rootDir = path.resolve(__dirname, '..');
 export const Loader = new ZLoader({
   spreadsheetId: process.env.TEST_SS_PRIVATE_ID!,
   guestMarshaler: marshalGuests,
-  rootDir
+  rootDir,
 });
 
 export const Generator = new ZGenerator({
@@ -23,22 +23,22 @@ export const Generator = new ZGenerator({
     archiveTitle: 'Test Project',
     nomenclator: (name: string) => name,
     pdfOptions: {
-      format: 'a4'
+      format: 'a4',
     },
     pngOptions: {
       viewportOptions: {
         height: '11.75in',
-        width: '8.25in'
-      }
-    }
+        width: '8.25in',
+      },
+    },
   },
   loadingOptions: {
     loader: Loader,
     processor: (guests: Guest[]) => {
       return guests.filter((g) => g.status === 'Confirmed');
-    }
+    },
   },
-  rootDir
+  rootDir,
 });
 
 /**
@@ -85,11 +85,11 @@ function marshalGuests(records: GuestRow[]): Guest[] {
         guestName: guest.name,
         status,
         spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
-        sheetTitle: 'Guest List'
+        sheetTitle: 'Guest List',
       };
       guest.hashes = {
         ...(guest.hashes || {}),
-        [status]: Utils.encryptJSON(params)
+        [status]: Utils.encryptJSON(params),
       };
     });
 

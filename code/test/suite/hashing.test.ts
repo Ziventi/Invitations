@@ -10,12 +10,12 @@ dotenv.config({ path: path.resolve(Paths.PROJECT_ROOT, '.env') });
 const cache = new NodeCache({
   checkperiod: 30,
   deleteOnExpire: true,
-  stdTTL: 30
+  stdTTL: 30,
 });
 const payload: Partial<Ziventi.HashParams> = {
   guestName: 'Aruna Jalloh',
   status: 'Confirmed',
-  sheetTitle: 'Guest List'
+  sheetTitle: 'Guest List',
 };
 
 async function mockServerResponse(

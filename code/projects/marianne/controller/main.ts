@@ -8,17 +8,17 @@ import { Loader } from './settings';
       Tangerine: 'wght@400;700',
       Courgette: 'wght@400;700',
       Montserrat: 'wght@400;700',
-      Playball: null
+      Playball: null,
     }),
     formatOptions: {
       nomenclator: (name: string) => name,
       pdfOptions: {
-        format: 'a4'
-      }
+        format: 'a4',
+      },
     },
     loadingOptions: {
-      loader: Loader
-    }
+      loader: Loader,
+    },
   });
 
   const Publisher = new ZPublisher({
@@ -28,14 +28,14 @@ import { Loader } from './settings';
         property: 'category',
         sheetMap: {
           Family: 'Guest List (Family)',
-          Friends: 'Guest List (Friends)'
-        }
-      }
-    }
+          Friends: 'Guest List (Friends)',
+        },
+      },
+    },
   });
 
   await CLI({
     generate: Generator.execute,
-    publish: Publisher.execute
+    publish: Publisher.execute,
   });
 })();

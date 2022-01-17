@@ -26,7 +26,7 @@ export default class ZLoader<
     const {
       guestMarshaler,
       spreadsheetId,
-      rootDir = process.cwd()
+      rootDir = process.cwd(),
     } = this.loadOptions;
     const cachePath = `${rootDir}/.cache.json`;
 

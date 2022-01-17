@@ -3,7 +3,7 @@ import type {
   PublishOptions,
   PublishSheet,
   TGuestRow,
-  TGuest
+  TGuest,
 } from '../types';
 import type { GoogleSpreadsheet } from 'google-spreadsheet';
 
@@ -101,7 +101,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
         const currentPropertyState = builder[sheetName] || [];
         return {
           ...builder,
-          [sheetName]: [...currentPropertyState, guest]
+          [sheetName]: [...currentPropertyState, guest],
         };
       }, {} as Record<string, G[]>);
     }

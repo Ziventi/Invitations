@@ -13,9 +13,9 @@ log4js.configure({
         tokens: {
           ln: () => {
             return format(new Date(), 'HH:mm:ss:SSS');
-          }
-        }
-      }
+          },
+        },
+      },
     },
     Server: {
       type: 'console',
@@ -25,15 +25,15 @@ log4js.configure({
         tokens: {
           ln: () => {
             return format(new Date(), 'E-dd-MMM-yyyy HH:mm:ss:SSS');
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   },
   categories: {
     default: { appenders: ['Server'], level: LOGGER_LEVEL },
-    server: { appenders: ['Server'], level: LOGGER_LEVEL }
-  }
+    server: { appenders: ['Server'], level: LOGGER_LEVEL },
+  },
 });
 
 export default log4js;
