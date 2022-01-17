@@ -1,8 +1,10 @@
+const zavidConfig = require('@zzavidd/eslint-config');
+
 /**
  * @type {import('eslint').ESLint.Options}
  */
 const eslintConfig = {
-  extends: '@zzavidd/eslint-config',
+  extends: '@zzavidd/eslint-config/node-ts',
   root: true,
   ignorePatterns: ['**/.dist/**', '**/.out/**', '**/next-env.d.ts'],
   parserOptions: {
@@ -10,41 +12,20 @@ const eslintConfig = {
     project: ['**/tsconfig.json']
   },
   rules: {
-    '@typescript-eslint/no-namespace': 'off'
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {}
-    }
-  }
-};
-
-eslintConfig.rules = {
-  ...eslintConfig.rules,
-  'import/order': [
-    1,
-    {
-      groups: [
-        'type',
-        ['external', 'builtin'],
-        'internal',
-        'parent',
-        'sibling',
-        'index'
-      ],
-      'newlines-between': 'always',
-      pathGroups: [
-        {
-          pattern: '@ziventi/utils',
-          group: 'external'
-        }
-      ],
-      alphabetize: {
-        order: 'asc',
-        caseInsensitive: true
+    '@typescript-eslint/no-namespace': 'off',
+    'import/order': [
+      1,
+      {
+        ...zavidConfig.rules['import/order'][1],
+        pathGroups: [
+          {
+            pattern: '@ziventi/utils',
+            group: 'external'
+          }
+        ]
       }
-    }
-  ]
+    ]
+  }
 };
 
 module.exports = eslintConfig;
