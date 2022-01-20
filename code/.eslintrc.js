@@ -9,7 +9,7 @@ const eslintConfig = {
   ignorePatterns: ['**/.dist/**', '**/.out/**', '**/next-env.d.ts'],
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ['**/tsconfig.json']
+    project: ['**/tsconfig.json'],
   },
   rules: {
     '@typescript-eslint/no-namespace': 'off',
@@ -21,12 +21,12 @@ const eslintConfig = {
         pathGroups: [
           {
             pattern: '@ziventi/utils',
-            group: 'external'
-          }
-        ]
-      }
-    ]
-  }
+            group: 'external',
+          },
+        ],
+      },
+    ],
+  },
 };
 
 module.exports = eslintConfig;
