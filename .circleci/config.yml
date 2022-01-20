@@ -14,12 +14,12 @@ commands:
     steps:
       - checkout
       - run:
-          name: Consolidate package-lock.json files
-          command: packages=(. server utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
+          name: Consolidate yarn.lock files
+          command: packages=(. server utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/yarn.lock\" ", $1}' | xargs cat > combined-yarn-lock.txt
           working_directory: ./code
       - restore_cache:
           keys:
-            - app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
+            - app-{{ checksum "./code/yarn.lock" }}-{{ checksum "./code/combined-yarn-lock.txt" }}
             - app-
       - run:
           name: Install root dependencies
@@ -38,7 +38,7 @@ commands:
             - ~/project/code/node_modules
             - ~/project/code/server/node_modules
             - ~/project/code/utils/node_modules
-          key: app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
+          key: app-{{ checksum "./code/yarn.lock" }}-{{ checksum "./code/combined-yarn-lock.txt" }}
   transfer_scripts:
     description: 'Tranfers deployment scripts via SCP'
     steps:
