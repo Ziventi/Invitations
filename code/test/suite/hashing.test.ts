@@ -1,22 +1,21 @@
 import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
-import NodeCache from 'node-cache';
-
-import path from 'path';
 
 import Ziventi, { Paths, Server, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
+import NodeCache from 'node-cache';
+import path from 'path';
 
 dotenv.config({ path: path.resolve(Paths.PROJECT_ROOT, '.env') });
 
 const cache = new NodeCache({
   checkperiod: 30,
   deleteOnExpire: true,
-  stdTTL: 30
+  stdTTL: 30,
 });
 const payload: Partial<Ziventi.HashParams> = {
   guestName: 'Aruna Jalloh',
   status: 'Confirmed',
-  sheetTitle: 'Guest List'
+  sheetTitle: 'Guest List',
 };
 
 async function mockServerResponse(

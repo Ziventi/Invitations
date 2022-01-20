@@ -1,8 +1,7 @@
-import path from 'path';
-
 import Ziventi, { Paths, Utils } from '@ziventi/utils';
 import Axios, { AxiosError } from 'axios';
 import * as dotenv from 'dotenv';
+import path from 'path';
 
 dotenv.config({ path: path.resolve(Paths.PROJECT_ROOT, '.env') });
 
@@ -10,7 +9,7 @@ const axios = Axios.create({ baseURL: 'http://localhost:3000/api/test' });
 const payload: Partial<Ziventi.HashParams> = {
   guestName: 'Aruna Jalloh',
   status: 'Confirmed',
-  sheetTitle: 'Guest List'
+  sheetTitle: 'Guest List',
 };
 
 describe('Server', () => {

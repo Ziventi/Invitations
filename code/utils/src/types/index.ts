@@ -75,5 +75,5 @@ export type ConfirmStatus =
 export const PublicConfirmStatuses: ConfirmStatus[] = [
   'Confirmed',
   'Tentative',
-  'Unavailable'
+  'Unavailable',
 ];

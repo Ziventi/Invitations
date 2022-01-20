@@ -44,13 +44,16 @@ module.exports = (cwd) => {
     if (proc.error) {
       throw proc.error;
     } else {
-      const output = proc.output.filter((chunk) => chunk).join().trim();
+      const output = proc.output
+        .filter((chunk) => chunk)
+        .join()
+        .trim();
       return output;
     }
   }
 
   return {
     run,
-    runSilent
+    runSilent,
   };
 };

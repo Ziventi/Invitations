@@ -13,19 +13,19 @@ import { Loader } from './settings';
           width: '3.5in',
           height: '2in',
           scale: 2,
-          deviceScaleFactor: 4
-        }
-      }
+          deviceScaleFactor: 4,
+        },
+      },
     },
     loadingOptions: {
       loader: Loader,
       processor: (guests: Guest[]) => {
         return guests.filter((g) => g.status === 'Confirmed');
-      }
-    }
+      },
+    },
   });
 
   await CLI({
-    generate: Generator.execute
+    generate: Generator.execute,
   });
 })();

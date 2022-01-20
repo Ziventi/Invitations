@@ -1,9 +1,10 @@
+import type { TGuest, TGuestRow } from '../types';
+
 import fs from 'fs-extra';
 
 import * as Utils from '../lib/functions';
 import { logger } from '../lib/logger';
 import * as Spreadsheet from '../lib/spreadsheet';
-import type { TGuest, TGuestRow } from '../types';
 
 export default class ZLoader<
   G extends TGuest = TGuest,
@@ -25,7 +26,7 @@ export default class ZLoader<
     const {
       guestMarshaler,
       spreadsheetId,
-      rootDir = process.cwd()
+      rootDir = process.cwd(),
     } = this.loadOptions;
     const cachePath = `${rootDir}/.cache.json`;
 

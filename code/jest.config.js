@@ -7,19 +7,19 @@ const options = {
     '!<rootDir>/server/**',
     '!<rootDir>/test/project/controller/main.ts',
     '!<rootDir>/utils/src/*.ts',
-    '!<rootDir>/utils/src/lib/cli.ts'
+    '!<rootDir>/utils/src/lib/cli.ts',
   ],
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   coverageReporters: ['lcov', 'text', 'text-summary'],
   moduleNameMapper: {
-    '@ziventi/utils': '<rootDir>/utils/src'
+    '@ziventi/utils': '<rootDir>/utils/src',
   },
   preset: 'jest-puppeteer',
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
   slowTestThreshold: 8,
   testMatch: ['**/*.test.ts'],
   verbose: true,
-  watchman: false
+  watchman: false,
 };
 
 if (process.env.CIRCLECI) {

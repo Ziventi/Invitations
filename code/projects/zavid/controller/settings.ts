@@ -8,7 +8,7 @@ Utils.checkDotenv(dotenvOutput);
 
 export const Loader = new ZLoader({
   spreadsheetId: process.env.SS_PRIVATE_GUESTLIST_ID!,
-  guestMarshaler: marshalGuests
+  guestMarshaler: marshalGuests,
 });
 
 /**

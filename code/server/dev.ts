@@ -1,5 +1,6 @@
-import Ziventi, { Server, Utils } from '@ziventi/utils/src/production';
 import type { Express } from 'express';
+
+import Ziventi, { Server, Utils } from '@ziventi/utils/src/production';
 import NodeCache from 'node-cache';
 
 export default function addDevEndpoints(app: Express, cache: NodeCache): void {

@@ -22,14 +22,14 @@ const logger = log4js
               const seconds = pad(dt.getSeconds());
               const ms = pad(dt.getMilliseconds(), 3);
               return `${pad(hour)}:${pad(min)}:${pad(seconds)}.${ms}`;
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     },
     categories: {
-      default: { appenders: [APPENDER_NAME], level: 'debug' }
-    }
+      default: { appenders: [APPENDER_NAME], level: 'debug' },
+    },
   })
   .getLogger('cheese');
 logger.level = LOGGER_LEVEL;

@@ -1,18 +1,18 @@
-import type { GoogleSpreadsheet } from 'google-spreadsheet';
-import invariant from 'tiny-invariant';
-
-import path from 'path';
-
-import { Timed } from '../lib/decorators';
-import { logger } from '../lib/logger';
-import * as Spreadsheet from '../lib/spreadsheet';
 import type {
   PublishLoadingOptions,
   PublishOptions,
   PublishSheet,
   TGuestRow,
-  TGuest
+  TGuest,
 } from '../types';
+import type { GoogleSpreadsheet } from 'google-spreadsheet';
+
+import path from 'path';
+import invariant from 'tiny-invariant';
+
+import { Timed } from '../lib/decorators';
+import { logger } from '../lib/logger';
+import * as Spreadsheet from '../lib/spreadsheet';
 
 export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: PublishLoadingOptions<G, R>;
@@ -101,7 +101,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
         const currentPropertyState = builder[sheetName] || [];
         return {
           ...builder,
-          [sheetName]: [...currentPropertyState, guest]
+          [sheetName]: [...currentPropertyState, guest],
         };
       }, {} as Record<string, G[]>);
     }

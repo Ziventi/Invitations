@@ -3,7 +3,7 @@ import Ziventi, {
   Spreadsheet,
   Utils,
   ZGenerator,
-  ZPublisher
+  ZPublisher,
 } from '@ziventi/utils';
 
 import { Guest, Rank } from './classes';
@@ -14,7 +14,7 @@ const {
   NUMBER_CHIDERA,
   NUMBER_DEBORAH,
   SS_PUBLIC_LISTS_ID,
-  SS_WISHLIST_SHEET_ID
+  SS_WISHLIST_SHEET_ID,
 } = process.env;
 
 const PUBLIC_LISTS_URL = Spreadsheet.getSpreadsheetUrl(SS_PUBLIC_LISTS_ID!);
@@ -28,32 +28,32 @@ const SHEET_NAME = 'Guest List';
         contacts: {
           Bola: NUMBER_BOLA,
           Chidera: NUMBER_CHIDERA,
-          Deborah: NUMBER_DEBORAH
+          Deborah: NUMBER_DEBORAH,
         },
         resources: Utils.compileResources(process.cwd()),
         lists: {
           guest: PUBLIC_LISTS_URL,
-          wish: WISHLIST_URL
-        }
-      }
+          wish: WISHLIST_URL,
+        },
+      },
     },
     fontsUrl: Utils.buildFontUrl({
       Courgette: null,
       'Great Vibes': null,
       Poppins: 'wght@400;700',
       'Style Script': null,
-      Tangerine: 'wght@400;700'
+      Tangerine: 'wght@400;700',
     }),
     formatOptions: {
       archiveTitle: '#Z25 Invites',
       nomenclator: (guestName) => `#Z25 Invitation to ${guestName}`,
       pdfOptions: {
-        format: 'a4'
-      }
+        format: 'a4',
+      },
     },
     loadingOptions: {
-      loader: Loader
-    }
+      loader: Loader,
+    },
   });
 
   const Publisher = new ZPublisher({
@@ -64,7 +64,7 @@ const SHEET_NAME = 'Guest List';
           .filter((g) => g.invited)
           .sort((a, b) => (a.name > b.name ? 1 : -1));
       },
-      sheet: SHEET_NAME
+      sheet: SHEET_NAME,
     },
     postPublish: {
       sheet: SHEET_NAME,
@@ -97,14 +97,14 @@ const SHEET_NAME = 'Guest List';
           D13: '\u274C No. of Unavailable:',
           E13: getTotalMatching('Unavailable'),
           D14: 'No. of Invites Remaining:',
-          E14: getTotalMatching((g) => !g.invited && g.rank <= Rank.D)
+          E14: getTotalMatching((g) => !g.invited && g.rank <= Rank.D),
         };
-      }
-    }
+      },
+    },
   });
 
   await CLI({
     generate: Generator.execute,
-    publish: Publisher.execute
+    publish: Publisher.execute,
   });
 })();

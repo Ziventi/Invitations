@@ -6,9 +6,7 @@
     "outDir": "./.dist",
     "sourceMap": false
   },
-  "include": [
-    "**/*.ts"
-  ],
+  "include": ["**/*.ts"],
   "exclude": [
     "./src/classes/generator.ts",
     "./src/classes/publisher.ts",
