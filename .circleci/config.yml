@@ -23,15 +23,15 @@ commands:
             - app-
       - run:
           name: Install root dependencies
-          command: npm install
+          command: yarn install
           working_directory: ./code
       - run:
           name: Install server dependencies
-          command: npm install
+          command: yarn install
           working_directory: ./code/server
       - run:
           name: Install utils dependencies
-          command: npm install
+          command: yarn install
           working_directory: ./code/utils
       - save_cache:
           paths:
@@ -55,19 +55,19 @@ jobs:
       - install_dependencies
       - run:
           name: Run TypeScript checks
-          command: npm run check
+          command: yarn run check
           working_directory: ./code
       - run:
           name: Run Prettier checks
-          command: npm run prettier
+          command: yarn run prettier
           working_directory: ./code
       - run:
           name: Run ESLint
-          command: npm run eslint -- --max-warnings 0
+          command: yarn run eslint --max-warnings 0
           working_directory: ./code
       - run:
           name: Run Stylelint
-          command: npm run stylelint
+          command: yarn run stylelint
           working_directory: ./code
   test:
     executor: node
@@ -75,11 +75,11 @@ jobs:
       - install_dependencies
       - run:
           name: Build utils
-          command: npm run build -- utils
+          command: yarn run build utils
           working_directory: ./code
       - run:
           name: Run tests
-          command: npm run test
+          command: yarn run test
           working_directory: ./code
           no_output_timeout: 2m
 
