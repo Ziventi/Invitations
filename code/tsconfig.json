@@ -13,7 +13,8 @@
     "noEmit": true,
     "noEmitOnError": true,
     "paths": {
-      "@ziventi/utils": ["./utils/src"]
+      "@ziventi/utils": ["./utils/src/index.ts"],
+      "@ziventi/utils/src/production": ["./utils/src/production.ts"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
