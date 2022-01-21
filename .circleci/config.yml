@@ -23,15 +23,15 @@ commands:
             - app-
       - run:
           name: Install root dependencies
-          command: yarn install
+          command: yarn install --force
           working_directory: ./code
       - run:
           name: Install server dependencies
-          command: yarn install
+          command: yarn install --force
           working_directory: ./code/server
       - run:
           name: Install utils dependencies
-          command: yarn install
+          command: yarn install --force
           working_directory: ./code/utils
       - save_cache:
           paths:
