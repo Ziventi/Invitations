@@ -11,14 +11,14 @@ COPY ./code/tsconfig.json .
 
 ## Copy and install utils
 WORKDIR /var/www/$WORKDIR/utils
-COPY ./code/utils/package*.json ./
+COPY ./code/utils/package.json ./code/utils/yarn.lock ./
 RUN yarn install --production
 COPY ./code/utils ./
 RUN yarn run build:prod
 
 ## Copy and install server
 WORKDIR /var/www/$WORKDIR/server
-COPY ./code/server/package*.json ./
+COPY ./code/server/package.json ./code/server/yarn.lock ./
 RUN yarn install --production
 COPY ./code/server ./
 RUN yarn run build
