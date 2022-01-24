@@ -15,9 +15,6 @@ commands:
       build-utils:
         type: boolean
         default: false
-      install-sub-deps:
-        type: boolean
-        default: false
     steps:
       - checkout
       - run:
@@ -28,24 +25,21 @@ commands:
           name: Install root dependencies
           command: yarn install --frozen-lockfile
           working_directory: ./code
+      - run:
+          name: Install utils dependencies
+          command: yarn install --frozen-lockfile
+          working_directory: ./code/utils
       - when:
-          condition: << parameters.install-sub-deps >>
+          condition: << parameters.build-utils >>
           steps:
-          - run:
-              name: Install utils dependencies
-              command: yarn install --frozen-lockfile
-              working_directory: ./code/utils
-          - when:
-              condition: << parameters.build-utils >>
-              steps:
-                - run:
-                    name: Build utils
-                    command: yarn run build utils
-                    working_directory: ./code          
-          - run:
-              name: Install server dependencies
-              command: yarn install --frozen-lockfile
-              working_directory: ./code/server
+            - run:
+                name: Build utils
+                command: yarn run build utils
+                working_directory: ./code          
+      - run:
+          name: Install server dependencies
+          command: yarn install --frozen-lockfile
+          working_directory: ./code/server
   transfer_scripts:
     description: 'Transfers deployment scripts via SCP'
     steps:
@@ -81,7 +75,6 @@ jobs:
     steps:
       - install_dependencies:
           build-utils: true
-          install-sub-deps: true
       - run:
           name: Build utils
           command: yarn run build utils
