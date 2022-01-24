@@ -2,6 +2,10 @@
   "name": "ziventi",
   "private": true,
   "version": "1.0.0",
+  "workspaces": [
+    "@ziventi/server",
+    "@ziventi/utils"
+  ],
   "bin": {
     "ziventi": "./scripts/cli.js",
     "ziventi-build": "./scripts/build.js"
