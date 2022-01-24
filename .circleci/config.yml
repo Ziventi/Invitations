@@ -18,10 +18,6 @@ commands:
     steps:
       - checkout
       - run:
-          name: Consolidate yarn.lock files
-          command: packages=(. server utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/yarn.lock\" ", $1}' | xargs cat > combined-yarn-lock.txt
-          working_directory: ./code
-      - run:
           name: Install root dependencies
           command: yarn install --frozen-lockfile
           working_directory: ./code
