@@ -11,42 +11,46 @@ executors:
 commands:
   install_dependencies:
     description: 'Installs all project dependencies.'
+    parameters:
+      build-utils:
+        type: boolean
+        default: false
     steps:
       - checkout
       - run:
-          name: Consolidate package-lock.json files
-          command: packages=(. server utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/package-lock.json\" ", $1}' | xargs cat > combined-package-lock.txt
-          working_directory: ./code
-      - restore_cache:
-          keys:
-            - app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
-            - app-
-      - run:
           name: Install root dependencies
-          command: npm install
+          command: yarn install --frozen-lockfile
           working_directory: ./code
-      - run:
-          name: Install server dependencies
-          command: npm install
-          working_directory: ./code/server
       - run:
           name: Install utils dependencies
-          command: npm install
+          command: yarn install --frozen-lockfile
           working_directory: ./code/utils
-      - save_cache:
-          paths:
-            - ~/project/code/node_modules
-            - ~/project/code/server/node_modules
-            - ~/project/code/utils/node_modules
-          key: app-{{ checksum "./code/package-lock.json" }}-{{ checksum "./code/combined-package-lock.txt" }}
+      - when:
+          condition: << parameters.build-utils >>
+          steps:
+            - run:
+                name: Build utils
+                command: yarn run build utils
+                working_directory: ./code          
+      - run:
+          name: Install server dependencies
+          command: yarn install --frozen-lockfile
+          working_directory: ./code/server
   transfer_scripts:
-    description: 'Tranfers deployment scripts via SCP'
+    description: 'Transfers deployment scripts via SCP'
+    parameters:
+      mode:
+        type: string
     steps:
       - checkout
       - run:
           name: Transfer scripts
           command: scp -o StrictHostKeyChecking=no -r ./docker/scripts/* $SSH_USER@$SSH_ADDRESS:/home/circleci/scripts/
           no_output_timeout: 30s
+      - run:
+          name: Update secrets and run << parameters.mode >> deployment
+          command: |
+            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./scripts/deploy.<< parameters.mode >>.sh"
 
 jobs:
   inspect:
@@ -55,50 +59,40 @@ jobs:
       - install_dependencies
       - run:
           name: Run TypeScript checks
-          command: npm run check
-          working_directory: ./code
-      - run:
-          name: Run Prettier checks
-          command: npm run prettier
+          command: yarn run check
           working_directory: ./code
       - run:
           name: Run ESLint
-          command: npm run eslint -- --max-warnings 0
+          command: yarn run eslint --max-warnings 0
           working_directory: ./code
       - run:
           name: Run Stylelint
-          command: npm run stylelint
+          command: yarn run stylelint
+          working_directory: ./code
+      - run:
+          name: Run Prettier checks
+          command: yarn run prettier
           working_directory: ./code
   test:
     executor: node
     steps:
-      - install_dependencies
-      - run:
-          name: Build utils
-          command: npm run build -- utils
-          working_directory: ./code
+      - install_dependencies:
+          build-utils: true
       - run:
           name: Run tests
-          command: npm run test
+          command: yarn run test
           working_directory: ./code
           no_output_timeout: 2m
-
   deploy_dev:
     executor: ssh
     steps:
-      - transfer_scripts
-      - run:
-          name: Updates secrets and run staging deployment
-          command: |
-            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS "./scripts/deploy.dev.sh"
+      - transfer_scripts:
+          mode: dev
   deploy_prod:
     executor: ssh
     steps:
-      - transfer_scripts
-      - run:
-          name: Updates secrets and run production deployment
-          command: |
-            ssh -o StrictHostKeyChecking=no -v $SSH_USER@$SSH_ADDRESS ./scripts/deploy.prod.sh
+      - transfer_scripts:
+          mode: prod
 
 workflows:
   build-inspect-test:

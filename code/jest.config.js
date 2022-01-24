@@ -12,7 +12,8 @@ const options = {
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   coverageReporters: ['lcov', 'text', 'text-summary'],
   moduleNameMapper: {
-    '@ziventi/utils': '<rootDir>/utils/src',
+    '@ziventi/utils': '<rootDir>/utils/src/index.ts',
+    '@ziventi/utils/src/production': '<rootDir>/utils/src/production.ts',
   },
   preset: 'jest-puppeteer',
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],

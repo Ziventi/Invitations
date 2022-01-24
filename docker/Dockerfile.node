@@ -12,16 +12,16 @@ COPY ./code/tsconfig.json .
 ## Copy and install utils
 WORKDIR /var/www/$WORKDIR/utils
 COPY ./code/utils/package*.json ./
-RUN npm ci --production
+RUN yarn install --production
 COPY ./code/utils ./
-RUN npm run build:prod
+RUN yarn run build:prod
 
 ## Copy and install server
 WORKDIR /var/www/$WORKDIR/server
 COPY ./code/server/package*.json ./
-RUN npm ci --production
+RUN yarn install --production
 COPY ./code/server ./
-RUN npm run build
+RUN yarn run build
 
 EXPOSE $PORT
 

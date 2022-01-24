@@ -10,7 +10,7 @@ const cwd = TEST_PROJECT_ROOT;
 const outDir = `${cwd}/.out`;
 const htmlOutDir = `${outDir}/html`;
 
-jest.setTimeout(15000);
+jest.setTimeout(30000);
 
 describe('Generation', () => {
   test('Generates correct number of files on specified limit', async () => {
