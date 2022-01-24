@@ -46,7 +46,7 @@ fi
 info 'Running container...'
 docker run --detach \
   --name $CONTAINER_NAME \
-  --restart unless-stopped \
+  --restart on-failure:5 \
   --publish $PORT:$PORT \
   --env PORT=$PORT \
   $IMAGE_NAME
