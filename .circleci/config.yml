@@ -91,7 +91,6 @@ jobs:
           command: yarn run test
           working_directory: ./code
           no_output_timeout: 2m
-
   deploy_dev:
     executor: ssh
     steps:
