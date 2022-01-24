@@ -11,6 +11,13 @@ executors:
 commands:
   install_dependencies:
     description: 'Installs all project dependencies.'
+    parameters:
+      build-utils:
+        type: boolean
+        default: false
+      install-sub-deps:
+        type: boolean
+        default: false
     steps:
       - checkout
       - run:
@@ -21,24 +28,26 @@ commands:
           name: Install root dependencies
           command: yarn install --frozen-lockfile
           working_directory: ./code
-      # - run:
-      #     name: Install server dependencies
-      #     command: yarn install --frozen-lockfile
-      #     working_directory: ./code/server
-      - run:
-          name: Install utils dependencies
-          command: yarn install --frozen-lockfile
-          working_directory: ./code/utils
-      - run:
-          name: Build utils
-          command: yarn run build utils
-          working_directory: ./code
-      - run:
-          name: Install server dependencies
-          command: yarn install --frozen-lockfile
-          working_directory: ./code/server
+      - when:
+          condition: << parameters.install-sub-deps >>
+          steps:
+          - run:
+              name: Install utils dependencies
+              command: yarn install --frozen-lockfile
+              working_directory: ./code/utils
+          - when:
+              condition: << parameters.build-utils >>
+              steps:
+                - run:
+                    name: Build utils
+                    command: yarn run build utils
+                    working_directory: ./code          
+          - run:
+              name: Install server dependencies
+              command: yarn install --frozen-lockfile
+              working_directory: ./code/server
   transfer_scripts:
-    description: 'Tranfers deployment scripts via SCP'
+    description: 'Transfers deployment scripts via SCP'
     steps:
       - checkout
       - run:
@@ -56,10 +65,6 @@ jobs:
           command: yarn run check
           working_directory: ./code
       - run:
-          name: Run Prettier checks
-          command: yarn run prettier
-          working_directory: ./code
-      - run:
           name: Run ESLint
           command: yarn run eslint --max-warnings 0
           working_directory: ./code
@@ -67,10 +72,16 @@ jobs:
           name: Run Stylelint
           command: yarn run stylelint
           working_directory: ./code
+      - run:
+          name: Run Prettier checks
+          command: yarn run prettier
+          working_directory: ./code
   test:
     executor: node
     steps:
-      - install_dependencies
+      - install_dependencies:
+          build-utils: true
+          install-sub-deps: true
       - run:
           name: Build utils
           command: yarn run build utils
