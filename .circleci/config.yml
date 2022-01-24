@@ -83,10 +83,6 @@ jobs:
       - install_dependencies:
           build-utils: true
       - run:
-          name: Build utils
-          command: yarn run build utils
-          working_directory: ./code
-      - run:
           name: Run tests
           command: yarn run test
           working_directory: ./code
