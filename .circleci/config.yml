@@ -17,28 +17,26 @@ commands:
           name: Consolidate yarn.lock files
           command: packages=(. server utils) && printf '%s\n' "${packages[@]}" | awk -F packages '{printf "\"%s/yarn.lock\" ", $1}' | xargs cat > combined-yarn-lock.txt
           working_directory: ./code
-      # - restore_cache:
-      #     keys:
-      #       - app-{{ checksum "./code/yarn.lock" }}-{{ checksum "./code/combined-yarn-lock.txt" }}
-      #       - app-
       - run:
           name: Install root dependencies
-          command: yarn install --force --frozen-lockfile
+          command: yarn install --frozen-lockfile
+          working_directory: ./code
+      # - run:
+      #     name: Install server dependencies
+      #     command: yarn install --frozen-lockfile
+      #     working_directory: ./code/server
+      - run:
+          name: Install utils dependencies
+          command: yarn install --frozen-lockfile
+          working_directory: ./code/utils
+      - run:
+          name: Build utils
+          command: yarn run build utils
           working_directory: ./code
       - run:
           name: Install server dependencies
-          command: yarn install --force --frozen-lockfile
+          command: yarn install --frozen-lockfile
           working_directory: ./code/server
-      - run:
-          name: Install utils dependencies
-          command: yarn install --force --frozen-lockfile
-          working_directory: ./code/utils
-      # - save_cache:
-      #     paths:
-      #       - ~/project/code/node_modules
-      #       - ~/project/code/server/node_modules
-      #       - ~/project/code/utils/node_modules
-      #     key: app-{{ checksum "./code/yarn.lock" }}-{{ checksum "./code/combined-yarn-lock.txt" }}
   transfer_scripts:
     description: 'Tranfers deployment scripts via SCP'
     steps:
