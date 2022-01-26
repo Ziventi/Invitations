@@ -8,7 +8,7 @@ describe('Utils', () => {
       guestName: 'Aruna Jalloh',
       status: 'Confirmed',
       sheetTitle: 'Guests',
-      spreadsheetId: '123xyz',
+      publicSpreadsheetId: '123xyz',
     };
 
     const hash = Utils.encryptJSON(expectedParams);

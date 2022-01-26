@@ -491,7 +491,7 @@ interface GeneratorConstructor<G extends TGuest, R extends TGuestRow> {
 
 interface HTMLOptions {
   ejsLocals?: Record<string, unknown>;
-  hashParams?: Required<Pick<HashParams, 'spreadsheetId' | 'sheetTitle'>>;
+  hashParams?: Required<Pick<HashParams, 'publicSpreadsheetId' | 'sheetTitle'>>;
 }
 
 interface FormatOptions {

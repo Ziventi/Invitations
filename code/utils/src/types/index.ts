@@ -62,7 +62,7 @@ export type GuestHashes = Record<ConfirmStatus, string>;
 export interface HashParams {
   guestName: string;
   status: ConfirmStatus;
-  spreadsheetId: string;
+  publicSpreadsheetId: string;
   sheetTitle: string;
 }
 

@@ -26,20 +26,20 @@ export async function retrievePublicWorksheet(
   cache: NodeCache,
   payload: HashParams
 ): Promise<GoogleSpreadsheetWorksheet> {
-  const { spreadsheetId, sheetTitle } = payload;
+  const { publicSpreadsheetId, sheetTitle } = payload;
 
   logger.trace(`Loading public spreadsheet...`);
   let publicSpreadsheet;
-  if (cache.has(spreadsheetId)) {
-    publicSpreadsheet = cache.get<GoogleSpreadsheet>(spreadsheetId);
+  if (cache.has(publicSpreadsheetId)) {
+    publicSpreadsheet = cache.get<GoogleSpreadsheet>(publicSpreadsheetId);
   } else {
-    publicSpreadsheet = await Spreadsheet.getSpreadsheet(spreadsheetId);
+    publicSpreadsheet = await Spreadsheet.getSpreadsheet(publicSpreadsheetId);
   }
   invariant(
     publicSpreadsheet,
     'No spreadsheet found with specified spreadsheet ID.'
   );
-  cache.set(spreadsheetId, publicSpreadsheet);
+  cache.set(publicSpreadsheetId, publicSpreadsheet);
 
   const publicSheet = publicSpreadsheet.sheetsByTitle[sheetTitle];
   invariant(publicSheet, `No sheet found matching title '${sheetTitle}'.`);

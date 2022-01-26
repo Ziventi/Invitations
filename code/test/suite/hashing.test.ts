@@ -29,7 +29,7 @@ async function mockServerResponse(
 
 describe('Hashing', () => {
   test('Caching is performed', async () => {
-    payload.spreadsheetId = process.env.TEST_SS_PUBLIC_ID;
+    payload.publicSpreadsheetId = process.env.TEST_SS_PUBLIC_ID;
     const cacheGetSpy = jest.spyOn(cache, 'get');
     const cacheSetSpy = jest.spyOn(cache, 'set');
 
@@ -44,7 +44,7 @@ describe('Hashing', () => {
     expect(row['Name']).toBe(payload.guestName);
 
     expect(cacheGetSpy).toBeCalledTimes(1);
-    expect(cacheGetSpy).toBeCalledWith(payload.spreadsheetId);
+    expect(cacheGetSpy).toBeCalledWith(payload.publicSpreadsheetId);
     expect(cacheSetSpy).toBeCalledTimes(2);
   });
 });

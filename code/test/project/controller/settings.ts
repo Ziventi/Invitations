@@ -84,7 +84,7 @@ function marshalGuests(records: GuestRow[]): Guest[] {
       const params: Ziventi.HashParams = {
         guestName: guest.name,
         status,
-        spreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
+        publicSpreadsheetId: process.env.TEST_SS_PUBLIC_ID!,
         sheetTitle: 'Guest List',
       };
       guest.hashes = {

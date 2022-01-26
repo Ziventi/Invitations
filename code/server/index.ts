@@ -40,7 +40,7 @@ app.get('/api/:hash', async (req, res) => {
   try {
     const { hash } = req.params;
     const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
-    const { guestName, status, spreadsheetId } = payload;
+    const { guestName, status, publicSpreadsheetId } = payload;
 
     const publicSheet = await Server.retrievePublicWorksheet(cache, payload);
     const matchingRow = await Server.retrieveRowMatchingGuest(
@@ -59,7 +59,7 @@ app.get('/api/:hash', async (req, res) => {
     logger.info(`Updated guest '${guestName}' with status '${status}'.`);
 
     if (Server.isProduction()) {
-      const sheetUrl = Spreadsheet.getSpreadsheetUrl(spreadsheetId);
+      const sheetUrl = Spreadsheet.getSpreadsheetUrl(publicSpreadsheetId);
       res.redirect(sheetUrl);
     } else {
       res.status(200).send({ message: 'ok' });

@@ -14,14 +14,14 @@ const payload: Partial<Ziventi.HashParams> = {
 
 describe('Server', () => {
   test('Correct payload, server responds with 200', async () => {
-    payload.spreadsheetId = process.env.TEST_SS_PUBLIC_ID;
+    payload.publicSpreadsheetId = process.env.TEST_SS_PUBLIC_ID;
     const hash = Utils.encryptJSON(payload);
     const response = await axios.get(hash);
     expect(response.status).toBe(200);
   });
 
   test('Bad payload, server responds with 400', async () => {
-    payload.spreadsheetId = '123xyz';
+    payload.publicSpreadsheetId = '123xyz';
     const hash = Utils.encryptJSON(payload);
     try {
       await axios.get(hash);
