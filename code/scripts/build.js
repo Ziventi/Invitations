@@ -27,7 +27,7 @@ function queueProjectBuild(projectName) {
   runSilent('rm', ['-rf', '.dist']);
 
   return Promise.resolve()
-    .then(() => run('tsc', ['--build']))
+    .then(() => run('tsc', ['--paths', null]))
     .then(() => {
       logger.info(`Finished building '${projectName}'.`);
     });
