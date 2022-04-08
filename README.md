@@ -7,6 +7,8 @@ The home for invitation projects developed under Ziventi.
 To create a new version of `zzavidd/puppeteer`, use:
 
 ```
+cd docker
+docker build -f Dockerfile.puppeteer -t zzavidd/puppeteer .
 docker push zzavidd/puppeteer:latest
 ```
 
