@@ -8,4 +8,6 @@ RUN sudo apt-get install -yq \
   libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
   fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget libgbm-dev
 
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+
 CMD ["/bin/sh"]
