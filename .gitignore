@@ -6,3 +6,4 @@
 **/.dist
 **/css
 **/.coverage
+*.log
