@@ -18,13 +18,13 @@ commands:
     steps:
       - checkout
       - run:
-          name: Install root dependencies
-          command: yarn install
-          working_directory: ./code
-      - run:
           name: Install utils dependencies
           command: yarn install
           working_directory: ./code/utils
+      - run:
+          name: Install root dependencies
+          command: yarn install
+          working_directory: ./code
       - when:
           condition: << parameters.build-utils >>
           steps:
