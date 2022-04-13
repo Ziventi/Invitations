@@ -99,19 +99,19 @@ workflows:
     jobs:
       - inspect
       - test
-      - deploy_dev:
-          requires:
-            - inspect
-            - test
-          filters:
-            branches:
-              only:
-                - main
-      - deploy_prod:
-          requires:
-            - inspect
-            - test
-          filters:
-            branches:
-              only:
-                - production
+      # - deploy_dev:
+      #     requires:
+      #       - inspect
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+      # - deploy_prod:
+      #     requires:
+      #       - inspect
+      #       - test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - production
