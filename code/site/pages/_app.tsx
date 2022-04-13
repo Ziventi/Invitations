@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 
 import React, { ReactElement } from 'react';
 
-import '../styles/globals.css';
+import 'styles/App.scss';
 
 export default function MyApp({
   Component,
