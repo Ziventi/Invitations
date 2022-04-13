@@ -1,3 +1,4 @@
+# TODO: Take opt-in approach.
 **/node_modules
 **/.dist
 **/.out
