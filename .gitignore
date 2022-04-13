@@ -1,9 +1,20 @@
+# all
 **/node_modules
 **/.env
+
+# site
+**/.next/
+
+# test
+**/.coverage
+
+# utils
 **/key.json
 **/.cache.json
 **/.out
 **/.dist
 **/css
-**/.coverage
+
+# other
+**/.DS_Store
 *.log
