@@ -42,22 +42,25 @@ section.preview {
   }
 
   div.drag-zone {
+    align-items: center;
+    display: flex;
     height: 100%;
+    justify-content: center;
     position: absolute;
     width: 100%;
   }
 
   div.draggable {
-    border: 5px dashed #ccc;
-    box-sizing: content-box;
-    cursor: grab;
+    border: 5px dashed transparent;
+    cursor: move;
     padding: 1em;
     position: absolute;
-    transition: all 0.00001s ease;
+    text-align: center;
+    transition: border 0.2s ease;
     user-select: none;
 
-    &:active {
-      cursor: grabbing;
+    &--selected {
+      border: 5px dashed #ccc;
     }
   }
 }

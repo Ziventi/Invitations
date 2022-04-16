@@ -1,24 +1,47 @@
+import classnames from 'classnames';
 import React, { ReactElement, useEffect, useRef } from 'react';
 
 import { State } from './types';
 
 export default function DraggableText({
   state,
-  updateState,
+  setState,
 }: DraggableTextProps): ReactElement | null {
   const dragZoneRef = useRef<HTMLDivElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
+  
+  const draggableClasses = classnames('draggable', {
+    'draggable--selected': state.draggable.isSelected,
+  });
 
+  // Add an event listener for the drag-end operation anywhere on the page.
   useEffect(() => {
     const onDragEnd = (e: MouseEvent): void => {
-      updateState({ draggable: { isDragging: false, offset: null } });
+      setState((currentState) => ({
+        ...currentState,
+        draggable: {
+          ...currentState.draggable,
+          isDragging: false,
+          offset: null,
+        },
+      }));
       prohibitSideEffects(e);
     };
     window.addEventListener('mouseup', onDragEnd);
     return () => {
       window.removeEventListener('mouseup', onDragEnd);
     };
-  }, [updateState]);
+  }, [setState]);
+
+  // Align the drag zone dimensions with the canvas when images change.
+  useEffect(() => {
+    const dragZone = dragZoneRef.current;
+    if (dragZone) {
+      const { height, width } = state.canvasDimensions;
+      dragZone.style.height = `${height}px`;
+      dragZone.style.width = `${width}px`;
+    }
+  }, [state.canvasDimensions]);
 
   /**
    * Called on mouse-down to start dragging the draggable. Triggers only on
@@ -26,20 +49,22 @@ export default function DraggableText({
    * @param e The mouse event.
    */
   function onDragStart(e: React.MouseEvent<HTMLDivElement>): void {
-    if (e.button !== 0 || e.currentTarget.className !== 'draggable') {
+    if (e.button !== 0 || e.currentTarget.id !== 'draggable') {
       return;
     }
 
     const draggable = getDivElement(draggableRef);
-    updateState({
+    setState((currentState) => ({
+      ...currentState,
       draggable: {
         isDragging: true,
+        isSelected: true,
         offset: {
           x: e.pageX - draggable.offsetLeft,
           y: e.pageY - draggable.offsetTop,
         },
       },
-    });
+    }));
 
     prohibitSideEffects(e);
   }
@@ -79,23 +104,42 @@ export default function DraggableText({
   }
 
   /**
-   * Retrieves a DIV element using its reference.
-   * @param ref The element reference.
-   * @returns The DIV element.
+   * Deselect the draggable when clicked outside of it but within the drag zone.
+   * @param e The mouse event.
    */
-  function getDivElement(ref: React.RefObject<HTMLDivElement>): HTMLDivElement {
-    const element = ref.current;
-    if (element) {
-      return element;
-    } else {
-      throw new Error('Element does not exist.');
-    }
+  function onDragZoneClick(e: React.MouseEvent<HTMLDivElement>): void {
+    const draggable = getDivElement(draggableRef);
+    const draggableBounds = draggable.getBoundingClientRect();
+    const withinDraggable =
+      e.pageX >= draggableBounds.left &&
+      e.pageX <= draggableBounds.right &&
+      e.pageY >= draggableBounds.top &&
+      e.pageY <= draggableBounds.bottom;
+
+    if (withinDraggable) return;
+    setState((currentState) => ({
+      ...currentState,
+      draggable: {
+        ...currentState.draggable,
+        isSelected: false,
+      },
+    }));
   }
 
-  if (!state.names) return null;
+  if (!state.names || !state.imageLoaded) return null;
   return (
-    <div className={'drag-zone'} onMouseMove={onDrag} ref={dragZoneRef}>
-      <div className={'draggable'} onMouseDown={onDragStart} ref={draggableRef}>
+    <div
+      className={'drag-zone'}
+      onMouseDown={onDragZoneClick}
+      onMouseMove={onDrag}
+      ref={dragZoneRef}
+    >
+      <div
+        id={'draggable'}
+        className={draggableClasses}
+        onMouseDown={onDragStart}
+        ref={draggableRef}
+      >
         {state.names}
       </div>
     </div>
@@ -111,7 +155,21 @@ function prohibitSideEffects(e: MouseEvent | React.MouseEvent): void {
   e.preventDefault();
 }
 
+/**
+ * Retrieves a DIV element using its reference.
+ * @param ref The element reference.
+ * @returns The DIV element.
+ */
+function getDivElement(ref: React.RefObject<HTMLDivElement>): HTMLDivElement {
+  const element = ref.current;
+  if (element) {
+    return element;
+  } else {
+    throw new Error('Element does not exist.');
+  }
+}
+
 interface DraggableTextProps {
   state: State;
-  updateState: (newStateValues: Partial<Record<keyof State, any>>) => void;
+  setState: React.Dispatch<React.SetStateAction<State>>;
 }

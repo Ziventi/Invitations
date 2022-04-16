@@ -8,22 +8,19 @@ import { State } from './types';
 const Home: NextPage = () => {
   const [state, setState] = useState<State>({
     names: 'Drag me',
+    imageLoaded: false,
+    canvasDimensions: {
+      width: 300,
+      height: 150,
+    },
     draggable: {
       isDragging: false,
+      isSelected: false,
       offset: null,
     },
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  function updateState(
-    newStateValues: Partial<Record<keyof State, any>>
-  ): void {
-    setState((currentState) => ({
-      ...currentState,
-      ...newStateValues,
-    }));
-  }
 
   /**
    * Called on selection of a file to edit.
@@ -34,46 +31,65 @@ const Home: NextPage = () => {
     const { files } = e.target;
     if (!files || !files.length) return;
 
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     const fileReader = new FileReader();
     fileReader.readAsDataURL(files[0]);
     fileReader.onload = () => {
       const img = new Image();
       img.src = fileReader.result as string;
       img.onload = () => {
-        const ctx = getCanvasContext();
         ctx.canvas.width = img.width;
         ctx.canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
+
+        setState((currentState) => ({
+          ...currentState,
+          imageLoaded: true,
+          canvasDimensions: {
+            width: canvas.clientWidth,
+            height: canvas.clientHeight,
+          },
+        }));
       };
     };
   }
 
-  /**
-   * Retrieves the canvas context.
-   * @returns The canvas context.
-   */
-  function getCanvasContext(): CanvasRenderingContext2D {
+  function download(): void {
     const canvas = canvasRef.current;
-    if (!canvas) throw new Error('Canvas not found.');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Canvas context not found.');
-    return ctx;
+    if (!canvas) return;
+    const link = document.createElement('a');
+    link.download = 'filename.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  }
+
+  function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
+    setState((currentState) => ({
+      ...currentState,
+      names: e.target.value,
+    }));
   }
 
   return (
     <main>
       <section className={'controls'}>
         <textarea
-          onChange={(e) => updateState({ names: e.target.value })}
+          onChange={onTextChange}
           value={state.names}
           placeholder={'List your guest names'}
         />
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
+        <button onClick={download}>Download</button>
       </section>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
-        <DraggableText state={state} updateState={updateState} />
+        <DraggableText state={state} setState={setState} />
       </section>
     </main>
   );
