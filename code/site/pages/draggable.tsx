@@ -57,6 +57,7 @@ export default function DraggableText({
     setState((currentState) => ({
       ...currentState,
       draggable: {
+        ...currentState.draggable,
         isDragging: true,
         isSelected: true,
         offset: {
@@ -136,9 +137,47 @@ export default function DraggableText({
         onMouseDown={onDragStart}
         ref={draggableRef}
       >
-        {state.names}
+        <span style={{ color: state.draggable.textColor }}>{state.names}</span>
+        <ResizeHandles
+          draggableRef={draggableRef}
+          isSelected={state.draggable.isSelected}
+        />
       </div>
     </div>
+  );
+}
+
+function ResizeHandles({
+  draggableRef,
+  isSelected,
+}: ResizeHandlesProps): ReactElement | null {
+  const positions = ['east', 'west'];
+  return (
+    <>
+      {positions.map((position) => {
+        const classes = classnames(
+          'resize-handle',
+          `resize-handle-${position}`,
+          { 'resize-handle--selected': isSelected }
+        );
+        return (
+          <svg
+            width={'10'}
+            height={'10'}
+            xmlns={'http://www.w3.org/2000/svg'}
+            className={classes}
+            key={position}
+            onMouseDown={(e) => {
+              const draggable = getDivElement(draggableRef);
+              console.log(draggable.style.width);
+              // TODO: give resize extra space
+            }}
+          >
+            <circle cx={'50%'} cy={'50%'} r={'5'} />
+          </svg>
+        );
+      })}
+    </>
   );
 }
 
@@ -168,4 +207,9 @@ function getDivElement(ref: React.RefObject<HTMLDivElement>): HTMLDivElement {
 interface DraggableTextProps {
   state: State;
   setState: React.Dispatch<React.SetStateAction<State>>;
+}
+
+interface ResizeHandlesProps {
+  draggableRef: React.RefObject<HTMLDivElement>;
+  isSelected: boolean;
 }

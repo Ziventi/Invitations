@@ -2,18 +2,19 @@ export interface State {
   names: string;
   imageSrc: string | null;
   canvasDimensions: Dimensions;
-  draggable:
-    | {
-        isDragging: true;
-        isSelected: boolean;
-        offset: Coordinates;
-      }
-    | {
-        isDragging: false;
-        isSelected: boolean;
-        offset: null;
-      };
+  draggable: Draggable;
 }
+
+type Draggable = {
+  isSelected: boolean;
+  textColor: string;
+} & (
+  | {
+      isDragging: true;
+      offset: Coordinates;
+    }
+  | { isDragging: false; offset: null }
+);
 
 export interface Coordinates {
   x: number;

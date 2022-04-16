@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { PhotoshopPicker, ColorResult } from 'react-color';
 
 import DraggableText from './draggable';
 import { imageSource } from './image';
@@ -15,6 +16,7 @@ const Home: NextPage = () => {
       height: 150,
     },
     draggable: {
+      textColor: '#000',
       isDragging: false,
       isSelected: false,
       offset: null,
@@ -94,6 +96,16 @@ const Home: NextPage = () => {
     }));
   }
 
+  function onTextColorChange(color: ColorResult): void {
+    setState((currentState) => ({
+      ...currentState,
+      draggable: {
+        ...currentState.draggable,
+        textColor: color.hex,
+      },
+    }));
+  }
+
   return (
     <main>
       <section className={'controls'}>
@@ -105,6 +117,10 @@ const Home: NextPage = () => {
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
         <button onClick={download}>Download</button>
+        <PhotoshopPicker
+          color={state.draggable.textColor}
+          onChange={onTextColorChange}
+        />
       </section>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
