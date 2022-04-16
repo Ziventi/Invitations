@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React, { ReactElement, useEffect, useRef } from 'react';
 
-import { State } from './types';
+import { Coordinates, State } from './types';
 
 export default function DraggableText({
   state,
@@ -9,7 +9,7 @@ export default function DraggableText({
 }: DraggableTextProps): ReactElement | null {
   const dragZoneRef = useRef<HTMLDivElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
-  
+
   const draggableClasses = classnames('draggable', {
     'draggable--selected': state.draggable.isSelected,
   });
@@ -78,26 +78,22 @@ export default function DraggableText({
 
     const dragZone = getDivElement(dragZoneRef);
     const draggable = getDivElement(draggableRef);
-
-    // TODO: Fix behaviour when dragging out of bounds.
     const dragZoneBounds = dragZone.getBoundingClientRect();
-    const draggableBounds = draggable.getBoundingClientRect();
+
+    const currentPoint: Coordinates = {
+      x: e.pageX - state.draggable.offset.x,
+      y: e.pageY - state.draggable.offset.y,
+    };
+
     const withinDragZone =
-      draggableBounds.left >= dragZoneBounds.left &&
-      draggableBounds.right <= dragZoneBounds.right &&
-      draggableBounds.top >= dragZoneBounds.top &&
-      draggableBounds.bottom <= dragZoneBounds.bottom;
+      currentPoint.x >= 0 &&
+      currentPoint.x + draggable.offsetWidth <= dragZoneBounds.width &&
+      currentPoint.y >= 0 &&
+      currentPoint.y + draggable.offsetHeight <= dragZoneBounds.height;
 
     if (withinDragZone) {
-      draggable.style.left = `${e.pageX - state.draggable.offset.x}px`;
-      draggable.style.top = `${e.pageY - state.draggable.offset.y}px`;
-    } else {
-      if (draggableBounds.left < dragZoneBounds.left) {
-        draggable.style.left = `${dragZoneBounds.left}px`;
-      } else if (draggableBounds.right > dragZoneBounds.right)
-        draggable.style.left = `${
-          dragZoneBounds.right - draggable.clientWidth
-        }px`;
+      draggable.style.left = `${currentPoint.x}px`;
+      draggable.style.top = `${currentPoint.y}px`;
     }
 
     prohibitSideEffects(e);
@@ -126,7 +122,7 @@ export default function DraggableText({
     }));
   }
 
-  if (!state.names || !state.imageLoaded) return null;
+  if (!state.names || !state.imageSrc) return null;
   return (
     <div
       className={'drag-zone'}

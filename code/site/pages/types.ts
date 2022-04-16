@@ -1,6 +1,6 @@
 export interface State {
   names: string;
-  imageLoaded: boolean;
+  imageSrc: string | null;
   canvasDimensions: Dimensions;
   draggable:
     | {
