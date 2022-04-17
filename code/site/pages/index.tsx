@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
 import { PhotoshopPicker, ColorResult } from 'react-color';
 
-import DraggableText from './draggable';
+import Draggable from './draggable';
 import { imageSource } from './image';
 import { State } from './types';
 
@@ -16,7 +16,9 @@ const Home: NextPage = () => {
       height: 150,
     },
     draggable: {
-      textColor: '#000',
+      color: '#000',
+      fontFamily: 'Arial',
+      fontSize: 14,
       isDragging: false,
       isSelected: false,
       offset: null,
@@ -80,13 +82,26 @@ const Home: NextPage = () => {
     };
   }
 
-  function download(): void {
+  function draw(): void {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const link = document.createElement('a');
-    link.download = 'filename.png';
-    link.href = canvas.toDataURL();
-    link.click();
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Calculate scale factor to apply to font size and position values.
+    const scaleX = canvas.width / canvas.clientWidth;
+    const scaleY = canvas.height / canvas.clientHeight;
+    const scale = (scaleX + scaleY) / 2;
+    const fontSize = state.draggable.fontSize * scale;
+
+    const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
+    ctx.font = `${fontSize}px ${state.draggable.fontFamily}`;
+    ctx.fillText(
+      state.names,
+      (draggable.offsetLeft + 12) * scale,
+      (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 12
+    );
   }
 
   function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
@@ -101,7 +116,7 @@ const Home: NextPage = () => {
       ...currentState,
       draggable: {
         ...currentState.draggable,
-        textColor: color.hex,
+        color: color.hex,
       },
     }));
   }
@@ -116,15 +131,15 @@ const Home: NextPage = () => {
         />
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
-        <button onClick={download}>Download</button>
-        <PhotoshopPicker
+        <button onClick={draw}>Draw</button>
+        {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
-        />
+        /> */}
       </section>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
-        <DraggableText state={state} setState={setState} />
+        <Draggable state={state} setState={setState} />
       </section>
     </main>
   );

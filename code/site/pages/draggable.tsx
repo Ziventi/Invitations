@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useRef } from 'react';
 
 import { Coordinates, State } from './types';
 
-export default function DraggableText({
+export default function Draggable({
   state,
   setState,
 }: DraggableTextProps): ReactElement | null {
@@ -137,7 +137,15 @@ export default function DraggableText({
         onMouseDown={onDragStart}
         ref={draggableRef}
       >
-        <span style={{ color: state.draggable.textColor }}>{state.names}</span>
+        <span
+          style={{
+            color: state.draggable.color,
+            fontFamily: 'Arial',
+            fontSize: '14px',
+          }}
+        >
+          {state.names}
+        </span>
         <ResizeHandles
           draggableRef={draggableRef}
           isSelected={state.draggable.isSelected}
@@ -169,7 +177,7 @@ function ResizeHandles({
             key={position}
             onMouseDown={(e) => {
               const draggable = getDivElement(draggableRef);
-              console.log(draggable.style.width);
+              console.info(draggable.style.width);
               // TODO: give resize extra space
             }}
           >

@@ -7,7 +7,9 @@ export interface State {
 
 type Draggable = {
   isSelected: boolean;
-  textColor: string;
+  color: string;
+  fontFamily: string;
+  fontSize: number;
 } & (
   | {
       isDragging: true;
