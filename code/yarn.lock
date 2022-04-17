@@ -1656,10 +1656,10 @@
   version "0.0.0"
   uid ""
 
-"@zzavidd/eslint-config@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@zzavidd/eslint-config/-/eslint-config-1.0.5.tgz#3f3fb593df438cf36a866444427f578d978865b8"
-  integrity sha512-UUosJ58+k9gLASP5oWNcPG7/CZmvIY7h2yXQLkPCImCeQbEO6HaqDhWnTm286C1t/UZ/FWsM05CI8aipO1W8TQ==
+"@zzavidd/eslint-config@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@zzavidd/eslint-config/-/eslint-config-1.1.0.tgz#55ba868900ad6807aee0e457cb45e5b7e91afe73"
+  integrity sha512-pC62bmWrbIL0Ltf1W75foc/2LWwyN4tkDo6Ld3IOSMh/jA+dJHP8i1ZfwNC/fCH1vghtY81FfkUAbSX4RQoEpw==
   dependencies:
     eslint "^8.7.0"
     eslint-plugin-import "^2.23.4"
@@ -1673,17 +1673,17 @@
     react ">=17.0.0"
     typescript "^4.5.4"
 
-"@zzavidd/prettier-config@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@zzavidd/prettier-config/-/prettier-config-1.0.5.tgz#18a378cbd1dd3627685d61d76356c37289aabbb5"
-  integrity sha512-2ekq059NfDfvVIUkIJGP3YpXvPWTaEx26DMHyS6CFb87xWVUgGcSUbw6sUuTe7frhkng39gnin6thbFyR+AdSw==
+"@zzavidd/prettier-config@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@zzavidd/prettier-config/-/prettier-config-1.1.0.tgz#190f0ef462a81b86aa45363c61d8bc621bd4e012"
+  integrity sha512-7lD4/2LP2CshbKmA1zQu01cJtsQQ5vh4T348MMD7ImuOf/QNG5VjEtVqj6WTLD3u2Pl1avpFxkIzH5ifkOwKkQ==
   dependencies:
-    prettier "^2.5.1"
+    prettier "^2.6.2"
 
-"@zzavidd/stylelint-config@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@zzavidd/stylelint-config/-/stylelint-config-1.0.5.tgz#64b43d9ed57d20d52982489eae847608ecb2cd3a"
-  integrity sha512-tuVz0TrSqI0Muu5R0OMlnsYDXxf7Tb39ggkIKRn/5Mr7x4NP77zWC9EPwkXiwX8Csx1fYjVuJJTEkU2/+5YZOg==
+"@zzavidd/stylelint-config@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@zzavidd/stylelint-config/-/stylelint-config-1.1.0.tgz#edb4cf46b7c316000a6d389ee1658367d92c4168"
+  integrity sha512-1gH7YuTe5f3PKkFhdK2EYqJdQcBC2BTRF9yBULKqVsrLGKE5M7QdSXykgz25p8aUYSkKHO52AS3IiNMr2Yn3+g==
   dependencies:
     stylelint "^14.2.0"
     stylelint-config-sass-guidelines "^9.0.1"
@@ -5411,10 +5411,15 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier@^2.3.2, prettier@^2.5.1:
+prettier@^2.3.2:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.5.1.tgz#fff75fa9d519c54cf0fce328c1017d94546bc56a"
   integrity sha512-vBZcPRUR5MZJwoyi3ZoyQlc1rXeEck8KgeC9AwwOn+exuxLxq5toTRDTSaVrXHxelDMHy9zlicw8u66yxoSUFg==
+
+prettier@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.2.tgz#e26d71a18a74c3d0f0597f55f01fb6c06c206032"
+  integrity sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==
 
 pretty-format@^26.6.2:
   version "26.6.2"
