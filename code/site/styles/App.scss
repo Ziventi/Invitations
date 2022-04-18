@@ -57,12 +57,13 @@ section.preview {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    max-width: fit-content;
     padding: 10px;
     position: absolute;
     text-align: center;
     transition: border 0.2s ease;
     user-select: none;
-    width: fit-content;
+    width: 100%;
 
     &--selected {
       border: 2px dashed #ccc;

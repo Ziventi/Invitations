@@ -1,23 +1,37 @@
 import classnames from 'classnames';
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { Coordinates, State } from './types';
+import { Coordinates, PageState } from './types';
 
-export default function Draggable({
-  state,
-  setState,
+export default function DragZone({
+  usePageState,
 }: DraggableTextProps): ReactElement | null {
+  const [pageState, setPageState] = usePageState;
+  const [resizeHandleState, setResizeHandleState] = useState<ResizeHandleState>(
+    {
+      currentDraggableLeft: 0,
+      currentDraggableWidth: 0,
+      handleId: null,
+      isDragging: false,
+      pointX: 0,
+    },
+  );
+
   const dragZoneRef = useRef<HTMLDivElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
-  const draggableClasses = classnames('draggable', {
-    'draggable--selected': state.draggable.isSelected,
-  });
-
-  // Add an event listener for the drag-end operation anywhere on the page.
-  useEffect(() => {
-    const onDragEnd = (e: MouseEvent): void => {
-      setState((currentState) => ({
+  /**
+   * Called on when finished dragging draggable text.
+   */
+  const onTextDragEnd = useCallback(
+    (e: MouseEvent): void => {
+      setPageState((currentState) => ({
         ...currentState,
         draggable: {
           ...currentState.draggable,
@@ -26,35 +40,54 @@ export default function Draggable({
         },
       }));
       prohibitSideEffects(e);
-    };
-    window.addEventListener('mouseup', onDragEnd);
+    },
+    [setPageState],
+  );
+
+  /**
+   * Called on when finished dragging resize handle.
+   */
+  const onResizeHandleDragEnd = useCallback((e: MouseEvent): void => {
+    setResizeHandleState((currentState) => ({
+      ...currentState,
+      isDragging: false,
+      handleId: null,
+    }));
+    prohibitSideEffects(e);
+  }, []);
+
+  // Add an event listener for the drag-end operation anywhere on the page.
+  useEffect(() => {
+    window.addEventListener('mouseup', onTextDragEnd);
+    window.addEventListener('mouseup', onResizeHandleDragEnd);
     return () => {
-      window.removeEventListener('mouseup', onDragEnd);
+      window.removeEventListener('mouseup', onTextDragEnd);
+      window.removeEventListener('mouseup', onResizeHandleDragEnd);
     };
-  }, [setState]);
+  }, [setPageState, onTextDragEnd, onResizeHandleDragEnd]);
 
   // Align the drag zone dimensions with the canvas when images change.
   useEffect(() => {
     const dragZone = dragZoneRef.current;
     if (dragZone) {
-      const { height, width } = state.canvasDimensions;
+      const { height, width } = pageState.canvasDimensions;
       dragZone.style.height = `${height}px`;
       dragZone.style.width = `${width}px`;
     }
-  }, [state.canvasDimensions]);
+  }, [pageState.canvasDimensions]);
 
   /**
    * Called on mouse-down to start dragging the draggable. Triggers only on
    * left-clicks on the draggable element.
    * @param e The mouse event.
    */
-  function onDragStart(e: React.MouseEvent<HTMLDivElement>): void {
+  function onTextDragStart(e: React.MouseEvent<HTMLDivElement>): void {
     if (e.button !== 0 || e.currentTarget.id !== 'draggable') {
       return;
     }
 
-    const draggable = getDivElement(draggableRef);
-    setState((currentState) => ({
+    const draggable = getDivFromReference(draggableRef);
+    setPageState((currentState) => ({
       ...currentState,
       draggable: {
         ...currentState.draggable,
@@ -71,19 +104,29 @@ export default function Draggable({
   }
 
   /**
-   * Called repeatedly while the draggable element is dragged.
+   * Called repeatedly while dragging an element within the drag zone.
    * @param e The mouse event.
    */
   function onDrag(e: React.MouseEvent<HTMLDivElement>): void {
-    if (!state.draggable.isDragging) return;
+    if (pageState.draggable.isDragging) {
+      onTextDrag(e);
+    } else if (resizeHandleState.isDragging) {
+      onResizeHandleDrag(e);
+    }
+  }
 
-    const dragZone = getDivElement(dragZoneRef);
-    const draggable = getDivElement(draggableRef);
+  /**
+   * {@link onDrag} for draggable text.
+   * @param e The mouse event.
+   */
+  function onTextDrag(e: React.MouseEvent<HTMLDivElement>): void {
+    const dragZone = getDivFromReference(dragZoneRef);
+    const draggable = getDivFromReference(draggableRef);
     const dragZoneBounds = dragZone.getBoundingClientRect();
 
     const currentPoint: Coordinates = {
-      x: e.pageX - state.draggable.offset.x,
-      y: e.pageY - state.draggable.offset.y,
+      x: e.pageX - pageState.draggable.offset!.x,
+      y: e.pageY - pageState.draggable.offset!.y,
     };
 
     const withinDragZone =
@@ -101,11 +144,41 @@ export default function Draggable({
   }
 
   /**
-   * Deselect the draggable when clicked outside of it but within the drag zone.
+   * {@link onDrag} for resize handle. Calculates the delta on dragging a resize
+   * handle and adjusts the maxWidth and positioning of the draggable
+   * accordingly.
+   * @param e The mouse event.
+   */
+  function onResizeHandleDrag(e: React.MouseEvent<HTMLDivElement>): void {
+    const { currentDraggableLeft, currentDraggableWidth } = resizeHandleState;
+    const delta =
+      resizeHandleState.handleId === 'east'
+        ? e.pageX - resizeHandleState.pointX
+        : resizeHandleState.pointX - e.pageX;
+    const draggableNewWidth = currentDraggableWidth + delta;
+
+    const draggable = getDivFromReference(draggableRef);
+
+    if (draggableNewWidth <= pageState.canvasDimensions.width) {
+      draggable.style.maxWidth = `${draggableNewWidth}px`;
+    }
+
+    // If dragging west handle, compensate for movement.
+    // TODO: Prevent panning the draggable on small widths.
+    if (resizeHandleState.handleId === 'west') {
+      draggable.style.left = `${currentDraggableLeft - delta}px`;
+    }
+
+    e.stopPropagation();
+  }
+
+  /**
+   * Deselect the draggable text when clicked outside of it but within the drag
+   * zone.
    * @param e The mouse event.
    */
   function onDragZoneClick(e: React.MouseEvent<HTMLDivElement>): void {
-    const draggable = getDivElement(draggableRef);
+    const draggable = getDivFromReference(draggableRef);
     const draggableBounds = draggable.getBoundingClientRect();
     const withinDraggable =
       e.pageX >= draggableBounds.left &&
@@ -114,7 +187,7 @@ export default function Draggable({
       e.pageY <= draggableBounds.bottom;
 
     if (withinDraggable) return;
-    setState((currentState) => ({
+    setPageState((currentState) => ({
       ...currentState,
       draggable: {
         ...currentState.draggable,
@@ -123,32 +196,34 @@ export default function Draggable({
     }));
   }
 
-  if (!state.names || !state.imageSrc) return null;
+  if (!pageState.names || !pageState.imageSrc) return null;
+
+  const draggableClasses = classnames('draggable', {
+    'draggable--selected': pageState.draggable.isSelected,
+  });
   return (
     <div
       className={'drag-zone'}
       onMouseDown={onDragZoneClick}
       onMouseMove={onDrag}
-      ref={dragZoneRef}
-    >
+      ref={dragZoneRef}>
       <div
         id={'draggable'}
         className={draggableClasses}
-        onMouseDown={onDragStart}
-        ref={draggableRef}
-      >
+        onMouseDown={onTextDragStart}
+        ref={draggableRef}>
         <span
           style={{
-            color: state.draggable.color,
+            color: pageState.draggable.color,
             fontFamily: 'Arial',
             fontSize: '14px',
-          }}
-        >
-          {state.names}
+          }}>
+          {pageState.names}
         </span>
         <ResizeHandles
           draggableRef={draggableRef}
-          isSelected={state.draggable.isSelected}
+          isSelected={pageState.draggable.isSelected}
+          useDragZoneState={[resizeHandleState, setResizeHandleState]}
         />
       </div>
     </div>
@@ -157,30 +232,43 @@ export default function Draggable({
 
 function ResizeHandles({
   draggableRef,
+  useDragZoneState,
   isSelected,
 }: ResizeHandlesProps): ReactElement | null {
-  const positions = ['east', 'west'];
+  const [, setDragZoneState] = useDragZoneState;
+
+  function onResizeHandleDragStart(e: React.MouseEvent<SVGSVGElement>): void {
+    const { id } = e.currentTarget;
+    const draggable = getDivFromReference(draggableRef);
+    setDragZoneState((currentState) => ({
+      ...currentState,
+      currentDraggableLeft: draggable.offsetLeft,
+      currentDraggableWidth: draggable.offsetWidth,
+      isDragging: true,
+      handleId: id as ResizeHandlePosition,
+      pointX: e.pageX,
+    }));
+    e.stopPropagation();
+  }
+
+  const positions: ResizeHandlePosition[] = ['east', 'west'];
   return (
     <>
       {positions.map((position) => {
         const classes = classnames(
           'resize-handle',
           `resize-handle-${position}`,
-          { 'resize-handle--selected': isSelected }
+          { 'resize-handle--selected': isSelected },
         );
         return (
           <svg
+            id={position}
             width={'10'}
             height={'10'}
             xmlns={'http://www.w3.org/2000/svg'}
             className={classes}
             key={position}
-            onMouseDown={(e) => {
-              const draggable = getDivElement(draggableRef);
-              console.info(draggable.style.width);
-              // TODO: give resize extra space
-            }}
-          >
+            onMouseDown={onResizeHandleDragStart}>
             <circle cx={'50%'} cy={'50%'} r={'5'} />
           </svg>
         );
@@ -203,7 +291,9 @@ function prohibitSideEffects(e: MouseEvent | React.MouseEvent): void {
  * @param ref The element reference.
  * @returns The DIV element.
  */
-function getDivElement(ref: React.RefObject<HTMLDivElement>): HTMLDivElement {
+function getDivFromReference(
+  ref: React.RefObject<HTMLDivElement>,
+): HTMLDivElement {
   const element = ref.current;
   if (element) {
     return element;
@@ -213,11 +303,24 @@ function getDivElement(ref: React.RefObject<HTMLDivElement>): HTMLDivElement {
 }
 
 interface DraggableTextProps {
-  state: State;
-  setState: React.Dispatch<React.SetStateAction<State>>;
+  usePageState: [PageState, React.Dispatch<React.SetStateAction<PageState>>];
 }
 
 interface ResizeHandlesProps {
   draggableRef: React.RefObject<HTMLDivElement>;
+  useDragZoneState: [
+    ResizeHandleState,
+    React.Dispatch<React.SetStateAction<ResizeHandleState>>,
+  ];
   isSelected: boolean;
 }
+
+interface ResizeHandleState {
+  currentDraggableLeft: number;
+  currentDraggableWidth: number;
+  handleId: ResizeHandlePosition | null;
+  isDragging: boolean;
+  pointX: number;
+}
+
+type ResizeHandlePosition = 'east' | 'west';

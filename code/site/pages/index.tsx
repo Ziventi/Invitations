@@ -1,14 +1,13 @@
 import type { NextPage } from 'next';
-
 import React, { useEffect, useRef, useState } from 'react';
 import { PhotoshopPicker, ColorResult } from 'react-color';
 
-import Draggable from './draggable';
+import DragZone from './draggable';
 import { imageSource } from './image';
-import { State } from './types';
+import { PageState } from './types';
 
 const Home: NextPage = () => {
-  const [state, setState] = useState<State>({
+  const [state, setState] = useState<PageState>({
     names: 'Drag me',
     imageSrc: null,
     canvasDimensions: {
@@ -82,7 +81,7 @@ const Home: NextPage = () => {
     };
   }
 
-  function draw(): void {
+  function preview(): void {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -100,7 +99,7 @@ const Home: NextPage = () => {
     ctx.fillText(
       state.names,
       (draggable.offsetLeft + 12) * scale,
-      (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 12
+      (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 24,
     );
   }
 
@@ -131,7 +130,7 @@ const Home: NextPage = () => {
         />
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
-        <button onClick={draw}>Draw</button>
+        <button onClick={preview}>Draw</button>
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
@@ -139,7 +138,7 @@ const Home: NextPage = () => {
       </section>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
-        <Draggable state={state} setState={setState} />
+        <DragZone usePageState={[state, setState]} />
       </section>
     </main>
   );
