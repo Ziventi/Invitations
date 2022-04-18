@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
-import { PhotoshopPicker, ColorResult } from 'react-color';
 
 import DragZone from './draggable';
 import { imageSource } from './image';
@@ -8,7 +7,7 @@ import { PageState } from './types';
 
 const Home: NextPage = () => {
   const [state, setState] = useState<PageState>({
-    names: 'Drag me',
+    names: 'Drag me right into the mud mate',
     imageSrc: null,
     canvasDimensions: {
       width: 300,
@@ -18,6 +17,7 @@ const Home: NextPage = () => {
       color: '#000',
       fontFamily: 'Arial',
       fontSize: 14,
+      maxWidth: 0,
       isDragging: false,
       isSelected: false,
       offset: null,
@@ -95,12 +95,13 @@ const Home: NextPage = () => {
     const fontSize = state.draggable.fontSize * scale;
 
     const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
+    const textX = (draggable.offsetLeft + 12) * scale;
+    const textY =
+      (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 24;
+
     ctx.font = `${fontSize}px ${state.draggable.fontFamily}`;
-    ctx.fillText(
-      state.names,
-      (draggable.offsetLeft + 12) * scale,
-      (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 24,
-    );
+    ctx.textAlign = 'center';
+    ctx.fillText(state.names, textX, textY);
   }
 
   function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
@@ -110,15 +111,15 @@ const Home: NextPage = () => {
     }));
   }
 
-  function onTextColorChange(color: ColorResult): void {
-    setState((currentState) => ({
-      ...currentState,
-      draggable: {
-        ...currentState.draggable,
-        color: color.hex,
-      },
-    }));
-  }
+  // function onTextColorChange(color: ColorResult): void {
+  //   setState((currentState) => ({
+  //     ...currentState,
+  //     draggable: {
+  //       ...currentState.draggable,
+  //       color: color.hex,
+  //     },
+  //   }));
+  // }
 
   return (
     <main>

@@ -47,14 +47,28 @@ export default function DragZone({
   /**
    * Called on when finished dragging resize handle.
    */
-  const onResizeHandleDragEnd = useCallback((e: MouseEvent): void => {
-    setResizeHandleState((currentState) => ({
-      ...currentState,
-      isDragging: false,
-      handleId: null,
-    }));
-    prohibitSideEffects(e);
-  }, []);
+  const onResizeHandleDragEnd = useCallback(
+    (e: MouseEvent): void => {
+      setResizeHandleState((currentState) => ({
+        ...currentState,
+        isDragging: false,
+        handleId: null,
+      }));
+
+      setPageState((currentState) => {
+        const draggable = getDivFromReference(draggableRef);
+        return {
+          ...currentState,
+          draggable: {
+            ...currentState.draggable,
+            maxWidth: draggable.clientWidth,
+          },
+        };
+      });
+      prohibitSideEffects(e);
+    },
+    [setPageState],
+  );
 
   // Add an event listener for the drag-end operation anywhere on the page.
   useEffect(() => {

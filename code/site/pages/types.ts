@@ -10,6 +10,7 @@ type Draggable = {
   color: string;
   fontFamily: string;
   fontSize: number;
+  maxWidth: number;
 } & (
   | {
       isDragging: true;
