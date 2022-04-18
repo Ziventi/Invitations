@@ -3,6 +3,7 @@ export interface PageState {
   imageSrc: string | null;
   canvasDimensions: Dimensions;
   draggable: Draggable;
+  downloadInProgress: boolean;
 }
 
 type Draggable = {

@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import DragZone from './components/draggable';
 import { imageSource } from './constants/image';
@@ -22,9 +22,11 @@ const Home: NextPage = () => {
       isSelected: false,
       offset: null,
     },
+    downloadInProgress: false,
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   // TODO: Remove (dev purposes only)
   useEffect(() => {
@@ -104,6 +106,46 @@ const Home: NextPage = () => {
     ctx.fillText(state.names, textX, textY);
   }
 
+  /**
+   * Performs a download.
+   */
+  async function download() {
+    const canvas = canvasWrapperRef.current;
+    if (!canvas) return;
+
+    setState((currentState) => ({
+      ...currentState,
+      downloadInProgress: true,
+    }));
+
+    let image;
+    try {
+      const res = await fetch('api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ html: document.documentElement.outerHTML }),
+      });
+      image = await res.blob();
+    } catch (e) {
+      throw new Error('Could not download image.');
+    } finally {
+      setState((currentState) => ({
+        ...currentState,
+        downloadInProgress: false,
+      }));
+    }
+
+    const url = URL.createObjectURL(image);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ziventi.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
   function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     setState((currentState) => ({
       ...currentState,
@@ -132,17 +174,30 @@ const Home: NextPage = () => {
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
         <button onClick={preview}>Draw</button>
+        <button onClick={download}>Download</button>
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
         /> */}
       </section>
       <section className={'preview'}>
-        <canvas ref={canvasRef} />
-        <DragZone usePageState={[state, setState]} />
+        <div id={'canvas'} ref={canvasWrapperRef}>
+          <canvas ref={canvasRef} />
+          <DragZone usePageState={[state, setState]} />
+        </div>
       </section>
+      <ProgressOverlay state={state} />
     </main>
   );
 };
+
+function ProgressOverlay({ state }: ProgressOverlayProps): ReactElement | null {
+  if (!state.downloadInProgress) return null;
+  return <dialog>Loading...</dialog>;
+}
+
+interface ProgressOverlayProps {
+  state: PageState;
+}
 
 export default Home;
