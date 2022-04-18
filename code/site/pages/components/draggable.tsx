@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { Coordinates, PageState } from './types';
+import { Coordinates, PageState } from '../constants/types';
 
 export default function DragZone({
   usePageState,

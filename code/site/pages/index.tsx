@@ -1,9 +1,9 @@
 import type { NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
 
-import DragZone from './draggable';
-import { imageSource } from './image';
-import { PageState } from './types';
+import DragZone from './components/draggable';
+import { imageSource } from './constants/image';
+import { PageState } from './constants/types';
 
 const Home: NextPage = () => {
   const [state, setState] = useState<PageState>({
