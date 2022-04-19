@@ -13,8 +13,6 @@ export default function Header(): ReactElement {
         layout={'fill'}
         objectFit={'contain'}
         objectPosition={'left'}
-        width={1001}
-        height={643}
         className={'site-logo'}
       />
     </header>

@@ -9,6 +9,8 @@ import React, {
 
 import { Coordinates, PageState } from '../constants/types';
 
+const DRAGGABLE_PADDING = 12;
+
 export default function DragZone({
   usePageState,
 }: DraggableTextProps): ReactElement | null {
@@ -31,14 +33,22 @@ export default function DragZone({
    */
   const onTextDragEnd = useCallback(
     (e: MouseEvent): void => {
-      setPageState((currentState) => ({
-        ...currentState,
-        draggable: {
-          ...currentState.draggable,
-          isDragging: false,
-          offset: null,
-        },
-      }));
+      setPageState((currentState) => {
+        const draggable = getDivFromReference(draggableRef);
+        return {
+          ...currentState,
+          draggable: {
+            ...currentState.draggable,
+            isDragging: false,
+            offset: null,
+          },
+          textStyle: {
+            ...currentState.textStyle,
+            left: draggable.offsetLeft + DRAGGABLE_PADDING,
+            top: draggable.offsetTop + DRAGGABLE_PADDING,
+          },
+        };
+      });
       prohibitSideEffects(e);
     },
     [setPageState],
@@ -59,9 +69,9 @@ export default function DragZone({
         const draggable = getDivFromReference(draggableRef);
         return {
           ...currentState,
-          draggable: {
-            ...currentState.draggable,
-            maxWidth: draggable.clientWidth,
+          textStyle: {
+            ...currentState.textStyle,
+            maxWidth: draggable.offsetWidth - DRAGGABLE_PADDING * 2,
           },
         };
       });
@@ -228,7 +238,7 @@ export default function DragZone({
         ref={draggableRef}>
         <span
           style={{
-            color: pageState.draggable.color,
+            color: pageState.textStyle.color,
             fontFamily: 'Arial',
             fontSize: '14px',
           }}>

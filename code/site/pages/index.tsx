@@ -13,11 +13,15 @@ const Home: NextPage = () => {
       width: 300,
       height: 150,
     },
-    draggable: {
+    textStyle: {
       color: '#000',
       fontFamily: 'Arial',
       fontSize: 14,
       maxWidth: 0,
+      left: 0,
+      top: 0,
+    },
+    draggable: {
       isDragging: false,
       isSelected: false,
       offset: null,
@@ -94,14 +98,14 @@ const Home: NextPage = () => {
     const scaleX = canvas.width / canvas.clientWidth;
     const scaleY = canvas.height / canvas.clientHeight;
     const scale = (scaleX + scaleY) / 2;
-    const fontSize = state.draggable.fontSize * scale;
+    const fontSize = state.textStyle.fontSize * scale;
 
     const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
     const textX = (draggable.offsetLeft + 12) * scale;
     const textY =
       (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 24;
 
-    ctx.font = `${fontSize}px ${state.draggable.fontFamily}`;
+    ctx.font = `${fontSize}px ${state.textStyle.fontFamily}`;
     ctx.textAlign = 'center';
     ctx.fillText(state.names, textX, textY);
   }
@@ -110,40 +114,43 @@ const Home: NextPage = () => {
    * Performs a download.
    */
   async function download() {
-    const canvas = canvasWrapperRef.current;
-    if (!canvas) return;
-
     setState((currentState) => ({
       ...currentState,
       downloadInProgress: true,
     }));
 
-    let image;
     try {
-      const res = await fetch('api/generate', {
+      const res = await fetch('api/pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ html: document.documentElement.outerHTML }),
+        body: JSON.stringify({
+          backgroundImage: state.imageSrc,
+          dimensions: state.canvasDimensions,
+          names: state.names,
+          textStyle: state.textStyle,
+        }),
       });
-      image = await res.blob();
+      if (!res.ok) throw new Error('Could not download image.');
+      const image = await res.blob();
+
+      const url = URL.createObjectURL(image);
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      // a.download = 'ziventi.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (e) {
-      throw new Error('Could not download image.');
+      alert(e);
     } finally {
       setState((currentState) => ({
         ...currentState,
         downloadInProgress: false,
       }));
     }
-
-    const url = URL.createObjectURL(image);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'ziventi.png';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
   }
 
   function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
