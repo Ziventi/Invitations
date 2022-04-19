@@ -30,7 +30,6 @@ const Home: NextPage = () => {
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   // TODO: Remove (dev purposes only)
   useEffect(() => {
@@ -188,10 +187,8 @@ const Home: NextPage = () => {
         /> */}
       </section>
       <section className={'preview'}>
-        <div id={'canvas'} ref={canvasWrapperRef}>
-          <canvas ref={canvasRef} />
-          <DragZone usePageState={[state, setState]} />
-        </div>
+        <canvas ref={canvasRef} />
+        <DragZone usePageState={[state, setState]} />
       </section>
       <ProgressOverlay state={state} />
     </main>

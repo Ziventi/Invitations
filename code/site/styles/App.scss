@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -5,20 +9,18 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-
-  > div {
-    height: 100%;
-  }
 }
 
-* {
-  box-sizing: border-box;
+div#__next {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 header {
   border: 2px solid #ccc;
   display: flex;
-  height: 70px;
+  flex: 0 0 70px;
   position: relative;
   width: 100%;
 }
@@ -29,6 +31,7 @@ header {
 
 main {
   display: flex;
+  flex: 1 1 auto;
   height: 100%;
   position: relative;
 }
@@ -41,19 +44,11 @@ section.controls {
 section.preview {
   align-items: center;
   border-left: 2px solid #ccc;
-  border-right: 2px solid #ccc;
   display: flex;
   flex: 1 1 auto;
   height: 100%;
   justify-content: center;
-
-  div#canvas {
-    align-items: center;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    position: relative;
-  }
+  position: relative;
 
   canvas {
     max-height: 100%;
