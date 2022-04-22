@@ -3,6 +3,7 @@ import { NextApiRequest } from 'next';
 export interface PageState {
   names: string;
   imageSrc: string | null;
+  imageDimensions: Dimensions;
   canvasDimensions: Dimensions;
   draggable: Draggable;
   textStyle: TextStyle;
@@ -10,12 +11,14 @@ export interface PageState {
 }
 
 export interface ZiventiNextApiRequest extends NextApiRequest {
-  body: {
-    backgroundImage: string;
-    dimensions: Dimensions;
-    names: string;
-    textStyle: TextStyle;
-  };
+  body: RequestBody;
+}
+
+export interface RequestBody {
+  backgroundImage: string;
+  dimensions: Dimensions;
+  names: string;
+  textStyle: TextStyle;
 }
 
 export interface Coordinates {
@@ -32,9 +35,12 @@ interface TextStyle {
   color: string;
   fontFamily: string;
   fontSize: number;
+  maxWidth: number;
   left: number;
   top: number;
-  maxWidth: number;
+  width: number;
+  height: number;
+  scale: number;
 }
 
 type Draggable = {

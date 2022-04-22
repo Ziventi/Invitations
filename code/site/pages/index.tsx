@@ -3,15 +3,20 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import DragZone from './components/draggable';
 import { imageSource } from './constants/image';
-import { PageState } from './constants/types';
+import { PageState, RequestBody } from './constants/types';
+import { DRAGGABLE_PADDING } from './constants/variables';
 
 const Home: NextPage = () => {
   const [state, setState] = useState<PageState>({
     names: 'Drag me right into the mud mate',
     imageSrc: null,
+    imageDimensions: {
+      width: 0,
+      height: 0,
+    },
     canvasDimensions: {
-      width: 300,
-      height: 150,
+      width: 0,
+      height: 0,
     },
     textStyle: {
       color: '#000',
@@ -20,6 +25,9 @@ const Home: NextPage = () => {
       maxWidth: 0,
       left: 0,
       top: 0,
+      width: 0,
+      height: 0,
+      scale: 1,
     },
     draggable: {
       isDragging: false,
@@ -56,14 +64,31 @@ const Home: NextPage = () => {
       ctx.canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
+      // Calculate scale factor to apply to font size and position values.
+      const scaleX = canvas.width / canvas.clientWidth;
+      const scaleY = canvas.height / canvas.clientHeight;
+      const scale = (scaleX + scaleY) / 2;
+
       setState((currentState) => ({
         ...currentState,
-        imageLoaded: true,
         canvasDimensions: {
           width: canvas.clientWidth,
           height: canvas.clientHeight,
         },
+        imageDimensions: {
+          width: img.width,
+          height: img.height,
+        },
+        textStyle: {
+          ...currentState.textStyle,
+          scale,
+        },
       }));
+
+      // TODO: Dev Only
+      const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
+      draggable.style.top = '0px';
+      draggable.style.left = '0px';
     };
   }, [state.imageSrc]);
 
@@ -100,9 +125,10 @@ const Home: NextPage = () => {
     const fontSize = state.textStyle.fontSize * scale;
 
     const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
-    const textX = (draggable.offsetLeft + 12) * scale;
+    const textX = (draggable.offsetLeft + draggable.offsetWidth / 2) * scale;
     const textY =
-      (draggable.offsetTop + draggable.offsetHeight / 2) * scale + 24;
+      (draggable.offsetTop + draggable.offsetHeight / 2) * scale +
+      DRAGGABLE_PADDING;
 
     ctx.font = `${fontSize}px ${state.textStyle.fontFamily}`;
     ctx.textAlign = 'center';
@@ -112,36 +138,61 @@ const Home: NextPage = () => {
   /**
    * Performs a download.
    */
-  async function download() {
+  async function download(type: 'pdf' | 'png') {
+    if (!state.imageSrc) return alert('No image');
+
     setState((currentState) => ({
       ...currentState,
       downloadInProgress: true,
     }));
 
-    try {
-      const res = await fetch('api/pdf', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          backgroundImage: state.imageSrc,
-          dimensions: state.canvasDimensions,
-          names: state.names,
-          textStyle: state.textStyle,
-        }),
-      });
-      if (!res.ok) throw new Error('Could not download image.');
-      const image = await res.blob();
+    const payload: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        backgroundImage: state.imageSrc,
+        dimensions: state.imageDimensions,
+        names: state.names,
+        textStyle: state.textStyle,
+      } as RequestBody),
+    };
 
-      const url = URL.createObjectURL(image);
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      // a.download = 'ziventi.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    try {
+      if (type === 'pdf') {
+        const res = await fetch('api/pdf', payload);
+        if (!res.ok) throw new Error('Could not download PDF.');
+        const image = await res.blob();
+
+        const url = URL.createObjectURL(image);
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        // a.download = 'ziventi.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        const res = await fetch('api/png', payload);
+        if (!res.ok) throw new Error('Could not download image.');
+        const data = await res.text();
+
+        const img = new Image();
+        img.src = data;
+        img.height = state.canvasDimensions.height;
+        img.width = state.canvasDimensions.width;
+        const w = window.open(data);
+        w?.document.write(img.outerHTML);
+
+        // const a = document.createElement('a');
+        // a.href = data;
+        // a.target = '_blank';
+        // a.download = 'ziventi.png';
+        // document.body.appendChild(a);
+        // a.click();
+        // document.body.removeChild(a);
+      }
     } catch (e) {
       alert(e);
     } finally {
@@ -180,7 +231,8 @@ const Home: NextPage = () => {
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
         <button onClick={preview}>Draw</button>
-        <button onClick={download}>Download</button>
+        <button onClick={() => download('pdf')}>Download PDF</button>
+        <button onClick={() => download('png')}>Download PNG</button>
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
