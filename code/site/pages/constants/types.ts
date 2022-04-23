@@ -31,16 +31,18 @@ export interface Dimensions {
   height: number;
 }
 
-interface TextStyle {
+export interface TextStyle {
   color: string;
   fontFamily: string;
   fontSize: number;
-  maxWidth: number;
+  lineHeight: number;
   left: number;
   top: number;
   width: number;
   height: number;
   scale: number;
+  scaleX: number;
+  scaleY: number;
 }
 
 type Draggable = {

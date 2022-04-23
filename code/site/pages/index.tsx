@@ -2,9 +2,9 @@ import type { NextPage } from 'next';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import DragZone from './components/draggable';
+import { drawOnCanvas } from './constants/functions';
 import { imageSource } from './constants/image';
 import { PageState, RequestBody } from './constants/types';
-import { DRAGGABLE_PADDING } from './constants/variables';
 
 const Home: NextPage = () => {
   const [state, setState] = useState<PageState>({
@@ -22,12 +22,14 @@ const Home: NextPage = () => {
       color: '#000',
       fontFamily: 'Arial',
       fontSize: 14,
-      maxWidth: 0,
+      lineHeight: 16,
       left: 0,
       top: 0,
       width: 0,
       height: 0,
       scale: 1,
+      scaleX: 1,
+      scaleY: 1,
     },
     draggable: {
       isDragging: false,
@@ -51,11 +53,8 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (!state.imageSrc) return;
 
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext('2d')!;
 
     const img = new Image();
     img.src = state.imageSrc;
@@ -64,7 +63,6 @@ const Home: NextPage = () => {
       ctx.canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      // Calculate scale factor to apply to font size and position values.
       const scaleX = canvas.width / canvas.clientWidth;
       const scaleY = canvas.height / canvas.clientHeight;
       const scale = (scaleX + scaleY) / 2;
@@ -82,6 +80,8 @@ const Home: NextPage = () => {
         textStyle: {
           ...currentState.textStyle,
           scale,
+          scaleX,
+          scaleY,
         },
       }));
 
@@ -112,27 +112,8 @@ const Home: NextPage = () => {
   }
 
   function preview(): void {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Calculate scale factor to apply to font size and position values.
-    const scaleX = canvas.width / canvas.clientWidth;
-    const scaleY = canvas.height / canvas.clientHeight;
-    const scale = (scaleX + scaleY) / 2;
-    const fontSize = state.textStyle.fontSize * scale;
-
-    const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
-    const textX = (draggable.offsetLeft + draggable.offsetWidth / 2) * scale;
-    const textY =
-      (draggable.offsetTop + draggable.offsetHeight / 2) * scale +
-      DRAGGABLE_PADDING;
-
-    ctx.font = `${fontSize}px ${state.textStyle.fontFamily}`;
-    ctx.textAlign = 'center';
-    ctx.fillText(state.names, textX, textY);
+    const canvas = canvasRef.current!;
+    drawOnCanvas(canvas, state.names, state.textStyle);
   }
 
   /**

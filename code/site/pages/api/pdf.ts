@@ -17,7 +17,7 @@ export default function handler(
   res: NextApiResponse,
 ): void {
   const { backgroundImage, dimensions, names, textStyle } = req.body;
-  const { fontSize, left, maxWidth, top, scale } = textStyle;
+  const { fontSize, left, width, top, scale, scaleX, scaleY } = textStyle;
 
   const doc = new PDFDocument({
     size: [dimensions.width, dimensions.height],
@@ -26,11 +26,11 @@ export default function handler(
   doc.fontSize(fontSize * scale);
   doc.text(
     names,
-    (left + DRAGGABLE_PADDING) * scale,
-    (top + DRAGGABLE_PADDING) * scale,
+    (left + DRAGGABLE_PADDING / 6) * scaleX,
+    (top + DRAGGABLE_PADDING) * scaleY,
     {
       align: 'center',
-      width: maxWidth * scale,
+      width: (width - DRAGGABLE_PADDING / 6) * scale,
     },
   );
   doc.pipe(res);

@@ -1,8 +1,8 @@
 import { createCanvas, Image } from 'canvas';
 import type { NextApiResponse, PageConfig } from 'next';
 
+import { drawOnCanvas } from 'pages/constants/functions';
 import { ZiventiNextApiRequest } from 'pages/constants/types';
-import { DRAGGABLE_PADDING } from 'pages/constants/variables';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
@@ -18,18 +18,7 @@ export default async function handler(
   }
 
   const canvas = createCanvas(dimensions.width, dimensions.height);
-  const ctx = canvas.getContext('2d');
-
-  const { fontSize, fontFamily, color, left, top, width, height, scale } =
-    textStyle;
-  const textX = (left + width / 2) * scale;
-  const textY = (top + height / 2) * scale + DRAGGABLE_PADDING;
-
-  ctx.drawImage(img, 0, 0, dimensions.width, dimensions.height);
-  ctx.font = `${fontSize * scale}px ${fontFamily}`;
-  ctx.textAlign = 'center';
-  ctx.fillStyle = color;
-  ctx.fillText(names, textX, textY);
+  drawOnCanvas(canvas, names, textStyle, img);
 
   const image = canvas.toDataURL();
   res.setHeader('Content-Type', 'image/png');

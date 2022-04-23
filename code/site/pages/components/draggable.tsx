@@ -7,8 +7,6 @@ import React, {
   useState,
 } from 'react';
 
-import { DRAGGABLE_PADDING } from 'pages/constants/variables';
-
 import { Coordinates, PageState } from '../constants/types';
 
 export default function DragZone({
@@ -67,13 +65,13 @@ export default function DragZone({
 
       setPageState((currentState) => {
         const draggable = getDivFromReference(draggableRef);
+        console.log(draggable.offsetWidth, draggable.clientHeight);
         return {
           ...currentState,
           textStyle: {
             ...currentState.textStyle,
             width: draggable.offsetWidth,
             height: draggable.offsetHeight,
-            maxWidth: draggable.offsetWidth - DRAGGABLE_PADDING * 2,
           },
         };
       });
