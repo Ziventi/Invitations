@@ -47,7 +47,7 @@ export default function DragZone({
           },
         };
       });
-      prohibitSideEffects(e);
+      e.stopPropagation();
     },
     [setPageState],
   );
@@ -65,7 +65,6 @@ export default function DragZone({
 
       setPageState((currentState) => {
         const draggable = getDivFromReference(draggableRef);
-        console.log(draggable.offsetWidth, draggable.clientHeight);
         return {
           ...currentState,
           textStyle: {
@@ -75,7 +74,7 @@ export default function DragZone({
           },
         };
       });
-      prohibitSideEffects(e);
+      e.stopPropagation();
     },
     [setPageState],
   );
@@ -240,7 +239,8 @@ export default function DragZone({
           style={{
             color: pageState.textStyle.color,
             fontFamily: 'Arial',
-            fontSize: '14px',
+            fontSize: `${pageState.textStyle.fontSize}px`,
+            lineHeight: `${pageState.textStyle.lineHeight}px`,
           }}>
           {pageState.names}
         </span>

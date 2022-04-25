@@ -39,5 +39,6 @@ export const config: PageConfig = {
     bodyParser: {
       sizeLimit: '2MB',
     },
+    responseLimit: '15MB'
   },
 };

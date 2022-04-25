@@ -21,8 +21,8 @@ const Home: NextPage = () => {
     textStyle: {
       color: '#000',
       fontFamily: 'Arial',
-      fontSize: 14,
-      lineHeight: 16,
+      fontSize: 19,
+      lineHeight: 24,
       left: 0,
       top: 0,
       width: 0,
@@ -201,6 +201,28 @@ const Home: NextPage = () => {
   //   }));
   // }
 
+  function onFontSizeChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const value = e.target.valueAsNumber;
+    setState((currentState) => ({
+      ...currentState,
+      textStyle: {
+        ...currentState.textStyle,
+        fontSize: Math.max(2, Math.min(value, 144)),
+      },
+    }));
+  }
+
+  function onLineHeightChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const value = e.target.valueAsNumber;
+    setState((currentState) => ({
+      ...currentState,
+      textStyle: {
+        ...currentState.textStyle,
+        lineHeight: Math.max(1, Math.min(value, 150)),
+      },
+    }));
+  }
+
   return (
     <main>
       <section className={'controls'}>
@@ -214,6 +236,28 @@ const Home: NextPage = () => {
         <button onClick={preview}>Draw</button>
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
+        <div>
+          <label>Font Size:</label>
+          <input
+            type={'number'}
+            min={2}
+            max={144}
+            step={1}
+            onChange={onFontSizeChange}
+            value={state.textStyle.fontSize}
+          />
+        </div>
+        <div>
+          <label>Line Height:</label>
+          <input
+            type={'number'}
+            min={2}
+            max={150}
+            step={2}
+            onChange={onLineHeightChange}
+            value={state.textStyle.lineHeight}
+          />
+        </div>
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
