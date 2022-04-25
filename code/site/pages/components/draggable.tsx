@@ -238,7 +238,7 @@ export default function DragZone({
         <span
           style={{
             color: pageState.textStyle.color,
-            fontFamily: 'Arial',
+            fontFamily: pageState.textStyle.fontFamily,
             fontSize: `${pageState.textStyle.fontSize}px`,
             lineHeight: `${pageState.textStyle.lineHeight}px`,
           }}>

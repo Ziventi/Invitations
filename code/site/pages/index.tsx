@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import DragZone from './components/draggable';
+import { fonts } from './constants/fonts';
 import { drawOnCanvas } from './constants/functions';
 import { imageSource } from './constants/image';
 import { PageState, RequestBody } from './constants/types';
@@ -20,7 +21,7 @@ const Home: NextPage = () => {
     },
     textStyle: {
       color: '#000',
-      fontFamily: 'Arial',
+      fontFamily: fonts[0],
       fontSize: 19,
       lineHeight: 24,
       left: 0,
@@ -201,6 +202,17 @@ const Home: NextPage = () => {
   //   }));
   // }
 
+  function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+    const fontFamily = e.target.value;
+    setState((currentState) => ({
+      ...currentState,
+      textStyle: {
+        ...currentState.textStyle,
+        fontFamily,
+      },
+    }));
+  }
+
   function onFontSizeChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const value = e.target.valueAsNumber;
     setState((currentState) => ({
@@ -236,6 +248,20 @@ const Home: NextPage = () => {
         <button onClick={preview}>Draw</button>
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
+        <div>
+          <label>Font Size:</label>
+          <select
+            onChange={onFontFamilyChange}
+            value={state.textStyle.fontFamily}>
+            {fonts.map((font, key) => {
+              return (
+                <option value={font} key={key}>
+                  {font}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         <div>
           <label>Font Size:</label>
           <input
