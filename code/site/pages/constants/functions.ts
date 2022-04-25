@@ -13,8 +13,8 @@ export function drawOnCanvas(
     color,
     fontFamily,
     fontSize,
-    left,
     lineHeight,
+    left,
     top,
     height,
     width,
@@ -23,8 +23,10 @@ export function drawOnCanvas(
     scaleY,
   } = style;
   const padding = DRAGGABLE_PADDING / 3;
+  const maxWidth = (width - DRAGGABLE_PADDING * 2) * scale;
+  const numOfLines = height / lineHeight;
   const x = (left + (width + padding) / 2) * scaleX;
-  const y = (top + height / 2) * scaleY;
+  const y = (top + height / numOfLines + 1) * scaleY;
 
   const ctx = canvas.getContext('2d') as Context2D;
   if (image) {
@@ -34,14 +36,7 @@ export function drawOnCanvas(
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  insertText(
-    ctx,
-    text,
-    x,
-    y,
-    (width - DRAGGABLE_PADDING * 2) * scale,
-    lineHeight * scale,
-  );
+  insertText(ctx, text, x, y, lineHeight * scale, maxWidth);
 }
 
 function insertText(
@@ -49,30 +44,26 @@ function insertText(
   text: string,
   x: number,
   y: number,
-  maxWidth: number,
   lineHeight: number,
-): number {
+  maxWidth: number,
+): void {
   let line = '';
-  let textHeight = 0;
 
   const words = text.split(' ');
   words.forEach((word, k) => {
-    const textLine = line + word + ' ';
-    const textWidth = ctx.measureText(textLine).width;
+    const currentLine = line + word + ' ';
+    const currentTextWidth = ctx.measureText(currentLine).width;
 
-    if (textWidth > maxWidth && k > 0) {
+    if (currentTextWidth > maxWidth && k > 0) {
       ctx.fillText(line, x, y);
       line = word + ' ';
       y += lineHeight;
-      textHeight += lineHeight;
     } else {
-      line = textLine;
+      line = currentLine;
     }
   });
 
   ctx.fillText(line, x, y);
-  textHeight += lineHeight;
-  return textHeight;
 }
 
 type Context2D = ReturnType<Canvas['getContext']>;
