@@ -17,6 +17,7 @@ export interface ZiventiNextApiRequest extends NextApiRequest {
 export interface RequestBody {
   backgroundImage: string;
   dimensions: Dimensions;
+  fontId: string;
   names: string;
   textStyle: TextStyle;
 }
@@ -43,6 +44,19 @@ export interface TextStyle {
   scale: number;
   scaleX: number;
   scaleY: number;
+}
+
+export interface GoogleFont {
+  id: string;
+  family: string;
+  variants?: string[];
+  subsets?: string[];
+  category?: string;
+  version?: string;
+  lastModified?: string;
+  popularity?: number;
+  defSubset?: string;
+  defVariant?: string;
 }
 
 type Draggable = {

@@ -1,19 +1,21 @@
 # all
 **/node_modules
 **/.env
+**/.dist
+**/css
 
 # site
-**/.next/
+**/site/.next/
+**/site/fonts/*
+!**/site/fonts/.gitkeep
 
 # test
 **/.coverage
 
-# utils
-**/key.json
-**/.cache.json
-**/.out
-**/.dist
-**/css
+# projects & utils
+**/utils/key.json
+**/projects/**/.cache.json
+**/projects/**/.out
 
 # other
 **/.DS_Store

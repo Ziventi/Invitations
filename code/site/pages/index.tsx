@@ -1,13 +1,13 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import DragZone from './components/draggable';
-import { fonts } from './constants/fonts';
 import { drawOnCanvas } from './constants/functions';
 import { imageSource } from './constants/image';
-import { PageState, RequestBody } from './constants/types';
+import { GoogleFont, PageState, RequestBody } from './constants/types';
+import { GOOGLE_FONT_HOST } from './constants/variables';
 
-const Home: NextPage = () => {
+const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
   const [state, setState] = useState<PageState>({
     names: 'Drag me right into the mud mate',
     imageSrc: null,
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     },
     textStyle: {
       color: '#000',
-      fontFamily: fonts[0],
+      fontFamily: 'Courgette',
       fontSize: 19,
       lineHeight: 24,
       left: 0,
@@ -49,6 +49,18 @@ const Home: NextPage = () => {
       imageSrc: imageSource,
     }));
   }, []);
+
+  // Load a new font on a new font family selection.
+  useEffect(() => {
+    import('webfontloader').then((WebFont) => {
+      WebFont.load({
+        google: {
+          families: [state.textStyle.fontFamily],
+          text: state.names,
+        },
+      });
+    });
+  }, [state.names, state.textStyle]);
 
   // Called each time the image source changes.
   useEffect(() => {
@@ -128,6 +140,10 @@ const Home: NextPage = () => {
       downloadInProgress: true,
     }));
 
+    const selectedFont = fonts.find((font) => {
+      return font.family === state.textStyle.fontFamily;
+    })!;
+
     const payload: RequestInit = {
       method: 'POST',
       headers: {
@@ -135,6 +151,7 @@ const Home: NextPage = () => {
       },
       body: JSON.stringify({
         backgroundImage: state.imageSrc,
+        fontId: selectedFont.id,
         dimensions: state.imageDimensions,
         names: state.names,
         textStyle: state.textStyle,
@@ -203,7 +220,7 @@ const Home: NextPage = () => {
   // }
 
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    const fontFamily = e.target.value;
+    const fontFamily = e.target.value!;
     setState((currentState) => ({
       ...currentState,
       textStyle: {
@@ -214,7 +231,7 @@ const Home: NextPage = () => {
   }
 
   function onFontSizeChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber;
+    const value = e.target.valueAsNumber || 2;
     setState((currentState) => ({
       ...currentState,
       textStyle: {
@@ -225,7 +242,7 @@ const Home: NextPage = () => {
   }
 
   function onLineHeightChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber;
+    const value = e.target.valueAsNumber || 1;
     setState((currentState) => ({
       ...currentState,
       textStyle: {
@@ -249,14 +266,14 @@ const Home: NextPage = () => {
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
         <div>
-          <label>Font Size:</label>
+          <label>Font Family:</label>
           <select
             onChange={onFontFamilyChange}
             value={state.textStyle.fontFamily}>
             {fonts.map((font, key) => {
               return (
-                <option value={font} key={key}>
-                  {font}
+                <option value={font.family} key={key}>
+                  {font.family}
                 </option>
               );
             })}
@@ -306,5 +323,19 @@ function ProgressOverlay({ state }: ProgressOverlayProps): ReactElement | null {
 interface ProgressOverlayProps {
   state: PageState;
 }
+
+export const getStaticProps: GetStaticProps<{
+  fonts: GoogleFont[];
+}> = async () => {
+  const res = await fetch(GOOGLE_FONT_HOST);
+  const fonts: GoogleFont[] = await res.json();
+  return {
+    props: {
+      fonts: fonts
+        .sort((a, b) => a.family.localeCompare(b.family))
+        .map((font) => ({ id: font.id, family: font.family })),
+    },
+  };
+};
 
 export default Home;

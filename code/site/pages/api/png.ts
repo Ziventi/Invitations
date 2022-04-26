@@ -1,14 +1,17 @@
-import { createCanvas, Image } from 'canvas';
+import AdmZip from 'adm-zip';
+import { createCanvas, registerFont, Image } from 'canvas';
+import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
 import { drawOnCanvas } from 'pages/constants/functions';
 import { ZiventiNextApiRequest } from 'pages/constants/types';
+import { GOOGLE_FONT_HOST } from 'pages/constants/variables';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  const { backgroundImage, dimensions, names, textStyle } = req.body;
+  const { backgroundImage, dimensions, fontId, names, textStyle } = req.body;
 
   let img;
   try {
@@ -17,8 +20,35 @@ export default async function handler(
     return res.status(400).json({ msg: JSON.stringify(e) });
   }
 
+  const url = new URL(`${GOOGLE_FONT_HOST}/${fontId}`);
+  url.searchParams.append('download', 'zip');
+  url.searchParams.append('formats', 'ttf');
+  const response = await fetch(url.href);
+  const blob = await response.blob();
+  const buffer = Buffer.from(await blob.arrayBuffer());
+  const zip = new AdmZip(buffer);
+
+  const downloadId = `${fontId}-${Date.now()}`;
+  const downloadPath = `./fonts/${downloadId}`;
+  zip.extractAllTo(downloadPath);
+
+  try {
+    const fontFile = zip.getEntries().shift();
+    if (fontFile) {
+      registerFont(`./fonts/${downloadId}/${fontFile.entryName}`, {
+        family: textStyle.fontFamily,
+      });
+    }
+  } catch (e) {
+    console.error(JSON.stringify(e));
+  }
+  
   const canvas = createCanvas(dimensions.width, dimensions.height);
   drawOnCanvas(canvas, names, textStyle, img);
+
+  if (fs.existsSync(downloadPath)) {
+    fs.rmSync(downloadPath, { force: true, recursive: true });
+  }
 
   const image = canvas.toDataURL();
   res.setHeader('Content-Type', 'image/png');
@@ -39,6 +69,6 @@ export const config: PageConfig = {
     bodyParser: {
       sizeLimit: '2MB',
     },
-    responseLimit: '15MB'
+    responseLimit: '15MB',
   },
 };
