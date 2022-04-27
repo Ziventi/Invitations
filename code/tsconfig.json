@@ -20,5 +20,5 @@
     "strict": true,
     "target": "es6"
   },
-  "exclude": ["**/node_modules", "**/*.js"]
+  "exclude": ["**/node_modules", "**/*.js", "site/**"]
 }
