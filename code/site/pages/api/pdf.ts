@@ -1,8 +1,8 @@
 import type { NextApiResponse, PageConfig } from 'next';
 import PDFDocument from 'pdfkit';
 
-import { ZiventiNextApiRequest } from 'pages/constants/types';
-import { DRAGGABLE_PADDING } from 'pages/constants/variables';
+import { ZiventiNextApiRequest } from 'constants/types';
+import { DRAGGABLE_PADDING } from 'constants/variables';
 
 export const config: PageConfig = {
   api: {

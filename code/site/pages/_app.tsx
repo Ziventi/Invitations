@@ -2,9 +2,8 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import React, { ReactElement } from 'react';
 
+import Header from 'components/partials/header';
 import 'styles/App.scss';
-
-import Header from './partials/header';
 
 export default function MyApp({
   Component,

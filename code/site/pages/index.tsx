@@ -1,11 +1,11 @@
 import type { GetStaticProps, NextPage } from 'next';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
-import DragZone from './components/draggable';
-import { drawOnCanvas } from './constants/functions';
-import { imageSource } from './constants/image';
-import { GoogleFont, PageState, RequestBody } from './constants/types';
-import { GOOGLE_FONT_HOST } from './constants/variables';
+import DragZone from 'components/draggable';
+import { drawOnCanvas } from 'constants/functions';
+import { imageSource } from 'constants/image';
+import { GoogleFont, PageState, RequestBody } from 'constants/types';
+import { GOOGLE_FONT_HOST } from 'constants/variables';
 
 const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
   const [state, setState] = useState<PageState>({

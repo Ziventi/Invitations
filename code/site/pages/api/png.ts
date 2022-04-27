@@ -3,9 +3,9 @@ import { createCanvas, registerFont, Image } from 'canvas';
 import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
-import { drawOnCanvas } from 'pages/constants/functions';
-import { ZiventiNextApiRequest } from 'pages/constants/types';
-import { GOOGLE_FONT_HOST } from 'pages/constants/variables';
+import { drawOnCanvas } from 'constants/functions';
+import { ZiventiNextApiRequest } from 'constants/types';
+import { GOOGLE_FONT_HOST } from 'constants/variables';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
