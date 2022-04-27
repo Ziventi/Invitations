@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "test": "yarn playwright test"
   },
   "dependencies": {
     "adm-zip": "^0.5.9",
@@ -23,6 +23,7 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@playwright/test": "^1.21.1",
     "@types/adm-zip": "^0.5.0",
     "@types/node": "17.0.23",
     "@types/pdfkit": "^0.12.4",

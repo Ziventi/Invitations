@@ -256,13 +256,14 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
     <main>
       <section className={'controls'}>
         <textarea
+          id={'names-list'}
           onChange={onTextChange}
           value={state.names}
           placeholder={'List your guest names'}
         />
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
-        <button onClick={preview}>Draw</button>
+        <button id={'draw'} onClick={preview}>Draw</button>
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
         <div>
