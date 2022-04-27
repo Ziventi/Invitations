@@ -6,7 +6,7 @@ import { logger } from './logger';
 export function Timed(
   _: any,
   __: string,
-  descriptor: TypedPropertyDescriptor<any>
+  descriptor: TypedPropertyDescriptor<any>,
 ): TypedPropertyDescriptor<any> {
   const originalMethod = descriptor.value;
 

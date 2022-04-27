@@ -10,7 +10,7 @@ let spreadsheet: GoogleSpreadsheet;
  * @returns The spreadsheet instance
  */
 export async function getSpreadsheet(
-  spreadsheetId: string
+  spreadsheetId: string,
 ): Promise<GoogleSpreadsheet> {
   if (spreadsheet && spreadsheet.spreadsheetId === spreadsheetId) {
     return spreadsheet;

@@ -12,7 +12,7 @@ exports.ensureEntryPointExists = (projectPath) => {
   if (!fs.existsSync(entryPoint)) {
     const projectName = path.basename(projectPath);
     logger.error(
-      `Entry point for project '${projectName}' does not exist. Try rebuilding the project.`
+      `Entry point for project '${projectName}' does not exist. Try rebuilding the project.`,
     );
     process.exit(0);
   }

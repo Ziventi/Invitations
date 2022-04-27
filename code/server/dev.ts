@@ -1,7 +1,6 @@
+import Ziventi, { Server, Utils } from '@ziventi/utils/src/production';
 import type { Express } from 'express';
 import type NodeCache from 'node-cache';
-
-import Ziventi, { Server, Utils } from '@ziventi/utils/src/production';
 
 export default function addDevEndpoints(app: Express, cache: NodeCache): void {
   app.get('/api/test/:hash', async (req, res) => {

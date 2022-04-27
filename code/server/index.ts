@@ -30,7 +30,7 @@ if (Server.isProduction()) {
       max: 15,
       standardHeaders: true,
       windowMs: 5 * 60 * 1000,
-    })
+    }),
   );
 } else {
   addDevEndpoints(app, cache);
@@ -45,7 +45,7 @@ app.get('/api/:hash', async (req, res) => {
     const publicSheet = await Server.retrievePublicWorksheet(cache, payload);
     const matchingRow = await Server.retrieveRowMatchingGuest(
       publicSheet,
-      guestName
+      guestName,
     );
 
     logger.trace(`Loading cell to edit...`);

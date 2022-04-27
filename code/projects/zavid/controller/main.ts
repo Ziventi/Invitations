@@ -38,11 +38,11 @@ const SHEET_NAME = 'Guest List';
       },
     },
     fontsUrl: Utils.buildFontUrl({
-      Courgette: null,
+      'Courgette': null,
       'Great Vibes': null,
-      Poppins: 'wght@400;700',
+      'Poppins': 'wght@400;700',
       'Style Script': null,
-      Tangerine: 'wght@400;700',
+      'Tangerine': 'wght@400;700',
     }),
     formatOptions: {
       archiveTitle: '#Z25 Invites',
@@ -71,7 +71,7 @@ const SHEET_NAME = 'Guest List';
       range: 'D3:E14',
       updater: (guests: Guest[]) => {
         const getTotalMatching = (
-          matcher: Ziventi.ConfirmStatus | ((g: Guest) => boolean)
+          matcher: Ziventi.ConfirmStatus | ((g: Guest) => boolean),
         ): string => {
           return guests
             .filter((g) => {

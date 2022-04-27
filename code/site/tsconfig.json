@@ -3,22 +3,19 @@
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
-    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "isolatedModules": false,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
-    "noEmitOnError": true,
-    "paths": {
-      "@ziventi/utils": ["./utils/src/index.ts"]
-    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es6"
+    "target": "es5"
   },
-  "exclude": ["**/node_modules", "**/*.js", "site/**"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

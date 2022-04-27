@@ -21,7 +21,7 @@ describe('Utils', () => {
       'https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins%3Awght%40400%3B700&display=swap';
     const actualUrl = Utils.buildFontUrl({
       'Great Vibes': null,
-      Poppins: 'wght@400;700',
+      'Poppins': 'wght@400;700',
     });
     expect(actualUrl).toBe(expectedUrl);
   });
@@ -34,16 +34,16 @@ describe('Utils', () => {
 
   test('Get emoji status text', () => {
     expect(Emojis.getStatusText('Confirmed')).toBe(
-      `${Emojis.CONFIRMED}  Confirmed`
+      `${Emojis.CONFIRMED}  Confirmed`,
     );
     expect(Emojis.getStatusText('Tentative')).toBe(
-      `${Emojis.TENTATIVE} Tentative`
+      `${Emojis.TENTATIVE} Tentative`,
     );
     expect(Emojis.getStatusText('Unavailable')).toBe(
-      `${Emojis.UNAVAILABLE} Unavailable`
+      `${Emojis.UNAVAILABLE} Unavailable`,
     );
     expect(Emojis.getStatusText('Awaiting')).toBe(
-      `${Emojis.AWAITING} Awaiting response`
+      `${Emojis.AWAITING} Awaiting response`,
     );
   });
 });

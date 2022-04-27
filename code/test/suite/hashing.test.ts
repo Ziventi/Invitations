@@ -1,7 +1,6 @@
-import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
-
 import Ziventi, { Paths, Server, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
+import type { GoogleSpreadsheetRow } from 'google-spreadsheet';
 import NodeCache from 'node-cache';
 import path from 'path';
 
@@ -20,7 +19,7 @@ const payload: Partial<Ziventi.HashParams> = {
 
 async function mockServerResponse(
   cache: NodeCache,
-  hash: string
+  hash: string,
 ): Promise<GoogleSpreadsheetRow> {
   const payload = Utils.decryptJSON<Ziventi.HashParams>(hash);
   const publicSheet = await Server.retrievePublicWorksheet(cache, payload);

@@ -120,7 +120,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
    */
   private generateHTMLFiles(
     guests: G[],
-    { all, limit = 10, name }: GenerateHTMLOptions
+    { all, limit = 10, name }: GenerateHTMLOptions,
   ): void {
     invariant(guests.length, 'There are no guests to generate files for.');
 
@@ -133,7 +133,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
       });
       invariant(
         matchingGuests.length > 0,
-        `No guests found with name starting with '${name}'.`
+        `No guests found with name starting with '${name}'.`,
       );
       guests = matchingGuests;
     }
@@ -218,7 +218,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
     templater: ejs.TemplateFunction,
     outputFile: string,
     guest: G,
-    allGuests: G[]
+    allGuests: G[],
   ): void {
     const locals: Record<string, any> = {
       guest,
@@ -245,7 +245,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
   private async createPDFFile(
     html: string,
     guestName: string,
-    pageCount: number
+    pageCount: number,
   ): Promise<void> {
     if (!this.formatOptions) return;
     const { outputDir, stylesOutputFile } = this.paths;
