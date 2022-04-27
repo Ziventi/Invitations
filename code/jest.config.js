@@ -5,6 +5,7 @@ const options = {
     '<rootDir>/**/*.ts',
     '!<rootDir>/projects/**',
     '!<rootDir>/server/**',
+    '!<rootDir>/site/**',
     '!<rootDir>/test/project/controller/main.ts',
     '!<rootDir>/utils/src/*.ts',
     '!<rootDir>/utils/src/lib/cli.ts',
@@ -18,7 +19,7 @@ const options = {
   preset: 'jest-puppeteer',
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
   slowTestThreshold: 8,
-  testMatch: ['**/*.test.ts'],
+  testMatch: ['<rootDir>/test/**/*.test.ts'],
   verbose: true,
   watchman: false,
 };
