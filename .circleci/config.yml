@@ -87,6 +87,11 @@ jobs:
           command: yarn run test
           working_directory: ./code
           no_output_timeout: 2m
+      - run:
+          name: Run UI tests
+          command: yarn run test
+          working_directory: ./code/site
+          no_output_timeout: 2m
   deploy_dev:
     executor: ssh
     steps:
