@@ -10,7 +10,7 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 2 : undefined,
   use: {
     baseURL: 'http://localhost:3000',
-    headless: true
+    headless: true,
   },
 };
 
