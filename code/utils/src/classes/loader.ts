@@ -1,10 +1,10 @@
-import type { TGuest, TGuestRow } from '../types';
 
 import fs from 'fs-extra';
 
 import * as Utils from '../lib/functions';
 import { logger } from '../lib/logger';
 import * as Spreadsheet from '../lib/spreadsheet';
+import type { TGuest, TGuestRow } from '../types';
 
 export default class ZLoader<
   G extends TGuest = TGuest,

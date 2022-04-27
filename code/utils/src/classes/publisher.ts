@@ -1,3 +1,10 @@
+import type { GoogleSpreadsheet } from 'google-spreadsheet';
+import path from 'path';
+import invariant from 'tiny-invariant';
+
+import { Timed } from '../lib/decorators';
+import { logger } from '../lib/logger';
+import * as Spreadsheet from '../lib/spreadsheet';
 import type {
   PublishLoadingOptions,
   PublishOptions,
@@ -5,14 +12,6 @@ import type {
   TGuestRow,
   TGuest,
 } from '../types';
-import type { GoogleSpreadsheet } from 'google-spreadsheet';
-
-import path from 'path';
-import invariant from 'tiny-invariant';
-
-import { Timed } from '../lib/decorators';
-import { logger } from '../lib/logger';
-import * as Spreadsheet from '../lib/spreadsheet';
 
 export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private loadingOptions: PublishLoadingOptions<G, R>;

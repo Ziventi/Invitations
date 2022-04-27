@@ -36,6 +36,10 @@ commands:
           name: Install server dependencies
           command: yarn install
           working_directory: ./code/server
+      - run:
+          name: Install site dependencies
+          command: yarn install
+          working_directory: ./code/site
   transfer_scripts:
     description: 'Transfers deployment scripts via SCP'
     parameters:
