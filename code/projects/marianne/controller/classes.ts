@@ -10,12 +10,12 @@ export class Guest implements Ziventi.TGuest {
 }
 
 export class GuestRow implements Ziventi.TGuestRow {
-  Name!: string;
-  Category!: string;
-  From!: string;
+  'Name'!: string;
+  'Category'!: string;
+  'From'!: string;
   'Invite Round'!: string;
   'Wishlist ID'!: string;
-  Status!: string;
+  'Status'!: string;
 }
 
 export const InviteRound = {

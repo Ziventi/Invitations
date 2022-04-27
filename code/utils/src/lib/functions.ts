@@ -10,7 +10,7 @@ import { logger } from './logger';
 checkDotenv(
   dotenv.config({
     path: `${Paths.PROJECT_ROOT}/utils/.env`,
-  })
+  }),
 );
 
 const { ENCRYPTION_KEY } = process.env;
@@ -38,7 +38,7 @@ export function compileResources(projectRoot: string): Record<string, any> {
   const resources: Record<string, any> = {};
   const resourcesDir = path.join(
     projectRoot || process.cwd(),
-    './views/resources'
+    './views/resources',
   );
 
   fs.readdirSync(resourcesDir).forEach((filename) => {

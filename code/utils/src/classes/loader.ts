@@ -1,4 +1,3 @@
-
 import fs from 'fs-extra';
 
 import * as Utils from '../lib/functions';
@@ -8,7 +7,7 @@ import type { TGuest, TGuestRow } from '../types';
 
 export default class ZLoader<
   G extends TGuest = TGuest,
-  R extends TGuestRow = TGuestRow
+  R extends TGuestRow = TGuestRow,
 > {
   private loadOptions: LoadOptions<G, R>;
 

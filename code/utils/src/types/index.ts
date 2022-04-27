@@ -28,7 +28,7 @@ export interface PublishOptions {
 
 export interface LoadingOptions<
   G extends TGuest = TGuest,
-  R extends TGuestRow = TGuestRow
+  R extends TGuestRow = TGuestRow,
 > {
   loader: ZLoader<G, R>;
   processor?: (guests: G[]) => G[];

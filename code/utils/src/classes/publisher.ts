@@ -42,7 +42,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
     }
 
     logger.info(
-      `Publishing guest list for '${path.basename(process.cwd())}'...`
+      `Publishing guest list for '${path.basename(process.cwd())}'...`,
     );
     await this.marshalGuestsToRows(sheet, guests);
     logger.info(`Guest list published.`);
@@ -64,7 +64,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private async updateCells(
     sheetName: string,
     range: string,
-    valuesByCell: Record<string, string>
+    valuesByCell: Record<string, string>,
   ): Promise<void> {
     const sheet = this.spreadsheet.sheetsByTitle[sheetName];
     invariant(sheet, `No sheet exists with name '${sheetName}'.`);
@@ -85,7 +85,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
    */
   private async marshalGuestsToRows(
     sheet: PublishSheet<G>,
-    guests: G[]
+    guests: G[],
   ): Promise<void> {
     let guestCollection: Record<string, G[]> = {};
 
@@ -106,7 +106,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
     }
 
     this.spreadsheet = await Spreadsheet.getSpreadsheet(
-      process.env.SS_PUBLIC_LISTS_ID!
+      process.env.SS_PUBLIC_LISTS_ID!,
     );
 
     const promises = Object.entries(guestCollection).map(
@@ -141,7 +141,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
           await sheet.setHeaderRow(['Name', 'Attendance']);
           await sheet.addRows(rows);
         })();
-      }
+      },
     );
 
     await Promise.all(promises);

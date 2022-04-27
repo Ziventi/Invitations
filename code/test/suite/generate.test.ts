@@ -48,7 +48,7 @@ describe('Generation', () => {
       const spy = jest.spyOn(ZLoader.prototype, 'execute');
       await API.generate({ refreshCache: shouldRefresh });
       expect(spy).toBeCalledWith(shouldRefresh);
-    }
+    },
   );
 
   test.each(['PDF', 'PNG'])('Generate %s files', async (fileType) => {

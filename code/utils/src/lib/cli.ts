@@ -13,30 +13,30 @@ export default async function CLI(options: CLIOptions = {}): Promise<void> {
       .option(
         '-a, --all',
         'Generates files for all guests. Void if name is specified.',
-        false
+        false,
       )
       .addOption(
         new Option(
           '-f, --format <format>',
-          'The rich format of files to generate'
-        ).choices(['png', 'pdf'])
+          'The rich format of files to generate',
+        ).choices(['png', 'pdf']),
       )
       .option(
         '-l, --limit <limit>',
         'The limit or quantity of files to generate',
-        '10'
+        '10',
       )
       .option('-n, --name <name>', 'The name of a guest to specify')
       .option('-o, --open', 'Open the generated files in the browser.', false)
       .option(
         '-r, --refresh-cache',
         'Reload and cache the external dataset.',
-        false
+        false,
       )
       .option(
         '-z, --zip',
         'Archives the generated format files into a ZIP.',
-        false
+        false,
       )
       .action(generate);
   }
@@ -48,7 +48,7 @@ export default async function CLI(options: CLIOptions = {}): Promise<void> {
       .option(
         '-r, --refresh-cache',
         'Reload and cache the external dataset.',
-        false
+        false,
       )
       .action(publish);
   }

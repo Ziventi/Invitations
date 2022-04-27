@@ -42,7 +42,7 @@ export default async function handler(
   } catch (e) {
     console.error(JSON.stringify(e));
   }
-  
+
   const canvas = createCanvas(dimensions.width, dimensions.height);
   drawOnCanvas(canvas, names, textStyle, img);
 

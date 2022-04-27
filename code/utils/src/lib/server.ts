@@ -24,7 +24,7 @@ export const logger = Log4JS.getLogger('server');
  */
 export async function retrievePublicWorksheet(
   cache: NodeCache,
-  payload: HashParams
+  payload: HashParams,
 ): Promise<GoogleSpreadsheetWorksheet> {
   const { publicSpreadsheetId, sheetTitle } = payload;
 
@@ -37,7 +37,7 @@ export async function retrievePublicWorksheet(
   }
   invariant(
     publicSpreadsheet,
-    'No spreadsheet found with specified spreadsheet ID.'
+    'No spreadsheet found with specified spreadsheet ID.',
   );
   cache.set(publicSpreadsheetId, publicSpreadsheet);
 
@@ -54,14 +54,14 @@ export async function retrievePublicWorksheet(
  */
 export async function retrieveRowMatchingGuest(
   sheet: GoogleSpreadsheetWorksheet,
-  guestName: string
+  guestName: string,
 ): Promise<GoogleSpreadsheetRow> {
   // TODO: Cache rows
   const sheetRows = await sheet.getRows();
   const matchingRow = sheetRows.find((row) => row['Name'] === guestName);
   invariant(
     matchingRow,
-    `No row found with 'Name' column matching '${guestName}'.`
+    `No row found with 'Name' column matching '${guestName}'.`,
   );
   return matchingRow;
 }
