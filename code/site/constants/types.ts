@@ -1,7 +1,7 @@
 import { NextApiRequest } from 'next';
 
 export interface PageState {
-  names: string;
+  namesList: string[];
   imageSrc: string | null;
   imageDimensions: Dimensions;
   canvasDimensions: Dimensions;
@@ -15,10 +15,10 @@ export interface ZiventiNextApiRequest extends NextApiRequest {
 }
 
 export interface RequestBody {
-  backgroundImage: string;
+  backgroundImageSrc: string;
   dimensions: Dimensions;
   fontId: string;
-  names: string;
+  namesList: string[];
   textStyle: TextStyle;
 }
 

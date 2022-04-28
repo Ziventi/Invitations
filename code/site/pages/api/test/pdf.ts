@@ -16,7 +16,7 @@ export default function handler(
   req: ZiventiNextApiRequest,
   res: NextApiResponse,
 ): void {
-  const { backgroundImage, dimensions, names, textStyle } = req.body;
+  const { backgroundImageSrc: backgroundImage, dimensions, namesList: names, textStyle } = req.body;
   const { fontSize, left, width, top, scale, scaleX, scaleY } = textStyle;
 
   const doc = new PDFDocument({
@@ -25,7 +25,7 @@ export default function handler(
   doc.image(backgroundImage, 0, 0, { width: dimensions.width });
   doc.fontSize(fontSize * scale);
   doc.text(
-    names,
+    names[0],
     (left + DRAGGABLE_PADDING / 6) * scaleX,
     (top + DRAGGABLE_PADDING) * scaleY,
     {

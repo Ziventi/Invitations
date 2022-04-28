@@ -1,6 +1,12 @@
 import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
-import React, { ReactElement, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactElement,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import DragZone from 'components/draggable';
 import { drawOnCanvas } from 'constants/functions/canvas';
@@ -10,7 +16,7 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
 
 const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
   const [state, setState] = useState<PageState>({
-    names: 'Drag me right into the mud mate',
+    namesList: ['Drag me right into the mud mate'],
     imageSrc: null,
     imageDimensions: {
       width: 0,
@@ -43,6 +49,10 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const names = useMemo(() => {
+    return state.namesList.join('\n');
+  }, [state.namesList]);
+
   // TODO: Remove (dev purposes only)
   useEffect(() => {
     setState((currentState) => ({
@@ -57,11 +67,11 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
       WebFont.load({
         google: {
           families: [state.textStyle.fontFamily],
-          text: state.names,
+          text: state.namesList[0],
         },
       });
     });
-  }, [state.names, state.textStyle]);
+  }, [state.namesList, state.textStyle.fontFamily]);
 
   // Called each time the image source changes.
   useEffect(() => {
@@ -127,13 +137,13 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
 
   function preview(): void {
     const canvas = canvasRef.current!;
-    drawOnCanvas(canvas, state.names, state.textStyle);
+    drawOnCanvas(canvas, state.namesList[0], state.textStyle);
   }
 
   /**
    * Performs a download.
    */
-  async function download(type: 'pdf' | 'png') {
+  async function download(type: 'pdf' | 'png' | 'png-zip') {
     if (!state.imageSrc) return alert('No image');
 
     setState((currentState) => ({
@@ -151,17 +161,17 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        backgroundImage: state.imageSrc,
+        backgroundImageSrc: state.imageSrc,
         fontId: selectedFont.id,
         dimensions: state.imageDimensions,
-        names: state.names,
+        namesList: state.namesList,
         textStyle: state.textStyle,
       } as RequestBody),
     };
 
     try {
       if (type === 'pdf') {
-        const res = await fetch('api/pdf', payload);
+        const res = await fetch('api/test/pdf', payload);
         if (!res.ok) throw new Error('Could not download PDF.');
         const image = await res.blob();
 
@@ -173,8 +183,8 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-      } else {
-        const res = await fetch('api/png', payload);
+      } else if (type === 'png') {
+        const res = await fetch('api/test/png', payload);
         if (!res.ok) throw new Error('Could not download image.');
         const data = await res.text();
 
@@ -184,14 +194,19 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         img.width = state.canvasDimensions.width;
         const w = window.open(data);
         w?.document.write(img.outerHTML);
+      } else if (type === 'png-zip') {
+        const res = await fetch('api/png', payload);
+        if (!res.ok) throw new Error('Could not download archive.');
+        const archive = await res.blob();
+        const url = URL.createObjectURL(archive);
 
-        // const a = document.createElement('a');
-        // a.href = data;
-        // a.target = '_blank';
-        // a.download = 'ziventi.png';
-        // document.body.appendChild(a);
-        // a.click();
-        // document.body.removeChild(a);
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.download = 'ziventi.zip';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       }
     } catch (e) {
       alert(e);
@@ -204,9 +219,10 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
   }
 
   function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
+    const names = e.target.value;
     setState((currentState) => ({
       ...currentState,
-      names: e.target.value,
+      namesList: names.split('\n'),
     }));
   }
 
@@ -259,7 +275,7 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         <textarea
           id={'names-list'}
           onChange={onTextChange}
-          value={state.names}
+          value={names}
           placeholder={'List your guest names'}
         />
         {/* TODO: Control valid image types */}
@@ -269,6 +285,7 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         </button>
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
+        <button onClick={() => download('png-zip')}>Download PNG archive</button>
         <Link href={'/payment'}>
           <button id={'pay'}>Pay</button>
         </Link>

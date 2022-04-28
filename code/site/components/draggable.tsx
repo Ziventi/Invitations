@@ -219,7 +219,7 @@ export default function DragZone({
     }));
   }
 
-  if (!pageState.names || !pageState.imageSrc) return null;
+  if (!pageState.namesList.length || !pageState.imageSrc) return null;
 
   const draggableClasses = classnames('draggable', {
     'draggable--selected': pageState.draggable.isSelected,
@@ -242,7 +242,7 @@ export default function DragZone({
             fontSize: `${pageState.textStyle.fontSize}px`,
             lineHeight: `${pageState.textStyle.lineHeight}px`,
           }}>
-          {pageState.names}
+          {pageState.namesList[0]}
         </span>
         <ResizeHandles
           draggableRef={draggableRef}

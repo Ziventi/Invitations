@@ -39,6 +39,11 @@ export function drawOnCanvas(
   insertText(ctx, text, x, y, lineHeight * scale, maxWidth);
 }
 
+export function clearCanvas(canvas: HTMLCanvasElement | Canvas): void {
+  const ctx = canvas.getContext('2d') as Context2D;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 function insertText(
   ctx: Context2D,
   text: string,
