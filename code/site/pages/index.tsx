@@ -248,8 +248,11 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
           value={names}
           placeholder={'List your guest names'}
         />
-        {/* TODO: Control valid image types */}
-        <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
+        <input
+          type={'file'}
+          accept={'image/jpeg,image/png'}
+          onChange={onImageSelect}
+        />
         <button id={'draw'} onClick={preview}>
           Draw
         </button>
