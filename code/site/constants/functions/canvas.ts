@@ -1,7 +1,7 @@
 import type { Canvas, Image } from 'canvas';
 
-import { TextStyle } from './types';
-import { DRAGGABLE_PADDING } from './variables';
+import { TextStyle } from '../types';
+import { DRAGGABLE_PADDING } from '../variables';
 
 export function drawOnCanvas(
   canvas: HTMLCanvasElement | Canvas,

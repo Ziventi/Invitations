@@ -3,7 +3,7 @@ import { createCanvas, registerFont, Image } from 'canvas';
 import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
-import { drawOnCanvas } from 'constants/functions';
+import { drawOnCanvas } from 'constants/functions/canvas';
 import { ZiventiNextApiRequest } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 
