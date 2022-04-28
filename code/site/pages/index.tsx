@@ -270,7 +270,7 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
         <Link href={'/payment'}>
-          <button>Pay</button>
+          <button id={'pay'}>Pay</button>
         </Link>
         <div>
           <label>Font Family:</label>

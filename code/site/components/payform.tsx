@@ -76,7 +76,7 @@ export default function PaymentForm() {
 
   return (
     <form>
-      <PaymentElement />
+      <PaymentElement id={'payment-form'} />
       <button onClick={submitPayment} disabled={!stripe}>
         Pay Now
       </button>
