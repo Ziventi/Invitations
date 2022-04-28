@@ -10,6 +10,7 @@ import React, {
 
 import DragZone from 'components/draggable';
 import { drawOnCanvas } from 'constants/functions/canvas';
+import * as Download from 'constants/functions/download';
 import { imageSource } from 'constants/image';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
@@ -171,42 +172,11 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
 
     try {
       if (type === 'pdf') {
-        const res = await fetch('api/test/pdf', payload);
-        if (!res.ok) throw new Error('Could not download PDF.');
-        const image = await res.blob();
-
-        const url = URL.createObjectURL(image);
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        // a.download = 'ziventi.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        await Download.pdfFileTest(payload);
       } else if (type === 'png') {
-        const res = await fetch('api/test/png', payload);
-        if (!res.ok) throw new Error('Could not download image.');
-        const data = await res.text();
-
-        const img = new Image();
-        img.src = data;
-        img.height = state.canvasDimensions.height;
-        img.width = state.canvasDimensions.width;
-        const w = window.open(data);
-        w?.document.write(img.outerHTML);
+        await Download.pngFileTest(payload, state.canvasDimensions);
       } else if (type === 'png-zip') {
-        const res = await fetch('api/png', payload);
-        if (!res.ok) throw new Error('Could not download archive.');
-        const archive = await res.blob();
-        const url = URL.createObjectURL(archive);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        a.download = 'ziventi.zip';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        await Download.pngArchive(payload);
       }
     } catch (e) {
       alert(e);
@@ -285,7 +255,9 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         </button>
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
-        <button onClick={() => download('png-zip')}>Download PNG archive</button>
+        <button onClick={() => download('png-zip')}>
+          Download PNG archive
+        </button>
         <Link href={'/payment'}>
           <button id={'pay'}>Pay</button>
         </Link>
@@ -344,10 +316,6 @@ function ProgressOverlay({ state }: ProgressOverlayProps): ReactElement | null {
   return <dialog>Loading...</dialog>;
 }
 
-interface ProgressOverlayProps {
-  state: PageState;
-}
-
 export const getStaticProps: GetStaticProps<{
   fonts: GoogleFont[];
 }> = async () => {
@@ -363,3 +331,7 @@ export const getStaticProps: GetStaticProps<{
 };
 
 export default Home;
+
+interface ProgressOverlayProps {
+  state: PageState;
+}
