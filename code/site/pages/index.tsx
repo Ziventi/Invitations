@@ -15,7 +15,7 @@ import { imageSource } from 'constants/image';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 
-const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
+const Home: NextPage<HomeProps> = ({ fonts }) => {
   const [state, setState] = useState<PageState>({
     namesList: ['Drag me right into the mud mate'],
     imageSrc: null,
@@ -319,9 +319,7 @@ function ProgressOverlay({ state }: ProgressOverlayProps): ReactElement | null {
   return <dialog>Loading...</dialog>;
 }
 
-export const getStaticProps: GetStaticProps<{
-  fonts: GoogleFont[];
-}> = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const res = await fetch(GOOGLE_FONT_HOST);
   const fonts: GoogleFont[] = await res.json();
   return {
@@ -334,6 +332,10 @@ export const getStaticProps: GetStaticProps<{
 };
 
 export default Home;
+
+interface HomeProps {
+  fonts: GoogleFont[];
+}
 
 interface ProgressOverlayProps {
   state: PageState;
