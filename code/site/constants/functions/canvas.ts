@@ -23,7 +23,7 @@ export function drawOnCanvas(
     scaleY,
   } = style;
   const padding = DRAGGABLE_PADDING / 3;
-  const maxWidth = (width - DRAGGABLE_PADDING * 2) * scale;
+  const maxWidth = (width - padding * 2) * scale;
   const numOfLines = height / lineHeight;
   const x = (left + (width + padding) / 2) * scaleX;
   const y = (top + height / numOfLines + 1) * scaleY;
