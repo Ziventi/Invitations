@@ -9,6 +9,8 @@
     "test": "yarn playwright test"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.7.2",
+    "@stripe/stripe-js": "^1.29.0",
     "adm-zip": "^0.5.9",
     "canvas": "^2.9.1",
     "classnames": "^2.3.1",
@@ -20,6 +22,7 @@
     "react-color": "^2.19.3",
     "react-dom": "18.0.0",
     "sass": "^1.50.0",
+    "stripe": "^8.219.0",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

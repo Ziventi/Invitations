@@ -1,8 +1,9 @@
 import type { GetStaticProps, NextPage } from 'next';
+import Link from 'next/link';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
 import DragZone from 'components/draggable';
-import { drawOnCanvas } from 'constants/functions';
+import { drawOnCanvas } from 'constants/functions/canvas';
 import { imageSource } from 'constants/image';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
@@ -263,9 +264,14 @@ const Home: NextPage<{ fonts: GoogleFont[] }> = ({ fonts }) => {
         />
         {/* TODO: Control valid image types */}
         <input type={'file'} accept={'image/*'} onChange={onImageSelect} />
-        <button id={'draw'} onClick={preview}>Draw</button>
+        <button id={'draw'} onClick={preview}>
+          Draw
+        </button>
         <button onClick={() => download('pdf')}>Download PDF</button>
         <button onClick={() => download('png')}>Download PNG</button>
+        <Link href={'/payment'}>
+          <button id={'pay'}>Pay</button>
+        </Link>
         <div>
           <label>Font Family:</label>
           <select
