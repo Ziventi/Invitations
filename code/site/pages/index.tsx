@@ -50,6 +50,9 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const draggableRef = useRef<HTMLDivElement>(null);
+
+  const useDraggableRef = useState(draggableRef);
 
   const names = useMemo(() => {
     return state.namesList.join('\n');
@@ -114,17 +117,14 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
       }));
 
       // TODO: Dev Only
-      const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
+      const draggable = draggableRef.current!;
       draggable.style.top = '0px';
       draggable.style.left = '0px';
     };
   }, [state.imageSrc]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
+    const draggable = draggableRef.current;
     if (draggable) {
       draggable.style.top = `${state.textStyle.top}px`;
       draggable.style.left = `${state.textStyle.left}px`;
@@ -253,7 +253,11 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
       </section>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
-        <DragZone usePageState={[state, setState]} />
+        <DragZone
+          useDraggableRef={useDraggableRef}
+          usePageState={[state, setState]}
+          ref={draggableRef}
+        />
       </section>
       <ProgressOverlay state={state} />
     </main>
