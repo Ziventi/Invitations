@@ -1656,10 +1656,10 @@
   version "0.0.0"
   uid ""
 
-"@zzavidd/eslint-config@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@zzavidd/eslint-config/-/eslint-config-1.1.0.tgz#55ba868900ad6807aee0e457cb45e5b7e91afe73"
-  integrity sha512-pC62bmWrbIL0Ltf1W75foc/2LWwyN4tkDo6Ld3IOSMh/jA+dJHP8i1ZfwNC/fCH1vghtY81FfkUAbSX4RQoEpw==
+"@zzavidd/eslint-config@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@zzavidd/eslint-config/-/eslint-config-1.2.0.tgz#cc9b5f0e41343956f168a575383f46364f051375"
+  integrity sha512-RgwCiHAUroFzIK18uiwpZi6rHSl5phzTowoY4B3Ip4R/FIxJGjyoTzX4uEyn/2QXd1+ql5C1HuvqX7mJpZN2lA==
   dependencies:
     eslint "^8.7.0"
     eslint-plugin-import "^2.23.4"
@@ -1673,17 +1673,17 @@
     react ">=17.0.0"
     typescript "^4.5.4"
 
-"@zzavidd/prettier-config@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@zzavidd/prettier-config/-/prettier-config-1.1.0.tgz#190f0ef462a81b86aa45363c61d8bc621bd4e012"
-  integrity sha512-7lD4/2LP2CshbKmA1zQu01cJtsQQ5vh4T348MMD7ImuOf/QNG5VjEtVqj6WTLD3u2Pl1avpFxkIzH5ifkOwKkQ==
+"@zzavidd/prettier-config@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@zzavidd/prettier-config/-/prettier-config-1.2.0.tgz#59bfa2b9e004cf72c53a3f32f1aa067d697974cd"
+  integrity sha512-tDPzrKjo1DzFdbJqY5PIeqqkYGCSvWLDFdrevrhPvR/kD3/SEpgs7ree2WRRoPeVax7aneIDw/hQyCXsdaYjZQ==
   dependencies:
     prettier "^2.6.2"
 
-"@zzavidd/stylelint-config@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@zzavidd/stylelint-config/-/stylelint-config-1.1.0.tgz#edb4cf46b7c316000a6d389ee1658367d92c4168"
-  integrity sha512-1gH7YuTe5f3PKkFhdK2EYqJdQcBC2BTRF9yBULKqVsrLGKE5M7QdSXykgz25p8aUYSkKHO52AS3IiNMr2Yn3+g==
+"@zzavidd/stylelint-config@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@zzavidd/stylelint-config/-/stylelint-config-1.2.0.tgz#b03839ef8702d7bf7aa141401d2f4ac1bdc49eaf"
+  integrity sha512-E4aN3EHVlvTCUs8r6kpSej/wZsB0ZhAM7oOrUiaC/Yac6M1PaALHtKIdmbnnqAm1+aJ4MZjBOLM+Otgd2pvKmg==
   dependencies:
     stylelint "^14.2.0"
     stylelint-config-sass-guidelines "^9.0.1"

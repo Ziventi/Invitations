@@ -1,7 +1,7 @@
 const zavidConfig = require('@zzavidd/eslint-config');
 
 /**
- * @type {import('eslint').ESLint.Options}
+ * @type {import('eslint').Linter.Config}
  */
 const eslintConfig = {
   extends: '@zzavidd/eslint-config/react-ts',

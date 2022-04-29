@@ -64,14 +64,16 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
 
   // Load a new font on a new font family selection.
   useEffect(() => {
-    import('webfontloader').then((WebFont) => {
-      WebFont.load({
-        google: {
-          families: [state.textStyle.fontFamily],
-          text: state.namesList[0],
-        },
-      });
-    });
+    import('webfontloader')
+      .then((WebFont) => {
+        WebFont.load({
+          google: {
+            families: [state.textStyle.fontFamily],
+            text: state.namesList[0],
+          },
+        });
+      })
+      .catch(console.error);
   }, [state.namesList, state.textStyle.fontFamily]);
 
   // Called each time the image source changes.
