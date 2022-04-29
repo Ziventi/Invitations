@@ -15,6 +15,10 @@ export default function DesignForm({
     return pageState.canvasDimensions.width - pageState.textStyle.width;
   }, [pageState.canvasDimensions.width, pageState.textStyle.width]);
 
+  /**
+   * Triggers on a new font family selection.
+   * @param e The change event.
+   */
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
     const fontFamily = e.target.value!;
     setPageState((currentState) => ({
@@ -26,46 +30,20 @@ export default function DesignForm({
     }));
   }
 
-  function onFontSizeChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber || 2;
+  /**
+   * Triggers on any of the number input changes using the name as the property
+   * to change and the minimum and maximum values as bounds.
+   * @param e The change event.
+   */
+  function onNumberInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const min = parseInt(e.target.min);
+    const max = parseInt(e.target.max);
+    const value = e.target.valueAsNumber || min;
     setPageState((currentState) => ({
       ...currentState,
       textStyle: {
         ...currentState.textStyle,
-        fontSize: Math.max(2, Math.min(value, 144)),
-      },
-    }));
-  }
-
-  function onLineHeightChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber || 1;
-    setPageState((currentState) => ({
-      ...currentState,
-      textStyle: {
-        ...currentState.textStyle,
-        lineHeight: Math.max(1, Math.min(value, 150)),
-      },
-    }));
-  }
-
-  function onTopChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber || 0;
-    setPageState((currentState) => ({
-      ...currentState,
-      textStyle: {
-        ...currentState.textStyle,
-        top: Math.max(0, Math.min(value, maxTop)),
-      },
-    }));
-  }
-
-  function onLeftChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber || 0;
-    setPageState((currentState) => ({
-      ...currentState,
-      textStyle: {
-        ...currentState.textStyle,
-        left: Math.max(0, Math.min(value, maxLeft)),
+        [e.target.name]: Math.max(min, Math.min(value, max)),
       },
     }));
   }
@@ -89,40 +67,44 @@ export default function DesignForm({
       <FormField>
         <label>Font Size:</label>
         <NumberInput
+          name={'fontSize'}
           min={2}
           max={144}
           step={1}
-          onChange={onFontSizeChange}
+          onChange={onNumberInputChange}
           value={pageState.textStyle.fontSize}
         />
       </FormField>
       <FormField>
         <label>Line Height:</label>
         <NumberInput
+          name={'lineHeight'}
           min={2}
           max={150}
           step={2}
-          onChange={onLineHeightChange}
+          onChange={onNumberInputChange}
           value={pageState.textStyle.lineHeight}
         />
       </FormField>
       <FormField>
         <label>Top:</label>
         <NumberInput
+          name={'top'}
           min={0}
           max={maxTop}
           step={1}
-          onChange={onTopChange}
+          onChange={onNumberInputChange}
           value={pageState.textStyle.top}
         />
       </FormField>
       <FormField>
         <label>Left:</label>
         <NumberInput
+          name={'left'}
           min={0}
           max={maxLeft}
           step={1}
-          onChange={onLeftChange}
+          onChange={onNumberInputChange}
           value={pageState.textStyle.left}
         />
       </FormField>
@@ -135,7 +117,7 @@ function FormField({ children }: React.HTMLAttributes<HTMLDivElement>) {
 }
 
 function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input type={'number'} {...props} />;
+  return <input type={'number'} autoComplete={'off'} {...props} />;
 }
 
 interface DesignFormProps {
