@@ -1,6 +1,5 @@
-@use './Components';
-
-$font: 'Rubik', sans-serif;
+@import './Constants';
+@import './Components';
 
 * {
   box-sizing: border-box;
@@ -40,6 +39,7 @@ main {
 }
 
 aside.controls {
+  background-color: $color-sidebar;
   flex: 0 0 300px;
   padding: 1em;
 }

@@ -23,16 +23,41 @@ section.design-form {
 }
 
 aside.namelist {
-  border-left: 1px solid #48cae4;
+  border-left: 2px solid #ccc;
+  display: flex;
+  flex: 0 0 200px;
+  flex-direction: column;
   overflow-y: scroll;
 
   button.name-button {
-    background-color: #95abfc;
+    align-items: center;
+    background-color: $color-sidebar;
     border: 0;
-    display: block;
+    column-gap: 20px;
+    cursor: pointer;
+    display: grid;
+    flex: 1 1 auto;
+    grid-template-columns: 20px 1fr;
     min-height: 70px;
     outline: none;
     padding: 1em;
+    transition: all 0.3s ease;
     width: 100%;
+
+    span.index {
+      text-align: right;
+    }
+
+    span.name {
+      text-align: left;
+    }
+
+    &:hover {
+      background-color: darken($color-sidebar, 5%);
+    }
+
+    &:active {
+      background-color: lighten($color-sidebar, 2%);
+    }
   }
 }

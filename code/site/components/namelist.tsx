@@ -20,7 +20,8 @@ export default function NameList({ usePageState }: NameListProps) {
             onClick={() => onNameClick(name)}
             className={'name-button'}
             key={key}>
-            {name}
+            <span className={'index'}>#{key + 1}</span>
+            <span className={'name'}>{name}</span>
           </button>
         );
       })}
