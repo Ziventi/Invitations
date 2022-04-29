@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 
 import { GoogleFont, PageState } from 'constants/types';
 
@@ -7,6 +7,13 @@ export default function DesignForm({
   usePageState,
 }: DesignFormProps): ReactElement {
   const [pageState, setPageState] = usePageState;
+
+  const maxTop = useMemo(() => {
+    return pageState.canvasDimensions.height - pageState.textStyle.height;
+  }, [pageState.canvasDimensions.height, pageState.textStyle.height]);
+  const maxLeft = useMemo(() => {
+    return pageState.canvasDimensions.width - pageState.textStyle.width;
+  }, [pageState.canvasDimensions.width, pageState.textStyle.width]);
 
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
     const fontFamily = e.target.value!;
@@ -37,6 +44,28 @@ export default function DesignForm({
       textStyle: {
         ...currentState.textStyle,
         lineHeight: Math.max(1, Math.min(value, 150)),
+      },
+    }));
+  }
+
+  function onTopChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const value = e.target.valueAsNumber || 0;
+    setPageState((currentState) => ({
+      ...currentState,
+      textStyle: {
+        ...currentState.textStyle,
+        top: Math.max(0, Math.min(value, maxTop)),
+      },
+    }));
+  }
+
+  function onLeftChange(e: React.ChangeEvent<HTMLInputElement>): void {
+    const value = e.target.valueAsNumber || 0;
+    setPageState((currentState) => ({
+      ...currentState,
+      textStyle: {
+        ...currentState.textStyle,
+        left: Math.max(0, Math.min(value, maxLeft)),
       },
     }));
   }
@@ -75,6 +104,26 @@ export default function DesignForm({
           step={2}
           onChange={onLineHeightChange}
           value={pageState.textStyle.lineHeight}
+        />
+      </FormField>
+      <FormField>
+        <label>Top:</label>
+        <NumberInput
+          min={0}
+          max={maxTop}
+          step={1}
+          onChange={onTopChange}
+          value={pageState.textStyle.top}
+        />
+      </FormField>
+      <FormField>
+        <label>Left:</label>
+        <NumberInput
+          min={0}
+          max={maxLeft}
+          step={1}
+          onChange={onLeftChange}
+          value={pageState.textStyle.left}
         />
       </FormField>
     </section>

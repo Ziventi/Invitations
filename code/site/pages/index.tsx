@@ -120,6 +120,17 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
     };
   }, [state.imageSrc]);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const draggable = canvas.nextElementSibling?.firstChild as HTMLDivElement;
+    if (draggable) {
+      draggable.style.top = `${state.textStyle.top}px`;
+      draggable.style.left = `${state.textStyle.left}px`;
+    }
+  }, [state.textStyle.left, state.textStyle.top]);
+
   /**
    * Called on selection of a file to edit.
    * @param e The change event.
