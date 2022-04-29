@@ -21,9 +21,8 @@ div#__next {
 }
 
 header {
-  border: 2px solid #ccc;
   display: flex;
-  flex: 0 0 70px;
+  height: 100px;
   position: relative;
   width: 100%;
 }
@@ -41,7 +40,7 @@ main {
 }
 
 section.controls {
-  flex: 0 0 500px;
+  flex: 0 0 300px;
   padding: 1em;
 }
 

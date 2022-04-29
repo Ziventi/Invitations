@@ -1,4 +1,5 @@
 import type { GetStaticProps, NextPage } from 'next';
+import NextImage from 'next/image';
 import Link from 'next/link';
 import React, {
   ReactElement,
@@ -12,13 +13,14 @@ import DesignForm from 'components/designform';
 import DragZone from 'components/dragzone';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Download from 'constants/functions/download';
-import { imageSource } from 'constants/image';
+import { names as NAMES_LIST, imageSource } from 'constants/test.json';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
+import ZiventiLogo from 'public/ziventi-logo.png';
 
 const Home: NextPage<HomeProps> = ({ fonts }) => {
   const [state, setState] = useState<PageState>({
-    namesList: ['Drag me right into the mud mate'],
+    namesList: [],
     imageSrc: null,
     imageDimensions: {
       width: 0,
@@ -62,6 +64,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
   useEffect(() => {
     setState((currentState) => ({
       ...currentState,
+      namesList: NAMES_LIST,
       imageSrc: imageSource,
     }));
   }, []);
@@ -223,6 +226,19 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
   return (
     <main>
       <section className={'controls'}>
+        <header>
+          <Link href={'/'}>
+            <NextImage
+              src={ZiventiLogo}
+              alt={'Ziventi Logo'}
+              priority={true}
+              layout={'fill'}
+              objectFit={'contain'}
+              objectPosition={'left'}
+              className={'site-logo'}
+            />
+          </Link>
+        </header>
         <textarea
           id={'names-list'}
           onChange={onTextChange}
