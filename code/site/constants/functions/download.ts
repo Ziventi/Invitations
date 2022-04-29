@@ -1,5 +1,29 @@
 import { Dimensions } from 'constants/types';
 
+/**
+ * Downloads a PNG archive of all the generated images.
+ * @param payload The request payload.
+ */
+ export async function pngArchive(payload: RequestInit): Promise<void> {
+  const res = await fetch('api/png', payload);
+  if (!res.ok) throw new Error('Could not download archive.');
+  const archive = await res.blob();
+  const url = URL.createObjectURL(archive);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.download = 'ziventi.zip';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+/**
+ * Downloads a single PDF file of the canvas and opens it in the
+ * browser. For test purposes only.
+ * @param payload The request payload.
+ */
 export async function pdfFileTest(payload: RequestInit): Promise<void> {
   const res = await fetch('api/test/pdf', payload);
   if (!res.ok) throw new Error('Could not download PDF.');
@@ -14,9 +38,15 @@ export async function pdfFileTest(payload: RequestInit): Promise<void> {
   document.body.removeChild(a);
 }
 
+/**
+ * Downloads a single PNG image of the canvas and opens it in the browser. For
+ * test purposes only.
+ * @param payload The request payload.
+ * @param dimensions The dimensions of the canvas.
+ */
 export async function pngFileTest(
   payload: RequestInit,
-  canvasDimensions: Dimensions,
+  dimensions: Dimensions,
 ): Promise<void> {
   const res = await fetch('api/test/png', payload);
   if (!res.ok) throw new Error('Could not download image.');
@@ -24,23 +54,8 @@ export async function pngFileTest(
 
   const img = new Image();
   img.src = data;
-  img.height = canvasDimensions.height;
-  img.width = canvasDimensions.width;
+  img.height = dimensions.height;
+  img.width = dimensions.width;
   const w = window.open(data);
   w?.document.write(img.outerHTML);
-}
-
-export async function pngArchive(payload: RequestInit): Promise<void> {
-  const res = await fetch('api/png', payload);
-  if (!res.ok) throw new Error('Could not download archive.');
-  const archive = await res.blob();
-  const url = URL.createObjectURL(archive);
-
-  const a = document.createElement('a');
-  a.href = url;
-  a.target = '_blank';
-  a.download = 'ziventi.zip';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 }
