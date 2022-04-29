@@ -23,6 +23,11 @@ export default class MyDocument extends Document {
             href={'https://fonts.gstatic.com'}
             crossOrigin={'anonymous'}
           />
+          <link
+            href={
+              'https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap'
+            }
+            rel={'stylesheet'}></link>
           <script src={'https://js.stripe.com/v3/'}></script>
         </Head>
         <body>

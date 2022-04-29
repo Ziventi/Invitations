@@ -1,0 +1,23 @@
+%input {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 6px;
+}
+
+section.design-form {
+  padding: 1em 0;
+
+  div.form-field {
+    padding: 0.5em 0;
+  }
+
+  div.form-field label {
+    display: block;
+    padding: 5px 0;
+  }
+
+  input[type=number],
+  select {
+    @extend %input;
+  }
+}

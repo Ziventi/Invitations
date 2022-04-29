@@ -11,7 +11,7 @@ import { Coordinates, PageState } from 'constants/types';
 
 export default function DragZone({
   usePageState,
-}: DraggableTextProps): ReactElement | null {
+}: DragZoneProps): ReactElement | null {
   const [pageState, setPageState] = usePageState;
   const [resizeHandleState, setResizeHandleState] = useState<ResizeHandleState>(
     {
@@ -326,7 +326,7 @@ function getDivFromReference(
   }
 }
 
-interface DraggableTextProps {
+interface DragZoneProps {
   usePageState: [PageState, React.Dispatch<React.SetStateAction<PageState>>];
 }
 

@@ -8,7 +8,8 @@ import React, {
   useState,
 } from 'react';
 
-import DragZone from 'components/draggable';
+import DesignForm from 'components/designform';
+import DragZone from 'components/dragzone';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Download from 'constants/functions/download';
 import { imageSource } from 'constants/image';
@@ -208,39 +209,6 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
   //   }));
   // }
 
-  function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    const fontFamily = e.target.value!;
-    setState((currentState) => ({
-      ...currentState,
-      textStyle: {
-        ...currentState.textStyle,
-        fontFamily,
-      },
-    }));
-  }
-
-  function onFontSizeChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber || 2;
-    setState((currentState) => ({
-      ...currentState,
-      textStyle: {
-        ...currentState.textStyle,
-        fontSize: Math.max(2, Math.min(value, 144)),
-      },
-    }));
-  }
-
-  function onLineHeightChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const value = e.target.valueAsNumber || 1;
-    setState((currentState) => ({
-      ...currentState,
-      textStyle: {
-        ...currentState.textStyle,
-        lineHeight: Math.max(1, Math.min(value, 150)),
-      },
-    }));
-  }
-
   return (
     <main>
       <section className={'controls'}>
@@ -266,42 +234,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
         <Link href={'/payment'}>
           <button id={'pay'}>Pay</button>
         </Link>
-        <div>
-          <label>Font Family:</label>
-          <select
-            onChange={onFontFamilyChange}
-            value={state.textStyle.fontFamily}>
-            {fonts.map((font, key) => {
-              return (
-                <option value={font.family} key={key}>
-                  {font.family}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <div>
-          <label>Font Size:</label>
-          <input
-            type={'number'}
-            min={2}
-            max={144}
-            step={1}
-            onChange={onFontSizeChange}
-            value={state.textStyle.fontSize}
-          />
-        </div>
-        <div>
-          <label>Line Height:</label>
-          <input
-            type={'number'}
-            min={2}
-            max={150}
-            step={2}
-            onChange={onLineHeightChange}
-            value={state.textStyle.lineHeight}
-          />
-        </div>
+        <DesignForm fonts={fonts} usePageState={[state, setState]} />
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
