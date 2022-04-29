@@ -2,6 +2,7 @@ import { NextApiRequest } from 'next';
 
 export interface PageState {
   namesList: string[];
+  selectedName: string;
   imageSrc: string | null;
   imageDimensions: Dimensions;
   canvasDimensions: Dimensions;
@@ -9,6 +10,8 @@ export interface PageState {
   textStyle: TextStyle;
   downloadInProgress: boolean;
 }
+
+export type PageStateHook = [PageState, React.Dispatch<React.SetStateAction<PageState>>];
 
 export interface ZiventiNextApiRequest extends NextApiRequest {
   body: RequestBody;

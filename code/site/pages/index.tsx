@@ -11,9 +11,10 @@ import React, {
 
 import DesignForm from 'components/designform';
 import DragZone from 'components/dragzone';
+import NameList from 'components/namelist';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Download from 'constants/functions/download';
-import { names as NAMES_LIST, imageSource } from 'constants/test.json';
+import TestData from 'constants/test.json';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import ZiventiLogo from 'public/ziventi-logo.png';
@@ -21,6 +22,7 @@ import ZiventiLogo from 'public/ziventi-logo.png';
 const Home: NextPage<HomeProps> = ({ fonts }) => {
   const [state, setState] = useState<PageState>({
     namesList: [],
+    selectedName: '',
     imageSrc: null,
     imageDimensions: {
       width: 0,
@@ -64,8 +66,8 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
   useEffect(() => {
     setState((currentState) => ({
       ...currentState,
-      namesList: NAMES_LIST,
-      imageSrc: imageSource,
+      namesList: TestData.names,
+      imageSrc: TestData.imageSource,
     }));
   }, []);
 
@@ -76,12 +78,20 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
         WebFont.load({
           google: {
             families: [state.textStyle.fontFamily],
-            text: state.namesList[0],
+            text: state.selectedName,
           },
         });
       })
       .catch(console.error);
-  }, [state.namesList, state.textStyle.fontFamily]);
+  }, [state.selectedName, state.textStyle.fontFamily]);
+
+  // Change selected name if the names list changes.
+  useEffect(() => {
+    setState((current) => ({
+      ...current,
+      selectedName: current.namesList[0] || '',
+    }));
+  }, [state.namesList]);
 
   // Called each time the image source changes.
   useEffect(() => {
@@ -126,6 +136,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
     };
   }, [state.imageSrc]);
 
+  // Adjust draggable position when top or left values are changed.
   useEffect(() => {
     const draggable = draggableRef.current;
     if (draggable) {
@@ -155,7 +166,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
 
   function preview(): void {
     const canvas = canvasRef.current!;
-    drawOnCanvas(canvas, state.namesList[0], state.textStyle);
+    drawOnCanvas(canvas, state.selectedName, state.textStyle);
   }
 
   /**
@@ -225,7 +236,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
 
   return (
     <main>
-      <section className={'controls'}>
+      <aside className={'controls'}>
         <header>
           <Link href={'/'}>
             <NextImage
@@ -266,7 +277,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
           color={state.draggable.textColor}
           onChange={onTextColorChange}
         /> */}
-      </section>
+      </aside>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
         <DragZone
@@ -275,6 +286,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
           ref={draggableRef}
         />
       </section>
+      <NameList usePageState={[state, setState]} />
       <ProgressOverlay state={state} />
     </main>
   );

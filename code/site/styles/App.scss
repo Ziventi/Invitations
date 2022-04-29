@@ -4,11 +4,11 @@ $font: 'Rubik', sans-serif;
 
 * {
   box-sizing: border-box;
+  font-family: $font;
 }
 
 html,
 body {
-  font-family: $font;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -39,7 +39,7 @@ main {
   position: relative;
 }
 
-section.controls {
+aside.controls {
   flex: 0 0 300px;
   padding: 1em;
 }

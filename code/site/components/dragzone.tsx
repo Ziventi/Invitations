@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { Coordinates, PageState } from 'constants/types';
+import { Coordinates, PageStateHook } from 'constants/types';
 
 const DragZone = React.forwardRef<HTMLDivElement, DragZoneProps>(
   ({ useDraggableRef, usePageState }, ref): ReactElement | null => {
@@ -217,7 +217,7 @@ const DragZone = React.forwardRef<HTMLDivElement, DragZoneProps>(
       }));
     }
 
-    if (!pageState.namesList.length || !pageState.imageSrc) return null;
+    if (!pageState.selectedName || !pageState.imageSrc) return null;
 
     const draggableClasses = classnames('draggable', {
       'draggable--selected': pageState.draggable.isSelected,
@@ -240,7 +240,7 @@ const DragZone = React.forwardRef<HTMLDivElement, DragZoneProps>(
               fontSize: `${pageState.textStyle.fontSize}px`,
               lineHeight: `${pageState.textStyle.lineHeight}px`,
             }}>
-            {pageState.namesList[0]}
+            {pageState.selectedName}
           </span>
           <ResizeHandles
             draggableRef={draggableRef}
@@ -332,7 +332,7 @@ interface DragZoneProps {
     React.RefObject<HTMLDivElement>,
     React.Dispatch<React.SetStateAction<React.RefObject<HTMLDivElement>>>,
   ];
-  usePageState: [PageState, React.Dispatch<React.SetStateAction<PageState>>];
+  usePageState: PageStateHook;
 }
 
 interface ResizeHandlesProps {

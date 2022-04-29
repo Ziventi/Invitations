@@ -1,6 +1,6 @@
 import React, { ReactElement, useMemo } from 'react';
 
-import { GoogleFont, PageState } from 'constants/types';
+import { GoogleFont, PageStateHook } from 'constants/types';
 
 export default function DesignForm({
   fonts,
@@ -122,5 +122,5 @@ function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 
 interface DesignFormProps {
   fonts: GoogleFont[];
-  usePageState: [PageState, React.Dispatch<React.SetStateAction<PageState>>];
+  usePageState: PageStateHook;
 }
