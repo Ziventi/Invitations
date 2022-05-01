@@ -14,7 +14,13 @@ aside.controls {
   section.design-form {
     padding: 1em 0;
 
+    div.form-field-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
     div.form-field {
+      flex: 1;
       padding: 0.5em 0;
     }
 
@@ -40,6 +46,8 @@ aside.controls {
     input[type='number'],
     select {
       @extend %input;
+      font-size: 16px;
+      padding: 0.5em;
     }
   }
 

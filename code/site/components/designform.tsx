@@ -24,8 +24,12 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
     return state.canvasDimensions.width - state.textStyle.width;
   }, [state.canvasDimensions.width, state.textStyle.width]);
 
-  const fontPreviewColor = useMemo(() => {
-    return new TinyColor(state.textStyle.color).isLight() ? '#000' : '#fff';
+  const { fontPreviewText, fontPreviewTextColor } = useMemo(() => {
+    const tc = new TinyColor(state.textStyle.color);
+    return {
+      fontPreviewText: tc.toString('hex3').toUpperCase(),
+      fontPreviewTextColor: tc.isLight() ? '#000' : '#fff',
+    };
   }, [state.textStyle.color]);
 
   /**
@@ -101,9 +105,9 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
           onClick={showColorPicker}
           style={{
             backgroundColor: state.textStyle.color,
-            color: fontPreviewColor,
+            color: fontPreviewTextColor,
           }}>
-          {state.textStyle.color.toUpperCase()}
+          {fontPreviewText}
         </button>
         {state.isColorPickerVisible && (
           <ChromePicker
@@ -121,52 +125,60 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
           />
         )}
       </FormField>
-      <FormField>
-        <label>Font Size:</label>
-        <NumberInput
-          name={'fontSize'}
-          min={2}
-          max={144}
-          step={1}
-          onChange={onNumberInputChange}
-          value={state.textStyle.fontSize}
-        />
-      </FormField>
-      <FormField>
-        <label>Line Height:</label>
-        <NumberInput
-          name={'lineHeight'}
-          min={2}
-          max={150}
-          step={2}
-          onChange={onNumberInputChange}
-          value={state.textStyle.lineHeight}
-        />
-      </FormField>
-      <FormField>
-        <label>Top:</label>
-        <NumberInput
-          name={'top'}
-          min={0}
-          max={maxTop}
-          step={1}
-          onChange={onNumberInputChange}
-          value={state.textStyle.top}
-        />
-      </FormField>
-      <FormField>
-        <label>Left:</label>
-        <NumberInput
-          name={'left'}
-          min={0}
-          max={maxLeft}
-          step={1}
-          onChange={onNumberInputChange}
-          value={state.textStyle.left}
-        />
-      </FormField>
+      <FormFieldRow>
+        <FormField>
+          <label>Font Size:</label>
+          <NumberInput
+            name={'fontSize'}
+            min={2}
+            max={144}
+            step={1}
+            onChange={onNumberInputChange}
+            value={state.textStyle.fontSize}
+          />
+        </FormField>
+        <FormField>
+          <label>Line Height:</label>
+          <NumberInput
+            name={'lineHeight'}
+            min={2}
+            max={150}
+            step={2}
+            onChange={onNumberInputChange}
+            value={state.textStyle.lineHeight}
+          />
+        </FormField>
+      </FormFieldRow>
+      <FormFieldRow>
+        <FormField>
+          <label>Top:</label>
+          <NumberInput
+            name={'top'}
+            min={0}
+            max={maxTop}
+            step={1}
+            onChange={onNumberInputChange}
+            value={state.textStyle.top}
+          />
+        </FormField>
+        <FormField>
+          <label>Left:</label>
+          <NumberInput
+            name={'left'}
+            min={0}
+            max={maxLeft}
+            step={1}
+            onChange={onNumberInputChange}
+            value={state.textStyle.left}
+          />
+        </FormField>
+      </FormFieldRow>
     </section>
   );
+}
+
+function FormFieldRow({ children }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={'form-field-row'}>{children}</div>;
 }
 
 function FormField({ children }: React.HTMLAttributes<HTMLDivElement>) {
