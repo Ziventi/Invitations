@@ -1,3 +1,4 @@
+import { TinyColor } from '@ctrl/tinycolor';
 import React, { ReactElement, useCallback, useMemo } from 'react';
 import { ChromePicker, ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +23,10 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   const maxLeft = useMemo(() => {
     return state.canvasDimensions.width - state.textStyle.width;
   }, [state.canvasDimensions.width, state.textStyle.width]);
+
+  const fontPreviewColor = useMemo(() => {
+    return new TinyColor(state.textStyle.color).isLight() ? '#000' : '#fff';
+  }, [state.textStyle.color]);
 
   /**
    * Triggers on a new font family selection.
@@ -94,8 +99,12 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
         <button
           className={'color-thumbnail'}
           onClick={showColorPicker}
-          style={{ backgroundColor: state.textStyle.color }}
-        />
+          style={{
+            backgroundColor: state.textStyle.color,
+            color: fontPreviewColor,
+          }}>
+          {state.textStyle.color.toUpperCase()}
+        </button>
         {state.isColorPickerVisible && (
           <ChromePicker
             color={state.textStyle.color}
