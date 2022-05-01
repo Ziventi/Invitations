@@ -40,7 +40,8 @@ main {
 
 aside.controls {
   background-color: $color-sidebar;
-  flex: 0 0 300px;
+  flex: 0 0 auto;
+  max-width: 250px;
   padding: 1em;
 }
 

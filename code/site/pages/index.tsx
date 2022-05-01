@@ -261,6 +261,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
           accept={'image/jpeg,image/png'}
           onChange={onImageSelect}
         />
+        <DesignForm fonts={fonts} usePageState={[state, setState]} />
         <button id={'draw'} onClick={preview}>
           Draw
         </button>
@@ -272,7 +273,6 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
         <Link href={'/payment'}>
           <button id={'pay'}>Pay</button>
         </Link>
-        <DesignForm fonts={fonts} usePageState={[state, setState]} />
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}
