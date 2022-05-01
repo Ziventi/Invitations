@@ -26,16 +26,22 @@ const Home: NextPage = () => {
   }
 
   /**
-   * Called on selection of a file to edit.
+   * Called on selection of a file to edit. Ensures only files below limit are
+   * allowed
    * @param e The change event.
-   * // TODO: Ask before replacing existing image.
    */
   function onImageSelect(e: React.ChangeEvent<HTMLInputElement>): void {
     const { files } = e.target;
     if (!files || !files.length) return;
 
+    const file = files[0];
+    if (file.size > 10 * 1024 * 1024) {
+      e.target.value = '';
+      return alert('Maximum file size is 10MB');
+    }
+
     const fileReader = new FileReader();
-    fileReader.readAsDataURL(files[0]);
+    fileReader.readAsDataURL(file);
     fileReader.onload = () => {
       setState((current) => ({
         ...current,
@@ -74,7 +80,7 @@ const Home: NextPage = () => {
                 <span>Choose your image...</span>
               </label>
             </div>
-            <small>* Supported formats are JPEG and PNG.</small>
+            <small>* Supported formats are JPEG and PNG. Maximum image size is 10MB.</small>
           </section>
           <section>
             <h2>Step 2</h2>
