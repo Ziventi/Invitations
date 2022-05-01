@@ -191,17 +191,21 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
         </header>
 
         <DesignForm fonts={fonts} />
-        <button id={'draw'} onClick={preview}>
+        <button id={'preview'} onClick={preview}>
           Draw
-        </button>
-        <button onClick={() => download('pdf')}>Download PDF</button>
-        <button onClick={() => download('png')}>Download PNG</button>
-        <button onClick={() => download('png-zip')}>
-          Download PNG archive
         </button>
         <Link href={'/payment'}>
           <button id={'pay'}>Pay</button>
         </Link>
+        <button id={'download-pdf'} onClick={() => download('pdf')}>
+          Download PDF
+        </button>
+        <button id={'download-png'} onClick={() => download('png')}>
+          Download PNG
+        </button>
+        <button id={'download-png-archive'} onClick={() => download('png-zip')}>
+          Download PNG archive
+        </button>
         {/* <PhotoshopPicker
           color={state.draggable.textColor}
           onChange={onTextColorChange}

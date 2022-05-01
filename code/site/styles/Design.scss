@@ -9,7 +9,7 @@ aside.controls {
   background-color: $color-background;
   flex: 0 0 auto;
   max-width: 250px;
-  padding: 1em;
+  padding: 1.5em;
 
   section.design-form {
     padding: 1em 0;
@@ -28,12 +28,38 @@ aside.controls {
       @extend %input;
     }
   }
+
+  button {
+    @extend %button;
+    margin: 0.3em 0;
+    width: 100%;
+  }
+
+  button#preview {
+    @include buttonize($color-primary-2-dark);
+  }
+
+  button#pay {
+    @include buttonize($color-primary-2);
+  }
+
+  button#download-png {
+    @include buttonize($color-primary-3);
+  }
+
+  button#download-pdf {
+    @include buttonize($color-primary-4);
+  }
+
+  button#download-png-archive {
+    @include buttonize($color-primary-5-light);
+  }
 }
 
 section.preview {
   align-items: center;
   background-color: $color-body;
-  border-left: 2px solid $color-primary-3;
+  border-left: 5px solid $color-primary-1-dark;
   display: flex;
   flex: 1 1 auto;
   height: 100%;
@@ -110,16 +136,18 @@ aside.namelist {
   overflow-y: scroll;
 
   button.name-button {
-    @extend %button;
     @include buttonize($color-button);
     align-items: center;
+    border-style: none;
     color: #fff;
     column-gap: 20px;
+    cursor: pointer;
     display: grid;
     flex: 1 1 auto;
     font-size: 14px;
     grid-template-columns: 20px 1fr;
     min-height: 70px;
+    outline: none;
     padding: 0.5em;
     transition: all 0.3s ease;
     width: 100%;

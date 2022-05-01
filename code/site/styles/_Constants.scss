@@ -1,22 +1,35 @@
 $font: 'Rubik', sans-serif;
 
 $color-primary-1: #ebd4cb;
-$color-primary-1-light: #f3e8e2;
+$color-primary-1-light: #f9f3f0;
+$color-primary-1-dark: #e2c2b6;
 $color-primary-2: #da9f93;
+$color-primary-2-light: #e5bbb3;
+$color-primary-2-dark: #d08576;
 $color-primary-3: #b6465f;
+$color-primary-3-light: #c66c80;
+$color-primary-3-dark: #a23f54;
 $color-primary-4: #890620;
+$color-primary-4-light: #b00729;
 $color-primary-4-dark: #620417;
 $color-primary-5: #2c0703;
+$color-primary-5-light: #5f1007;
+$color-primary-5-dark: #130301;
 $color-white: #fff;
 
-$color-body: $color-primary-1-light;
-$color-background: $color-primary-1;
+$color-body: $color-primary-1;
+$color-background: $color-primary-1-dark;
 $color-button: $color-primary-4;
 
 %button {
+  border-radius: 10px;
   border-style: none;
+  color: $color-white;
   cursor: pointer;
+  font-size: 16px;
+  min-width: 100px;
   outline: none;
+  padding: 1em;
 }
 
 %input {
@@ -24,7 +37,7 @@ $color-button: $color-primary-4;
   border-style: none;
   max-width: 100%;
   outline-color: $color-primary-2;
-  padding: 6px; 
+  padding: 6px;
 }
 
 @mixin buttonize($color, $hover: $color, $active: $color) {
