@@ -1,2 +1,41 @@
 $font: 'Rubik', sans-serif;
-$color-sidebar: #95abfc;
+
+$color-primary-1: #ebd4cb;
+$color-primary-1-light: #f3e8e2;
+$color-primary-2: #da9f93;
+$color-primary-3: #b6465f;
+$color-primary-4: #890620;
+$color-primary-4-dark: #620417;
+$color-primary-5: #2c0703;
+$color-white: #fff;
+
+$color-body: $color-primary-1-light;
+$color-background: $color-primary-1;
+$color-button: $color-primary-4;
+
+%button {
+  border-style: none;
+  cursor: pointer;
+  outline: none;
+}
+
+%input {
+  border-radius: 10px;
+  border-style: none;
+  max-width: 100%;
+  outline-color: $color-primary-2;
+  padding: 6px; 
+}
+
+@mixin buttonize($color, $hover: $color, $active: $color) {
+  background-color: $color;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken($hover, 5%);
+  }
+
+  &:active {
+    background-color: lighten($active, 10%);
+  }
+}

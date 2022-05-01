@@ -6,7 +6,7 @@ import { Provider} from 'react-redux';
 import { store } from 'reducers/store';
 import 'styles/App.scss';
 
-export default function MyApp({
+export default function ZiventiApp({
   Component,
   pageProps,
 }: AppProps): ReactElement {
