@@ -1,33 +1,38 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { GoogleFont, PageStateHook } from 'constants/types';
+import { GoogleFont } from 'constants/types';
+import { PageStatePayload, updateState } from 'reducers/slice';
+import { RootState } from 'reducers/store';
 
-export default function DesignForm({
-  fonts,
-  usePageState,
-}: DesignFormProps): ReactElement {
-  const [pageState, setPageState] = usePageState;
+export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
+  const state = useSelector(({ state }: RootState) => state);
+  const dispatch = useDispatch();
+  const setState = useCallback(
+    (payload: PageStatePayload) => {
+      dispatch(updateState(payload));
+    },
+    [dispatch],
+  );
 
   const maxTop = useMemo(() => {
-    return pageState.canvasDimensions.height - pageState.textStyle.height;
-  }, [pageState.canvasDimensions.height, pageState.textStyle.height]);
+    return state.canvasDimensions.height - state.textStyle.height;
+  }, [state.canvasDimensions.height, state.textStyle.height]);
   const maxLeft = useMemo(() => {
-    return pageState.canvasDimensions.width - pageState.textStyle.width;
-  }, [pageState.canvasDimensions.width, pageState.textStyle.width]);
+    return state.canvasDimensions.width - state.textStyle.width;
+  }, [state.canvasDimensions.width, state.textStyle.width]);
 
   /**
    * Triggers on a new font family selection.
    * @param e The change event.
    */
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    const fontFamily = e.target.value!;
-    setPageState((currentState) => ({
-      ...currentState,
+    setState({
       textStyle: {
-        ...currentState.textStyle,
-        fontFamily,
+        ...state.textStyle,
+        fontFamily: e.target.value,
       },
-    }));
+    });
   }
 
   /**
@@ -39,13 +44,12 @@ export default function DesignForm({
     const min = parseInt(e.target.min);
     const max = parseInt(e.target.max);
     const value = e.target.valueAsNumber || min;
-    setPageState((currentState) => ({
-      ...currentState,
+    setState({
       textStyle: {
-        ...currentState.textStyle,
+        ...state.textStyle,
         [e.target.name]: Math.max(min, Math.min(value, max)),
       },
-    }));
+    });
   }
 
   return (
@@ -54,7 +58,7 @@ export default function DesignForm({
         <label>Font Family:</label>
         <select
           onChange={onFontFamilyChange}
-          value={pageState.textStyle.fontFamily}>
+          value={state.textStyle.fontFamily}>
           {fonts.map((font, key) => {
             return (
               <option value={font.family} key={key}>
@@ -72,7 +76,7 @@ export default function DesignForm({
           max={144}
           step={1}
           onChange={onNumberInputChange}
-          value={pageState.textStyle.fontSize}
+          value={state.textStyle.fontSize}
         />
       </FormField>
       <FormField>
@@ -83,7 +87,7 @@ export default function DesignForm({
           max={150}
           step={2}
           onChange={onNumberInputChange}
-          value={pageState.textStyle.lineHeight}
+          value={state.textStyle.lineHeight}
         />
       </FormField>
       <FormField>
@@ -94,7 +98,7 @@ export default function DesignForm({
           max={maxTop}
           step={1}
           onChange={onNumberInputChange}
-          value={pageState.textStyle.top}
+          value={state.textStyle.top}
         />
       </FormField>
       <FormField>
@@ -105,7 +109,7 @@ export default function DesignForm({
           max={maxLeft}
           step={1}
           onChange={onNumberInputChange}
-          value={pageState.textStyle.left}
+          value={state.textStyle.left}
         />
       </FormField>
     </section>
@@ -122,5 +126,4 @@ function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 
 interface DesignFormProps {
   fonts: GoogleFont[];
-  usePageState: PageStateHook;
 }

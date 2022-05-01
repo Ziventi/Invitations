@@ -3,11 +3,13 @@ import NextImage from 'next/image';
 import Link from 'next/link';
 import React, {
   ReactElement,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import DesignForm from 'components/designform';
 import DragZone from 'components/dragzone';
@@ -18,45 +20,22 @@ import TestData from 'constants/test.json';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import ZiventiLogo from 'public/ziventi-logo.png';
+import { PageStatePayload, updateState } from 'reducers/slice';
+import { RootState } from 'reducers/store';
 
 const Home: NextPage<HomeProps> = ({ fonts }) => {
-  const [state, setState] = useState<PageState>({
-    namesList: [],
-    selectedName: '',
-    imageSrc: null,
-    imageDimensions: {
-      width: 0,
-      height: 0,
-    },
-    canvasDimensions: {
-      width: 0,
-      height: 0,
-    },
-    textStyle: {
-      color: '#000',
-      fontFamily: 'Courgette',
-      fontSize: 19,
-      lineHeight: 24,
-      left: 0,
-      top: 0,
-      width: 0,
-      height: 0,
-      scale: 1,
-      scaleX: 1,
-      scaleY: 1,
-    },
-    draggable: {
-      isDragging: false,
-      isSelected: false,
-      offset: null,
-    },
-    downloadInProgress: false,
-  });
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
-
   const useDraggableRef = useState(draggableRef);
+
+  const state = useSelector(({ state }: RootState) => state);
+  const dispatch = useDispatch();
+  const setState = useCallback(
+    (payload: PageStatePayload) => {
+      dispatch(updateState(payload));
+    },
+    [dispatch],
+  );
 
   const names = useMemo(() => {
     return state.namesList.join('\n');
@@ -64,12 +43,11 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
 
   // TODO: Remove (dev purposes only)
   useEffect(() => {
-    setState((currentState) => ({
-      ...currentState,
+    setState({
       namesList: TestData.names,
       imageSrc: TestData.imageSource,
-    }));
-  }, []);
+    });
+  }, [setState]);
 
   // Load a new font on a new font family selection.
   useEffect(() => {
@@ -87,11 +65,10 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
 
   // Change selected name if the names list changes.
   useEffect(() => {
-    setState((current) => ({
-      ...current,
-      selectedName: current.namesList[0] || '',
-    }));
-  }, [state.namesList]);
+    setState({
+      selectedName: state.namesList[0] || '',
+    });
+  }, [setState, state.namesList]);
 
   // Called each time the image source changes.
   useEffect(() => {
@@ -111,8 +88,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
       const scaleY = canvas.height / canvas.clientHeight;
       const scale = (scaleX + scaleY) / 2;
 
-      setState((currentState) => ({
-        ...currentState,
+      setState({
         canvasDimensions: {
           width: canvas.clientWidth,
           height: canvas.clientHeight,
@@ -122,19 +98,20 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
           height: img.height,
         },
         textStyle: {
-          ...currentState.textStyle,
           scale,
           scaleX,
           scaleY,
         },
-      }));
+      });
 
       // TODO: Dev Only
       const draggable = draggableRef.current!;
-      draggable.style.top = '0px';
-      draggable.style.left = '0px';
+      if (draggable) {
+        draggable.style.top = '0px';
+        draggable.style.left = '0px';
+      }
     };
-  }, [state.imageSrc]);
+  }, [setState, state.imageSrc]);
 
   // Adjust draggable position when top or left values are changed.
   useEffect(() => {
@@ -157,10 +134,9 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(files[0]);
     fileReader.onload = () => {
-      setState((currentState) => ({
-        ...currentState,
+      setState({
         imageSrc: fileReader.result as string,
-      }));
+      });
     };
   }
 
@@ -175,10 +151,9 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
   async function download(type: 'pdf' | 'png' | 'png-zip') {
     if (!state.imageSrc) return alert('No image');
 
-    setState((currentState) => ({
-      ...currentState,
+    setState({
       downloadInProgress: true,
-    }));
+    });
 
     const selectedFont = fonts.find((font) => {
       return font.family === state.textStyle.fontFamily;
@@ -209,19 +184,16 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
     } catch (e) {
       alert(e);
     } finally {
-      setState((currentState) => ({
-        ...currentState,
+      setState({
         downloadInProgress: false,
-      }));
+      });
     }
   }
 
   function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
     const names = e.target.value;
-    setState((currentState) => ({
-      ...currentState,
-      namesList: names.split('\n'),
-    }));
+    const namesList = names.split('\n').filter((name) => name.trim());
+    setState({ namesList });
   }
 
   // function onTextColorChange(color: ColorResult): void {
@@ -238,17 +210,17 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
     <main>
       <aside className={'controls'}>
         <header>
-          <Link href={'/'}>
-            <NextImage
-              src={ZiventiLogo}
-              alt={'Ziventi Logo'}
-              priority={true}
-              layout={'fill'}
-              objectFit={'contain'}
-              objectPosition={'left'}
-              className={'site-logo'}
-            />
-          </Link>
+          {/* <Link href={'/'}> */}
+          <NextImage
+            src={ZiventiLogo}
+            alt={'Ziventi Logo'}
+            priority={true}
+            layout={'fill'}
+            objectFit={'contain'}
+            objectPosition={'left'}
+            className={'site-logo'}
+          />
+          {/* </Link> */}
         </header>
         <textarea
           id={'names-list'}
@@ -261,7 +233,7 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
           accept={'image/jpeg,image/png'}
           onChange={onImageSelect}
         />
-        <DesignForm fonts={fonts} usePageState={[state, setState]} />
+        <DesignForm fonts={fonts} />
         <button id={'draw'} onClick={preview}>
           Draw
         </button>
@@ -280,13 +252,9 @@ const Home: NextPage<HomeProps> = ({ fonts }) => {
       </aside>
       <section className={'preview'}>
         <canvas ref={canvasRef} />
-        <DragZone
-          useDraggableRef={useDraggableRef}
-          usePageState={[state, setState]}
-          ref={draggableRef}
-        />
+        <DragZone useDraggableRef={useDraggableRef} ref={draggableRef} />
       </section>
-      <NameList usePageState={[state, setState]} />
+      <NameList />
       <ProgressOverlay state={state} />
     </main>
   );

@@ -11,7 +11,10 @@ export interface PageState {
   downloadInProgress: boolean;
 }
 
-export type PageStateHook = [PageState, React.Dispatch<React.SetStateAction<PageState>>];
+export type PageStateHook = [
+  PageState,
+  React.Dispatch<React.SetStateAction<PageState>>,
+];
 
 export interface ZiventiNextApiRequest extends NextApiRequest {
   body: RequestBody;
@@ -62,12 +65,10 @@ export interface GoogleFont {
   defVariant?: string;
 }
 
-type Draggable = {
-  isSelected: boolean;
-} & (
+export type Draggable = { isSelected: boolean } & DraggableOptions;
+export type DraggableOptions =
   | {
       isDragging: true;
       offset: Coordinates;
     }
-  | { isDragging: false; offset: null }
-);
+  | { isDragging: false; offset: null };

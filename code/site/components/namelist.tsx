@@ -1,20 +1,24 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { PageStateHook } from 'constants/types';
+import { updateState } from 'reducers/slice';
+import { RootState } from 'reducers/store';
 
-export default function NameList({ usePageState }: NameListProps) {
-  const [pageState, setPageState] = usePageState;
+export default function NameList() {
+  const state = useSelector(({ state }: RootState) => state);
+  const dispatch = useDispatch();
 
   function onNameClick(name: string) {
-    setPageState((current) => ({
-      ...current,
-      selectedName: name,
-    }));
+    dispatch(
+      updateState({
+        selectedName: name,
+      }),
+    );
   }
 
   return (
     <aside className={'namelist'}>
-      {pageState.namesList.map((name, key) => {
+      {state.namesList.map((name, key) => {
         return (
           <button
             onClick={() => onNameClick(name)}
@@ -27,8 +31,4 @@ export default function NameList({ usePageState }: NameListProps) {
       })}
     </aside>
   );
-}
-
-interface NameListProps {
-  usePageState: PageStateHook;
 }
