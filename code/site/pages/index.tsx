@@ -1,9 +1,9 @@
-import ZiventiLogo from 'components/logo';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import ZiventiLogo from 'components/logo';
 import { PageStatePayload, updateState } from 'reducers/slice';
 
 const Home: NextPage = () => {

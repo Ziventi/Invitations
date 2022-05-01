@@ -15,11 +15,11 @@ import ZiventiLogo from 'components/logo';
 import NameList from 'components/namelist';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Download from 'constants/functions/download';
-import TestData from 'constants/test.json';
 import { GoogleFont, PageState, RequestBody } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import { PageStatePayload, updateState } from 'reducers/slice';
 import { RootState } from 'reducers/store';
+import TestData from 'test/test.json';
 
 const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

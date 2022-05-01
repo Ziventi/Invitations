@@ -12,6 +12,8 @@ import { Coordinates } from 'constants/types';
 import { PageStatePayload, updateState } from 'reducers/slice';
 import { RootState } from 'reducers/store';
 
+const positions: ResizeHandlePosition[] = ['east', 'west'];
+
 const DragZone = React.forwardRef<HTMLDivElement, DragZoneProps>(
   ({ useDraggableRef }, ref): ReactElement | null => {
     const state = useSelector(({ state }: RootState) => state);
@@ -269,18 +271,18 @@ function ResizeHandles({
     const draggable = draggableRef.current;
     if (!draggable) return;
 
+    const { id } = e.currentTarget;
     setDragZoneState((currentState) => ({
       ...currentState,
       currentDraggableLeft: draggable.offsetLeft,
       currentDraggableWidth: draggable.offsetWidth,
       isDragging: true,
-      handleId: e.currentTarget.id as ResizeHandlePosition,
+      handleId: id as ResizeHandlePosition,
       pointX: e.pageX,
     }));
     e.stopPropagation();
   }
 
-  const positions: ResizeHandlePosition[] = ['east', 'west'];
   return (
     <>
       {positions.map((position) => {
