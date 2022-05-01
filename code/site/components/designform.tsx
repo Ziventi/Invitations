@@ -1,4 +1,5 @@
 import React, { ReactElement, useCallback, useMemo } from 'react';
+import { ChromePicker, ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { GoogleFont } from 'constants/types';
@@ -29,8 +30,19 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
     setState({
       textStyle: {
-        ...state.textStyle,
         fontFamily: e.target.value,
+      },
+    });
+  }
+
+  /**
+   * Triggers on a new font color selection.
+   * @param color The result color.
+   */
+  function onFontColorChange(color: ColorResult): void {
+    setState({
+      textStyle: {
+        color: color.hex,
       },
     });
   }
@@ -52,6 +64,15 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
     });
   }
 
+  /**
+   * Shows the color picker.
+   */
+  function showColorPicker() {
+    setState({
+      isColorPickerVisible: true,
+    });
+  }
+
   return (
     <section className={'design-form'}>
       <FormField>
@@ -67,6 +88,29 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
             );
           })}
         </select>
+      </FormField>
+      <FormField>
+        <label>Font Color:</label>
+        <button
+          className={'color-thumbnail'}
+          onClick={showColorPicker}
+          style={{ backgroundColor: state.textStyle.color }}
+        />
+        {state.isColorPickerVisible && (
+          <ChromePicker
+            color={state.textStyle.color}
+            onChange={onFontColorChange}
+            className={'color-picker'}
+            styles={{
+              default: {
+                picker: {
+                  borderRadius: '20px',
+                  cursor: 'pointer',
+                },
+              },
+            }}
+          />
+        )}
       </FormField>
       <FormField>
         <label>Font Size:</label>

@@ -2,13 +2,14 @@ import { NextApiRequest } from 'next';
 
 export interface PageState {
   namesList: string[];
-  selectedName: string;
-  imageSrc: string | null;
-  imageDimensions: Dimensions;
   canvasDimensions: Dimensions;
-  draggable: Draggable;
-  textStyle: TextStyle;
   downloadInProgress: boolean;
+  draggable: Draggable;
+  imageDimensions: Dimensions;
+  imageSrc: string | null;
+  isColorPickerVisible: boolean;
+  selectedName: string;
+  textStyle: TextStyle;
 }
 
 export type PageStateHook = [

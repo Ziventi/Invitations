@@ -43,6 +43,37 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
     });
   }, [setState]);
 
+  // Toggle cursor type when color picker is visible.
+  // Hide color picker if clicked outside of color picker.
+  useEffect(() => {
+    if (state.isColorPickerVisible) {
+      document.body.style.cursor = 'pointer';
+    } else {
+      document.body.style.cursor = 'initial';
+    }
+
+    const hideColorPicker = (e: MouseEvent) => {
+      if (!state.isColorPickerVisible) return;
+
+      const isColorPicker = document
+        .elementsFromPoint(e.pageX, e.pageY)
+        .some((element) => {
+          return element.classList.contains('color-picker');
+        });
+
+      if (!isColorPicker) {
+        setState({
+          isColorPickerVisible: false,
+        });
+      }
+    };
+
+    window.addEventListener('mousedown', hideColorPicker);
+    return () => {
+      window.removeEventListener('mousedown', hideColorPicker);
+    };
+  }, [setState, state.isColorPickerVisible]);
+
   // Load a new font on a new font family selection.
   useEffect(() => {
     import('webfontloader')
@@ -166,16 +197,6 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
     }
   }
 
-  // function onTextColorChange(color: ColorResult): void {
-  //   setState((currentState) => ({
-  //     ...currentState,
-  //     draggable: {
-  //       ...currentState.draggable,
-  //       color: color.hex,
-  //     },
-  //   }));
-  // }
-
   return (
     <main className={'design'}>
       <aside className={'controls'}>
@@ -206,10 +227,6 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
         <button id={'download-png-archive'} onClick={() => download('png-zip')}>
           Download PNG archive
         </button>
-        {/* <PhotoshopPicker
-          color={state.draggable.textColor}
-          onChange={onTextColorChange}
-        /> */}
         <Link href={'/'}>Back to Home</Link>
       </aside>
       <section className={'preview'}>
