@@ -167,20 +167,23 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
       return font.family === state.textStyle.fontFamily;
     })!;
 
+    const requestBody: RequestBody = {
+      backgroundImageSrc: state.imageSrc,
+      fileNameTemplate: state.fileNameTemplate,
+      format,
+      fontId: selectedFont.id,
+      dimensions: state.imageDimensions,
+      namesList: state.namesList,
+      selectedName: state.selectedName,
+      textStyle: state.textStyle,
+    };
+
     const payload: RequestInit = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        backgroundImageSrc: state.imageSrc,
-        format,
-        fontId: selectedFont.id,
-        dimensions: state.imageDimensions,
-        namesList: state.namesList,
-        selectedName: state.selectedName,
-        textStyle: state.textStyle,
-      } as RequestBody),
+      body: JSON.stringify(requestBody),
     };
 
     try {

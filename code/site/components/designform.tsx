@@ -4,6 +4,7 @@ import { ChromePicker, ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { GoogleFont } from 'constants/types';
+import { DEFAULT_FILENAME_TEMPLATE } from 'constants/variables';
 import { PageStatePayload, updateState } from 'reducers/slice';
 import { RootState } from 'reducers/store';
 
@@ -25,10 +26,10 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   }, [state.canvasDimensions.width, state.textStyle.width]);
 
   const { fontPreviewText, fontPreviewTextColor } = useMemo(() => {
-    const tc = new TinyColor(state.textStyle.color);
+    const color = new TinyColor(state.textStyle.color);
     return {
-      fontPreviewText: tc.toString('hex3').toUpperCase(),
-      fontPreviewTextColor: tc.isLight() ? '#000' : '#fff',
+      fontPreviewText: color.toString('hex3').toUpperCase(),
+      fontPreviewTextColor: color.isLight() ? '#000' : '#fff',
     };
   }, [state.textStyle.color]);
 
@@ -70,6 +71,14 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
         ...state.textStyle,
         [e.target.name]: Math.max(min, Math.min(value, max)),
       },
+    });
+  }
+
+  function onFileNameTemplateChange(
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ): void {
+    setState({
+      fileNameTemplate: e.target.value,
     });
   }
 
@@ -173,6 +182,16 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
           />
         </FormField>
       </FormFieldRow>
+      <FormField>
+        <label>File Name Template:</label>
+        <textarea
+          onChange={onFileNameTemplateChange}
+          value={state.fileNameTemplate}
+          rows={2}
+          placeholder={DEFAULT_FILENAME_TEMPLATE}
+          maxLength={128}
+        />
+      </FormField>
     </section>
   );
 }

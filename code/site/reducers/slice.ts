@@ -4,6 +4,7 @@ import { Draggable, DraggableOptions, PageState } from 'constants/types';
 
 const initialState: PageState = {
   namesList: [],
+  fileNameTemplate: '',
   selectedName: '',
   isColorPickerVisible: false,
   imageSrc: null,

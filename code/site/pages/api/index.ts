@@ -6,6 +6,7 @@ import type { NextApiResponse, PageConfig } from 'next';
 import { clearCanvas, drawOnCanvas } from 'constants/functions/canvas';
 import * as Server from 'constants/functions/server';
 import { ZiventiNextApiRequest } from 'constants/types';
+import * as File from 'constants/functions/file';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
@@ -14,6 +15,7 @@ export default async function handler(
   const {
     backgroundImageSrc,
     dimensions,
+    fileNameTemplate,
     format,
     fontId,
     namesList: names,
@@ -36,18 +38,19 @@ export default async function handler(
     const archiver = new AdmZip();
     names.forEach((name) => {
       drawOnCanvas(canvas, name, textStyle, backgroundImage);
+      const filename = File.substituteName(fileNameTemplate, name);
 
       let file;
       if (format === 'pdf') {
         file = canvas.toBuffer('application/pdf', {
-          title: name,
+          title: filename,
           author: 'Ziventi',
         });
       } else {
         file = canvas.toBuffer('image/png');
       }
 
-      archiver.addFile(`${name}.${format}`, file);
+      archiver.addFile(`${filename}.${format}`, file);
       clearCanvas(canvas);
     });
 

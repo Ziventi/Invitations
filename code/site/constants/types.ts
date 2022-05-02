@@ -10,6 +10,7 @@ export interface PageState {
   isColorPickerVisible: boolean;
   selectedName: string;
   textStyle: TextStyle;
+  fileNameTemplate: string;
 }
 
 export type PageStateHook = [
@@ -24,6 +25,7 @@ export interface ZiventiNextApiRequest extends NextApiRequest {
 export interface RequestBody {
   backgroundImageSrc: string;
   dimensions: Dimensions;
+  fileNameTemplate: string;
   format: FileFormat;
   fontId: string;
   namesList: string[];

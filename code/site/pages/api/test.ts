@@ -3,6 +3,7 @@ import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
 import { drawOnCanvas } from 'constants/functions/canvas';
+import * as File from 'constants/functions/file';
 import * as Server from 'constants/functions/server';
 import { ZiventiNextApiRequest } from 'constants/types';
 
@@ -13,6 +14,7 @@ export default async function handler(
   const {
     backgroundImageSrc,
     dimensions,
+    fileNameTemplate,
     format,
     fontId,
     selectedName,
@@ -24,12 +26,14 @@ export default async function handler(
     const backgroundImage = await Server.loadImage(backgroundImageSrc);
     downloadPath = await Server.loadFonts(fontId, textStyle);
 
+    const filename = File.substituteName(fileNameTemplate, selectedName);
+
     let file;
     if (format === 'pdf') {
       const canvas = createCanvas(dimensions.width, dimensions.height, 'pdf');
       drawOnCanvas(canvas, selectedName, textStyle, backgroundImage);
       file = canvas.toBuffer('application/pdf', {
-        title: selectedName,
+        title: filename,
         author: 'Ziventi',
       });
       res.setHeader('Content-Type', 'application/pdf');
