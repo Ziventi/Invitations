@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DesignForm from 'components/designform';
 import DragZone from 'components/dragzone';
 import ZiventiLogo from 'components/logo';
+import MetadataBar from 'components/metadatabar';
 import NameList from 'components/namelist';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Download from 'constants/functions/download';
@@ -241,8 +242,11 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
         <Link href={'/'}>Back to Home</Link>
       </aside>
       <section className={'preview'}>
-        <canvas ref={canvasRef} />
-        <DragZone useDraggableRef={useDraggableRef} ref={draggableRef} />
+        <div className={'preview-main'}>
+          <canvas ref={canvasRef} />
+          <DragZone useDraggableRef={useDraggableRef} ref={draggableRef} />
+        </div>
+        <MetadataBar />
       </section>
       <NameList />
       <ProgressOverlay state={state} />
