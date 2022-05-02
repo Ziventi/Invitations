@@ -82,6 +82,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
       <header>
         {/* <Link href={'/'}> */}
         <ZiventiLogo
+          color={'white'}
           layout={'fill'}
           objectFit={'contain'}
           objectPosition={'left'}
@@ -89,27 +90,32 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
         />
         {/* </Link> */}
       </header>
-
-      <DesignForm fonts={fonts} />
-      <button id={'preview'} onClick={preview}>
-        Draw
-      </button>
-      <Link href={'/payment'}>
-        <button id={'pay'}>Pay</button>
-      </Link>
-      <button id={'download-png'} onClick={() => download('png')}>
-        Download PNG
-      </button>
-      <button id={'download-pdf'} onClick={() => download('pdf')}>
-        Download PDF
-      </button>
-      <button id={'download-png-archive'} onClick={() => download('png', true)}>
-        Download PNG archive
-      </button>
-      <button id={'download-pdf-archive'} onClick={() => download('pdf', true)}>
-        Download PDF archive
-      </button>
-      <Link href={'/'}>Back to Home</Link>
+      <section className={'main'}>
+        <DesignForm fonts={fonts} />
+        <button id={'preview'} onClick={preview}>
+          Draw
+        </button>
+        <Link href={'/payment'}>
+          <button id={'pay'}>Pay</button>
+        </Link>
+        <button id={'download-png'} onClick={() => download('png')}>
+          Download PNG
+        </button>
+        <button id={'download-pdf'} onClick={() => download('pdf')}>
+          Download PDF
+        </button>
+        <button
+          id={'download-png-archive'}
+          onClick={() => download('png', true)}>
+          Download PNG archive
+        </button>
+        <button
+          id={'download-pdf-archive'}
+          onClick={() => download('pdf', true)}>
+          Download PDF archive
+        </button>
+        <Link href={'/'}>Back to Home</Link>
+      </section>
     </aside>
   );
 }
