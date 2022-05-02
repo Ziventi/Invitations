@@ -1,5 +1,6 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import React, { ReactElement, useCallback, useMemo } from 'react';
+import classnames from 'classnames';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { ChromePicker, ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -205,7 +206,29 @@ function FormField({ children }: React.HTMLAttributes<HTMLDivElement>) {
 }
 
 function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input type={'number'} autoComplete={'off'} {...props} />;
+  const [isFocused, setIsFocused] = useState(false);
+
+  const suffixClasses = classnames('number-suffix', {
+    'number-suffix--focus': isFocused,
+  });
+  return (
+    <div className={'number-input'}>
+      <input
+        type={'number'}
+        className={'number'}
+        autoComplete={'off'}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        {...props}
+      />
+      <input
+        type={'text'}
+        className={suffixClasses}
+        value={'px'}
+        readOnly={true}
+      />
+    </div>
+  );
 }
 
 interface DesignFormProps {

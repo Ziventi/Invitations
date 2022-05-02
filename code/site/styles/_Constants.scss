@@ -51,3 +51,30 @@ $color-button: $color-primary-4;
     background-color: lighten($active, 8%);
   }
 }
+
+@mixin scrollbar($color) {
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 9px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: none;
+    cursor: pointer;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: darken($color, 8%);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: darken($color, 12%);
+  }
+}

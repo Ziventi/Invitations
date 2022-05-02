@@ -4,9 +4,9 @@ import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
 import { clearCanvas, drawOnCanvas } from 'constants/functions/canvas';
+import * as File from 'constants/functions/file';
 import * as Server from 'constants/functions/server';
 import { ZiventiNextApiRequest } from 'constants/types';
-import * as File from 'constants/functions/file';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
