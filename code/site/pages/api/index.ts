@@ -14,34 +14,52 @@ export default async function handler(
   const {
     backgroundImageSrc,
     dimensions,
+    format,
     fontId,
     namesList: names,
     textStyle,
   } = req.body;
 
+  let downloadPath;
+
   try {
     const backgroundImage = await loadImage(backgroundImageSrc);
-    const downloadPath = await loadFonts(fontId, textStyle);
+    downloadPath = await loadFonts(fontId, textStyle);
 
     // Generate image and add to archive.
-    const canvas = createCanvas(dimensions.width, dimensions.height);
+    const canvasType = format === 'pdf' ? 'pdf' : undefined;
+    const canvas = createCanvas(
+      dimensions.width,
+      dimensions.height,
+      canvasType,
+    );
     const archiver = new AdmZip();
     names.forEach((name) => {
       drawOnCanvas(canvas, name, textStyle, backgroundImage);
-      const image = canvas.toBuffer();
-      archiver.addFile(`${name}.png`, image);
+
+      let file;
+      if (format === 'pdf') {
+        file = canvas.toBuffer('application/pdf', {
+          title: name,
+          author: 'Ziventi',
+        });
+      } else {
+        file = canvas.toBuffer('image/png');
+      }
+
+      archiver.addFile(`${name}.${format}`, file);
       clearCanvas(canvas);
     });
+
     const archive = archiver.toBuffer();
-
-    if (fs.existsSync(downloadPath)) {
-      fs.rmSync(downloadPath, { force: true, recursive: true });
-    }
-
     res.setHeader('Content-Type', 'application/zip');
     res.status(200).send(archive);
   } catch (e) {
-    return res.status(400).json({ msg: JSON.stringify(e) });
+    res.status(400).json({ msg: JSON.stringify(e) });
+  } finally {
+    if (downloadPath && fs.existsSync(downloadPath)) {
+      fs.rmSync(downloadPath, { force: true, recursive: true });
+    }
   }
 }
 
@@ -104,6 +122,6 @@ export const config: PageConfig = {
     bodyParser: {
       sizeLimit: '2MB',
     },
-    responseLimit: '15MB',
+    responseLimit: '2GB',
   },
 };

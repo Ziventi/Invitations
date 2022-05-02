@@ -24,6 +24,7 @@ export interface ZiventiNextApiRequest extends NextApiRequest {
 export interface RequestBody {
   backgroundImageSrc: string;
   dimensions: Dimensions;
+  format: 'png' | 'pdf';
   fontId: string;
   namesList: string[];
   textStyle: TextStyle;

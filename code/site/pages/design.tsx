@@ -155,7 +155,7 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   /**
    * Performs a download.
    */
-  async function download(type: 'pdf' | 'png' | 'png-zip') {
+  async function download(format: 'pdf' | 'png', asZip?: boolean) {
     if (!state.imageSrc) return alert('No image');
 
     setState({
@@ -173,6 +173,7 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
       },
       body: JSON.stringify({
         backgroundImageSrc: state.imageSrc,
+        format,
         fontId: selectedFont.id,
         dimensions: state.imageDimensions,
         namesList: state.namesList,
@@ -181,12 +182,14 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
     };
 
     try {
-      if (type === 'pdf') {
-        await Download.pdfFileTest(payload);
-      } else if (type === 'png') {
-        await Download.pngFileTest(payload, state.canvasDimensions);
-      } else if (type === 'png-zip') {
-        await Download.pngArchive(payload);
+      if (asZip) {
+        await Download.archive(payload);
+      } else {
+        if (format === 'pdf') {
+          await Download.singlePDFFile(payload);
+        } else if (format === 'png') {
+          await Download.singlePNGImage(payload, state.canvasDimensions);
+        }
       }
     } catch (e) {
       alert(e);
@@ -218,14 +221,21 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
         <Link href={'/payment'}>
           <button id={'pay'}>Pay</button>
         </Link>
-        <button id={'download-pdf'} onClick={() => download('pdf')}>
-          Download PDF
-        </button>
         <button id={'download-png'} onClick={() => download('png')}>
           Download PNG
         </button>
-        <button id={'download-png-archive'} onClick={() => download('png-zip')}>
+        <button id={'download-pdf'} onClick={() => download('pdf')}>
+          Download PDF
+        </button>
+        <button
+          id={'download-png-archive'}
+          onClick={() => download('png', true)}>
           Download PNG archive
+        </button>
+        <button
+          id={'download-pdf-archive'}
+          onClick={() => download('pdf', true)}>
+          Download PDF archive
         </button>
         <Link href={'/'}>Back to Home</Link>
       </aside>

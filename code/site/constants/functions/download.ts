@@ -1,11 +1,11 @@
 import { Dimensions } from 'constants/types';
 
 /**
- * Downloads a PNG archive of all the generated images.
+ * Downloads a PNG or PDF archive of all the generated file.
  * @param payload The request payload.
  */
- export async function pngArchive(payload: RequestInit): Promise<void> {
-  const res = await fetch('api/png', payload);
+ export async function archive(payload: RequestInit): Promise<void> {
+  const res = await fetch('/api', payload);
   if (!res.ok) throw new Error('Could not download archive.');
   const archive = await res.blob();
   const url = URL.createObjectURL(archive);
@@ -24,7 +24,7 @@ import { Dimensions } from 'constants/types';
  * browser. For test purposes only.
  * @param payload The request payload.
  */
-export async function pdfFileTest(payload: RequestInit): Promise<void> {
+export async function singlePDFFile(payload: RequestInit): Promise<void> {
   const res = await fetch('api/test/pdf', payload);
   if (!res.ok) throw new Error('Could not download PDF.');
   const image = await res.blob();
@@ -44,7 +44,7 @@ export async function pdfFileTest(payload: RequestInit): Promise<void> {
  * @param payload The request payload.
  * @param dimensions The dimensions of the canvas.
  */
-export async function pngFileTest(
+export async function singlePNGImage(
   payload: RequestInit,
   dimensions: Dimensions,
 ): Promise<void> {

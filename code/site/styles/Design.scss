@@ -66,15 +66,19 @@ aside.controls {
   }
 
   button#download-png {
-    @include buttonize($color-primary-3);
+    @include buttonize($color-primary-5-light);
   }
 
   button#download-pdf {
-    @include buttonize($color-primary-4);
+    @include buttonize($color-primary-5);
   }
 
   button#download-png-archive {
-    @include buttonize($color-primary-5-light);
+    @include buttonize($color-primary-3);
+  }
+
+  button#download-pdf-archive {
+    @include buttonize($color-primary-4);
   }
 }
 
