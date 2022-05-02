@@ -24,9 +24,10 @@ export interface ZiventiNextApiRequest extends NextApiRequest {
 export interface RequestBody {
   backgroundImageSrc: string;
   dimensions: Dimensions;
-  format: 'png' | 'pdf';
+  format: FileFormat;
   fontId: string;
   namesList: string[];
+  selectedName: string;
   textStyle: TextStyle;
 }
 
@@ -74,3 +75,5 @@ export type DraggableOptions =
       offset: Coordinates;
     }
   | { isDragging: false; offset: null };
+
+export type FileFormat = 'pdf' | 'png';

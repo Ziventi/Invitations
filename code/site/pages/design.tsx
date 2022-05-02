@@ -177,6 +177,7 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
         fontId: selectedFont.id,
         dimensions: state.imageDimensions,
         namesList: state.namesList,
+        selectedName: state.selectedName,
         textStyle: state.textStyle,
       } as RequestBody),
     };

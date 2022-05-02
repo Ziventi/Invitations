@@ -25,7 +25,7 @@ import { Dimensions } from 'constants/types';
  * @param payload The request payload.
  */
 export async function singlePDFFile(payload: RequestInit): Promise<void> {
-  const res = await fetch('api/test/pdf', payload);
+  const res = await fetch('api/test', payload);
   if (!res.ok) throw new Error('Could not download PDF.');
   const image = await res.blob();
 
@@ -48,7 +48,7 @@ export async function singlePNGImage(
   payload: RequestInit,
   dimensions: Dimensions,
 ): Promise<void> {
-  const res = await fetch('api/test/png', payload);
+  const res = await fetch('api/test', payload);
   if (!res.ok) throw new Error('Could not download image.');
   const data = await res.text();
 
