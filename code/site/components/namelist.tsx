@@ -18,17 +18,20 @@ export default function NameList() {
 
   return (
     <aside className={'namelist'}>
-      {state.namesList.map((name, key) => {
-        return (
-          <button
-            onClick={() => onNameClick(name)}
-            className={'name-button'}
-            key={key}>
-            <span className={'index'}>#{key + 1}</span>
-            <span className={'name'}>{name}</span>
-          </button>
-        );
-      })}
+      <header>Guest Names</header>
+      <div className={'button-list'}>
+        {state.namesList.map((name, key) => {
+          return (
+            <button
+              onClick={() => onNameClick(name)}
+              className={'name-button'}
+              key={key}>
+              <span className={'index'}>#{key + 1}</span>
+              <span className={'name'}>{name}</span>
+            </button>
+          );
+        })}
+      </div>
     </aside>
   );
 }

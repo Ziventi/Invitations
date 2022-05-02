@@ -70,7 +70,7 @@ $color-button: $color-primary-4;
 
   &:hover::-webkit-scrollbar-thumb {
     background-color: darken($color, 8%);
-    border-radius: 10px;
+    border-radius: 2px;
     transition: background-color 0.3s ease;
   }
 
