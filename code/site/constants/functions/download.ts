@@ -4,7 +4,7 @@ import { Dimensions } from 'constants/types';
  * Downloads a PNG or PDF archive of all the generated file.
  * @param payload The request payload.
  */
- export async function archive(payload: RequestInit): Promise<void> {
+export async function archive(payload: RequestInit): Promise<void> {
   const res = await fetch('/api', payload);
   if (!res.ok) throw new Error('Could not download archive.');
   const archive = await res.blob();

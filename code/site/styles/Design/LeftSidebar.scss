@@ -1,9 +1,10 @@
 aside.controls {
   @include scrollbar($color-primary-1-dark);
   background-color: $color-background;
+  border-right: 3px solid $color-primary-4-dark;
   flex: 0 0 auto;
-  max-width: 270px;
-  padding: 1.5em 1.1em;
+  max-width: 280px;
+  padding: 1.5em 1.2em;
   user-select: none;
 
   header {
@@ -37,7 +38,7 @@ aside.controls {
       box-shadow: 0 0 1px 1px transparentize($color-primary-5-light, 0.9);
       cursor: pointer;
       height: 35px;
-      width: 60%;
+      width: 100%;
     }
 
     div.color-picker {

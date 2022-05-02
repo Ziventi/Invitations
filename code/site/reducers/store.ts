@@ -4,7 +4,7 @@ import stateSlice from './slice';
 
 export const store = configureStore({
   reducer: {
-    state: stateSlice
+    state: stateSlice,
   },
 });
 

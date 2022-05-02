@@ -17,7 +17,7 @@ const initialState: PageState = {
     height: 0,
   },
   textStyle: {
-    color: '#000',
+    color: '#9E2828',
     fontFamily: 'Courgette',
     fontSize: 19,
     lineHeight: 24,

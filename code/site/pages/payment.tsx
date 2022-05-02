@@ -4,7 +4,7 @@ import { GetStaticProps, NextPage } from 'next';
 import React from 'react';
 import Stripe from 'stripe';
 
-import PaymentForm from 'components/payform';
+import PaymentForm from 'fragments/PayForm';
 
 const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK!);
 

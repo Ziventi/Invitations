@@ -10,7 +10,10 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
  * @param textStyle The text style.
  * @returns A promise resolving to the download path.
  */
-export function loadFonts(fontId: string, textStyle: TextStyle): Promise<string> {
+export function loadFonts(
+  fontId: string,
+  textStyle: TextStyle,
+): Promise<string> {
   return new Promise((resolve, reject) => {
     const url = new URL(`${GOOGLE_FONT_HOST}/${fontId}`);
     url.searchParams.append('download', 'zip');

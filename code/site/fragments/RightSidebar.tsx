@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateState } from 'reducers/slice';
 import { RootState } from 'reducers/store';
 
-export default function NameList() {
+export default function RightSidebar() {
   const state = useSelector(({ state }: RootState) => state);
   const dispatch = useDispatch();
 
