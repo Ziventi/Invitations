@@ -4,40 +4,24 @@ import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
 import { clearCanvas, drawOnCanvas } from 'constants/functions/canvas';
-import { ZiventiNextApiRequest } from 'constants/types';
+import { TextStyle, ZiventiNextApiRequest } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  const { backgroundImageSrc, dimensions, fontId, namesList: names, textStyle } = req.body;
+  const {
+    backgroundImageSrc,
+    dimensions,
+    fontId,
+    namesList: names,
+    textStyle,
+  } = req.body;
 
   try {
     const backgroundImage = await loadImage(backgroundImageSrc);
-
-    const url = new URL(`${GOOGLE_FONT_HOST}/${fontId}`);
-    url.searchParams.append('download', 'zip');
-    url.searchParams.append('formats', 'ttf');
-    const response = await fetch(url.href);
-    const blob = await response.blob();
-    const buffer = Buffer.from(await blob.arrayBuffer());
-    const zip = new AdmZip(buffer);
-
-    const downloadId = `${fontId}-${Date.now()}`;
-    const downloadPath = `./fonts/${downloadId}`;
-    zip.extractAllTo(downloadPath);
-
-    try {
-      const fontFile = zip.getEntries().shift();
-      if (fontFile) {
-        registerFont(`./fonts/${downloadId}/${fontFile.entryName}`, {
-          family: textStyle.fontFamily,
-        });
-      }
-    } catch (e) {
-      console.error(JSON.stringify(e));
-    }
+    const downloadPath = await loadFonts(fontId, textStyle);
 
     // Generate image and add to archive.
     const canvas = createCanvas(dimensions.width, dimensions.height);
@@ -61,6 +45,51 @@ export default async function handler(
   }
 }
 
+/**
+ * Download specified Google fonts to disk and register them for the canvas.
+ * @param fontId The ID of the font.
+ * @param textStyle The text style.
+ * @returns A promise resolving to the download path.
+ */
+function loadFonts(fontId: string, textStyle: TextStyle): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const url = new URL(`${GOOGLE_FONT_HOST}/${fontId}`);
+    url.searchParams.append('download', 'zip');
+    url.searchParams.append('formats', 'ttf');
+
+    fetch(url.href)
+      .then((res) => res.blob())
+      .then((blob) => blob.arrayBuffer())
+      .then((arrayBuffer) => {
+        const buffer = Buffer.from(arrayBuffer);
+        const zip = new AdmZip(buffer);
+
+        const downloadId = `${fontId}-${Date.now()}`;
+        const downloadPath = `./fonts/${downloadId}`;
+        zip.extractAllTo(downloadPath);
+
+        try {
+          const fontFile = zip.getEntries().shift();
+          if (fontFile) {
+            registerFont(`./fonts/${downloadId}/${fontFile.entryName}`, {
+              family: textStyle.fontFamily,
+            });
+          }
+
+          resolve(downloadPath);
+        } catch (e) {
+          throw new Error(e as string);
+        }
+      })
+      .catch(reject);
+  });
+}
+
+/**
+ * Loads the background image to be used for the canvas.
+ * @param src The image source.
+ * @returns A promise resolving to the image.
+ */
 function loadImage(src: string): Promise<Image> {
   return new Promise((resolve, reject) => {
     const img = new Image();
