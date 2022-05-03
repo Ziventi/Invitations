@@ -104,8 +104,8 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
         <button id={'preview'} onClick={preview}>
           Draw
         </button>
-        <Link href={`/payment?q=${queryHash}`}>
-          <button id={'pay'}>Pay</button>
+        <Link href={`/checkout?q=${queryHash}`}>
+          <button id={'pay'}>Checkout</button>
         </Link>
         <button id={'download-png'} onClick={() => download('png')}>
           Download PNG
