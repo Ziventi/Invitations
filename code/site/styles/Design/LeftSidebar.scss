@@ -1,8 +1,9 @@
 aside.controls {
-  @include scrollbar($color-primary-1-dark);
   background-color: $color-background;
   border-right: 4px solid $color-primary-4-dark;
+  display: flex;
   flex: 0 0 auto;
+  flex-direction: column;
   max-width: 290px;
   user-select: none;
 
@@ -16,6 +17,7 @@ aside.controls {
   }
 
   section.main {
+    @include scrollbar($color-primary-1-dark);
     padding: 1em 1.5em;
   }
 
