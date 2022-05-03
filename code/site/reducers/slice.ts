@@ -7,6 +7,7 @@ const initialState: PageState = {
   fileNameTemplate: '',
   selectedName: '',
   isColorPickerVisible: false,
+  fileFormat: 'png',
   imageSrc: null,
   imageDimensions: {
     width: 0,

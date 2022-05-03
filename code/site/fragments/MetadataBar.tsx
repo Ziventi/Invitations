@@ -16,7 +16,7 @@ export default function MetadataBar() {
         Dimensions: {state.imageDimensions.width} x{' '}
         {state.imageDimensions.height}
       </small>
-      <small>{filename}</small>
+      <small>{filename}.{state.fileFormat}</small>
     </footer>
   );
 }

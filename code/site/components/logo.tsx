@@ -10,5 +10,5 @@ export default function ZiventiLogo({ color, ...props }: ZiventiLogoProps) {
 }
 
 interface ZiventiLogoProps extends Omit<ImageProps, 'src'> {
-  color: 'black' | 'white';
+  color?: 'black' | 'white';
 }
