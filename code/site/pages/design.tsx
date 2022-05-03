@@ -3,16 +3,14 @@ import React, {
   ReactElement,
   useCallback,
   useEffect,
-  useRef,
-  useState,
+  useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { GoogleFont, PageState } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
-import DragZone from 'fragments/DragZone';
 import LeftSidebar from 'fragments/LeftSidebar';
-import MetadataBar from 'fragments/MetadataBar';
+import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
 import { PageStatePayload, updateState } from 'reducers/slice';
 import { RootState } from 'reducers/store';
@@ -21,7 +19,6 @@ import TestData from 'test/test.json';
 const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
-  const useDraggableRef = useState(draggableRef);
 
   const state = useSelector(({ state }: RootState) => state);
   const dispatch = useDispatch();
@@ -147,13 +144,7 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   return (
     <main className={'design'}>
       <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
-      <section className={'preview'}>
-        <div className={'preview-main'}>
-          <canvas ref={canvasRef} />
-          <DragZone useDraggableRef={useDraggableRef} ref={draggableRef} />
-        </div>
-        <MetadataBar />
-      </section>
+      <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
       <RightSidebar />
       <ProgressOverlay state={state} />
     </main>
