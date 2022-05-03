@@ -48,7 +48,17 @@ export default function PaymentForm() {
     }));
   }
 
-  // async function checkPaymentStatus() {
+  return (
+    <form>
+      <PaymentElement id={'payment-form'} />
+      <button onClick={submitPayment} disabled={!stripe}>
+        Confirm
+      </button>
+    </form>
+  );
+}
+
+ // async function checkPaymentStatus() {
   //   if (!stripe) return;
 
   //   const clientSecret = new URLSearchParams(window.location.search).get(
@@ -73,13 +83,3 @@ export default function PaymentForm() {
   //       break;
   //   }
   // }
-
-  return (
-    <form>
-      <PaymentElement id={'payment-form'} />
-      <button onClick={submitPayment} disabled={!stripe}>
-        Pay Now
-      </button>
-    </form>
-  );
-}

@@ -5,6 +5,7 @@ export interface PageState {
   canvasDimensions: Dimensions;
   downloadInProgress: boolean;
   draggable: Draggable;
+  fileFormat: FileFormat;
   imageDimensions: Dimensions;
   imageSrc: string | null;
   isColorPickerVisible: boolean;
@@ -79,3 +80,7 @@ export type DraggableOptions =
   | { isDragging: false; offset: null };
 
 export type FileFormat = 'pdf' | 'png';
+export interface PaymentHash {
+  quantity: number;
+  format: FileFormat;
+}

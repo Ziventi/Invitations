@@ -1,48 +1,81 @@
 import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { GetStaticProps, NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Stripe from 'stripe';
 
+import * as Crypto from 'constants/functions/crypto';
+import { PaymentHash } from 'constants/types';
+import { STRIPE_ELEMENTS_OPTIONS } from 'constants/variables';
 import PaymentForm from 'fragments/PayForm';
+import { RootState } from 'reducers/store';
 
 const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK!);
 
 const PaymentPage: NextPage<PaymentProps> = ({ clientSecret }) => {
-  if (!clientSecret) return null;
+  const state = useSelector(({ state }: RootState) => state);
+
   return (
-    <StripeElements stripe={stripe} options={{ clientSecret }}>
-      <PaymentForm />
-    </StripeElements>
+    <main className={'payment'}>
+      <section className={'payment-summary'}>
+        <div>Price £0.49</div>
+        <div>{state.namesList.length}</div>
+        <div>Price £0.49</div>
+      </section>
+      <StripeElements
+        stripe={stripe}
+        options={{
+          clientSecret,
+          ...STRIPE_ELEMENTS_OPTIONS,
+        }}>
+        <PaymentForm />
+      </StripeElements>
+    </main>
   );
 };
 
-export const getStaticProps: GetStaticProps<PaymentProps> = async () => {
-  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SK!, {
-    apiVersion: '2020-08-27',
-  });
+export const getServerSideProps: GetServerSideProps<
+  PaymentProps,
+  { q: string }
+> = async ({ query }) => {
+  try {
+    const { quantity, format } = Crypto.decryptJSON<PaymentHash>(
+      query.q as string,
+    );
+    const perUnitCharge = format === 'pdf' ? 0.59 : 0.49;
+    const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SK!, {
+      apiVersion: '2020-08-27',
+    });
 
-  const quantity = 1;
-  const type = 'pdf';
-  const perUnitCharge = type === 'pdf' ? 0.69 : 0.49;
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(perUnitCharge * quantity * 100),
+      currency: 'gbp',
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: Math.round(perUnitCharge * quantity * 100),
-    currency: 'gbp',
-    automatic_payment_methods: {
-      enabled: true,
-    },
-  });
+    const clientSecret = paymentIntent.client_secret;
+    if (!clientSecret) throw new Error('No client secret found.');
 
-  return {
-    props: {
-      clientSecret: paymentIntent.client_secret,
-    },
-  };
+    return {
+      props: {
+        clientSecret,
+      },
+    };
+  } catch (e) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
+  }
 };
 
 export default PaymentPage;
 
 interface PaymentProps {
-  clientSecret: string | null;
+  clientSecret: string;
 }

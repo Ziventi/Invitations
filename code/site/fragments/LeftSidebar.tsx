@@ -1,11 +1,12 @@
 import Link from 'next/link';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ZiventiLogo from 'components/logo';
 import { drawOnCanvas } from 'constants/functions/canvas';
+import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
-import { GoogleFont, RequestBody } from 'constants/types';
+import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
 import { PageStatePayload, updateState } from 'reducers/slice';
 import { RootState } from 'reducers/store';
@@ -19,6 +20,13 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
     },
     [dispatch],
   );
+
+  const queryHash = useMemo(() => {
+    return Crypto.encryptJSON<PaymentHash>({
+      quantity: state.namesList.length,
+      format: state.fileFormat,
+    });
+  }, [state.namesList, state.fileFormat]);
 
   function preview(): void {
     const canvas = canvasRef.current!;
@@ -39,6 +47,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
       return font.family === state.textStyle.fontFamily;
     })!;
 
+    // TODO: Validate request body.
     const requestBody: RequestBody = {
       backgroundImageSrc: state.imageSrc,
       fileNameTemplate: state.fileNameTemplate,
@@ -95,7 +104,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
         <button id={'preview'} onClick={preview}>
           Draw
         </button>
-        <Link href={'/payment'}>
+        <Link href={`/payment?q=${queryHash}`}>
           <button id={'pay'}>Pay</button>
         </Link>
         <button id={'download-png'} onClick={() => download('png')}>

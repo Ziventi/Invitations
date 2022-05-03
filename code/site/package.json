@@ -21,6 +21,7 @@
     "adm-zip": "^0.5.9",
     "canvas": "^2.9.1",
     "classnames": "^2.3.1",
+    "crypto-js": "^4.1.1",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-color": "^2.19.3",
