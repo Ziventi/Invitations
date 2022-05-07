@@ -8,7 +8,12 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PageStatePayload, updateState, RootState, AppDispatch } from 'constants/reducers';
+import {
+  PageStatePayload,
+  updateState,
+  RootState,
+  AppDispatch,
+} from 'constants/reducers';
 import { Coordinates } from 'constants/types';
 
 const positions: ResizeHandlePosition[] = ['east', 'west'];
@@ -197,7 +202,9 @@ export default function DragZone({
       resizeHandleState.handleId === 'east'
         ? e.pageX - resizeHandleState.pointX
         : resizeHandleState.pointX - e.pageX;
+
     const draggableNewWidth = currentDraggableWidth + delta;
+    if (draggableNewWidth < 30) return;
 
     const draggable = draggableRef.current!;
 
@@ -206,7 +213,6 @@ export default function DragZone({
     }
 
     // If dragging west handle, compensate for movement.
-    // TODO: Prevent panning the draggable on small widths.
     if (resizeHandleState.handleId === 'west') {
       draggable.style.left = `${currentDraggableLeft - delta}px`;
     }
