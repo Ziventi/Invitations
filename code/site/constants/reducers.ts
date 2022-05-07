@@ -1,24 +1,30 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import sessionStorage from 'redux-persist/lib/storage/session';
 
 import { Draggable, DraggableOptions, PageState } from 'constants/types';
 
 const initialState: PageState = {
   namesList: [],
+  draggable: {
+    isDragging: false,
+    isSelected: false,
+    offset: null,
+  },
+  downloadInProgress: false,
+  fileFormat: 'png',
   fileNameTemplate: '',
   selectedName: '',
   isColorPickerVisible: false,
-  fileFormat: 'png',
   imageSrc: null,
   imageDimensions: {
     width: 0,
@@ -41,12 +47,6 @@ const initialState: PageState = {
     scaleX: 1,
     scaleY: 1,
   },
-  draggable: {
-    isDragging: false,
-    isSelected: false,
-    offset: null,
-  },
-  downloadInProgress: false,
 };
 
 const slice = createSlice({
@@ -71,11 +71,17 @@ const slice = createSlice({
   },
 });
 
-const persistedReducer = persistReducer(
+const blacklist: (keyof PageState)[] = [
+  'draggable',
+  'downloadInProgress',
+  'isColorPickerVisible',
+];
+const persistedReducer = persistReducer<PageState>(
   {
     key: 'root',
     version: 1,
-    storage,
+    storage: sessionStorage,
+    blacklist,
   },
   slice.reducer,
 );
