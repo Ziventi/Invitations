@@ -1,4 +1,15 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import { Draggable, DraggableOptions, PageState } from 'constants/types';
 
@@ -38,7 +49,7 @@ const initialState: PageState = {
   downloadInProgress: false,
 };
 
-export const stateSlice = createSlice({
+const slice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
@@ -60,9 +71,29 @@ export const stateSlice = createSlice({
   },
 });
 
-export const { updateState } = stateSlice.actions;
-export default stateSlice.reducer;
+const persistedReducer = persistReducer(
+  {
+    key: 'root',
+    version: 1,
+    storage,
+  },
+  slice.reducer,
+);
 
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+export const { updateState } = slice.actions;
+export const persistor = persistStore(store);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 export type PageStatePayload = Omit<
   Partial<PageState>,
   'draggable' | 'textStyle'

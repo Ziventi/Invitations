@@ -1,27 +1,21 @@
 import type { GetStaticProps, NextPage } from 'next';
-import React, {
-  ReactElement,
-  useCallback,
-  useEffect,
-  useRef
-} from 'react';
+import React, { ReactElement, useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { PageStatePayload, updateState, RootState, AppDispatch } from 'constants/reducers';
 import { GoogleFont, PageState } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
-import { PageStatePayload, updateState } from 'reducers/slice';
-import { RootState } from 'reducers/store';
 import TestData from 'test/test.json';
 
 const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
-  const state = useSelector(({ state }: RootState) => state);
-  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
     (payload: PageStatePayload) => {
       dispatch(updateState(payload));
@@ -122,13 +116,6 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
           scaleY,
         },
       });
-
-      // TODO: Dev Only
-      const draggable = draggableRef.current!;
-      if (draggable) {
-        draggable.style.top = '0px';
-        draggable.style.left = '0px';
-      }
     };
   }, [setState, state.imageSrc]);
 

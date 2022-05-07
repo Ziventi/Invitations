@@ -6,14 +6,18 @@ import ZiventiLogo from 'components/logo';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
+import {
+  PageStatePayload,
+  updateState,
+  RootState,
+  AppDispatch,
+} from 'constants/reducers';
 import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
-import { PageStatePayload, updateState } from 'reducers/slice';
-import { RootState } from 'reducers/store';
 
 export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
-  const state = useSelector(({ state }: RootState) => state);
-  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
     (payload: PageStatePayload) => {
       dispatch(updateState(payload));

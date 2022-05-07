@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import ZiventiLogo from 'components/logo';
-import { PageStatePayload, updateState } from 'reducers/slice';
+import { AppDispatch, PageStatePayload, updateState } from 'constants/reducers';
 
 const Home: NextPage = () => {
   const [state, setState] = useState<HomeState>({
@@ -12,7 +12,7 @@ const Home: NextPage = () => {
     imageSrc: null,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const setAppState = useCallback(
     (payload: PageStatePayload) => {
       dispatch(updateState(payload));
@@ -80,7 +80,9 @@ const Home: NextPage = () => {
                 <span>Choose your image...</span>
               </label>
             </div>
-            <small>* Supported formats are JPEG and PNG. Maximum image size is 10MB.</small>
+            <small>
+              * Supported formats are JPEG and PNG. Maximum image size is 10MB.
+            </small>
           </section>
           <section>
             <h2>Step 2</h2>

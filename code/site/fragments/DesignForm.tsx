@@ -4,14 +4,13 @@ import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { ChromePicker, ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { PageStatePayload, updateState, RootState, AppDispatch } from 'constants/reducers';
 import { GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE } from 'constants/variables';
-import { PageStatePayload, updateState } from 'reducers/slice';
-import { RootState } from 'reducers/store';
 
 export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
-  const state = useSelector(({ state }: RootState) => state);
-  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
     (payload: PageStatePayload) => {
       dispatch(updateState(payload));

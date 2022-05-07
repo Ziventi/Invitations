@@ -8,9 +8,8 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { PageStatePayload, updateState, RootState, AppDispatch } from 'constants/reducers';
 import { Coordinates } from 'constants/types';
-import { PageStatePayload, updateState } from 'reducers/slice';
-import { RootState } from 'reducers/store';
 
 const positions: ResizeHandlePosition[] = ['east', 'west'];
 
@@ -18,8 +17,8 @@ export default function DragZone({
   canvasRef,
   draggableRef,
 }: DragZoneProps): ReactElement | null {
-  const state = useSelector(({ state }: RootState) => state);
-  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
     (payload: PageStatePayload) => {
       dispatch(updateState(payload));

@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import * as File from 'constants/functions/file';
-import { RootState } from 'reducers/store';
+import { RootState } from 'constants/reducers';
 
 export default function MetadataBar() {
-  const state = useSelector(({ state }: RootState) => state);
+  const state = useSelector((state: RootState) => state);
 
   const filename = useMemo(() => {
     return File.substituteName(state.fileNameTemplate, state.selectedName);
@@ -16,7 +16,9 @@ export default function MetadataBar() {
         Dimensions: {state.imageDimensions.width} x{' '}
         {state.imageDimensions.height}
       </small>
-      <small>{filename}.{state.fileFormat}</small>
+      <small>
+        {filename}.{state.fileFormat}
+      </small>
     </footer>
   );
 }

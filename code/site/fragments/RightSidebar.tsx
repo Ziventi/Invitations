@@ -1,12 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateState } from 'reducers/slice';
-import { RootState } from 'reducers/store';
+import { updateState, RootState, AppDispatch } from 'constants/reducers';
 
 export default function RightSidebar() {
-  const state = useSelector(({ state }: RootState) => state);
-  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
 
   function onNameClick(name: string) {
     dispatch(
