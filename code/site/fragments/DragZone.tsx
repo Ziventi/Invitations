@@ -93,6 +93,7 @@ export default function DragZone({
       dragZone.style.maxHeight = `${clientHeight}px`;
       dragZone.style.maxWidth = `${clientWidth}px`;
     }
+    // TODO: Add prompt to refresh page
   }, [canvasRef, dragZoneRef]);
 
   // Add an event listener for the drag-end operation anywhere on the page.
