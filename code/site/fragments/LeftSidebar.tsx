@@ -74,7 +74,11 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
         if (format === 'pdf') {
           await Download.singlePDFFile(payload);
         } else if (format === 'png') {
-          await Download.singlePNGImage(payload, state.canvasDimensions);
+          await Download.singlePNGImage(
+            payload,
+            state.canvasDimensions,
+            state.imageDimensions,
+          );
         }
       }
     } catch (e) {

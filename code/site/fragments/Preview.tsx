@@ -11,7 +11,7 @@ export default function Preview({
     <section className={'preview'}>
       <div className={'preview-main'}>
         <canvas ref={canvasRef} />
-        <DragZone draggableRef={draggableRef} />
+        <DragZone canvasRef={canvasRef} draggableRef={draggableRef} />
       </div>
       <MetadataBar />
     </section>

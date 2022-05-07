@@ -42,11 +42,13 @@ export async function singlePDFFile(payload: RequestInit): Promise<void> {
  * Downloads a single PNG image of the canvas and opens it in the browser. For
  * test purposes only.
  * @param payload The request payload.
- * @param dimensions The dimensions of the canvas.
+ * @param canvasDimensions The dimensions of the canvas.
+ * @param imageDimensions The dimensions of the image.
  */
 export async function singlePNGImage(
   payload: RequestInit,
-  dimensions: Dimensions,
+  canvasDimensions: Dimensions,
+  imageDimensions: Dimensions,
 ): Promise<void> {
   const res = await fetch('api/test', payload);
   if (!res.ok) throw new Error('Could not download image.');
@@ -54,8 +56,16 @@ export async function singlePNGImage(
 
   const img = new Image();
   img.src = data;
-  img.height = dimensions.height;
-  img.width = dimensions.width;
+  img.height = imageDimensions.height;
+  img.width = imageDimensions.width;
+  img.style.height = '100%';
+  img.style.width = '100%';
+
+  const main = document.createElement('main');
+  main.style.height = `${canvasDimensions.height}px`;
+  main.style.width = `${canvasDimensions.width}px`;
+  main.append(img);
+
   const w = window.open(data);
-  w?.document.write(img.outerHTML);
+  w?.document.write(main.outerHTML);
 }

@@ -15,6 +15,7 @@ import { RootState } from 'reducers/store';
 const positions: ResizeHandlePosition[] = ['east', 'west'];
 
 export default function DragZone({
+  canvasRef,
   draggableRef,
 }: DragZoneProps): ReactElement | null {
   const state = useSelector(({ state }: RootState) => state);
@@ -85,23 +86,35 @@ export default function DragZone({
     [setState, draggableRef],
   );
 
+  const onWindowResize = useCallback(() => {
+    const canvas = canvasRef.current;
+    const dragZone = dragZoneRef.current;
+    if (canvas && dragZone) {
+      const { clientHeight, clientWidth } = canvas;
+      dragZone.style.maxHeight = `${clientHeight}px`;
+      dragZone.style.maxWidth = `${clientWidth}px`;
+    }
+  }, [canvasRef, dragZoneRef]);
+
   // Add an event listener for the drag-end operation anywhere on the page.
   useEffect(() => {
     window.addEventListener('mouseup', onTextDragEnd);
     window.addEventListener('mouseup', onResizeHandleDragEnd);
+    window.addEventListener('resize', onWindowResize);
     return () => {
       window.removeEventListener('mouseup', onTextDragEnd);
       window.removeEventListener('mouseup', onResizeHandleDragEnd);
+      window.removeEventListener('resize', onWindowResize);
     };
-  }, [onTextDragEnd, onResizeHandleDragEnd]);
+  }, [onTextDragEnd, onResizeHandleDragEnd, onWindowResize]);
 
   // Align the drag zone dimensions with the canvas when images change.
   useEffect(() => {
     const dragZone = dragZoneRef.current;
     if (dragZone) {
       const { height, width } = state.canvasDimensions;
-      dragZone.style.height = `${height}px`;
-      dragZone.style.width = `${width}px`;
+      dragZone.style.maxHeight = `${height}px`;
+      dragZone.style.maxWidth = `${width}px`;
     }
   }, [state.canvasDimensions]);
 
@@ -224,8 +237,6 @@ export default function DragZone({
     });
   }
 
-  if (!state.selectedName || !state.imageSrc) return null;
-
   const draggableClasses = classnames('draggable', {
     'draggable--selected': state.draggable.isSelected,
   });
@@ -317,6 +328,7 @@ function prohibitSideEffects(e: MouseEvent | React.MouseEvent): void {
 }
 
 interface DragZoneProps {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
   draggableRef: React.RefObject<HTMLDivElement>;
 }
 

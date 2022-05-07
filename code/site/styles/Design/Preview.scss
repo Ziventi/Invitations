@@ -26,6 +26,10 @@ section.preview {
     justify-content: space-evenly;
     min-height: 0;
     width: 100%;
+
+    small {
+      font-size: 0.9vw;
+    }
   }
 
   canvas {
