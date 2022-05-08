@@ -74,9 +74,12 @@ function insertText(
 ): void {
   let line = '';
 
-  // TODO: Split on hyphens.
-  const words = text.split(' ');
+  // Split words for wrapping on hyphens too.
+  const words = text.split(/(\w+\-?)/).filter((e) => e.trim());
   words.forEach((word, k) => {
+    if (line.endsWith('- ')) {
+      line = line.slice(0, -1);
+    }
     const currentLine = line + word + ' ';
     const currentTextWidth = ctx.measureText(currentLine).width;
 

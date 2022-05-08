@@ -191,7 +191,7 @@ export default function DragZone({
     // TODO: Add prompt to refresh page
   }, [canvasRef, dragZoneRef]);
 
-  // Add an event listener for the drag-end operation anywhere on the page.
+  // Window event listeners for the drag and resize operations.
   useEffect(() => {
     window.addEventListener('mousemove', onDrag);
     window.addEventListener('mouseup', onTextDragEnd);
