@@ -3,8 +3,8 @@ import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
 import { drawOnCanvas } from 'constants/functions/canvas';
-import * as File from 'constants/functions/file';
 import * as Server from 'constants/functions/server';
+import * as Utils from 'constants/functions/utils';
 import { ZiventiNextApiRequest } from 'constants/types';
 
 export default async function handler(
@@ -26,7 +26,7 @@ export default async function handler(
     const backgroundImage = await Server.loadImage(backgroundImageSrc);
     downloadPath = await Server.loadFonts(fontId, textStyle);
 
-    const filename = File.substituteName(fileNameTemplate, selectedName);
+    const filename = Utils.substituteName(fileNameTemplate, selectedName);
 
     let file;
     if (format === 'pdf') {

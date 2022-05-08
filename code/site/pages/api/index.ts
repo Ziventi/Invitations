@@ -4,8 +4,8 @@ import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
 
 import { clearCanvas, drawOnCanvas } from 'constants/functions/canvas';
-import * as File from 'constants/functions/file';
 import * as Server from 'constants/functions/server';
+import * as Utils from 'constants/functions/utils';
 import { ZiventiNextApiRequest } from 'constants/types';
 
 export default async function handler(
@@ -38,7 +38,7 @@ export default async function handler(
     const archiver = new AdmZip();
     names.forEach((name) => {
       drawOnCanvas(canvas, name, textStyle, backgroundImage);
-      const filename = File.substituteName(fileNameTemplate, name);
+      const filename = Utils.substituteName(fileNameTemplate, name);
 
       let file;
       if (format === 'pdf') {

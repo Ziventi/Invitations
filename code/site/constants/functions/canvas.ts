@@ -74,6 +74,7 @@ function insertText(
 ): void {
   let line = '';
 
+  // TODO: Split on hyphens.
   const words = text.split(' ');
   words.forEach((word, k) => {
     const currentLine = line + word + ' ';

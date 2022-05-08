@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import * as File from 'constants/functions/file';
+import * as Utils from 'constants/functions/utils';
 import { RootState } from 'constants/reducers';
 
 export default function MetadataBar() {
   const state = useSelector((state: RootState) => state);
 
   const filename = useMemo(() => {
-    return File.substituteName(state.fileNameTemplate, state.selectedName);
+    return Utils.substituteName(state.fileNameTemplate, state.selectedName);
   }, [state.fileNameTemplate, state.selectedName]);
   return (
     <footer className={'metadata'}>
