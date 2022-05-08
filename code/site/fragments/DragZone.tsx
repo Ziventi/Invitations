@@ -10,13 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import * as Utils from 'constants/functions/utils';
 import {
-  PageStatePayload,
-  updateState,
-  RootState,
   AppDispatch,
+  PageStatePayload,
+  RootState,
+  updateState,
 } from 'constants/reducers';
 import { Coordinates } from 'constants/types';
-import { DRAGGABLE_MIN_WIDTH } from 'constants/variables';
 
 const positions: ResizeHandlePosition[] = ['east', 'west'];
 
@@ -84,7 +83,7 @@ export default function DragZone({
           ? e.pageX - resizeHandleState.initialPointX
           : resizeHandleState.initialPointX - e.pageX;
       const draggableNewWidth = currentDraggableWidth + delta;
-      if (draggableNewWidth < DRAGGABLE_MIN_WIDTH) return;
+      if (draggableNewWidth < state.textStyle.fontSize * 4) return;
 
       const draggable = draggableRef.current!;
       const dragZone = dragZoneRef.current!;
@@ -102,7 +101,7 @@ export default function DragZone({
 
       e.stopPropagation();
     },
-    [draggableRef, resizeHandleState],
+    [draggableRef, resizeHandleState, state.textStyle.fontSize],
   );
 
   /**
@@ -257,7 +256,7 @@ export default function DragZone({
       e.pageY >= draggableBounds.top &&
       e.pageY <= draggableBounds.bottom;
 
-    if (withinDraggable) {
+    if (!withinDraggable) {
       setState({
         draggable: {
           isSelected: false,
