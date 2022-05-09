@@ -11,13 +11,12 @@ import {
 } from 'constants/reducers';
 import { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
-import DesignSetup from 'fragments/DesignSetup';
 import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
 import TestData from 'test/test.json';
 
-const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
+const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
@@ -40,9 +39,9 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
 
   // Called each time the image source changes.
   useEffect(() => {
-    if (!state.imageSrc) return;
+    const canvas = canvasRef.current;
+    if (!canvas || !state.imageSrc) return;
 
-    const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d')!;
 
     const img = new Image();
@@ -131,21 +130,17 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
     });
   }, [setState, state.namesList]);
 
-  if (state.namesList.length && state.imageSrc) {
-    return (
-      <main className={'design'}>
-        <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
-        <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
-        <RightSidebar />
-        <ProgressOverlay state={state} />
-      </main>
-    );
-  } else {
-    return <DesignSetup />;
-  }
+  return (
+    <main className={'design'}>
+      <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
+      <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
+      <RightSidebar />
+      <ProgressOverlay state={state} />
+    </main>
+  );
 };
 
-export const getStaticProps: GetStaticProps<DesignPageProps> = async () => {
+export const getStaticProps: GetStaticProps<DesignEditorProps> = async () => {
   const res = await fetch(GOOGLE_FONT_HOST);
   const fonts: GoogleFont[] = await res.json();
 
@@ -162,8 +157,8 @@ export const getStaticProps: GetStaticProps<DesignPageProps> = async () => {
   };
 };
 
-export default DesignPage;
+export default DesignEditorPage;
 
-interface DesignPageProps {
+interface DesignEditorProps {
   fonts: GoogleFont[];
 }

@@ -131,7 +131,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
           onClick={() => download('pdf', true)}>
           Download PDF archive
         </button>
-        <Link href={'/'}>Back to Home</Link>
+        <Link href={'/design'}>Back to Design</Link>
       </section>
     </aside>
   );

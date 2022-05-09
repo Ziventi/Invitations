@@ -1,5 +1,6 @@
-import router from 'next/router';
-import React, { ReactElement, useCallback } from 'react';
+import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -9,7 +10,7 @@ import {
   updateState,
 } from 'constants/reducers';
 
-export default function DesignSetup(): ReactElement {
+const DesignSetupPage: NextPage = () => {
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
@@ -18,6 +19,7 @@ export default function DesignSetup(): ReactElement {
     },
     [dispatch],
   );
+  const router = useRouter();
 
   /**
    * Called on change to the name list.
@@ -56,7 +58,7 @@ export default function DesignSetup(): ReactElement {
    * Navigate to the design editor.
    */
   function onSubmit() {
-    void router.push('/design#editor');
+    void router.push('/design/editor');
   }
 
   return (
@@ -95,4 +97,6 @@ export default function DesignSetup(): ReactElement {
       </footer>
     </main>
   );
-}
+};
+
+export default DesignSetupPage;
