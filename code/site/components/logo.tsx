@@ -11,7 +11,7 @@ export default function ZiventiLogo({ color, ...props }: ZiventiLogoProps) {
       <Image
         src={src}
         alt={'Ziventi Logo'}
-        priority={true}
+        priority={false}
         quality={100}
         {...props}
       />

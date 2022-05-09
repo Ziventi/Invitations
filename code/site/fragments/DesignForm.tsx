@@ -10,7 +10,7 @@ import {
   RootState,
   updateState,
 } from 'constants/reducers';
-import { GoogleFont } from 'constants/types';
+import { FontVariantKey, GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 
 export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
@@ -65,13 +65,34 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   }
 
   /**
-   * Triggers on a new font family selection.
+   * Triggers on a new font family selection. If the selected font family does
+   * not have the current font style, the font style resets to regular.
    * @param e The change event.
    */
-  function onSelectChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+  function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+    const fontFamily = e.target.value;
+    let { fontStyle } = state.textStyle;
+
+    const font = fonts.find((font) => font.family === fontFamily);
+    if (!font || !font.variants.includes(fontStyle)) {
+      fontStyle = 'regular';
+    }
     setState({
       textStyle: {
-        [e.target.name]: e.target.value,
+        fontFamily: e.target.value,
+        fontStyle,
+      },
+    });
+  }
+
+  /**
+   * Triggers on a new font style selection.
+   * @param e The change event.
+   */
+  function onFontStyleChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+    setState({
+      textStyle: {
+        fontStyle: e.target.value as FontVariantKey,
       },
     });
   }
@@ -115,8 +136,7 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
       <FormField>
         <label>Font Family:</label>
         <select
-          onChange={onSelectChange}
-          name={'fontFamily'}
+          onChange={onFontFamilyChange}
           value={state.textStyle.fontFamily}>
           {fonts.map((font) => {
             return (
@@ -130,8 +150,7 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
       <FormField>
         <label>Font Style:</label>
         <select
-          onChange={onSelectChange}
-          name={'fontStyle'}
+          onChange={onFontStyleChange}
           className={'font-style'}
           disabled={fontVariants.length < 2}
           value={state.textStyle.fontStyle}>
