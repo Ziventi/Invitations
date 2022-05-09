@@ -48,3 +48,11 @@ export function getFontVariantKey(alias: FontVariantAlias): FontVariantKey {
 export function getFontWeight(fontVariantKey: FontVariantKey): string {
   return fontVariantKey.match(/\d{3}/)?.shift() || '400';
 }
+
+export function nameListFromText(names: string): string[] {
+  return names.split('\n').filter((name) => name.trim());
+}
+
+export function textFromNameList(nameList: string[]): string {
+  return nameList.join('\n');
+}

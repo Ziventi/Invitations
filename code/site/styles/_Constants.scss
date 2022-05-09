@@ -15,11 +15,39 @@ $color-primary-4-dark: #620417;
 $color-primary-5: #2c0703;
 $color-primary-5-light: #5f1007;
 $color-primary-5-dark: #130301;
+$color-black: #000;
 $color-white: #fff;
 
 $color-body: $color-primary-1;
 $color-background: $color-primary-1-dark;
 $color-button: $color-primary-4;
+
+%container {
+  max-width: 900px;
+}
+
+%nav {
+  align-items: center;
+  color: $color-white;
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+
+  menu {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 0 2em;
+    }
+
+    a {
+      cursor: pointer;
+    }
+  }
+}
 
 %button {
   border-radius: 10px;

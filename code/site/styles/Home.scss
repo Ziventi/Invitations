@@ -24,6 +24,17 @@ section.cover {
     max-width: 600px;
     text-align: center;
   }
+
+  button {
+    @extend %button;
+    @include buttonize($color-primary-4-dark);
+    border-radius: 10px;
+    box-shadow: 0 0 2px 0 $color-black;
+    color: $color-white;
+    font-size: 20px;
+    min-width: 200px;
+    padding: 1em;
+  }
 }
 
 svg.wave {
@@ -31,45 +42,5 @@ svg.wave {
 
   path {
     fill: $color-primary-4-light;
-  }
-}
-
-section.content {
-  background-color: $color-background;
-  border-radius: 10px;
-  max-width: 400px;
-  padding: 1.5em 2em;
-
-  textarea {
-    border-radius: 10px;
-    border-style: none;
-    padding: 0.5em;
-    width: 100%;
-  }
-
-  div.file-selector-container {
-    margin: 1.5em 0;
-  }
-
-  label.file-selector {
-    $color: $color-primary-3;
-    @include buttonize($color);
-    border-radius: 10px;
-    color: $color-white;
-    cursor: pointer;
-    padding: 1em;
-    transition: all 0.3s ease;
-    user-select: none;
-  }
-
-  button {
-    @extend %button;
-    @include buttonize($color-button);
-    border-radius: 10px;
-    color: $color-white;
-    font-size: 16px;
-    margin: 1em 0;
-    min-width: 100px;
-    padding: 1em;
   }
 }

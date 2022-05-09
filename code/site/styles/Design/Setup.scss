@@ -1,0 +1,73 @@
+main.design-setup {
+  background-color: $color-background;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1em;
+  width: 100%;
+
+  div.container {
+    display: grid;
+    flex: 1 1 auto;
+    grid-template-columns: repeat(2, 50%);
+  }
+
+  section.name-list {
+    padding: 2em;
+  }
+
+  section.image {
+    padding: 2em;
+  }
+
+  textarea {
+    border-radius: 10px;
+    border-style: none;
+    font-size: 20px;
+    line-height: 1.5;
+    padding: 0.5em;
+    width: 100%;
+  }
+
+  div.file-selector-container {
+    margin: 1.5em 0;
+  }
+
+  label.file-selector {
+    $color: $color-primary-3;
+    @include buttonize($color);
+    border-radius: 10px;
+    color: $color-white;
+    cursor: pointer;
+    padding: 1em;
+    transition: all 0.3s ease;
+    user-select: none;
+  }
+
+  div.image-preview {
+    height: 100%;
+    max-height: 500px;
+    position: relative;
+    width: 100%;
+  }
+
+  footer.design-setup {
+    display: flex;
+    flex: 0 0 100px;
+    justify-content: space-between;
+    padding: 1em;
+
+    button {
+      @extend %button;
+      @include buttonize($color-button);
+      border-radius: 10px;
+      box-shadow: 0 0 2px 0 $color-black;
+      color: $color-white;
+      font-size: 20px;
+      min-width: 200px;
+      padding: 1em;
+    }
+  }
+
+  
+}

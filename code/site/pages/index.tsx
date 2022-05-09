@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <>
+    <div className={'app'}>
       <Header />
       <main className={'home'}>
         <section className={'cover'}>
@@ -30,7 +30,7 @@ const Home: NextPage = () => {
         <WaveSVG className={'wave'} />
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

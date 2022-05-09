@@ -7,7 +7,7 @@ import ZiventiWhite from 'public/ziventi-logo-white.png';
 export default function ZiventiLogo({ color, ...props }: ZiventiLogoProps) {
   const src = color === 'white' ? ZiventiWhite : ZiventiBlack;
   return (
-    <div className={'site-logo-wrapper'} style={{ width: `${props.width}px` }}>
+    <div className={'logo'}>
       <Image
         src={src}
         alt={'Ziventi Logo'}

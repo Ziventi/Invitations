@@ -103,7 +103,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
           layout={'fill'}
           objectFit={'contain'}
           objectPosition={'left'}
-          className={'site-logo'}
+          className={'logo'}
         />
         {/* </Link> */}
       </header>
