@@ -1,5 +1,7 @@
 import { NextApiRequest } from 'next';
 
+import { FONT_VARIANTS } from './variables';
+
 export interface PageState {
   namesList: string[];
   canvasDimensions: Dimensions;
@@ -47,6 +49,7 @@ export interface Dimensions {
 export interface TextStyle {
   color: string;
   fontFamily: string;
+  fontStyle: FontVariantKey;
   fontSize: number;
   lineHeight: number;
   left: number;
@@ -61,7 +64,7 @@ export interface TextStyle {
 export interface GoogleFont {
   id: string;
   family: string;
-  variants?: string[];
+  variants: FontVariantKey[];
   subsets?: string[];
   category?: string;
   version?: string;
@@ -84,3 +87,6 @@ export interface PaymentHash {
   quantity: number;
   format: FileFormat;
 }
+
+export type FontVariantKey = keyof typeof FONT_VARIANTS;
+export type FontVariantAlias = typeof FONT_VARIANTS[FontVariantKey];

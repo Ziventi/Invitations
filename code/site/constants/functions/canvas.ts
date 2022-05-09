@@ -3,6 +3,8 @@ import type { Canvas, Image } from 'canvas';
 import { TextStyle } from '../types';
 import { DRAGGABLE_PADDING } from '../variables';
 
+import * as Utils from './utils';
+
 /**
  * Draws the background image and specified text onto the canvas.
  * @param canvas The canvas.
@@ -19,6 +21,7 @@ export function drawOnCanvas(
   const {
     color,
     fontFamily,
+    fontStyle,
     fontSize,
     lineHeight,
     left,
@@ -34,12 +37,20 @@ export function drawOnCanvas(
   const numOfLines = height / lineHeight;
   const x = (left + (width + padding) / 2) * scaleX;
   const y = (top + height / numOfLines + 1) * scaleY;
+  const fontWeight = Utils.getFontWeight(fontStyle);
+
+  let font = '';
+  if (fontStyle.includes('italic')) {
+    font += 'italic ';
+  }
+  font += `${fontWeight} ${fontSize * scale}px ${fontFamily}`;
 
   const ctx = canvas.getContext('2d') as Context2D;
   if (image) {
     ctx.drawImage(image, 0, 0);
   }
-  ctx.font = `${fontSize * scale}px ${fontFamily}`;
+
+  ctx.font = font;
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';

@@ -3,6 +3,7 @@ import React, {
   ReactElement,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -42,6 +43,21 @@ export default function DragZone({
     },
   );
   const dragZoneRef = useRef<HTMLDivElement>(null);
+
+  // Memoises the draggable style based on selected text style properties.
+  const draggableStyle: React.CSSProperties = useMemo(() => {
+    const { color, fontFamily, fontStyle, fontSize, lineHeight } =
+      state.textStyle;
+    const fontWeight = Utils.getFontWeight(fontStyle);
+    return {
+      color,
+      fontFamily,
+      fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
+      fontSize: `${fontSize}px`,
+      fontWeight,
+      lineHeight: `${lineHeight}px`,
+    };
+  }, [state.textStyle]);
 
   /**
    * The {@link onDrag} for draggable text.
@@ -278,15 +294,7 @@ export default function DragZone({
         className={draggableClasses}
         onMouseDown={onTextDragStart}
         ref={draggableRef}>
-        <span
-          style={{
-            color: state.textStyle.color,
-            fontFamily: state.textStyle.fontFamily,
-            fontSize: `${state.textStyle.fontSize}px`,
-            lineHeight: `${state.textStyle.lineHeight}px`,
-          }}>
-          {state.selectedName}
-        </span>
+        <span style={draggableStyle}>{state.selectedName}</span>
         <ResizeHandles
           draggableRef={draggableRef}
           isSelected={state.draggable.isSelected}

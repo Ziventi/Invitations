@@ -1,4 +1,5 @@
-import { DEFAULT_FILENAME_TEMPLATE } from 'constants/variables';
+import { FontVariantKey, FontVariantAlias } from 'constants/types';
+import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 
 /**
  * Substitutes a specified name in the filename template.
@@ -24,4 +25,26 @@ export function substituteName(
  */
 export function minmax(value: number, min: number, max: number): number {
   return Math.min(Math.max(min, value), max);
+}
+
+/**
+ * Retrieves the font variant key from a given alias.
+ * @param alias The font variant alias.
+ * @returns The corresponding font variant key.
+ */
+export function getFontVariantKey(alias: FontVariantAlias): FontVariantKey {
+  const fontVariantKey = Object.keys(FONT_VARIANTS) as FontVariantKey[];
+  const fontVariantAlias = fontVariantKey.find(
+    (key: FontVariantKey) => FONT_VARIANTS[key] === alias,
+  )!;
+  return fontVariantAlias;
+}
+
+/**
+ * Extracts the font weight from a font variant key.
+ * @param fontVariantKey The font variant key,
+ * @returns The font weight.
+ */
+export function getFontWeight(fontVariantKey: FontVariantKey): string {
+  return fontVariantKey.match(/\d{3}/)?.shift() || '400';
 }

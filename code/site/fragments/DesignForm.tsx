@@ -4,9 +4,14 @@ import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { ChromePicker, ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PageStatePayload, updateState, RootState, AppDispatch } from 'constants/reducers';
+import {
+  AppDispatch,
+  PageStatePayload,
+  RootState,
+  updateState,
+} from 'constants/reducers';
 import { GoogleFont } from 'constants/types';
-import { DEFAULT_FILENAME_TEMPLATE } from 'constants/variables';
+import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 
 export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   const state = useSelector((state: RootState) => state);
@@ -18,6 +23,7 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
     [dispatch],
   );
 
+  // Memoises the draggable top and left limits for the number inputs.
   const maxTop = useMemo(() => {
     return state.canvasDimensions.height - state.textStyle.height;
   }, [state.canvasDimensions.height, state.textStyle.height]);
@@ -25,6 +31,19 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
     return state.canvasDimensions.width - state.textStyle.width;
   }, [state.canvasDimensions.width, state.textStyle.width]);
 
+  // Memoises the list of font variants for the selected font family.
+  const fontVariants = useMemo(() => {
+    const font = fonts.find(
+      (font) => font.family === state.textStyle.fontFamily,
+    )!;
+    return font.variants.sort((a, b) => {
+      if (FONT_VARIANTS[a] < FONT_VARIANTS[b]) return -1;
+      if (FONT_VARIANTS[a] > FONT_VARIANTS[b]) return 1;
+      return 0;
+    });
+  }, [fonts, state.textStyle.fontFamily]);
+
+  // Memoises the font preview text and color.
   const { fontPreviewText, fontPreviewTextColor } = useMemo(() => {
     const color = new TinyColor(state.textStyle.color);
     return {
@@ -34,18 +53,6 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   }, [state.textStyle.color]);
 
   /**
-   * Triggers on a new font family selection.
-   * @param e The change event.
-   */
-  function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    setState({
-      textStyle: {
-        fontFamily: e.target.value,
-      },
-    });
-  }
-
-  /**
    * Triggers on a new font color selection.
    * @param color The result color.
    */
@@ -53,6 +60,18 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
     setState({
       textStyle: {
         color: color.hex,
+      },
+    });
+  }
+
+  /**
+   * Triggers on a new font family selection.
+   * @param e The change event.
+   */
+  function onSelectChange(e: React.ChangeEvent<HTMLSelectElement>): void {
+    setState({
+      textStyle: {
+        [e.target.name]: e.target.value,
       },
     });
   }
@@ -96,12 +115,30 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
       <FormField>
         <label>Font Family:</label>
         <select
-          onChange={onFontFamilyChange}
+          onChange={onSelectChange}
+          name={'fontFamily'}
           value={state.textStyle.fontFamily}>
-          {fonts.map((font, key) => {
+          {fonts.map((font) => {
             return (
-              <option value={font.family} key={key}>
+              <option value={font.family} key={font.id}>
                 {font.family}
+              </option>
+            );
+          })}
+        </select>
+      </FormField>
+      <FormField>
+        <label>Font Style:</label>
+        <select
+          onChange={onSelectChange}
+          name={'fontStyle'}
+          className={'font-style'}
+          disabled={fontVariants.length < 2}
+          value={state.textStyle.fontStyle}>
+          {fontVariants.map((variantKey) => {
+            return (
+              <option value={variantKey} key={variantKey}>
+                {FONT_VARIANTS[variantKey]}
               </option>
             );
           })}

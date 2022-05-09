@@ -18,6 +18,7 @@ export function loadFonts(
     const url = new URL(`${GOOGLE_FONT_HOST}/${fontId}`);
     url.searchParams.append('download', 'zip');
     url.searchParams.append('formats', 'ttf');
+    url.searchParams.append('variants', textStyle.fontStyle);
 
     fetch(url.href)
       .then((res) => res.blob())

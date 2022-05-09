@@ -2,7 +2,12 @@ import type { GetStaticProps, NextPage } from 'next';
 import React, { ReactElement, useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PageStatePayload, updateState, RootState, AppDispatch } from 'constants/reducers';
+import {
+  AppDispatch,
+  PageStatePayload,
+  RootState,
+  updateState,
+} from 'constants/reducers';
 import { GoogleFont, PageState } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import LeftSidebar from 'fragments/LeftSidebar';
@@ -66,15 +71,20 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   useEffect(() => {
     import('webfontloader')
       .then((WebFont) => {
+        const family = `${state.textStyle.fontFamily}:${state.textStyle.fontStyle}`;
         WebFont.load({
           google: {
-            families: [state.textStyle.fontFamily],
+            families: [family],
             text: state.selectedName,
           },
         });
       })
       .catch(console.error);
-  }, [state.selectedName, state.textStyle.fontFamily]);
+  }, [
+    state.selectedName,
+    state.textStyle.fontFamily,
+    state.textStyle.fontStyle,
+  ]);
 
   // Change selected name if the names list changes.
   useEffect(() => {
@@ -146,11 +156,16 @@ function ProgressOverlay({ state }: ProgressOverlayProps): ReactElement | null {
 export const getStaticProps: GetStaticProps<DesignPageProps> = async () => {
   const res = await fetch(GOOGLE_FONT_HOST);
   const fonts: GoogleFont[] = await res.json();
+
   return {
     props: {
       fonts: fonts
         .sort((a, b) => a.family.localeCompare(b.family))
-        .map((font) => ({ id: font.id, family: font.family })),
+        .map((font) => ({
+          id: font.id,
+          family: font.family,
+          variants: font.variants,
+        })),
     },
   };
 };
