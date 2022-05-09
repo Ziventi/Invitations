@@ -6,7 +6,17 @@ import ZiventiWhite from 'public/ziventi-logo-white.png';
 
 export default function ZiventiLogo({ color, ...props }: ZiventiLogoProps) {
   const src = color === 'white' ? ZiventiWhite : ZiventiBlack;
-  return <Image src={src} alt={'Ziventi Logo'} priority={true} {...props} />;
+  return (
+    <div className={'site-logo-wrapper'} style={{ width: `${props.width}px` }}>
+      <Image
+        src={src}
+        alt={'Ziventi Logo'}
+        priority={true}
+        quality={100}
+        {...props}
+      />
+    </div>
+  );
 }
 
 interface ZiventiLogoProps extends Omit<ImageProps, 'src'> {

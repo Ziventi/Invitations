@@ -1,15 +1,17 @@
 import type { GetStaticProps, NextPage } from 'next';
-import React, { ReactElement, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ProgressOverlay from 'components/progress';
 import {
   AppDispatch,
   PageStatePayload,
   RootState,
   updateState,
 } from 'constants/reducers';
-import { GoogleFont, PageState } from 'constants/types';
+import { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
+import DesignSetup from 'fragments/DesignSetup';
 import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
@@ -94,6 +96,7 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   }, [setState, state.namesList]);
 
   // Called each time the image source changes.
+  // TODO: Move to DesignSetup.tsx
   useEffect(() => {
     if (!state.imageSrc) return;
 
@@ -130,6 +133,7 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
   }, [setState, state.imageSrc]);
 
   // Adjust draggable position when top or left values are changed.
+  // TODO: Move to Preview.tsx.
   useEffect(() => {
     const draggable = draggableRef.current;
     if (draggable) {
@@ -138,20 +142,19 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
     }
   }, [state.textStyle.left, state.textStyle.top]);
 
-  return (
-    <main className={'design'}>
-      <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
-      <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
-      <RightSidebar />
-      <ProgressOverlay state={state} />
-    </main>
-  );
+  if (state.namesList.length && state.imageSrc) {
+    return (
+      <main className={'design'}>
+        <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
+        <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
+        <RightSidebar />
+        <ProgressOverlay state={state} />
+      </main>
+    );
+  } else {
+    return <DesignSetup />;
+  }
 };
-
-function ProgressOverlay({ state }: ProgressOverlayProps): ReactElement | null {
-  if (!state.downloadInProgress) return null;
-  return <dialog className={'loading'}>Loading...</dialog>;
-}
 
 export const getStaticProps: GetStaticProps<DesignPageProps> = async () => {
   const res = await fetch(GOOGLE_FONT_HOST);
@@ -174,8 +177,4 @@ export default DesignPage;
 
 interface DesignPageProps {
   fonts: GoogleFont[];
-}
-
-interface ProgressOverlayProps {
-  state: PageState;
 }

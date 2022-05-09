@@ -13,17 +13,63 @@ html,
 body {
   height: 100%;
   margin: 0;
-  // overflow: hidden;
   padding: 0;
 }
 
 div#__next {
-  display: flex;
-  flex-direction: column;
   height: 100%;
+  position: relative;
+}
+
+header.app {
+  background-color: $color-primary-4;
+  box-shadow: 0 0 1px 1px $color-primary-4;
+  display: flex;
+  height: 70px;
+  justify-content: space-between;
+  padding: 0.5em;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+footer.app {
+  background-color: $color-primary-4;
+  padding: 1em;
+  width: 100%;
+  z-index: 1;
+}
+
+.site-logo-wrapper {
+  flex: 1 1 auto;
+  height: 100%;
+  position: relative;
 }
 
 .site-logo {
   cursor: pointer;
   padding: 0.5em !important;
+}
+
+nav {
+  align-items: center;
+  color: $color-white;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  max-width: 500px;
+  width: 100%;
+
+  menu {
+    display: flex;
+    justify-content: space-evenly;
+    list-style-type: none;
+    margin: 0;
+    width: 100%;
+
+    a {
+      cursor: pointer;
+    }
+  }
 }

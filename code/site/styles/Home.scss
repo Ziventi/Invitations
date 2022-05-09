@@ -1,16 +1,44 @@
 main.home {
-  align-items: center;
   background-color: $color-body;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+}
 
-  section.content {
-    background-color: $color-background;
-    border-radius: 10px;
-    max-width: 400px;
-    padding: 1.5em 2em;
+section.cover {
+  align-items: center;
+  background: rgb(95, 16, 7);
+  background: linear-gradient(
+    180deg,
+    $color-primary-4 0%,
+    $color-primary-4-light 100%
+  );
+  color: $color-white;
+  display: flex;
+  justify-content: center;
+  min-height: 300px;
+
+  div {
+    text-align: center;
   }
+
+  h1 {
+    font-size: 40px;
+    max-width: 600px;
+    text-align: center;
+  }
+}
+
+svg.wave {
+  max-height: 250px;
+
+  path {
+    fill: $color-primary-4-light;
+  }
+}
+
+section.content {
+  background-color: $color-background;
+  border-radius: 10px;
+  max-width: 400px;
+  padding: 1.5em 2em;
 
   textarea {
     border-radius: 10px;
