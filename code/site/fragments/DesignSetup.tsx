@@ -1,11 +1,11 @@
 import router from 'next/router';
 import React, { ReactElement, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  RootState,
   AppDispatch,
   PageStatePayload,
+  RootState,
   updateState,
 } from 'constants/reducers';
 
@@ -52,8 +52,11 @@ export default function DesignSetup(): ReactElement {
     };
   }
 
+  /**
+   * Navigate to the design editor.
+   */
   function onSubmit() {
-    void router.push('/design');
+    void router.push('/design#editor');
   }
 
   return (

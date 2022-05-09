@@ -38,6 +38,42 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
     });
   }, [setState]);
 
+  // Called each time the image source changes.
+  useEffect(() => {
+    if (!state.imageSrc) return;
+
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext('2d')!;
+
+    const img = new Image();
+    img.src = state.imageSrc;
+    img.onload = () => {
+      ctx.canvas.width = img.width;
+      ctx.canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      const scaleX = canvas.width / canvas.clientWidth;
+      const scaleY = canvas.height / canvas.clientHeight;
+      const scale = (scaleX + scaleY) / 2;
+
+      setState({
+        canvasDimensions: {
+          width: canvas.clientWidth,
+          height: canvas.clientHeight,
+        },
+        imageDimensions: {
+          width: img.width,
+          height: img.height,
+        },
+        textStyle: {
+          scale,
+          scaleX,
+          scaleY,
+        },
+      });
+    };
+  }, [setState, state.imageSrc]);
+
   // Toggle cursor type when color picker is visible.
   // Hide color picker if clicked outside of color picker.
   useEffect(() => {
@@ -94,53 +130,6 @@ const DesignPage: NextPage<DesignPageProps> = ({ fonts }) => {
       selectedName: state.namesList[0] || '',
     });
   }, [setState, state.namesList]);
-
-  // Called each time the image source changes.
-  // TODO: Move to DesignSetup.tsx
-  useEffect(() => {
-    if (!state.imageSrc) return;
-
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext('2d')!;
-
-    const img = new Image();
-    img.src = state.imageSrc;
-    img.onload = () => {
-      ctx.canvas.width = img.width;
-      ctx.canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const scaleX = canvas.width / canvas.clientWidth;
-      const scaleY = canvas.height / canvas.clientHeight;
-      const scale = (scaleX + scaleY) / 2;
-
-      setState({
-        canvasDimensions: {
-          width: canvas.clientWidth,
-          height: canvas.clientHeight,
-        },
-        imageDimensions: {
-          width: img.width,
-          height: img.height,
-        },
-        textStyle: {
-          scale,
-          scaleX,
-          scaleY,
-        },
-      });
-    };
-  }, [setState, state.imageSrc]);
-
-  // Adjust draggable position when top or left values are changed.
-  // TODO: Move to Preview.tsx.
-  useEffect(() => {
-    const draggable = draggableRef.current;
-    if (draggable) {
-      draggable.style.top = `${state.textStyle.top}px`;
-      draggable.style.left = `${state.textStyle.left}px`;
-    }
-  }, [state.textStyle.left, state.textStyle.top]);
 
   if (state.namesList.length && state.imageSrc) {
     return (
