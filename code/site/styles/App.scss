@@ -29,14 +29,15 @@ div.app {
 }
 
 header.app {
-  background-color: $color-primary-4;
-  box-shadow: 0 0 1px 1px $color-primary-4;
+  background-color: $color-transparent;
   display: flex;
   height: 70px;
   justify-content: center;
+  margin-top: -70px;
   padding: 0.5em;
   position: sticky;
   top: 0;
+  transition: all 0.3s;
   width: 100%;
   z-index: 2;
 

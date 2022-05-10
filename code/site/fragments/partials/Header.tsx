@@ -3,16 +3,12 @@ import React from 'react';
 import Container from 'components/container';
 import ZiventiLogo from 'components/logo';
 
-export default function Header() {
+export default function Header({ headerRef }: HeaderProps) {
   return (
-    <header className={'app'}>
+    <header className={'app'} ref={headerRef}>
       <Container>
         <div className={'logo-wrapper'}>
-          <ZiventiLogo
-            color={'white'}
-            layout={'fill'}
-            objectFit={'contain'}
-          />
+          <ZiventiLogo color={'white'} layout={'fill'} objectFit={'contain'} />
         </div>
         <nav className={'header'}>
           <menu>
@@ -30,4 +26,8 @@ export default function Header() {
       </Container>
     </header>
   );
+}
+
+interface HeaderProps {
+  headerRef?: React.RefObject<HTMLDivElement>;
 }

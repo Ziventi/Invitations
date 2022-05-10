@@ -30,9 +30,6 @@ export const FONT_VARIANTS = <const>{
   '900italic': 'Black Italic',
 };
 
-/** The list of homepage video sources. */
-export const VIDEO_SOURCES = ['clip1', 'clip2'];
-
 // import { StripeElementsOptions } from '@stripe/stripe-js';
 /** The options for StripeElements. */
 // export const STRIPE_ELEMENTS_OPTIONS: StripeElementsOptions = {

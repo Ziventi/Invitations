@@ -3,22 +3,30 @@ import {
   faUsersRectangle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NextPage } from 'next';
+import fs from 'fs';
+import { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useRef, useState } from 'react';
+import path from 'path';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Container from 'components/container';
 import WaveSVG from 'components/wave';
-import { VIDEO_SOURCES } from 'constants/variables';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 
-const Home: NextPage = () => {
+const Home: NextPage<HomeProps> = ({ clips }) => {
   const [state, setState] = useState<HomeState>({
     videoClipIndex: 0,
   });
+  const headerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      const header = headerRef.current!;
+    });
+  }, []);
 
   /**
    * Navigate to design page.
@@ -28,7 +36,7 @@ const Home: NextPage = () => {
   }
 
   function onVideoEnd(): void {
-    const endOfPlaylist = state.videoClipIndex + 1 === VIDEO_SOURCES.length;
+    const endOfPlaylist = state.videoClipIndex + 1 === clips.length;
     const index = endOfPlaylist ? 0 : state.videoClipIndex + 1;
     setState((current) => {
       return {
@@ -38,7 +46,7 @@ const Home: NextPage = () => {
     });
 
     const video = videoRef.current!;
-    video.src = `/videos/${VIDEO_SOURCES[index]}.mp4`;
+    video.src = `/videos/${clips[index]}.mp4`;
     video.onload = async () => {
       await video.play();
     };
@@ -46,12 +54,12 @@ const Home: NextPage = () => {
 
   return (
     <div className={'app'}>
-      <Header />
+      <Header headerRef={headerRef} />
       <main className={'home'}>
         <section className={'cover'}>
           <WaveSVG className={'wave'}>
             <video
-              src={`/videos/${VIDEO_SOURCES[state.videoClipIndex]}.mp4`}
+              src={`/videos/${clips[state.videoClipIndex]}.mp4`}
               autoPlay={true}
               controls={false}
               muted={true}
@@ -105,6 +113,22 @@ const Home: NextPage = () => {
 
 export default Home;
 
+export const getStaticProps: GetStaticProps<HomeProps> = () => {
+  const publicDir = path.resolve(process.cwd(), './public/videos');
+  const clips = fs.readdirSync(publicDir).map((filename) => {
+    return path.basename(filename, '.mp4');
+  });
+  return {
+    props: {
+      clips,
+    },
+  };
+};
+
 interface HomeState {
   videoClipIndex: number;
+}
+
+interface HomeProps {
+  clips: string[];
 }

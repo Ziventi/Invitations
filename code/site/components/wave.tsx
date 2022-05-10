@@ -10,7 +10,7 @@ export default function WaveSVG({
       viewBox={'0 0 1440 656'}
       className={className}
       width={'100%'}
-      preserveAspectRatio={'none'}>
+      preserveAspectRatio={'xMaxYMax slice'}>
       <path d={d} />
       <foreignObject>{children}</foreignObject>
     </svg>
