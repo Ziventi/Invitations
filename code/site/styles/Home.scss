@@ -16,7 +16,6 @@ section.cover {
     width: 100%;
 
     path {
-      // fill: $color-primary-4-light;
       fill: #433a37;
     }
 
@@ -46,6 +45,7 @@ section.cover {
 
   h1 {
     font-size: 40px;
+    margin: 0;
     max-width: 600px;
     text-align: center;
   }

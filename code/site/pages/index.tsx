@@ -7,10 +7,10 @@ import fs from 'fs';
 import { GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import path from 'path';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Container from 'components/container';
-import WaveSVG from 'components/wave';
+import { Wave } from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 
@@ -22,11 +22,27 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    window.addEventListener('scroll', () => {
-      const header = headerRef.current!;
-    });
+  /**
+   * Fill the header when window is scrolled to a certain height.
+   */
+  const fillHeaderOnScroll = useCallback(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    if (window.scrollY >= 120) {
+      header.style.backgroundColor = '#620417';
+    } else {
+      header.style.backgroundColor = 'initial';
+    }
   }, []);
+
+  // Attach window event listeners.
+  useEffect(() => {
+    window.addEventListener('scroll', fillHeaderOnScroll);
+    return () => {
+      window.removeEventListener('scroll', fillHeaderOnScroll);
+    };
+  }, [fillHeaderOnScroll]);
 
   /**
    * Navigate to design page.
@@ -35,6 +51,9 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
     void router.push('/design');
   }
 
+  /**
+   * Play next clip once a video has ended.
+   */
   function onVideoEnd(): void {
     const endOfPlaylist = state.videoClipIndex + 1 === clips.length;
     const index = endOfPlaylist ? 0 : state.videoClipIndex + 1;
@@ -57,7 +76,7 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
       <Header headerRef={headerRef} />
       <main className={'home'}>
         <section className={'cover'}>
-          <WaveSVG className={'wave'}>
+          <Wave className={'wave'}>
             <video
               src={`/videos/${clips[state.videoClipIndex]}.mp4`}
               autoPlay={true}
@@ -67,7 +86,7 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
               onEnded={onVideoEnd}
               ref={videoRef}
             />
-          </WaveSVG>
+          </Wave>
           <div>
             <h1>Personalise your invitations</h1>
             <p>Let your guests know they matter.</p>
