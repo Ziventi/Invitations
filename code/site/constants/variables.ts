@@ -1,5 +1,3 @@
-import { StripeElementsOptions } from '@stripe/stripe-js';
-
 /** The default filename template for generated files. */
 export const DEFAULT_FILENAME_TEMPLATE = 'Invitation for [name]';
 
@@ -32,27 +30,31 @@ export const FONT_VARIANTS = <const>{
   '900italic': 'Black Italic',
 };
 
+/** The list of homepage video sources. */
+export const VIDEO_SOURCES = ['clip1', 'clip2'];
+
+// import { StripeElementsOptions } from '@stripe/stripe-js';
 /** The options for StripeElements. */
-export const STRIPE_ELEMENTS_OPTIONS: StripeElementsOptions = {
-  appearance: {
-    labels: 'floating',
-    theme: 'none',
-    rules: {
-      '.Input': {
-        padding: '1em',
-      },
-      '.Input:focus': {
-        outline: '2px solid #da9f93',
-      },
-    },
-    variables: {
-      borderRadius: '15px',
-      fontFamily: 'Rubik',
-    },
-  },
-  fonts: [
-    {
-      cssSrc: 'https://fonts.googleapis.com/css2?family=Rubik&display=swap',
-    },
-  ],
-};
+// export const STRIPE_ELEMENTS_OPTIONS: StripeElementsOptions = {
+//   appearance: {
+//     labels: 'floating',
+//     theme: 'none',
+//     rules: {
+//       '.Input': {
+//         padding: '1em',
+//       },
+//       '.Input:focus': {
+//         outline: '2px solid #da9f93',
+//       },
+//     },
+//     variables: {
+//       borderRadius: '15px',
+//       fontFamily: 'Rubik',
+//     },
+//   },
+//   fonts: [
+//     {
+//       cssSrc: 'https://fonts.googleapis.com/css2?family=Rubik&display=swap',
+//     },
+//   ],
+// };

@@ -1,17 +1,17 @@
 import React from 'react';
 
+import Container from 'components/container';
 import ZiventiLogo from 'components/logo';
 
 export default function Header() {
   return (
     <header className={'app'}>
-      <div className={'container'}>
+      <Container>
         <div className={'logo-wrapper'}>
           <ZiventiLogo
             color={'white'}
             layout={'fill'}
             objectFit={'contain'}
-            width={100}
           />
         </div>
         <nav className={'header'}>
@@ -27,7 +27,7 @@ export default function Header() {
             </li>
           </menu>
         </nav>
-      </div>
+      </Container>
     </header>
   );
 }

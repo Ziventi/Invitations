@@ -1,9 +1,11 @@
 import React from 'react';
 
+import Container from 'components/container';
+
 export default function Footer() {
   return (
     <footer className={'app'}>
-      <div className={'container'}>
+      <Container>
         <nav className={'footer'}>
           <menu>
             <li>
@@ -17,7 +19,7 @@ export default function Footer() {
             </li>
           </menu>
         </nav>
-      </div>
+      </Container>
     </footer>
   );
 }
