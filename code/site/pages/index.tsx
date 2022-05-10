@@ -133,8 +133,8 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
 export default Home;
 
 export const getStaticProps: GetStaticProps<HomeProps> = () => {
-  const publicDir = path.resolve(process.cwd(), './public/videos');
-  const clips = fs.readdirSync(publicDir).map((filename) => {
+  const videosDir = path.resolve(process.cwd(), './public/videos');
+  const clips = fs.readdirSync(videosDir).map((filename) => {
     return path.basename(filename, '.mp4');
   });
   return {

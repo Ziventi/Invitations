@@ -52,7 +52,7 @@ section.cover {
 
   button {
     @extend %button;
-    @include buttonize($color-primary-4-dark);
+    @include buttonize($color-primary-4-dark, $hover: $color-primary-4-light);
     border-radius: 10px;
     box-shadow: 0 0 2px 0 $color-black;
     color: $color-white;

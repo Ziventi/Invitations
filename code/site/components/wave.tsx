@@ -1,9 +1,6 @@
 import React, { SVGAttributes } from 'react';
 
-export function Wave({
-  className,
-  children,
-}: SVGAttributes<SVGSVGElement>) {
+export function Wave({ className, children }: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns={'http://www.w3.org/2000/svg'}
