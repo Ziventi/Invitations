@@ -1,25 +1,14 @@
-aside.controls {
+aside.left-sidebar {
+  @include scrollbar($color-primary-1-dark);
   background-color: $color-background;
-  border-right: 4px solid $color-primary-4-dark;
+  box-shadow: 0 0 3px 0 $color-black;
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
   max-width: 290px;
+  padding: 1em 1.5em;
   user-select: none;
-
-  header {
-    background-color: $color-primary-4-dark;
-    display: flex;
-    height: 50px;
-    padding: 1em;
-    position: relative;
-    width: 100%;
-  }
-
-  section.main {
-    @include scrollbar($color-primary-1-dark);
-    padding: 1em 1.5em;
-  }
+  z-index: 2;
 
   section.design-form {
     margin-bottom: 1em;
@@ -42,7 +31,7 @@ aside.controls {
     button.color-thumbnail {
       border-radius: 3px;
       border-style: none;
-      box-shadow: 0 0 1px 1px transparentize($color-primary-5-light, 0.9);
+      box-shadow: 0 0 2px 0 $color-black;
       cursor: pointer;
       height: 35px;
       width: 100%;

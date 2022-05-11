@@ -1,6 +1,6 @@
 section.preview {
   align-items: center;
-  background-color: $color-body;
+  background-color: $color-primary-1;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -20,12 +20,14 @@ section.preview {
   footer.metadata {
     align-items: center;
     background-color: $color-primary-5-light;
+    box-shadow: 0 0 2px 0 $color-black;
     color: $color-white;
     display: flex;
     flex: 0 0 30px;
     justify-content: space-evenly;
     min-height: 0;
     width: 100%;
+    z-index: 2;
 
     small {
       font-size: 0.9vw;
@@ -39,6 +41,7 @@ section.preview {
 
   div.drag-zone {
     align-items: center;
+    box-shadow: 0 0 2px 0 $color-black;
     display: flex;
     height: 100%;
     justify-content: center;

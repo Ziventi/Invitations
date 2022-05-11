@@ -1,9 +1,11 @@
 aside.namelist {
   background-color: $color-primary-4;
+  box-shadow: 0 0 2px 0 $color-black;
   display: flex;
   flex: 0 0 200px;
   flex-direction: column;
   overflow-y: clip;
+  z-index: 2;
 
   header {
     align-items: center;
@@ -16,7 +18,7 @@ aside.namelist {
 
   div.button-list {
     @include scrollbar($color-primary-4);
-    border-left: 5px solid $color-primary-4-dark;
+    border-left: 3px solid $color-primary-4-dark;
     display: flex;
     flex-direction: column;
     height: 100%;

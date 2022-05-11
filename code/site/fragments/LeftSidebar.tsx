@@ -2,15 +2,14 @@ import Link from 'next/link';
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ZiventiLogo from 'components/logo';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
 import {
-  PageStatePayload,
-  updateState,
-  RootState,
   AppDispatch,
+  PageStatePayload,
+  RootState,
+  updateState,
 } from 'constants/reducers';
 import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
@@ -95,44 +94,27 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
   }
 
   return (
-    <aside className={'controls'}>
-      <header>
-        {/* <Link href={'/'}> */}
-        <ZiventiLogo
-          color={'white'}
-          layout={'fill'}
-          objectFit={'contain'}
-          objectPosition={'left'}
-          className={'logo'}
-        />
-        {/* </Link> */}
-      </header>
-      <section className={'main'}>
-        <DesignForm fonts={fonts} />
-        <button id={'preview'} onClick={preview}>
-          Draw
-        </button>
-        <Link href={`/checkout?q=${queryHash}`}>
-          <button id={'pay'}>Checkout</button>
-        </Link>
-        <button id={'download-png'} onClick={() => download('png')}>
-          Download PNG
-        </button>
-        <button id={'download-pdf'} onClick={() => download('pdf')}>
-          Download PDF
-        </button>
-        <button
-          id={'download-png-archive'}
-          onClick={() => download('png', true)}>
-          Download PNG archive
-        </button>
-        <button
-          id={'download-pdf-archive'}
-          onClick={() => download('pdf', true)}>
-          Download PDF archive
-        </button>
-        <Link href={'/design'}>Back to Design</Link>
-      </section>
+    <aside className={'left-sidebar'}>
+      <DesignForm fonts={fonts} />
+      <button id={'preview'} onClick={preview}>
+        Draw
+      </button>
+      <Link href={`/checkout?q=${queryHash}`}>
+        <button id={'pay'}>Checkout</button>
+      </Link>
+      <button id={'download-png'} onClick={() => download('png')}>
+        Download PNG
+      </button>
+      <button id={'download-pdf'} onClick={() => download('pdf')}>
+        Download PDF
+      </button>
+      <button id={'download-png-archive'} onClick={() => download('png', true)}>
+        Download PNG archive
+      </button>
+      <button id={'download-pdf-archive'} onClick={() => download('pdf', true)}>
+        Download PDF archive
+      </button>
+      <Link href={'/design'}>Back to Design</Link>
     </aside>
   );
 }
