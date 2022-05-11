@@ -1,9 +1,11 @@
+import { faChevronLeft, faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import FontIcon from 'components/icon';
 import * as Utils from 'constants/functions/utils';
 import {
   AppDispatch,
@@ -85,8 +87,8 @@ const DesignSetupPage: NextPage = () => {
         <section className={'name-list'}>
           <h2>Step 1: List The Names</h2>
           <p>
-            Paste the list of your guest names here. Separate each name with a
-            new line.
+            Type out or paste the list of your guest names here. Separate each
+            name with a new line.
           </p>
           <textarea
             id={'names-list'}
@@ -94,7 +96,7 @@ const DesignSetupPage: NextPage = () => {
             value={state.names}
             placeholder={'List each individual name...'}
             spellCheck={false}
-            rows={5}
+            rows={10}
           />
           <small>{Utils.nameListFromText(state.names).length} names</small>
         </section>
@@ -126,8 +128,14 @@ const DesignSetupPage: NextPage = () => {
         </section>
       </div>
       <footer className={'design-setup'}>
-        <button onClick={onHomeClick}>Back to Home</button>
-        <button onClick={onSubmit}>Start Editing</button>
+        <button onClick={onHomeClick}>
+          <FontIcon icon={faChevronLeft} space={true} />
+          Back to Home
+        </button>
+        <button onClick={onSubmit}>
+          <FontIcon icon={faCrosshairs} space={true} />
+          Start Editing
+        </button>
       </footer>
     </main>
   );

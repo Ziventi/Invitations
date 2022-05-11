@@ -1,9 +1,10 @@
 main.design-setup {
-  background-color: $color-background;
+  // background-color: $color-background;
+  background-color: $color-primary-1-dark;
+  color: $color-white;
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 1em;
   width: 100%;
 
   div.container {
@@ -12,62 +13,74 @@ main.design-setup {
     grid-template-columns: repeat(2, 50%);
   }
 
-  section.name-list {
+  section {
+    background-color: #8e7066;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 0 $color-black;
+    margin: 2em;
     padding: 2em;
+  }
+
+  section.name-list {
+    textarea {
+      border-radius: 10px;
+      border-style: none;
+      box-shadow: 0 0 2px 0 $color-black;
+      font-size: 20px;
+      line-height: 1.5;
+      padding: 0.5em;
+      width: 100%;
+    }
+
+    p {
+      line-height: 150%;
+    }
   }
 
   section.image {
-    padding: 2em;
-  }
+    div.file-selector-container {
+      margin: 1.5em 0;
+    }
 
-  textarea {
-    border-radius: 10px;
-    border-style: none;
-    font-size: 20px;
-    line-height: 1.5;
-    padding: 0.5em;
-    width: 100%;
-  }
+    label.file-selector {
+      $color: $color-primary-3;
+      @include buttonize($color);
+      border-radius: 10px;
+      color: $color-white;
+      cursor: pointer;
+      padding: 1em;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
 
-  div.file-selector-container {
-    margin: 1.5em 0;
-  }
+    div.image-preview {
+      height: 100%;
+      max-height: 450px;
+      padding: 2em;
+      position: relative;
+      width: 100%;
 
-  label.file-selector {
-    $color: $color-primary-3;
-    @include buttonize($color);
-    border-radius: 10px;
-    color: $color-white;
-    cursor: pointer;
-    padding: 1em;
-    transition: all 0.3s ease;
-    user-select: none;
-  }
-
-  div.image-preview {
-    height: 100%;
-    max-height: 500px;
-    position: relative;
-    width: 100%;
+      img {
+        width: 100%;
+      }
+    }
   }
 
   footer.design-setup {
     display: flex;
-    flex: 0 0 100px;
+    flex: 0 0 70px;
     justify-content: space-between;
-    padding: 1em;
+    padding: 0 1.5em 1em;
 
     button {
       @extend %button;
       @include buttonize($color-button);
       border-radius: 10px;
-      box-shadow: 0 0 2px 0 $color-black;
+      box-shadow: 0 0 3px 0 $color-black;
       color: $color-white;
       font-size: 20px;
       min-width: 200px;
-      padding: 1em;
+      padding: 0.5em;
     }
   }
-
-  
 }
