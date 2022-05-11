@@ -2,6 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   faFileImage,
   faUsersRectangle,
+  faCrosshairs,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NextPage } from 'next';
@@ -9,6 +10,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 
 import Container from 'components/container';
+import Wave from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 
@@ -25,8 +27,10 @@ const Home: NextPage = () => {
 
     if (window.scrollY >= 120) {
       header.style.backgroundColor = '#620417';
+      header.style.boxShadow = '0 0 3px 0 #000';
     } else {
       header.style.backgroundColor = 'initial';
+      header.style.boxShadow = 'initial';
     }
   }, []);
 
@@ -67,33 +71,43 @@ const Home: NextPage = () => {
           </div>
         </section>
         <section className={'overview'}>
-          <Container maxWidth={800}>
+          <Container maxWidth={700}>
             <Article heading={'Step 1'} icon={faUsersRectangle}>
-              Supply a full list of your guests names to generate individual
-              media for.
+              Supply a full list of your guests names to generate invitations
+              for.
             </Article>
             <Article heading={'Step 2'} icon={faFileImage}>
-              Select the background image you want to use for the files.
+              Select your base invitation image as the template.
             </Article>
-            <Article heading={'Step 3'} icon={faFileImage}>
-              Position your names
+            <Article
+              heading={'Step 3'}
+              icon={faCrosshairs}
+              noTrailingRule={true}>
+              Use the editor to position and apply styling to each name.
             </Article>
           </Container>
         </section>
+        <Wave className={'two'} />
+        <section className={'pricing'}></section>
+        <Wave className={'three'} />
+        <section className={'motivation'}></section>
       </main>
       <Footer />
     </div>
   );
 };
 
-function Article({ heading, icon, children }: ArticleProps) {
+function Article({ heading, noTrailingRule, icon, children }: ArticleProps) {
   return (
     <article>
-      <FontAwesomeIcon icon={icon} size={'10x'} className={'font-icon'} />
-      <div>
-        <h3>{heading}</h3>
-        <p>{children}</p>
+      <div className={'article'}>
+        <FontAwesomeIcon icon={icon} size={'10x'} className={'font-icon'} />
+        <div className={'article-caption'}>
+          <h3>{heading}</h3>
+          <p>{children}</p>
+        </div>
       </div>
+      {!noTrailingRule && <hr />}
     </article>
   );
 }
@@ -103,5 +117,6 @@ export default Home;
 interface ArticleProps {
   icon: IconProp;
   heading: string;
+  noTrailingRule?: boolean;
   children?: ReactNode;
 }

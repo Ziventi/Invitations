@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 import Container from 'components/container';
@@ -12,6 +13,9 @@ export default function Header({ headerRef }: HeaderProps) {
         </div>
         <nav className={'header'}>
           <menu>
+            <li>
+              <Link href={'/design'}>Design</Link>
+            </li>
             <li>
               <a>Pricing</a>
             </li>

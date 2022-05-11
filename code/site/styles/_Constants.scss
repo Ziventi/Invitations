@@ -50,7 +50,9 @@ $color-button: $color-primary-4;
     }
 
     a {
+      color: $color-white;
       cursor: pointer;
+      text-decoration: none;
     }
   }
 }
