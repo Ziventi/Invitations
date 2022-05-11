@@ -3,23 +3,17 @@ import {
   faUsersRectangle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import fs from 'fs';
-import { GetStaticProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import path from 'path';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import Container from 'components/container';
 import { Wave } from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 
-const Home: NextPage<HomeProps> = ({ clips }) => {
-  const [state, setState] = useState<HomeState>({
-    videoClipIndex: 0,
-  });
+const Home: NextPage = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
 
   /**
@@ -51,26 +45,6 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
     void router.push('/design');
   }
 
-  /**
-   * Play next clip once a video has ended.
-   */
-  function onVideoEnd(): void {
-    const endOfPlaylist = state.videoClipIndex + 1 === clips.length;
-    const index = endOfPlaylist ? 0 : state.videoClipIndex + 1;
-    setState((current) => {
-      return {
-        ...current,
-        videoClipIndex: index,
-      };
-    });
-
-    const video = videoRef.current!;
-    video.src = `/videos/${clips[index]}.mp4`;
-    video.onload = async () => {
-      await video.play();
-    };
-  }
-
   return (
     <div className={'app'}>
       <Header headerRef={headerRef} />
@@ -78,13 +52,12 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
         <section className={'cover'}>
           <Wave className={'wave'}>
             <video
-              src={`/videos/${clips[state.videoClipIndex]}.mp4`}
+              src={`/cover.mp4`}
               autoPlay={true}
               controls={false}
+              loop={true}
               muted={true}
               onContextMenu={(e) => e.preventDefault()}
-              onEnded={onVideoEnd}
-              ref={videoRef}
             />
           </Wave>
           <div>
@@ -131,23 +104,3 @@ const Home: NextPage<HomeProps> = ({ clips }) => {
 };
 
 export default Home;
-
-export const getStaticProps: GetStaticProps<HomeProps> = () => {
-  const videosDir = path.resolve(process.cwd(), './public/videos');
-  const clips = fs.readdirSync(videosDir).map((filename) => {
-    return path.basename(filename, '.mp4');
-  });
-  return {
-    props: {
-      clips,
-    },
-  };
-};
-
-interface HomeState {
-  videoClipIndex: number;
-}
-
-interface HomeProps {
-  clips: string[];
-}
