@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 
 import Container from 'components/container';
-import { Wave } from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 
@@ -51,7 +50,7 @@ const Home: NextPage = () => {
       <Header headerRef={headerRef} />
       <main className={'home'}>
         <section className={'cover'}>
-          <Wave className={'wave'}>
+          <figure className={'video'}>
             <video
               src={`/cover.mp4`}
               autoPlay={true}
@@ -60,7 +59,7 @@ const Home: NextPage = () => {
               muted={true}
               onContextMenu={(e) => e.preventDefault()}
             />
-          </Wave>
+          </figure>
           <div>
             <h1>Personalise your invitations</h1>
             <p>Let each and every one of your guests know they matter.</p>
