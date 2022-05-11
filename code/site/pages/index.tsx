@@ -51,8 +51,8 @@ const Home: NextPage = () => {
 
   return (
     <div className={'app'}>
-      <Header headerRef={headerRef} />
-      <main className={'home'}>
+      <main>
+        <Header headerRef={headerRef} />
         <section className={'cover'}>
           <figure className={'video'}>
             <video
