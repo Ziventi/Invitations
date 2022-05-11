@@ -1,7 +1,13 @@
 import React from 'react';
 
-export default function Container({
-  children,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={'container'}>{children}</div>;
+export default function Container({ children, maxWidth }: ContainerProps) {
+  return (
+    <div className={'container'} style={{ maxWidth }}>
+      {children}
+    </div>
+  );
+}
+
+interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+  maxWidth?: number;
 }

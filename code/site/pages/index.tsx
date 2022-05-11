@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   faFileImage,
   faUsersRectangle,
@@ -5,7 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 
 import Container from 'components/container';
 import { Wave } from 'components/wave';
@@ -62,39 +63,22 @@ const Home: NextPage = () => {
           </Wave>
           <div>
             <h1>Personalise your invitations</h1>
-            <p>Let your guests know they matter.</p>
+            <p>Let each and every one of your guests know they matter.</p>
             <button onClick={onStartClick}>Start</button>
           </div>
         </section>
         <section className={'overview'}>
-          <Container>
-            <article>
-              <FontAwesomeIcon
-                icon={faUsersRectangle}
-                size={'8x'}
-                className={'font-icon'}
-              />
-              <p>
-                Supply a full list of your guests names to position on your
-                select image.
-              </p>
-            </article>
-            <article>
-              <FontAwesomeIcon
-                icon={faFileImage}
-                size={'8x'}
-                className={'font-icon'}
-              />
-              <p>Select an image</p>
-            </article>
-            <article>
-              <FontAwesomeIcon
-                icon={faFileImage}
-                size={'8x'}
-                className={'font-icon'}
-              />
-              <p>Position your names</p>
-            </article>
+          <Container maxWidth={800}>
+            <Article heading={'Step 1'} icon={faUsersRectangle}>
+              Supply a full list of your guests names to generate individual
+              media for.
+            </Article>
+            <Article heading={'Step 2'} icon={faFileImage}>
+              Select the background image you want to use for the files.
+            </Article>
+            <Article heading={'Step 3'} icon={faFileImage}>
+              Position your names
+            </Article>
           </Container>
         </section>
       </main>
@@ -103,4 +87,22 @@ const Home: NextPage = () => {
   );
 };
 
+function Article({ heading, icon, children }: ArticleProps) {
+  return (
+    <article>
+      <FontAwesomeIcon icon={icon} size={'10x'} className={'font-icon'} />
+      <div>
+        <h3>{heading}</h3>
+        <p>{children}</p>
+      </div>
+    </article>
+  );
+}
+
 export default Home;
+
+interface ArticleProps {
+  icon: IconProp;
+  heading: string;
+  children?: ReactNode;
+}
