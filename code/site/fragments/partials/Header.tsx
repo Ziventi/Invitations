@@ -8,9 +8,7 @@ export default function Header({ headerRef }: HeaderProps) {
   return (
     <header className={'app'} ref={headerRef}>
       <Container>
-        <div className={'logo-wrapper'}>
-          <ZiventiLogo color={'white'} layout={'fill'} objectFit={'contain'} />
-        </div>
+        <ZiventiLogo color={'white'} />
         <nav className={'header'}>
           <menu>
             <li>

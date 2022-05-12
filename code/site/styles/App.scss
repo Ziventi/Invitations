@@ -70,12 +70,7 @@ footer.app {
   }
 }
 
-.logo-wrapper {
-  margin: 0.2em;
-  position: relative;
-}
-
 .logo {
   cursor: pointer;
-  width: 85px;
+  transition: all 0.3s;
 }

@@ -25,12 +25,16 @@ const Home: NextPage = () => {
     const header = headerRef.current;
     if (!header) return;
 
+    const svg = header.getElementsByTagName('svg')[0];
+
     if (window.scrollY >= 120) {
       header.style.backgroundColor = '#620417';
       header.style.boxShadow = '0 0 3px 0 #000';
+      svg.style.height = '100%';
     } else {
       header.style.backgroundColor = 'initial';
       header.style.boxShadow = 'initial';
+      svg.style.height = '250%';
     }
   }, []);
 
