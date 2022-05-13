@@ -16,7 +16,8 @@ import {
   RootState,
   updateState,
 } from 'constants/reducers';
-import { Coordinates } from 'constants/types';
+import { Coordinates, ResizeHandlePosition } from 'constants/types';
+import { Preview as P } from 'styles/Design/Editor.styles';
 
 const positions: ResizeHandlePosition[] = ['east', 'west'];
 
@@ -281,17 +282,11 @@ export default function DragZone({
     }
   }
 
-  const draggableClasses = classnames('draggable', {
-    'draggable--selected': state.draggable.isSelected,
-  });
   return (
-    <div
-      className={'drag-zone'}
-      onMouseDown={onDragZoneClick}
-      ref={dragZoneRef}>
-      <div
+    <P.DragZone onMouseDown={onDragZoneClick} ref={dragZoneRef}>
+      <P.Draggable
         id={'draggable'}
-        className={draggableClasses}
+        selected={state.draggable.isSelected}
         onMouseDown={onTextDragStart}
         ref={draggableRef}>
         <span style={draggableStyle}>{state.selectedName}</span>
@@ -300,8 +295,8 @@ export default function DragZone({
           isSelected={state.draggable.isSelected}
           useDragZoneState={[resizeHandleState, setResizeHandleState]}
         />
-      </div>
-    </div>
+      </P.Draggable>
+    </P.DragZone>
   );
 }
 
@@ -329,27 +324,23 @@ function ResizeHandles({
   }
 
   return (
-    <>
+    <React.Fragment>
       {positions.map((position) => {
-        const classes = classnames(
-          'resize-handle',
-          `resize-handle-${position}`,
-          { 'resize-handle--selected': isSelected },
-        );
         return (
-          <svg
+          <P.ResizeHandle
+            xmlns={'http://www.w3.org/2000/svg'}
             id={position}
             width={'10'}
             height={'10'}
-            xmlns={'http://www.w3.org/2000/svg'}
-            className={classes}
             key={position}
+            position={position}
+            selected={isSelected}
             onMouseDown={onResizeHandleDragStart}>
-            <circle cx={'50%'} cy={'50%'} r={'5'} />
-          </svg>
+            <P.ResizeHandleCircle cx={'50%'} cy={'50%'} r={'5'} />
+          </P.ResizeHandle>
         );
       })}
-    </>
+    </React.Fragment>
   );
 }
 
@@ -374,5 +365,3 @@ interface ResizeHandleState {
   isDragging: boolean;
   initialPointX: number;
 }
-
-type ResizeHandlePosition = 'east' | 'west';

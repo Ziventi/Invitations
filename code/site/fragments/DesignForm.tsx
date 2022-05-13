@@ -11,7 +11,7 @@ import {
 } from 'constants/reducers';
 import { FontVariantKey, GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
-import { LeftSidebar as LSB } from 'styles/Design/Editor.styles';
+import { LeftSidebar as L } from 'styles/Design/Editor.styles';
 
 export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   const state = useSelector((state: RootState) => state);
@@ -132,10 +132,10 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   }
 
   return (
-    <LSB.DesignForm>
-      <LSB.FormField>
-        <LSB.Label>Font Family:</LSB.Label>
-        <LSB.FormSelect
+    <L.DesignForm>
+      <L.FormField>
+        <L.Label>Font Family:</L.Label>
+        <L.FormSelect
           onChange={onFontFamilyChange}
           value={state.textStyle.fontFamily}>
           {fonts.map((font) => {
@@ -145,11 +145,11 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
               </option>
             );
           })}
-        </LSB.FormSelect>
-      </LSB.FormField>
-      <LSB.FormField>
-        <LSB.Label>Font Style:</LSB.Label>
-        <LSB.FontStyleSelect
+        </L.FormSelect>
+      </L.FormField>
+      <L.FormField>
+        <L.Label>Font Style:</L.Label>
+        <L.FontStyleSelect
           onChange={onFontStyleChange}
           disabled={fontVariants.length < 2}
           value={state.textStyle.fontStyle}>
@@ -160,18 +160,18 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
               </option>
             );
           })}
-        </LSB.FontStyleSelect>
-      </LSB.FormField>
-      <LSB.FormField>
-        <LSB.Label>Font Color:</LSB.Label>
-        <LSB.ColorThumbnail
+        </L.FontStyleSelect>
+      </L.FormField>
+      <L.FormField>
+        <L.Label>Font Color:</L.Label>
+        <L.ColorThumbnail
           onClick={showColorPicker}
           bgColor={state.textStyle.color}
           fontColor={fontPreviewTextColor}>
           {fontPreviewText}
-        </LSB.ColorThumbnail>
+        </L.ColorThumbnail>
         {/* TODO: Color picker not staying open on clicks */}
-        <LSB.ColorPicker
+        <L.ColorPicker
           as={ChromePicker}
           visible={state.isColorPickerVisible}
           color={state.textStyle.color}
@@ -185,10 +185,10 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
             },
           }}
         />
-      </LSB.FormField>
-      <LSB.FormFieldRow>
-        <LSB.FormField>
-          <LSB.Label>Font Size:</LSB.Label>
+      </L.FormField>
+      <L.FormFieldRow>
+        <L.FormField>
+          <L.Label>Font Size:</L.Label>
           <NumberInput
             name={'fontSize'}
             min={2}
@@ -197,9 +197,9 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
             onChange={onNumberInputChange}
             value={state.textStyle.fontSize}
           />
-        </LSB.FormField>
-        <LSB.FormField>
-          <LSB.Label>Line Height:</LSB.Label>
+        </L.FormField>
+        <L.FormField>
+          <L.Label>Line Height:</L.Label>
           <NumberInput
             name={'lineHeight'}
             min={2}
@@ -208,11 +208,11 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
             onChange={onNumberInputChange}
             value={state.textStyle.lineHeight}
           />
-        </LSB.FormField>
-      </LSB.FormFieldRow>
-      <LSB.FormFieldRow>
-        <LSB.FormField>
-          <LSB.Label>Top:</LSB.Label>
+        </L.FormField>
+      </L.FormFieldRow>
+      <L.FormFieldRow>
+        <L.FormField>
+          <L.Label>Top:</L.Label>
           <NumberInput
             name={'top'}
             min={0}
@@ -221,9 +221,9 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
             onChange={onNumberInputChange}
             value={state.textStyle.top}
           />
-        </LSB.FormField>
-        <LSB.FormField>
-          <LSB.Label>Left:</LSB.Label>
+        </L.FormField>
+        <L.FormField>
+          <L.Label>Left:</L.Label>
           <NumberInput
             name={'left'}
             min={0}
@@ -232,19 +232,19 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
             onChange={onNumberInputChange}
             value={state.textStyle.left}
           />
-        </LSB.FormField>
-      </LSB.FormFieldRow>
-      <LSB.FormField>
-        <LSB.Label>File Name Template:</LSB.Label>
-        <LSB.FilenameInput
+        </L.FormField>
+      </L.FormFieldRow>
+      <L.FormField>
+        <L.Label>File Name Template:</L.Label>
+        <L.FilenameInput
           onChange={onFileNameTemplateChange}
           value={state.fileNameTemplate}
           rows={2}
           placeholder={DEFAULT_FILENAME_TEMPLATE}
           maxLength={128}
         />
-      </LSB.FormField>
-    </LSB.DesignForm>
+      </L.FormField>
+    </L.DesignForm>
   );
 }
 
@@ -252,14 +252,14 @@ function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const [isFocused, setIsFocused] = useState(false);
   return (
     <div>
-      <LSB.NumericInput
+      <L.NumericInput
         type={'number'}
         autoComplete={'off'}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         {...props}
       />
-      <LSB.NumberSuffix
+      <L.NumberSuffix
         type={'text'}
         focused={isFocused}
         value={'px'}

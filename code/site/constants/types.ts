@@ -81,6 +81,7 @@ export type DraggableOptions =
       offset: Coordinates;
     }
   | { isDragging: false; offset: null };
+export type ResizeHandlePosition = 'east' | 'west';
 
 export type FileFormat = 'pdf' | 'png';
 export interface PaymentHash {

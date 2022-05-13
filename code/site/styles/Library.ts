@@ -20,6 +20,7 @@ export const COLOR = {
   BLACK: '#000000',
   WHITE: '#ffffff',
   TRANSPARENT: 'rgba(0,0,0,0)',
+  DEFAULT: '#cccccc',
 };
 
 export const FONT = {

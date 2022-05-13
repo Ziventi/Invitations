@@ -13,7 +13,7 @@ import {
 } from 'constants/reducers';
 import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
-import { LeftSidebar as LSidebar } from 'styles/Design/Editor.styles';
+import { LeftSidebar as L } from 'styles/Design/Editor.styles';
 import { COLOR } from 'styles/Library';
 
 export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
@@ -96,45 +96,42 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
   }
 
   return (
-    <LSidebar.Aside>
+    <L.Aside>
       <DesignForm fonts={fonts} />
-      <LSidebar.Button
-        id={'preview'}
-        onClick={preview}
-        bgColor={COLOR.PRIMARY_2_DARK}>
+      <L.Button id={'preview'} onClick={preview} bgColor={COLOR.PRIMARY_2_DARK}>
         Draw
-      </LSidebar.Button>
+      </L.Button>
       <Link href={`/checkout?q=${queryHash}`}>
-        <LSidebar.Button id={'pay'} bgColor={COLOR.PRIMARY_2}>
+        <L.Button id={'pay'} bgColor={COLOR.PRIMARY_2}>
           Checkout
-        </LSidebar.Button>
+        </L.Button>
       </Link>
-      <LSidebar.Button
+      <L.Button
         id={'download-png'}
         onClick={() => download('png')}
         bgColor={COLOR.PRIMARY_5_LIGHT}>
         Download PNG
-      </LSidebar.Button>
-      <LSidebar.Button
+      </L.Button>
+      <L.Button
         id={'download-pdf'}
         onClick={() => download('pdf')}
         bgColor={COLOR.PRIMARY_5}>
         Download PDF
-      </LSidebar.Button>
-      <LSidebar.Button
+      </L.Button>
+      <L.Button
         id={'download-png-archive'}
         onClick={() => download('png', true)}
         bgColor={COLOR.PRIMARY_3}>
         Download PNG archive
-      </LSidebar.Button>
-      <LSidebar.Button
+      </L.Button>
+      <L.Button
         id={'download-pdf-archive'}
         onClick={() => download('pdf', true)}
         bgColor={COLOR.PRIMARY_4}>
         Download PDF archive
-      </LSidebar.Button>
+      </L.Button>
       <Link href={'/design'}>Back to Design</Link>
-    </LSidebar.Aside>
+    </L.Aside>
   );
 }
 
