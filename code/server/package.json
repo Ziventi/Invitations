@@ -11,7 +11,7 @@
   "dependencies": {
     "@types/express": "^4.17.13",
     "@types/google-spreadsheet": "^3.1.5",
-    "@ziventi/utils": "file:../utils",
+    "@ziventi/utils": "workspace:utils",
     "express": "^4.17.2",
     "express-rate-limit": "^6.0.4",
     "node-cache": "^5.1.2",

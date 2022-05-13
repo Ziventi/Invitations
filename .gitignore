@@ -3,6 +3,8 @@
 **/.env
 **/.dist
 **/css
+**/.yarn/*
+!**/.yarn/releases
 
 # site
 **/site/.next/

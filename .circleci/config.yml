@@ -17,29 +17,27 @@ commands:
         default: false
     steps:
       - checkout
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - yarn-packages-{{ checksum "./code/yarn.lock" }}
       - run:
-          name: Install utils dependencies
-          command: yarn install
-          working_directory: ./code/utils
-      - run:
-          name: Install root dependencies
-          command: yarn install
+          name: Install dependencies
+          command: yarn install --immutable
           working_directory: ./code
+      - save_cache:
+          name: Save yarn cache
+          key: yarn-packages-{{ checksum "./code/yarn.lock" }}
+          paths:
+            - .yarn/cache
+            - .yarn/unplugged
       - when:
           condition: << parameters.build-utils >>
           steps:
             - run:
                 name: Build utils
                 command: yarn run build utils
-                working_directory: ./code          
-      - run:
-          name: Install server dependencies
-          command: yarn install
-          working_directory: ./code/server
-      - run:
-          name: Install site dependencies
-          command: yarn install
-          working_directory: ./code/site
+                working_directory: ./code
   transfer_scripts:
     description: 'Transfers deployment scripts via SCP'
     parameters:
@@ -69,10 +67,10 @@ jobs:
           name: Run ESLint
           command: yarn run eslint --max-warnings 0
           working_directory: ./code
-      - run:
-          name: Run Stylelint
-          command: yarn run stylelint
-          working_directory: ./code
+      # - run:
+      #     name: Run Stylelint
+      #     command: yarn run stylelint
+      #     working_directory: ./code
       - run:
           name: Run Prettier checks
           command: yarn run prettier
