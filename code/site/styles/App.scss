@@ -1,6 +1,5 @@
 @import './Constants';
 
-@import './Home';
 @import './Design/Editor';
 @import './Design/Setup';
 @import './Payment';
@@ -19,13 +18,6 @@ body {
 }
 
 div#__next {
-  height: 100%;
-  position: relative;
-}
-
-div.app {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
   height: 100%;
   position: relative;
 }

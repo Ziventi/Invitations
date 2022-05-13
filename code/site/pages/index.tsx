@@ -1,18 +1,35 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
+  faCrosshairs,
   faFileImage,
   faUsersRectangle,
-  faCrosshairs,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 
-import Container from 'components/container';
 import Wave from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
+import {
+  Cover,
+  CoverButton,
+  CoverCaption,
+  CoverCaptionHeading,
+  HomeMain,
+  HorizontalRule,
+  StepCaption,
+  StepCaptionHeading,
+  StepCaptionText,
+  StepCaptionWrapper,
+  Video,
+  VideoWrapper,
+  WorkflowContainer,
+  WorkflowSection,
+  WorkflowStep,
+} from 'styles/Home.styles';
+import { COLOR } from 'styles/Library';
 
 const Home: NextPage = () => {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -28,8 +45,8 @@ const Home: NextPage = () => {
     const svg = header.getElementsByTagName('svg')[0];
 
     if (window.scrollY >= 120) {
-      header.style.backgroundColor = '#620417';
-      header.style.boxShadow = '0 0 3px 0 #000';
+      header.style.backgroundColor = COLOR.PRIMARY_4_DARK;
+      header.style.boxShadow = `0 0 3px 0 ${COLOR.BLACK}`;
       svg.style.height = '100%';
     } else {
       header.style.backgroundColor = 'initial';
@@ -54,12 +71,12 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className={'app'}>
-      <main>
+    <HomeMain>
+      <div>
         <Header headerRef={headerRef} />
-        <section className={'cover'}>
-          <figure className={'video'}>
-            <video
+        <Cover>
+          <VideoWrapper>
+            <Video
               src={`/cover.mp4`}
               autoPlay={true}
               controls={false}
@@ -67,58 +84,63 @@ const Home: NextPage = () => {
               muted={true}
               onContextMenu={(e) => e.preventDefault()}
             />
-          </figure>
-          <div>
-            <h1>Personalise your invitations</h1>
+          </VideoWrapper>
+          <CoverCaption>
+            <CoverCaptionHeading>
+              Personalise your invitations
+            </CoverCaptionHeading>
             <p>Let each and every one of your guests know they matter.</p>
-            <button onClick={onStartClick}>Start</button>
-          </div>
-        </section>
-        <section className={'overview'}>
-          <Container maxWidth={700}>
-            <Article heading={'Step 1'} icon={faUsersRectangle}>
+            <CoverButton bgColor={COLOR.PRIMARY_4_DARK} onClick={onStartClick}>
+              Start
+            </CoverButton>
+          </CoverCaption>
+        </Cover>
+        <WorkflowSection>
+          <WorkflowContainer maxWidth={700}>
+            <Step heading={'Step 1'} icon={faUsersRectangle}>
               Supply a full list of your guests names to generate invitations
               for.
-            </Article>
-            <Article heading={'Step 2'} icon={faFileImage}>
+            </Step>
+            <Step heading={'Step 2'} icon={faFileImage}>
               Select your base invitation image as the template.
-            </Article>
-            <Article
-              heading={'Step 3'}
-              icon={faCrosshairs}
-              noTrailingRule={true}>
+            </Step>
+            <Step heading={'Step 3'} icon={faCrosshairs} noTrailingRule={true}>
               Use the editor to position and apply styling to each name.
-            </Article>
-          </Container>
-        </section>
+            </Step>
+          </WorkflowContainer>
+        </WorkflowSection>
         <Wave className={'two'} />
         <section className={'pricing'}></section>
         <Wave className={'three'} />
         <section className={'motivation'}></section>
-      </main>
+      </div>
       <Footer />
-    </div>
+    </HomeMain>
   );
 };
 
-function Article({ heading, noTrailingRule, icon, children }: ArticleProps) {
+function Step({ heading, noTrailingRule, icon, children }: StepProps) {
   return (
-    <article>
-      <div className={'article'}>
-        <FontAwesomeIcon icon={icon} size={'10x'} className={'font-icon'} />
-        <div className={'article-caption'}>
-          <h3>{heading}</h3>
-          <p>{children}</p>
-        </div>
-      </div>
-      {!noTrailingRule && <hr />}
-    </article>
+    <WorkflowStep>
+      <StepCaptionWrapper>
+        <FontAwesomeIcon
+          icon={icon}
+          size={'10x'}
+          color={COLOR.PRIMARY_4_DARK}
+        />
+        <StepCaption>
+          <StepCaptionHeading>{heading}</StepCaptionHeading>
+          <StepCaptionText>{children}</StepCaptionText>
+        </StepCaption>
+      </StepCaptionWrapper>
+      {!noTrailingRule && <HorizontalRule />}
+    </WorkflowStep>
   );
 }
 
 export default Home;
 
-interface ArticleProps {
+interface StepProps {
   icon: IconProp;
   heading: string;
   noTrailingRule?: boolean;

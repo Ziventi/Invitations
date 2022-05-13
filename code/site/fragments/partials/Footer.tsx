@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Container from 'components/container';
+import { Container } from 'styles/Library';
 
 export default function Footer() {
   return (

@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 
-import Container from 'components/container';
 import ZiventiLogo from 'components/logo';
+import { Container } from 'styles/Library';
 
 export default function Header({ headerRef }: HeaderProps) {
   return (
