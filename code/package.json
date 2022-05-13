@@ -12,9 +12,6 @@
     "ziventi": "./scripts/cli.js",
     "ziventi-build": "./scripts/build.js"
   },
-  "stylelint": {
-    "extends": "@zzavidd/stylelint-config"
-  },
   "prettier": "@zzavidd/prettier-config",
   "scripts": {
     "build": "node scripts/build.js",
@@ -30,7 +27,7 @@
     "eslint:fix": "yarn run eslint --fix",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,scss,json}\"",
     "prettier:fix": "yarn run prettier --write",
-    "stylelint": "stylelint **/*.scss"
+    "stylelint": "stylelint **/*.{scss,ts,tsx}"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",

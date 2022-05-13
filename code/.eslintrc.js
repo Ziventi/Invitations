@@ -3,7 +3,7 @@ const zavidConfig = require('@zzavidd/eslint-config');
 /**
  * @type {import('eslint').Linter.Config}
  */
-const eslintConfig = {
+module.exports = {
   extends: '@zzavidd/eslint-config/react-ts',
   root: true,
   ignorePatterns: ['**/.dist/**', '**/.out/**', '**/next-env.d.ts'],
@@ -28,5 +28,3 @@ const eslintConfig = {
     ],
   },
 };
-
-module.exports = eslintConfig;
