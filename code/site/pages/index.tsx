@@ -1,111 +1,148 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import {
+  faCrosshairs,
+  faFileImage,
+  faUsersRectangle,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 
-import ZiventiLogo from 'components/logo';
-import { AppDispatch, PageStatePayload, updateState } from 'constants/reducers';
+import Wave from 'components/wave';
+import Footer from 'fragments/partials/Footer';
+import Header from 'fragments/partials/Header';
+import {
+  Cover,
+  CoverButton,
+  CoverCaption,
+  CoverCaptionHeading,
+  HomeMain,
+  HorizontalRule,
+  StepCaption,
+  StepCaptionHeading,
+  StepCaptionText,
+  StepCaptionWrapper,
+  Video,
+  VideoWrapper,
+  WorkflowContainer,
+  WorkflowSection,
+  WorkflowStep,
+} from 'styles/Home.styles';
+import { COLOR } from 'styles/Library';
 
 const Home: NextPage = () => {
-  const [state, setState] = useState<HomeState>({
-    names: '',
-    imageSrc: null,
-  });
-
-  const dispatch = useDispatch<AppDispatch>();
-  const setAppState = useCallback(
-    (payload: PageStatePayload) => {
-      dispatch(updateState(payload));
-    },
-    [dispatch],
-  );
+  const headerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  function onTextChange(e: React.ChangeEvent<HTMLTextAreaElement>): void {
-    setState((current) => ({ ...current, names: e.target.value }));
-  }
+  /**
+   * Fill the header when window is scrolled to a certain height.
+   */
+  const fillHeaderOnScroll = useCallback(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const svg = header.getElementsByTagName('svg')[0];
+
+    if (window.scrollY >= 120) {
+      header.style.backgroundColor = COLOR.PRIMARY_4_DARK;
+      header.style.boxShadow = `0 0 3px 0 ${COLOR.BLACK}`;
+      svg.style.height = '100%';
+    } else {
+      header.style.backgroundColor = 'initial';
+      header.style.boxShadow = 'initial';
+      svg.style.height = '250%';
+    }
+  }, []);
+
+  // Attach window event listeners.
+  useEffect(() => {
+    window.addEventListener('scroll', fillHeaderOnScroll);
+    return () => {
+      window.removeEventListener('scroll', fillHeaderOnScroll);
+    };
+  }, [fillHeaderOnScroll]);
 
   /**
-   * Called on selection of a file to edit. Ensures only files below limit are
-   * allowed
-   * @param e The change event.
+   * Navigate to design page.
    */
-  function onImageSelect(e: React.ChangeEvent<HTMLInputElement>): void {
-    const { files } = e.target;
-    if (!files || !files.length) return;
-
-    const file = files[0];
-    if (file.size > 10 * 1024 * 1024) {
-      e.target.value = '';
-      return alert('Maximum file size is 10MB');
-    }
-
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      setState((current) => ({
-        ...current,
-        imageSrc: fileReader.result as string,
-      }));
-    };
-  }
-
-  function onSubmit() {
-    const names = state.names;
-    const namesList = names.split('\n').filter((name) => name.trim());
-    setAppState({ namesList, imageSrc: state.imageSrc });
+  function onStartClick(): void {
     void router.push('/design');
   }
 
   return (
-    <main className={'home'}>
-      <ZiventiLogo
-        layout={'fixed'}
-        objectFit={'contain'}
-        width={300}
-        height={300}
-      />
-      <section className={'content'}>
-        <div>
-          <section>
-            <h2>Step 1</h2>
-            <div className={'file-selector-container'}>
-              <label className={'file-selector'}>
-                <input
-                  type={'file'}
-                  accept={'image/jpeg,image/png'}
-                  onChange={onImageSelect}
-                  hidden={true}
-                />
-                <span>Choose your image...</span>
-              </label>
-            </div>
-            <small>
-              * Supported formats are JPEG and PNG. Maximum image size is 10MB.
-            </small>
-          </section>
-          <section>
-            <h2>Step 2</h2>
-            <textarea
-              id={'names-list'}
-              onChange={onTextChange}
-              value={state.names}
-              placeholder={'List each individual name...'}
-              rows={5}
+    <HomeMain>
+      <div>
+        <Header headerRef={headerRef} />
+        <Cover>
+          <VideoWrapper>
+            <Video
+              src={`/cover.mp4`}
+              autoPlay={true}
+              controls={false}
+              loop={true}
+              muted={true}
+              onContextMenu={(e) => e.preventDefault()}
             />
-          </section>
-        </div>
-        <footer>
-          <button onClick={onSubmit}>Start</button>
-        </footer>
-      </section>
-    </main>
+          </VideoWrapper>
+          <CoverCaption>
+            <CoverCaptionHeading>
+              Personalise your invitations
+            </CoverCaptionHeading>
+            <p>Let each and every one of your guests know they matter.</p>
+            <CoverButton bgColor={COLOR.PRIMARY_4_DARK} onClick={onStartClick}>
+              Start
+            </CoverButton>
+          </CoverCaption>
+        </Cover>
+        <WorkflowSection>
+          <WorkflowContainer maxWidth={700}>
+            <Step heading={'Step 1'} icon={faUsersRectangle}>
+              Supply a full list of your guests names to generate invitations
+              for.
+            </Step>
+            <Step heading={'Step 2'} icon={faFileImage}>
+              Select your base invitation image as the template.
+            </Step>
+            <Step heading={'Step 3'} icon={faCrosshairs} noTrailingRule={true}>
+              Use the editor to position and apply styling to each name.
+            </Step>
+          </WorkflowContainer>
+        </WorkflowSection>
+        <Wave className={'two'} />
+        <section className={'pricing'}></section>
+        <Wave className={'three'} />
+        <section className={'motivation'}></section>
+      </div>
+      <Footer />
+    </HomeMain>
   );
 };
 
+function Step({ heading, noTrailingRule, icon, children }: StepProps) {
+  return (
+    <WorkflowStep>
+      <StepCaptionWrapper>
+        <FontAwesomeIcon
+          icon={icon}
+          size={'10x'}
+          color={COLOR.PRIMARY_4_DARK}
+        />
+        <StepCaption>
+          <StepCaptionHeading>{heading}</StepCaptionHeading>
+          <StepCaptionText>{children}</StepCaptionText>
+        </StepCaption>
+      </StepCaptionWrapper>
+      {!noTrailingRule && <HorizontalRule />}
+    </WorkflowStep>
+  );
+}
+
 export default Home;
 
-interface HomeState {
-  names: string;
-  imageSrc: string | null;
+interface StepProps {
+  icon: IconProp;
+  heading: string;
+  noTrailingRule?: boolean;
+  children?: ReactNode;
 }

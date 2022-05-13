@@ -1,0 +1,19 @@
+@import './LeftSidebar';
+@import './Preview';
+@import './RightSidebar';
+
+main.design {
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  position: relative;
+}
+
+dialog.loading {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  opacity: 0.8;
+  width: 100%;
+}

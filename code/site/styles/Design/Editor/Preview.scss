@@ -1,0 +1,97 @@
+section.preview {
+  align-items: center;
+  background-color: $color-primary-1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+
+  div.preview-main {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    height: 0;
+    justify-content: center;
+    position: relative;
+  }
+
+  footer.metadata {
+    align-items: center;
+    background-color: $color-primary-5-light;
+    box-shadow: 0 0 2px 0 $color-black;
+    color: $color-white;
+    display: flex;
+    flex: 0 0 30px;
+    justify-content: space-evenly;
+    min-height: 0;
+    width: 100%;
+    z-index: 2;
+
+    small {
+      font-size: 0.9vw;
+    }
+  }
+
+  canvas {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  div.drag-zone {
+    align-items: center;
+    box-shadow: 0 0 2px 0 $color-black;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+  }
+
+  div.draggable {
+    border: 2px dashed transparent;
+    border-radius: 2px;
+    cursor: move;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: fit-content;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    transition: border 0.2s;
+    user-select: none;
+    width: 100%;
+
+    &--selected {
+      border: 2px dashed #ccc;
+    }
+  }
+
+  svg.resize-handle {
+    cursor: ew-resize;
+    margin: -1em;
+    opacity: 0;
+    position: absolute;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    visibility: hidden;
+
+    &--selected {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    &-east {
+      align-self: flex-end;
+    }
+
+    &-west {
+      align-self: flex-start;
+    }
+  }
+
+  svg.resize-handle circle {
+    fill: #00a6ff;
+  }
+}

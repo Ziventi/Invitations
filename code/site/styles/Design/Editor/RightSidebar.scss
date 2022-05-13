@@ -1,0 +1,52 @@
+aside.namelist {
+  background-color: $color-primary-4;
+  box-shadow: 0 0 2px 0 $color-black;
+  display: flex;
+  flex: 0 0 200px;
+  flex-direction: column;
+  overflow-y: clip;
+  z-index: 2;
+
+  header {
+    align-items: center;
+    background-color: $color-primary-4-dark;
+    color: $color-white;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+  }
+
+  div.button-list {
+    @include scrollbar($color-primary-4);
+    border-left: 3px solid $color-primary-4-dark;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  button.name-button {
+    @include buttonize($color-primary-4);
+    align-items: center;
+    border-style: none;
+    color: #fff;
+    column-gap: 20px;
+    cursor: pointer;
+    display: grid;
+    flex: 1 1 auto;
+    font-size: 14px;
+    grid-template-columns: 20px 1fr;
+    min-height: 70px;
+    outline: none;
+    padding: 0.5em;
+    transition: all 0.3s ease;
+    width: 100%;
+
+    span.index {
+      text-align: right;
+    }
+
+    span.name {
+      text-align: left;
+    }
+  }
+}
