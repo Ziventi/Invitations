@@ -2788,7 +2788,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/google-spreadsheet": ^3.1.5
     "@types/node": ^17.0.10
-    "@ziventi/utils": "file:../utils"
+    "@ziventi/utils": "workspace:utils"
     express: ^4.17.2
     express-rate-limit: ^6.0.4
     node-cache: ^5.1.2
@@ -2842,29 +2842,6 @@ __metadata:
     webfontloader: ^1.6.28
   languageName: unknown
   linkType: soft
-
-"@ziventi/utils@file:../utils::locator=%40ziventi%2Fserver%40workspace%3Aserver":
-  version: 1.0.0
-  resolution: "@ziventi/utils@file:../utils#../utils::hash=392fd1&locator=%40ziventi%2Fserver%40workspace%3Aserver"
-  dependencies:
-    "@types/crypto-js": ^4.0.2
-    "@types/express": ^4.17.13
-    "@types/fs-extra": ^9.0.13
-    "@types/google-spreadsheet": ^3.1.5
-    "@types/node": ^17.0.6
-    crypto-js: ^4.1.1
-    date-fns: ^2.28.0
-    dotenv: ^10.0.0
-    express: ^4.17.2
-    fs-extra: ^10.0.0
-    google-spreadsheet: ^3.2.0
-    log4js: ^6.3.0
-    node-cache: ^5.1.2
-    tiny-invariant: ^1.2.0
-    typescript: ^4.5.2
-  checksum: 6aa8eb0b5e1cebf0868b21ea3a271435ef235c22e1bc50e8d9af6a353d9dca87559aa451ba7ecae6d9e7157bf6b220a0e7e2d95ed9a04d4cfe1c54c636672aea
-  languageName: node
-  linkType: hard
 
 "@ziventi/utils@workspace:utils":
   version: 0.0.0-use.local
