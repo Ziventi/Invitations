@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { ResizeHandlePosition } from 'constants/types';
-import { Button, COLOR, Input, Scrollable } from 'styles/Library';
+import { Global, Mixin, COLOR } from 'styles/Library';
 
 export default {
   Main: styled.main`
@@ -21,14 +21,14 @@ export default {
 };
 
 const FormInput = css`
-  ${Input}
+  ${Global.Input}
   font-size: 16px;
   padding: 0.5em;
 `;
 
 export const LeftSidebar = {
   Aside: styled.aside`
-    ${Scrollable(COLOR.PRIMARY_1_DARK)}
+    ${Mixin.Scrollable(COLOR.PRIMARY_1_DARK)}
     background-color: ${COLOR.PRIMARY_1_DARK};
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
     display: flex;
@@ -39,7 +39,7 @@ export const LeftSidebar = {
     user-select: none;
     z-index: 2;
   `,
-  Button: styled(Button)`
+  Button: styled(Global.Button)`
     margin: 0.3em 0;
     width: 100%;
   `,
@@ -229,13 +229,13 @@ export const RightSidebar = {
     justify-content: center;
   `,
   ButtonList: styled.div`
-    ${Scrollable(COLOR.PRIMARY_4)}
+    ${Mixin.Scrollable(COLOR.PRIMARY_4)}
     border-left: 3px solid ${COLOR.PRIMARY_4_DARK};
     display: flex;
     flex-direction: column;
     height: 100%;
   `,
-  Button: styled(Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
+  Button: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
     align-items: center;
     border-radius: 0;
     border-style: none;

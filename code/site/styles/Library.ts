@@ -27,99 +27,100 @@ export const FONT = {
   PRIMARY: "'Rubik', sans-serif",
 };
 
-export const Button = styled.button<ButtonProps>`
-  border-radius: 10px;
-  border-style: none;
-  color: ${COLOR.WHITE};
-  outline: none;
-  cursor: pointer;
-  font-size: 16px;
-  min-width: 100px;
-  padding: 1em;
-  transition: all 0.3s ease;
-  user-select: none;
+export const Global = {
+  Button: styled.button<ButtonProps>`
+    border-radius: 10px;
+    border-style: none;
+    color: ${COLOR.WHITE};
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    min-width: 100px;
+    padding: 1em;
+    transition: all 0.3s ease;
+    user-select: none;
 
-  ${({ bgColor }) => css`
-    background-color: ${bgColor};
+    ${({ bgColor }) => css`
+      background-color: ${bgColor};
 
-    &:hover {
-      background-color: ${darken(0.05, bgColor)};
-    }
+      &:hover {
+        background-color: ${darken(0.05, bgColor)};
+      }
 
-    &:active {
-      background-color: ${darken(0.1, bgColor)};
-    }
-  `}
-`;
-
-export const Container = styled.div<ContainerProps>`
-  display: flex;
-  height: 100%;
-  justify-content: space-between;
-  max-width: ${(props) => props.maxWidth || 1200}px;
-  width: 100%;
-`;
-
-export const Navigation = styled.nav`
-  align-items: center;
-  color: ${COLOR.WHITE};
-  display: flex;
-  flex: 1 1 auto;
-  width: 100%;
-
-  menu {
+      &:active {
+        background-color: ${darken(0.1, bgColor)};
+      }
+    `}
+  `,
+  Container: styled.div<ContainerProps>`
     display: flex;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+    height: 100%;
+    justify-content: space-between;
+    max-width: ${(props) => props.maxWidth || 1200}px;
+    width: 100%;
+  `,
+  Navigation: styled.nav`
+    align-items: center;
+    color: ${COLOR.WHITE};
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
 
-    li {
-      padding: 0 2em;
+    menu {
+      display: flex;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        padding: 0 2em;
+      }
+
+      a {
+        color: ${COLOR.WHITE};
+        cursor: pointer;
+        text-decoration: none;
+      }
     }
+  `,
+  Input: css`
+    border-radius: 10px;
+    border-style: none;
+    max-width: 100%;
+    outline-color: ${COLOR.PRIMARY_2};
+  `,
+};
 
-    a {
-      color: ${COLOR.WHITE};
-      cursor: pointer;
-      text-decoration: none;
-    }
-  }
-`;
+export const Mixin = {
+  Scrollable: (color: string): FlattenSimpleInterpolation => {
+    return css`
+      overflow-y: auto;
 
-export const Input = css`
-  border-radius: 10px;
-  border-style: none;
-  max-width: 100%;
-  outline-color: ${COLOR.PRIMARY_2};
-`;
+      &::-webkit-scrollbar {
+        width: 9px;
+      }
 
-export function Scrollable(color: string): FlattenSimpleInterpolation {
-  return css`
-    overflow-y: auto;
+      &::-webkit-scrollbar-track {
+        background-color: none;
+      }
 
-    &::-webkit-scrollbar {
-      width: 9px;
-    }
+      &::-webkit-scrollbar-thumb {
+        background-color: none;
+        cursor: pointer;
+      }
 
-    &::-webkit-scrollbar-track {
-      background-color: none;
-    }
+      &:hover::-webkit-scrollbar-thumb {
+        background-color: ${darken(0.08, color)};
+        border-radius: 2px;
+        transition: background-color 0.3s ease;
+      }
 
-    &::-webkit-scrollbar-thumb {
-      background-color: none;
-      cursor: pointer;
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-      background-color: ${darken(0.08, color)};
-      border-radius: 2px;
-      transition: background-color 0.3s ease;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background-color: ${darken(0.12, color)};
-    }
-  `;
-}
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: ${darken(0.12, color)};
+      }
+    `;
+  },
+};
 
 interface ButtonProps {
   bgColor: string;

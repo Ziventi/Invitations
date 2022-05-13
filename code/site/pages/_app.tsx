@@ -5,8 +5,6 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'constants/reducers';
-// TODO: Remove once done
-import 'styles/App.scss';
 import { GlobalStyle } from 'styles/App.styles';
 
 export default function ZiventiApp({

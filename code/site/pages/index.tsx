@@ -12,23 +12,7 @@ import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import Wave from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
-import {
-  Cover,
-  CoverButton,
-  CoverCaption,
-  CoverCaptionHeading,
-  HomeMain,
-  HorizontalRule,
-  StepCaption,
-  StepCaptionHeading,
-  StepCaptionText,
-  StepCaptionWrapper,
-  Video,
-  VideoWrapper,
-  WorkflowContainer,
-  WorkflowSection,
-  WorkflowStep,
-} from 'styles/Home.styles';
+import H from 'styles/Home.styles';
 import { COLOR } from 'styles/Library';
 
 const Home: NextPage = () => {
@@ -71,12 +55,12 @@ const Home: NextPage = () => {
   }
 
   return (
-    <HomeMain>
+    <H.Main>
       <div>
         <Header headerRef={headerRef} />
-        <Cover>
-          <VideoWrapper>
-            <Video
+        <H.Cover>
+          <H.VideoWrapper>
+            <H.Video
               src={`/cover.mp4`}
               autoPlay={true}
               controls={false}
@@ -84,19 +68,21 @@ const Home: NextPage = () => {
               muted={true}
               onContextMenu={(e) => e.preventDefault()}
             />
-          </VideoWrapper>
-          <CoverCaption>
-            <CoverCaptionHeading>
+          </H.VideoWrapper>
+          <H.CoverCaption>
+            <H.CoverCaptionHeading>
               Personalise your invitations
-            </CoverCaptionHeading>
+            </H.CoverCaptionHeading>
             <p>Let each and every one of your guests know they matter.</p>
-            <CoverButton bgColor={COLOR.PRIMARY_4_DARK} onClick={onStartClick}>
+            <H.CoverButton
+              bgColor={COLOR.PRIMARY_4_DARK}
+              onClick={onStartClick}>
               Start
-            </CoverButton>
-          </CoverCaption>
-        </Cover>
-        <WorkflowSection>
-          <WorkflowContainer maxWidth={700}>
+            </H.CoverButton>
+          </H.CoverCaption>
+        </H.Cover>
+        <H.WorkflowSection>
+          <H.WorkflowContainer maxWidth={700}>
             <Step heading={'Step 1'} icon={faUsersRectangle}>
               Supply a full list of your guests names to generate invitations
               for.
@@ -107,34 +93,34 @@ const Home: NextPage = () => {
             <Step heading={'Step 3'} icon={faCrosshairs} noTrailingRule={true}>
               Use the editor to position and apply styling to each name.
             </Step>
-          </WorkflowContainer>
-        </WorkflowSection>
+          </H.WorkflowContainer>
+        </H.WorkflowSection>
         <Wave className={'two'} />
         <section className={'pricing'}></section>
         <Wave className={'three'} />
         <section className={'motivation'}></section>
       </div>
       <Footer />
-    </HomeMain>
+    </H.Main>
   );
 };
 
 function Step({ heading, noTrailingRule, icon, children }: StepProps) {
   return (
-    <WorkflowStep>
-      <StepCaptionWrapper>
+    <H.WorkflowStep>
+      <H.StepCaptionWrapper>
         <FontAwesomeIcon
           icon={icon}
           size={'10x'}
           color={COLOR.PRIMARY_4_DARK}
         />
-        <StepCaption>
-          <StepCaptionHeading>{heading}</StepCaptionHeading>
-          <StepCaptionText>{children}</StepCaptionText>
-        </StepCaption>
-      </StepCaptionWrapper>
-      {!noTrailingRule && <HorizontalRule />}
-    </WorkflowStep>
+        <H.StepCaption>
+          <H.StepCaptionHeading>{heading}</H.StepCaptionHeading>
+          <H.StepCaptionText>{children}</H.StepCaptionText>
+        </H.StepCaption>
+      </H.StepCaptionWrapper>
+      <H.HorizontalRule visible={!noTrailingRule} />
+    </H.WorkflowStep>
   );
 }
 

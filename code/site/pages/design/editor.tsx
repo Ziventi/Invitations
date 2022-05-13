@@ -132,7 +132,7 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   }, [setState, state.namesList]);
 
   return (
-    <DesignEditor.Main className={'design'}>
+    <DesignEditor.Main>
       <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
       <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
       <RightSidebar />

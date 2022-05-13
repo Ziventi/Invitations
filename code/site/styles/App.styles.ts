@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle, css } from 'styled-components';
 
-import { COLOR, FONT, Navigation } from './Library';
+import { COLOR, FONT, Global } from './Library';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -22,45 +22,43 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export const Header = styled.header`
-  background-color: ${COLOR.TRANSPARENT};
-  display: flex;
-  height: 70px;
-  justify-content: center;
-  margin-top: -70px;
-  padding: 0.5em;
-  position: sticky;
-  top: 0;
-  transition: all 0.2s;
-  width: 100%;
-  z-index: 2;
-`;
-
-export const HeaderNavigation = styled(Navigation)`
-  justify-content: flex-end;
-`;
-
-export const Footer = styled.footer`
-  background-color: ${COLOR.PRIMARY_4_DARK};
-  display: flex;
-  justify-content: center;
-  padding: 1em;
-  width: 100%;
-  z-index: 1;
-`;
-
-export const SiteLogo = styled.svg`
-  cursor: pointer;
-  height: 250%;
-  transition: all 0.3s;
-`;
-
-export const SiteLogoPath = styled.path`
-  ${({ fill, strokeWidth }) => css`
-    fill: ${fill};
-    stroke: ${fill};
-    stroke-width: ${strokeWidth};
-  `}
-  fill-rule: 'evenodd';
-  stroke-linejoin: 'round';
-`;
+export default {
+  Header: styled.header`
+    background-color: ${COLOR.TRANSPARENT};
+    display: flex;
+    height: 70px;
+    justify-content: center;
+    margin-top: -70px;
+    padding: 0.5em;
+    position: sticky;
+    top: 0;
+    transition: all 0.2s;
+    width: 100%;
+    z-index: 2;
+  `,
+  HeaderNavigation: styled(Global.Navigation)`
+    justify-content: flex-end;
+  `,
+  Footer: styled.footer`
+    background-color: ${COLOR.PRIMARY_4_DARK};
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+    width: 100%;
+    z-index: 1;
+  `,
+  SiteLogo: styled.svg`
+    cursor: pointer;
+    height: 250%;
+    transition: all 0.3s;
+  `,
+  SiteLogoPath: styled.path`
+    ${({ fill, strokeWidth }) => css`
+      fill: ${fill};
+      stroke: ${fill};
+      stroke-width: ${strokeWidth};
+    `}
+    fill-rule: 'evenodd';
+    stroke-linejoin: 'round';
+  `,
+};
