@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Container } from 'styles/Library';
+import { Footer as IFooter } from 'styles/App.styles';
+import { Container, Navigation } from 'styles/Library';
 
 export default function Footer() {
   return (
-    <footer className={'app'}>
+    <IFooter>
       <Container>
-        <nav className={'footer'}>
+        <Navigation>
           <menu>
             <li>
               <a>Privacy Policy</a>
@@ -18,8 +19,8 @@ export default function Footer() {
               <a>Terms of Service</a>
             </li>
           </menu>
-        </nav>
+        </Navigation>
       </Container>
-    </footer>
+    </IFooter>
   );
 }

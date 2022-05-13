@@ -2,14 +2,15 @@ import Link from 'next/link';
 import React from 'react';
 
 import ZiventiLogo from 'components/logo';
+import { Header as HeaderMain, HeaderNavigation } from 'styles/App.styles';
 import { Container } from 'styles/Library';
 
 export default function Header({ headerRef }: HeaderProps) {
   return (
-    <header className={'app'} ref={headerRef}>
+    <HeaderMain ref={headerRef}>
       <Container>
         <ZiventiLogo color={'white'} />
-        <nav className={'header'}>
+        <HeaderNavigation>
           <menu>
             <li>
               <Link href={'/design'}>Design</Link>
@@ -24,9 +25,9 @@ export default function Header({ headerRef }: HeaderProps) {
               <a>Contact</a>
             </li>
           </menu>
-        </nav>
+        </HeaderNavigation>
       </Container>
-    </header>
+    </HeaderMain>
   );
 }
 

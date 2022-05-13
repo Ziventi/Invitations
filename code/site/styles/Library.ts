@@ -22,26 +22,30 @@ export const COLOR = {
   TRANSPARENT: 'rgba(0,0,0,0)',
 };
 
+export const FONT = {
+  PRIMARY: "'Rubik', sans-serif",
+};
+
 export const Button = styled.button<ButtonProps>`
   border-radius: 10px;
   border-style: none;
   color: ${COLOR.WHITE};
+  outline: none;
   cursor: pointer;
   font-size: 16px;
   min-width: 100px;
-  outline: none;
   padding: 1em;
   transition: all 0.3s;
 
-  ${(props) => css`
-    background-color: ${props.bgColor};
+  ${({ bgColor }) => css`
+    background-color: ${bgColor};
 
     &:hover {
-      background-color: ${darken(0.05, props.bgColor)};
+      background-color: ${darken(0.05, bgColor)};
     }
 
     &:active {
-      background-color: ${darken(0.1, props.bgColor)};
+      background-color: ${darken(0.1, bgColor)};
     }
   `}
 `;
@@ -52,6 +56,31 @@ export const Container = styled.div<ContainerProps>`
   justify-content: space-between;
   max-width: ${(props) => props.maxWidth || 1200}px;
   width: 100%;
+`;
+
+export const Navigation = styled.nav`
+  align-items: center;
+  color: ${COLOR.WHITE};
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+
+  menu {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 0 2em;
+    }
+
+    a {
+      color: ${COLOR.WHITE};
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
 `;
 
 interface ButtonProps {
