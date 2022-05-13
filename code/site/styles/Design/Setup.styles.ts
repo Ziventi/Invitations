@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-import { Button, COLOR } from 'styles/Library';
+import { COLOR } from 'styles/Constants';
+import { Global } from 'styles/Library';
 
 export default {
   Main: styled.main`
@@ -41,7 +42,7 @@ export default {
     justify-content: space-between;
     padding: 0 1.5em 1em;
   `,
-  FooterButton: styled(Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
+  FooterButton: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
     font-size: 20px;
     min-width: 200px;

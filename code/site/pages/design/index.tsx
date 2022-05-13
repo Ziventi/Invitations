@@ -13,8 +13,9 @@ import {
   RootState,
   updateState,
 } from 'constants/reducers';
-import DesignSetup from 'styles/Design/Setup.styles';
-import { Button, COLOR } from 'styles/Library';
+import { COLOR } from 'styles/Constants';
+import DS from 'styles/Design/Setup.styles';
+import { Global } from 'styles/Library';
 
 const DesignSetupPage: NextPage = () => {
   const appState = useSelector((state: RootState) => state);
@@ -84,15 +85,15 @@ const DesignSetupPage: NextPage = () => {
   }
 
   return (
-    <DesignSetup.Main>
-      <DesignSetup.Container>
-        <DesignSetup.Section>
+    <DS.Main>
+      <DS.Container>
+        <DS.Section>
           <h2>Step 1: List The Names</h2>
-          <DesignSetup.Text>
+          <DS.Text>
             Type out or paste the list of your guest names here. Separate each
             name with a new line.
-          </DesignSetup.Text>
-          <DesignSetup.NameListInput
+          </DS.Text>
+          <DS.NameListInput
             id={'names-list'}
             onChange={onNameListChange}
             value={state.names}
@@ -101,11 +102,11 @@ const DesignSetupPage: NextPage = () => {
             rows={10}
           />
           <small>{Utils.nameListFromText(state.names).length} names</small>
-        </DesignSetup.Section>
-        <DesignSetup.Section>
+        </DS.Section>
+        <DS.Section>
           <h2>Step 2: Select Your Image</h2>
-          <DesignSetup.FileSelector>
-            <Button as={'label'} bgColor={COLOR.PRIMARY_3}>
+          <DS.FileSelector>
+            <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3}>
               <input
                 type={'file'}
                 accept={'image/jpeg,image/png'}
@@ -113,12 +114,12 @@ const DesignSetupPage: NextPage = () => {
                 hidden={true}
               />
               <span>Choose your image...</span>
-            </Button>
-          </DesignSetup.FileSelector>
+            </Global.Button>
+          </DS.FileSelector>
           <small>
             * Supported formats are JPEG and PNG. Maximum image size is 10MB.
           </small>
-          <DesignSetup.ImagePreview>
+          <DS.ImagePreview>
             {state.imageSrc && (
               <Image
                 src={state.imageSrc}
@@ -126,20 +127,20 @@ const DesignSetupPage: NextPage = () => {
                 objectFit={'contain'}
               />
             )}
-          </DesignSetup.ImagePreview>
-        </DesignSetup.Section>
-      </DesignSetup.Container>
-      <DesignSetup.Footer>
-        <DesignSetup.FooterButton onClick={onHomeClick}>
+          </DS.ImagePreview>
+        </DS.Section>
+      </DS.Container>
+      <DS.Footer>
+        <DS.FooterButton onClick={onHomeClick}>
           <FontIcon icon={faChevronLeft} space={true} />
           Back to Home
-        </DesignSetup.FooterButton>
-        <DesignSetup.FooterButton onClick={onSubmit}>
+        </DS.FooterButton>
+        <DS.FooterButton onClick={onSubmit}>
           <FontIcon icon={faCrosshairs} space={true} />
           Start Editing
-        </DesignSetup.FooterButton>
-      </DesignSetup.Footer>
-    </DesignSetup.Main>
+        </DS.FooterButton>
+      </DS.Footer>
+    </DS.Main>
   );
 };
 

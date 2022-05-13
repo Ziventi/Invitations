@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { Global as G, COLOR } from './Library';
+import { COLOR } from './Constants';
+import { Global } from './Library';
 
 const StepCaptionWrapper = styled.div`
   display: flex;
@@ -48,7 +49,7 @@ export default {
     max-width: 600px;
     text-align: center;
   `,
-  CoverButton: styled(G.Button)`
+  CoverButton: styled(Global.Button)`
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
     font-size: 20px;
     margin: 1em 0;
@@ -61,7 +62,7 @@ export default {
     padding: 2em;
   `,
 
-  WorkflowContainer: styled(G.Container)`
+  WorkflowContainer: styled(Global.Container)`
     flex-direction: column;
   `,
   WorkflowStep: styled.article`

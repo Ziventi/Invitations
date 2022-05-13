@@ -12,8 +12,8 @@ import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import Wave from 'components/wave';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
+import { COLOR } from 'styles/Constants';
 import H from 'styles/Home.styles';
-import { COLOR } from 'styles/Library';
 
 const Home: NextPage = () => {
   const headerRef = useRef<HTMLDivElement>(null);

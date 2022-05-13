@@ -13,8 +13,8 @@ import {
 } from 'constants/reducers';
 import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
+import { COLOR } from 'styles/Constants';
 import { LeftSidebar as L } from 'styles/Design/Editor.styles';
-import { COLOR } from 'styles/Library';
 
 export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
   const state = useSelector((state: RootState) => state);

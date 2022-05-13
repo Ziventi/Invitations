@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components';
 
 import { ResizeHandlePosition } from 'constants/types';
-import { Global, Mixin, COLOR } from 'styles/Library';
+import { COLOR } from 'styles/Constants';
+import { Global, Mixin } from 'styles/Library';
 
 export default {
   Main: styled.main`
