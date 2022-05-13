@@ -1,6 +1,6 @@
-import { ResizeHandlePosition } from 'constants/types';
 import styled, { css } from 'styled-components';
 
+import { ResizeHandlePosition } from 'constants/types';
 import { Button, COLOR, Input, Scrollable } from 'styles/Library';
 
 export default {
@@ -207,6 +207,55 @@ export const Preview = {
   `,
   ResizeHandleCircle: styled.circle`
     fill: #00a6ff;
+  `,
+};
+
+export const RightSidebar = {
+  Aside: styled.aside`
+    background-color: ${COLOR.PRIMARY_4};
+    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+    display: flex;
+    flex: 0 0 200px;
+    flex-direction: column;
+    overflow-y: clip;
+    z-index: 2;
+  `,
+  Header: styled.header`
+    align-items: center;
+    background-color: ${COLOR.PRIMARY_4_DARK};
+    color: ${COLOR.WHITE};
+    display: flex;
+    height: 40px;
+    justify-content: center;
+  `,
+  ButtonList: styled.div`
+    ${Scrollable(COLOR.PRIMARY_4)}
+    border-left: 3px solid ${COLOR.PRIMARY_4_DARK};
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  `,
+  Button: styled(Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
+    align-items: center;
+    border-radius: 0;
+    border-style: none;
+    column-gap: 20px;
+    cursor: pointer;
+    display: grid;
+    flex: 1 1 auto;
+    font-size: 14px;
+    grid-template-columns: 20px 1fr;
+    min-height: 70px;
+    outline: none;
+    padding: 0.5em;
+    transition: all 0.3s ease;
+    width: 100%;
+  `,
+  Index: styled.span`
+    text-align: right;
+  `,
+  Name: styled.span`
+    text-align: left;
   `,
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { updateState, RootState, AppDispatch } from 'constants/reducers';
+import { RightSidebar as R } from 'styles/Design/Editor.styles';
 
 export default function RightSidebar() {
   const state = useSelector((state: RootState) => state);
@@ -16,21 +17,18 @@ export default function RightSidebar() {
   }
 
   return (
-    <aside className={'namelist'}>
-      <header>Guest Names</header>
-      <div className={'button-list'}>
+    <R.Aside>
+      <R.Header>Guest Names</R.Header>
+      <R.ButtonList>
         {state.namesList.map((name, key) => {
           return (
-            <button
-              onClick={() => onNameClick(name)}
-              className={'name-button'}
-              key={key}>
-              <span className={'index'}>#{key + 1}</span>
-              <span className={'name'}>{name}</span>
-            </button>
+            <R.Button onClick={() => onNameClick(name)} key={key}>
+              <R.Index>#{key + 1}</R.Index>
+              <R.Name>{name}</R.Name>
+            </R.Button>
           );
         })}
-      </div>
-    </aside>
+      </R.ButtonList>
+    </R.Aside>
   );
 }
