@@ -17,29 +17,16 @@ commands:
         default: false
     steps:
       - checkout
-      - run:
-          name: Install utils dependencies
-          command: yarn install
-          working_directory: ./code/utils
-      - run:
-          name: Install root dependencies
+          name: Install dependencies
           command: yarn install
           working_directory: ./code
-      - when:
-          condition: << parameters.build-utils >>
-          steps:
-            - run:
-                name: Build utils
-                command: yarn run build utils
-                working_directory: ./code          
-      - run:
-          name: Install server dependencies
-          command: yarn install
-          working_directory: ./code/server
-      - run:
-          name: Install site dependencies
-          command: yarn install
-          working_directory: ./code/site
+      # - when:
+      #     condition: << parameters.build-utils >>
+      #     steps:
+      #       - run:
+      #           name: Build utils
+      #           command: yarn run build utils
+      #           working_directory: ./code
   transfer_scripts:
     description: 'Transfers deployment scripts via SCP'
     parameters:
