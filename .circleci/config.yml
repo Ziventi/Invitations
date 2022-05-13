@@ -17,17 +17,27 @@ commands:
         default: false
     steps:
       - checkout
+      - restore_cache:
+          name: Restore yarn cache
+          keys:
+            - yarn-packages-{{ checksum "./code/yarn.lock" }}
       - run:
           name: Install dependencies
-          command: yarn install
+          command: yarn install --immutable
           working_directory: ./code
-      # - when:
-      #     condition: << parameters.build-utils >>
-      #     steps:
-      #       - run:
-      #           name: Build utils
-      #           command: yarn run build utils
-      #           working_directory: ./code
+      - save_cache:
+          name: Save yarn cache
+          key: yarn-packages-{{ checksum "./code/yarn.lock" }}
+          paths:
+            - .yarn/cache
+            - .yarn/unplugged
+      - when:
+          condition: << parameters.build-utils >>
+          steps:
+            - run:
+                name: Build utils
+                command: yarn run build utils
+                working_directory: ./code
   transfer_scripts:
     description: 'Transfers deployment scripts via SCP'
     parameters:
