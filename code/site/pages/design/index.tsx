@@ -13,6 +13,8 @@ import {
   RootState,
   updateState,
 } from 'constants/reducers';
+import DesignSetup from 'styles/Design/Setup.styles';
+import { Button, COLOR } from 'styles/Library';
 
 const DesignSetupPage: NextPage = () => {
   const appState = useSelector((state: RootState) => state);
@@ -82,15 +84,15 @@ const DesignSetupPage: NextPage = () => {
   }
 
   return (
-    <main className={'design-setup'}>
-      <div className={'container'}>
-        <section className={'name-list'}>
+    <DesignSetup.Main>
+      <DesignSetup.Container>
+        <DesignSetup.Section>
           <h2>Step 1: List The Names</h2>
-          <p>
+          <DesignSetup.Text>
             Type out or paste the list of your guest names here. Separate each
             name with a new line.
-          </p>
-          <textarea
+          </DesignSetup.Text>
+          <DesignSetup.NameListInput
             id={'names-list'}
             onChange={onNameListChange}
             value={state.names}
@@ -99,11 +101,11 @@ const DesignSetupPage: NextPage = () => {
             rows={10}
           />
           <small>{Utils.nameListFromText(state.names).length} names</small>
-        </section>
-        <section className={'image'}>
+        </DesignSetup.Section>
+        <DesignSetup.Section>
           <h2>Step 2: Select Your Image</h2>
-          <div className={'file-selector-container'}>
-            <label className={'file-selector'}>
+          <DesignSetup.FileSelector>
+            <Button as={'label'} bgColor={COLOR.PRIMARY_3}>
               <input
                 type={'file'}
                 accept={'image/jpeg,image/png'}
@@ -111,12 +113,12 @@ const DesignSetupPage: NextPage = () => {
                 hidden={true}
               />
               <span>Choose your image...</span>
-            </label>
-          </div>
+            </Button>
+          </DesignSetup.FileSelector>
           <small>
             * Supported formats are JPEG and PNG. Maximum image size is 10MB.
           </small>
-          <div className={'image-preview'}>
+          <DesignSetup.ImagePreview>
             {state.imageSrc && (
               <Image
                 src={state.imageSrc}
@@ -124,20 +126,20 @@ const DesignSetupPage: NextPage = () => {
                 objectFit={'contain'}
               />
             )}
-          </div>
-        </section>
-      </div>
-      <footer className={'design-setup'}>
-        <button onClick={onHomeClick}>
+          </DesignSetup.ImagePreview>
+        </DesignSetup.Section>
+      </DesignSetup.Container>
+      <DesignSetup.Footer>
+        <DesignSetup.FooterButton onClick={onHomeClick}>
           <FontIcon icon={faChevronLeft} space={true} />
           Back to Home
-        </button>
-        <button onClick={onSubmit}>
+        </DesignSetup.FooterButton>
+        <DesignSetup.FooterButton onClick={onSubmit}>
           <FontIcon icon={faCrosshairs} space={true} />
           Start Editing
-        </button>
-      </footer>
-    </main>
+        </DesignSetup.FooterButton>
+      </DesignSetup.Footer>
+    </DesignSetup.Main>
   );
 };
 

@@ -35,7 +35,8 @@ export const Button = styled.button<ButtonProps>`
   font-size: 16px;
   min-width: 100px;
   padding: 1em;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  user-select: none;
 
   ${({ bgColor }) => css`
     background-color: ${bgColor};
