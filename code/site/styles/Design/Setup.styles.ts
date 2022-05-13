@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { Button, COLOR } from 'styles/Library';
 
-const DesignSetup = {
+export default {
   Main: styled.main`
     background-color: ${COLOR.PRIMARY_1_DARK};
     color: ${COLOR.WHITE};
@@ -58,5 +58,3 @@ const DesignSetup = {
     width: 100%;
   `,
 };
-
-export default DesignSetup;

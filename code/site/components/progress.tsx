@@ -1,12 +1,15 @@
 import React, { ReactElement } from 'react';
 
 import { PageState } from 'constants/types';
+import DesignEditor from 'styles/Design/Editor.styles';
 
 export default function ProgressOverlay({
   state,
 }: ProgressOverlayProps): ReactElement | null {
   if (!state.downloadInProgress) return null;
-  return <dialog className={'loading'}>Loading...</dialog>;
+  return (
+    <DesignEditor.ProgressOverlay>Loading...</DesignEditor.ProgressOverlay>
+  );
 }
 
 interface ProgressOverlayProps {

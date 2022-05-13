@@ -14,6 +14,7 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
 import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
+import DesignEditor from 'styles/Design/Editor.styles';
 import TestData from 'test/test.json';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
@@ -131,12 +132,12 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   }, [setState, state.namesList]);
 
   return (
-    <main className={'design'}>
+    <DesignEditor.Main className={'design'}>
       <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
       <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
       <RightSidebar />
       <ProgressOverlay state={state} />
-    </main>
+    </DesignEditor.Main>
   );
 };
 

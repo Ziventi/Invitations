@@ -13,6 +13,8 @@ import {
 } from 'constants/reducers';
 import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
+import { LeftSidebar as LSidebar } from 'styles/Design/Editor.styles';
+import { COLOR } from 'styles/Library';
 
 export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
   const state = useSelector((state: RootState) => state);
@@ -94,28 +96,45 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
   }
 
   return (
-    <aside className={'left-sidebar'}>
+    <LSidebar.Aside>
       <DesignForm fonts={fonts} />
-      <button id={'preview'} onClick={preview}>
+      <LSidebar.Button
+        id={'preview'}
+        onClick={preview}
+        bgColor={COLOR.PRIMARY_2_DARK}>
         Draw
-      </button>
+      </LSidebar.Button>
       <Link href={`/checkout?q=${queryHash}`}>
-        <button id={'pay'}>Checkout</button>
+        <LSidebar.Button id={'pay'} bgColor={COLOR.PRIMARY_2}>
+          Checkout
+        </LSidebar.Button>
       </Link>
-      <button id={'download-png'} onClick={() => download('png')}>
+      <LSidebar.Button
+        id={'download-png'}
+        onClick={() => download('png')}
+        bgColor={COLOR.PRIMARY_5_LIGHT}>
         Download PNG
-      </button>
-      <button id={'download-pdf'} onClick={() => download('pdf')}>
+      </LSidebar.Button>
+      <LSidebar.Button
+        id={'download-pdf'}
+        onClick={() => download('pdf')}
+        bgColor={COLOR.PRIMARY_5}>
         Download PDF
-      </button>
-      <button id={'download-png-archive'} onClick={() => download('png', true)}>
+      </LSidebar.Button>
+      <LSidebar.Button
+        id={'download-png-archive'}
+        onClick={() => download('png', true)}
+        bgColor={COLOR.PRIMARY_3}>
         Download PNG archive
-      </button>
-      <button id={'download-pdf-archive'} onClick={() => download('pdf', true)}>
+      </LSidebar.Button>
+      <LSidebar.Button
+        id={'download-pdf-archive'}
+        onClick={() => download('pdf', true)}
+        bgColor={COLOR.PRIMARY_4}>
         Download PDF archive
-      </button>
+      </LSidebar.Button>
       <Link href={'/design'}>Back to Design</Link>
-    </aside>
+    </LSidebar.Aside>
   );
 }
 

@@ -1,5 +1,5 @@
 import { darken } from 'polished';
-import styled, { css } from 'styled-components';
+import styled, { css, FlattenSimpleInterpolation } from 'styled-components';
 
 export const COLOR = {
   PRIMARY_1: '#ebd4cb',
@@ -83,6 +83,42 @@ export const Navigation = styled.nav`
     }
   }
 `;
+
+export const Input = css`
+  border-radius: 10px;
+  border-style: none;
+  max-width: 100%;
+  outline-color: ${COLOR.PRIMARY_2};
+`;
+
+export function Scrollable(color: string): FlattenSimpleInterpolation {
+  return css`
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 9px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: none;
+      cursor: pointer;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: ${darken(0.08, color)};
+      border-radius: 2px;
+      transition: background-color 0.3s ease;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: ${darken(0.12, color)};
+    }
+  `;
+}
 
 interface ButtonProps {
   bgColor: string;
