@@ -19,6 +19,7 @@
     "dev:server": "nodemon --watch server/*.ts server/index.ts",
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
+    "inspect": "yarn run eslint:fix && yarn run prettier:fix",
     "eslint": "eslint --ext .ts,.tsx .",
     "eslint:fix": "yarn run eslint --fix",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,scss,json}\"",

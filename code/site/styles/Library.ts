@@ -50,7 +50,7 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   height: 100%;
   justify-content: space-between;
-  max-width: ${props => props.maxWidth || 1200}px;
+  max-width: ${(props) => props.maxWidth || 1200}px;
   width: 100%;
 `;
 
