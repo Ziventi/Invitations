@@ -107,18 +107,18 @@ export const HorizontalRule = styled.hr`
   width: 100%;
 `;
 
-export const PricingSection = styled.section`
-  background-color: ${COLOR.PRIMARY_4_DARK};
-  height: 550px;
-  margin-top: -1px;
-`;
+// export const PricingSection = styled.section`
+//   background-color: ${COLOR.PRIMARY_4_DARK};
+//   height: 550px;
+//   margin-top: -1px;
+// `;
 
-export const Wave = styled.section`
-  background: $bg;
-  position: absolute;
-  width: 100%;
+// export const Wave = styled.section`
+//   background: $bg;
+//   position: absolute;
+//   width: 100%;
 
-  rect {
-    fill: $fill;
-  }
-`;
+//   rect {
+//     fill: $fill;
+//   }
+// `;
