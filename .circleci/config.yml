@@ -17,6 +17,7 @@ commands:
         default: false
     steps:
       - checkout
+      - run:
           name: Install dependencies
           command: yarn install
           working_directory: ./code
