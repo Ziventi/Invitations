@@ -18,6 +18,7 @@
 **/utils/key.json
 **/projects/**/.cache.json
 **/projects/**/.out
+**/projectsv2/dist
 
 # other
 **/.DS_Store

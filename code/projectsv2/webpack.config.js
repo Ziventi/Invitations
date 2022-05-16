@@ -40,6 +40,6 @@ module.exports = {
     static: path.resolve(__dirname, 'dist'),
     historyApiFallback: true,
     open: true,
-    port: 3000,
+    port: 8080,
   },
 };

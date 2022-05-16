@@ -2,10 +2,12 @@
   "name": "victory",
   "packageManager": "yarn@3.2.1",
   "scripts": {
-    "dev": "webpack serve"
+    "dev": "webpack serve",
+    "generate": "ts-node generate"
   },
   "dependencies": {
     "polished": "^4.2.2",
+    "puppeteer": "^14.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",

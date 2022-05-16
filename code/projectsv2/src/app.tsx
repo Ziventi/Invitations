@@ -5,12 +5,13 @@ import styled from 'styled-components';
 
 export default function Main() {
   const [searchParams] = useSearchParams();
+  const name = searchParams.get('name');
 
   return (
     <Page>
       <Container>
         <G.Text>This invitation is addressed to:</G.Text>
-        <GuestName>{searchParams.get('name')}</GuestName>
+        <GuestName id={'name'}>{name}</GuestName>
         <G.Text>You are invited to:</G.Text>
         <EventTitleContainer>
           <EventTitle>Ade&#39;s Private Dining</EventTitle>
@@ -80,13 +81,12 @@ const GuestName = styled(G.Heading)`
 
 const EventTitleContainer = styled.div`
   align-items: center;
-  /* background-color: rgb(128, 128, 128, 0.6); */
   background-image: radial-gradient(
     ${transparentize(0, COLOR.PRIMARY_1)},
     ${transparentize(0.8, COLOR.PRIMARY_1)}
   );
   border-radius: 50%;
-  box-shadow: 0 1px 5px 0 #fff;
+  /* box-shadow: 0 1px 5px 0 #fff; */
   display: flex;
   height: 400px;
   justify-content: center;

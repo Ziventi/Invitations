@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    margin: 6px;
+    margin: 0;
     padding: 0;
   }
 
