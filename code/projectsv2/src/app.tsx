@@ -11,7 +11,7 @@ export default function Main() {
     <Page>
       <Container>
         <G.Text>This invitation is addressed to:</G.Text>
-        <GuestName id={'name'}>{name}</GuestName>
+        <GuestName>{name}</GuestName>
         <G.Text>You are invited to:</G.Text>
         <EventTitleContainer>
           <EventTitle>Ade&#39;s Private Dining</EventTitle>
@@ -80,23 +80,21 @@ const GuestName = styled(G.Heading)`
 `;
 
 const EventTitleContainer = styled.div`
-  align-items: center;
   background-image: radial-gradient(
     ${transparentize(0, COLOR.PRIMARY_1)},
     ${transparentize(0.8, COLOR.PRIMARY_1)}
   );
   border-radius: 50%;
-  /* box-shadow: 0 1px 5px 0 #fff; */
+  box-shadow: 0 1px 5px 0 #fff;
   display: flex;
+  filter: opacity(1);
   height: 400px;
   justify-content: center;
-  position: relative;
   width: 400px;
 `;
 
 const EventTitle = styled(G.Heading)`
   font-size: 95px;
-  position: absolute;
 `;
 
 const Location = styled.section`
