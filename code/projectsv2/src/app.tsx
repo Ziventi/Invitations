@@ -1,18 +1,26 @@
+import { transparentize } from 'polished';
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function Main() {
+  const [searchParams] = useSearchParams();
+
   return (
     <Page>
       <Container>
         <G.Text>This invitation is addressed to:</G.Text>
-        <GuestName>Adebusola Emiola</GuestName>
+        <GuestName>{searchParams.get('name')}</GuestName>
+        <G.Text>You are invited to:</G.Text>
         <EventTitleContainer>
           <EventTitle>Ade&#39;s Private Dining</EventTitle>
         </EventTitleContainer>
         <Location>
+          <G.Text>From 7:00pm</G.Text>
           <G.Text>40 Impala Drive</G.Text>
-          <G.Text>The greatest</G.Text>
+          <G.Text>Cambridge</G.Text>
+          <G.Text>Cambridgeshire</G.Text>
+          <G.Text>CB1 9XL</G.Text>
         </Location>
       </Container>
     </Page>
@@ -35,9 +43,20 @@ const G = {
   `,
 };
 
+const COLOR = {
+  // PRIMARY_1: '#414344',
+  // PRIMARY_1_DARK: '#111010',
+  // PRIMARY_1: '#84cae7',
+  // PRIMARY_1_DARK: '#4862ff',
+  PRIMARY_1: '#024567',
+  PRIMARY_1_DARK: '#0c193c',
+};
+
 const Page = styled.div`
-  /* background-image: repeating-linear-gradient(#84cae7, #4862ff); */
-  background-image: repeating-linear-gradient(#414344, #111010);
+  background-image: repeating-linear-gradient(
+    ${COLOR.PRIMARY_1},
+    ${COLOR.PRIMARY_1_DARK}
+  );
   color: #fff;
   height: 297mm;
   overflow-x: hidden;
@@ -50,6 +69,7 @@ const Container = styled.main`
   align-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   height: 100%;
 `;
 
@@ -62,11 +82,11 @@ const EventTitleContainer = styled.div`
   align-items: center;
   /* background-color: rgb(128, 128, 128, 0.6); */
   background-image: radial-gradient(
-    rgb(128, 128, 128, 0.6),
-    rgb(128, 128, 128, 0)
+    ${transparentize(0, COLOR.PRIMARY_1)},
+    ${transparentize(0.8, COLOR.PRIMARY_1)}
   );
   border-radius: 50%;
-  box-shadow: 0 0 5px 0 #fff;
+  box-shadow: 0 1px 5px 0 #fff;
   display: flex;
   height: 400px;
   justify-content: center;
@@ -80,7 +100,8 @@ const EventTitle = styled(G.Heading)`
 `;
 
 const Location = styled.section`
+  font-size: 35px;
   padding: 1em 0;
+  text-align: center;
   text-transform: uppercase;
-  font-size: 30px;
 `;

@@ -38,6 +38,7 @@ module.exports = {
   devServer: {
     compress: true,
     static: path.resolve(__dirname, 'dist'),
+    historyApiFallback: true,
     open: true,
     port: 3000,
   },
