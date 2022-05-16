@@ -23,9 +23,9 @@
     "test": "jest --silent --runInBand",
     "watch": "node scripts/watch.js",
     "inspect": "yarn run eslint:fix && yarn run prettier:fix",
-    "eslint": "eslint --ext .ts,.tsx .",
+    "eslint": "eslint --ext .js,.ts,.tsx .",
     "eslint:fix": "yarn run eslint --fix",
-    "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,scss,json}\"",
+    "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json}\"",
     "prettier:fix": "yarn run prettier --write",
     "stylelint": "stylelint **/*.{scss,ts,tsx}"
   },

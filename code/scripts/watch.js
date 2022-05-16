@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const chokidar = require('chokidar');
-
 const path = require('path');
 
 const logger = require('./lib/logger');

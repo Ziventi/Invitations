@@ -12,7 +12,6 @@ module.exports = {
     project: ['**/tsconfig.json'],
   },
   rules: {
-    '@typescript-eslint/no-namespace': 'off',
     'import/order': [
       1,
       {
