@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import puppeteer from 'puppeteer';
 
-const names = ['Adebusola Emiola'];
+const names = ['Victory'];
 
 (async () => {
   await main();
@@ -26,6 +26,7 @@ async function main(): Promise<void> {
       path: `${outputDir}/${name}.pdf`,
       pageRanges: '1',
       printBackground: true,
+      preferCSSPageSize: true
     });
   };
 

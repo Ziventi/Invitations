@@ -39,7 +39,7 @@ module.exports = {
     compress: true,
     static: path.resolve(__dirname, 'dist'),
     historyApiFallback: true,
-    open: true,
+    open: false,
     port: 8080,
   },
 };

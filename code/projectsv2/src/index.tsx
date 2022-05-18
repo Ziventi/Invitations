@@ -16,13 +16,17 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
-div#root {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
+  a {
+    color: #fff;
+  }
+
+  div#root {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
 `;
 
 const container = document.getElementById('root');
