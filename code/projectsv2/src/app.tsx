@@ -7,6 +7,7 @@ import styled, { css, ThemeProvider } from 'styled-components';
 import flowers from '../public/flowers.png';
 import pattern from '../public/pattern2.jpeg';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme1: DefaultTheme = {
   primary: '#16074c',
   primaryLight: transparentize(0.1, lighten(0.25, '#16074c')),
@@ -156,23 +157,6 @@ const Fragment = styled.div`
   justify-content: center;
   text-align: center;
   width: 100%;
-`;
-
-const EventTitleContainer = styled.div`
-  align-items: center;
-  background-image: ${({ theme }) => css`radial-gradient(
-    #fff 50%,
-    ${transparentize(0.8, theme.secondary)}
-  );`};
-  border-radius: 50%;
-  box-shadow: 0 1px 10px 0 ${({ theme }) => theme.textColor};
-  display: flex;
-  filter: opacity(1);
-  height: 400px;
-  justify-content: center;
-  margin: 2em 0;
-  padding: 1em;
-  width: fit-content;
 `;
 
 const EventTitle = styled(G.Heading)`
