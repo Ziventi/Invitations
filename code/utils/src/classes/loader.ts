@@ -11,7 +11,7 @@ export default class ZLoader<
 > {
   private loadOptions: LoadOptions<G, R>;
 
-  constructor(options: LoadOptions<G, R>) {
+  public constructor(options: LoadOptions<G, R>) {
     logger.trace('Constructing ZLoader...');
     this.loadOptions = options;
   }

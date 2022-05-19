@@ -1,21 +1,21 @@
 import type Ziventi from '@ziventi/utils';
 
 export class Guest implements Ziventi.TGuest {
-  name!: string;
-  category?: Category;
-  from?: string;
-  round?: number;
-  wlid?: string;
-  status!: ConfirmStatus;
+  public name!: string;
+  public category?: Category;
+  public from?: string;
+  public round?: number;
+  public wlid?: string;
+  public status!: ConfirmStatus;
 }
 
 export class GuestRow implements Ziventi.TGuestRow {
-  'Name'!: string;
-  'Category'!: string;
-  'From'!: string;
-  'Invite Round'!: string;
-  'Wishlist ID'!: string;
-  'Status'!: string;
+  public 'Name'!: string;
+  public 'Category'!: string;
+  public 'From'!: string;
+  public 'Invite Round'!: string;
+  public 'Wishlist ID'!: string;
+  public 'Status'!: string;
 }
 
 export const InviteRound = {

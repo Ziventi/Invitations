@@ -1,24 +1,24 @@
 import type Ziventi from '@ziventi/utils';
 
 export class Guest implements Ziventi.TGuest {
-  name!: string;
-  status!: Ziventi.ConfirmStatus;
-  hashes!: Ziventi.GuestHashes;
-  rank!: typeof Rank[string];
-  origin!: string;
-  invited!: boolean;
-  wlid!: string;
-  tagline?: string;
+  public name!: string;
+  public status!: Ziventi.ConfirmStatus;
+  public hashes!: Ziventi.GuestHashes;
+  public rank!: typeof Rank[string];
+  public origin!: string;
+  public invited!: boolean;
+  public wlid!: string;
+  public tagline?: string;
 }
 
 export class GuestRow implements Ziventi.TGuestRow {
-  Name!: string;
-  Rank!: string;
-  Origin!: string;
-  Invited!: string;
-  Status!: string;
-  WLID!: string;
-  Tagline?: string;
+  public Name!: string;
+  public Rank!: string;
+  public Origin!: string;
+  public Invited!: string;
+  public Status!: string;
+  public WLID!: string;
+  public Tagline?: string;
 }
 
 export const Rank: Record<string, number> = {
