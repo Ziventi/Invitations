@@ -1,13 +1,15 @@
 # all
 **/node_modules
+**/.next
 **/.env
 **/.dist
+**/dist
+**/.out
 **/css
 **/.yarn/*
 !**/.yarn/releases
 
 # site
-**/site/.next/
 **/site/fonts/*
 !**/site/fonts/.gitkeep
 
@@ -17,8 +19,6 @@
 # projects & utils
 **/utils/key.json
 **/projects/**/.cache.json
-**/projects/**/.out
-**/projectsv2/dist
 
 # other
 **/.DS_Store
