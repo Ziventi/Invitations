@@ -1,0 +1,40 @@
+main.rsvp {
+  @include border($color-body-rsvp, 49.5%);
+  @include pager($color-body-rsvp);
+  display: flex;
+  font-family: $font-body;
+  justify-content: center;
+
+  > div {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 4em;
+    width: 100%;
+  }
+
+  h1 {
+    letter-spacing: 1px;
+    line-height: 1.2;
+    transform: scaleX(1.2);
+  }
+
+  p {
+    font-size: 1.2em;
+    margin-top: 1em;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  svg.signature {
+    $color: get-border($color-body-rsvp, -65%);
+    fill: $color;
+    left: 0;
+    margin: 0 auto;
+    max-width: 300px;
+    position: absolute;
+    right: 0;
+    stroke: $color;
+    stroke-width: 3;
+  }
+}

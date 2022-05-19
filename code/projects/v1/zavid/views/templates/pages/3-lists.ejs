@@ -1,0 +1,74 @@
+<main class="lists">
+  <%- include('/templates/partials/header.ejs') %>
+  <div class="main">
+    <section>
+      <h2>Guest List</h2>
+      <p>
+        Always nice to know who's coming so you're aware of anybody you can tag
+        along with, right? Tap the following link for the
+        <a href="<%= lists.guest %>" target="_blank" rel="noopener noreferrer"
+          >guest list
+          <span class="icon"><%- include('svg/hyperlink.svg') %></span>
+        </a>
+        which will only include people I've sent invites to so far. This will
+        gradually be updated over time so check back there often.
+      </p>
+    </section>
+    <section>
+      <h2>Wish List</h2>
+      <p>
+        I don't receive gifts often so I'm not expectant. But I recognise that
+        some of you love through your giving. To help ensure that they're most
+        appreciated please see my
+        <a href="<%= lists.wish %>" target="_blank" rel="noopener noreferrer"
+          >wish list
+          <span class="icon"><%- include('svg/hyperlink.svg') %></span> </a
+        >.
+      </p>
+      <p>
+        To prevent a case where I receive multiple of something I only need one
+        of, and to ensure buyers remain anonymous, please claim an item on the
+        wishlist using your unique wish list ID.
+      </p>
+      <p>
+        Your anonymous wish list ID is
+        <strong class="wlid"><%= guest.wlid %></strong>.
+      </p>
+    </section>
+    <section>
+      <h2>Contributions / Monetary Gifts</h2>
+      <p>
+        Just like the wishlist, I'm not expectant. But some of you have
+        expressed interest in contributing to this event, which I SUPER
+        appreciate because this is a lot to bear alone.
+      </p>
+      <p>
+        Easiest way to contribute might be through this
+        <a
+          href="https://www.paypal.com/paypalme/zzavidd"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          PayPal link
+          <span class="icon"><%- include('svg/hyperlink.svg') %></span> </a
+        >. Alternatively, my account details are:
+      </p>
+      <table class="account-details">
+        <thead>
+          <tr>
+            <th>Account Name</th>
+            <th>Sort Code</th>
+            <th>Account Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>MR D I EGBUE</td>
+            <td>09-01-28</td>
+            <td>33570423</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</main>

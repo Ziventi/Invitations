@@ -1,0 +1,58 @@
+<main class="notices">
+  <%- include('/templates/partials/header.ejs') %>
+  <div class="main">
+    <section>
+      <h1>Notices</h1>
+      <dl>
+        <% resources.notices.forEach((rule, key) => { %>
+        <dt>
+          <table>
+            <tr>
+              <td>#<%= key + 1 %>)</td>
+              <td><%= rule.summary %></td>
+            </tr>
+          </table>
+        </dt>
+        <dd>
+          <p class="description"><%= rule.description %></p>
+          <% if(rule.footnote){ %>
+          <p class="footnote"><%= rule.footnote %></p>
+          <% } %>
+        </dd>
+        <% }); %>
+        <dt>
+          <table>
+            <tr>
+              <td>#<%= resources.notices.length + 1 %>)</td>
+              <td>For any questions or enquiries closer to the date...</td>
+            </tr>
+          </table>
+        </dt>
+        <dd>
+          <p class="description">
+            Contact one of the following three of my most trusted friends:
+          </p>
+          <ul class="contacts">
+            <li>
+              <span class="icon">&#128242;</span>
+              <a href="tel:<%= contacts.Bola %>">Bola Sunday-Martins</a>
+            </li>
+            <li>
+              <span class="icon">&#128242;</span>
+              <a href="tel:<%= contacts.Chidera %>">Chidera Onyeukwu</a>
+            </li>
+            <li>
+              <span class="icon">&#128242;</span>
+              <a href="tel:<%= contacts.Deborah %>">Deborah Owusu-Ansah</a>
+            </li>
+          </ul>
+          <p class="description">
+            Just tap on their names to call their numbers. Or message them. They know all the
+            details. Save me the stress of dealing with a hundred questions at
+            once by asking them instead if you can.
+          </p>
+        </dd>
+      </dl>
+    </section>
+  </div>
+</main>

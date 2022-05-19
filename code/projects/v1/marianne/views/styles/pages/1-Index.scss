@@ -1,0 +1,59 @@
+main.index {
+  background: $color-background;
+  // filter: invert(1);
+  height: 297mm;
+  overflow-x: hidden;
+  position: relative;
+  width: 210mm;
+
+  > div {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    max-width: 600px;
+    overflow: hidden;
+  }
+
+  div.guest {
+    text-align: center;
+
+    .guest-intro {
+      font-family: $font-address;
+      font-size: 15px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .guest-name {
+      font-size: 70px;
+      margin: 0.3em 0;
+    }
+  }
+
+  div.headline {
+    text-align: center;
+
+    .cordial {
+      font-size: 12px;
+    }
+
+    h2.event-headline {
+      font-family: $font-headline;
+      font-size: 80px;
+      line-height: 1;
+      margin: 0.4em 0;
+      transform: scaleX(1.02);
+    }
+  }
+
+  div.address {
+    text-align: center;
+  }
+
+  hr {
+    border-color: $color-border;
+  }
+}
