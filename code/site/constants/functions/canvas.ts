@@ -1,6 +1,6 @@
 import type { Canvas, Image } from 'canvas';
 
-import { TextStyle } from '../types';
+import type { TextStyle } from '../types';
 import { DRAGGABLE_PADDING } from '../variables';
 
 import * as Utils from './utils';

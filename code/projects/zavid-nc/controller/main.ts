@@ -1,6 +1,6 @@
 import { CLI, Utils, ZGenerator } from '@ziventi/utils';
 
-import { Guest } from './classes';
+import type { Guest } from './classes';
 import { Loader } from './settings';
 
 (async () => {

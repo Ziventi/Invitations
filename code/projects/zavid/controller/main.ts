@@ -1,4 +1,5 @@
-import Ziventi, {
+import type Ziventi from '@ziventi/utils';
+import {
   CLI,
   Spreadsheet,
   Utils,
@@ -6,7 +7,8 @@ import Ziventi, {
   ZPublisher,
 } from '@ziventi/utils';
 
-import { Guest, Rank } from './classes';
+import type { Guest } from './classes';
+import { Rank } from './classes';
 import { Loader } from './settings';
 
 const {

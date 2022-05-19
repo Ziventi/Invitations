@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import FontIcon from 'components/icon';
 import * as Utils from 'constants/functions/utils';
-import {
+import type {
   AppDispatch,
   PageStatePayload,
   RootState,
-  updateState,
 } from 'constants/reducers';
+import { updateState } from 'constants/reducers';
 import { COLOR } from 'styles/Constants';
 import DS from 'styles/Design/Setup.styles';
 import { Global } from 'styles/Library';
@@ -53,7 +53,8 @@ const DesignSetupPage: NextPage = () => {
     const file = files[0];
     if (file.size > 10 * 1024 * 1024) {
       e.target.value = '';
-      return alert('Maximum file size is 10MB');
+      alert('Maximum file size is 10MB');
+      return;
     }
 
     const fileReader = new FileReader();

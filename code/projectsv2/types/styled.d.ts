@@ -8,7 +8,7 @@ declare module 'styled-components' {
     secondary: string;
     border1: string;
     border2: string;
-    borderWidth: string,
+    borderWidth: string;
     textColor: string;
     eventTitleTextColor: string;
     eventTitleFontSize: string;

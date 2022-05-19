@@ -1,5 +1,6 @@
 import { darken } from 'polished';
-import styled, { css, FlattenSimpleInterpolation } from 'styled-components';
+import type { FlattenSimpleInterpolation } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { COLOR } from './Constants';
 
@@ -8,10 +9,10 @@ export const Global = {
     border-radius: 10px;
     border-style: none;
     color: ${COLOR.WHITE};
-    outline: none;
     cursor: pointer;
     font-size: 16px;
     min-width: 100px;
+    outline: none;
     padding: 1em;
     transition: all 0.3s ease;
     user-select: none;

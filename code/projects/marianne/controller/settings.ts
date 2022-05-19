@@ -1,7 +1,9 @@
-import Ziventi, { ZLoader, Utils } from '@ziventi/utils';
+import type Ziventi from '@ziventi/utils';
+import { ZLoader, Utils } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 
-import { Category, Guest, GuestRow, InviteRound } from './classes';
+import type { Category, Guest, GuestRow } from './classes';
+import { InviteRound } from './classes';
 
 const dotenvOutput = dotenv.config();
 Utils.checkDotenv(dotenvOutput);

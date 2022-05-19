@@ -2,7 +2,8 @@ import Ziventi, { Paths, Utils, ZGenerator, ZLoader } from '@ziventi/utils';
 import * as dotenv from 'dotenv';
 import path from 'path';
 
-import { Guest, GuestRow, Rank } from './classes';
+import type { GuestRow } from './classes';
+import { Guest, Rank } from './classes';
 
 const dotenvOutput = dotenv.config({
   path: path.resolve(Paths.PROJECT_ROOT, '.env'),

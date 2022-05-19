@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { ConfirmStatus } from '../types';
+import type { ConfirmStatus } from '../types';
 
 export namespace Paths {
   export const PROJECT_ROOT = path.resolve(__dirname, '../../..');

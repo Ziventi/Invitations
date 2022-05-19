@@ -1,7 +1,8 @@
 import { darken, lighten, transparentize } from 'polished';
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import styled, { css, DefaultTheme, ThemeProvider } from 'styled-components';
+import type { DefaultTheme } from 'styled-components';
+import styled, { css, ThemeProvider } from 'styled-components';
 
 import flowers from '../public/flowers.png';
 import pattern from '../public/pattern2.jpeg';
@@ -93,15 +94,15 @@ const G = {
 };
 
 const Page = styled.div`
+  align-items: center;
   background-image: ${({ theme }) => css`linear-gradient(
     to bottom,
     ${transparentize(0.1, theme.primaryLight)},
     ${transparentize(0.12, theme.primaryDark)}
   );`};
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 297mm;
+  justify-content: center;
   overflow-x: hidden;
   padding: 3em;
   position: relative;
@@ -110,13 +111,13 @@ const Page = styled.div`
 
 const Background = styled.main`
   background-image: url(${pattern});
-  background-size: 800px;
   background-repeat: repeat;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  opacity: 0.1;
+  background-size: 800px;
   filter: saturate(1) hue-rotate(240deg);
+  height: 100%;
+  opacity: 0.1;
+  position: absolute;
+  width: 100%;
 `;
 
 const Container = styled.main`
@@ -169,9 +170,9 @@ const EventTitleContainer = styled.div`
   filter: opacity(1);
   height: 400px;
   justify-content: center;
-  width: fit-content;
   margin: 2em 0;
   padding: 1em;
+  width: fit-content;
 `;
 
 const EventTitle = styled(G.Heading)`
@@ -208,17 +209,17 @@ const Flower = styled.img.attrs({
   ${(props) =>
     props.position === 'top'
       ? css`
-          transform: rotate(110deg);
-          top: 0;
           left: 0;
-          margin-top: -1em;
           margin-left: -3.5em;
+          margin-top: -1em;
+          top: 0;
+          transform: rotate(110deg);
         `
       : css`
-          transform: rotate(-70deg);
           bottom: 0;
-          right: 0;
           margin-bottom: -1em;
           margin-right: -3.5em;
+          right: 0;
+          transform: rotate(-70deg);
         `}
 `;

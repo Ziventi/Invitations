@@ -1,4 +1,4 @@
-import { FontVariantKey, FontVariantAlias } from 'constants/types';
+import type { FontVariantKey, FontVariantAlias } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 
 /**

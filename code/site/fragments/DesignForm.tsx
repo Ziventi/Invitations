@@ -1,15 +1,17 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
-import { ChromePicker, ColorResult } from 'react-color';
+import type { ReactElement } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import type { ColorResult } from 'react-color';
+import { ChromePicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
+import type {
   AppDispatch,
   PageStatePayload,
   RootState,
-  updateState,
 } from 'constants/reducers';
-import { FontVariantKey, GoogleFont } from 'constants/types';
+import { updateState } from 'constants/reducers';
+import type { FontVariantKey, GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 import { LeftSidebar as L } from 'styles/Design/Editor.styles';
 
@@ -255,8 +257,12 @@ function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
       <L.NumericInput
         type={'number'}
         autoComplete={'off'}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={() => {
+          setIsFocused(true);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
         {...props}
       />
       <L.NumberSuffix

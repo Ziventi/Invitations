@@ -1,4 +1,4 @@
-import Ziventi from '@ziventi/utils';
+import type Ziventi from '@ziventi/utils';
 
 import { Generator } from './settings';
 

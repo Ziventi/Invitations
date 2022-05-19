@@ -1,5 +1,5 @@
+import type { ReactElement } from 'react';
 import React, {
-  ReactElement,
   useCallback,
   useEffect,
   useMemo,
@@ -9,13 +9,13 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as Utils from 'constants/functions/utils';
-import {
+import type {
   AppDispatch,
   PageStatePayload,
   RootState,
-  updateState,
 } from 'constants/reducers';
-import { Coordinates, ResizeHandlePosition } from 'constants/types';
+import { updateState } from 'constants/reducers';
+import type { Coordinates, ResizeHandlePosition } from 'constants/types';
 import { Preview as P } from 'styles/Design/Editor.styles';
 
 const positions: ResizeHandlePosition[] = ['east', 'west'];

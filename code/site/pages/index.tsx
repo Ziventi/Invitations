@@ -1,13 +1,14 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   faCrosshairs,
   faFileImage,
   faUsersRectangle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
+import type { ReactNode } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import Wave from 'components/wave';
 import Footer from 'fragments/partials/Footer';
@@ -66,7 +67,9 @@ const Home: NextPage = () => {
               controls={false}
               loop={true}
               muted={true}
-              onContextMenu={(e) => e.preventDefault()}
+              onContextMenu={(e) => {
+                e.preventDefault();
+              }}
             />
           </H.VideoWrapper>
           <H.CoverCaption>

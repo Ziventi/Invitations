@@ -1,7 +1,7 @@
 import AdmZip from 'adm-zip';
 
 import { Image, registerFont } from 'canvas';
-import { TextStyle } from 'constants/types';
+import type { TextStyle } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 
 /**
@@ -56,7 +56,9 @@ export function loadFonts(
 export function loadImage(src: string): Promise<Image> {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.onload = () => resolve(img);
+    img.onload = () => {
+      resolve(img);
+    };
     img.onerror = reject;
     img.src = src;
   });

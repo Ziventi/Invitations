@@ -5,7 +5,7 @@ import type { NextApiResponse, PageConfig } from 'next';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Server from 'constants/functions/server';
 import * as Utils from 'constants/functions/utils';
-import { ZiventiNextApiRequest } from 'constants/types';
+import type { ZiventiNextApiRequest } from 'constants/types';
 
 export default async function handler(
   req: ZiventiNextApiRequest,

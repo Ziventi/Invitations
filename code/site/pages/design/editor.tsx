@@ -3,13 +3,13 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ProgressOverlay from 'components/progress';
-import {
+import type {
   AppDispatch,
   PageStatePayload,
   RootState,
-  updateState,
 } from 'constants/reducers';
-import { GoogleFont } from 'constants/types';
+import { updateState } from 'constants/reducers';
+import type { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';

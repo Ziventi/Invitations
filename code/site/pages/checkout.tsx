@@ -1,9 +1,9 @@
-import { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
 import Stripe from 'stripe';
 
 import * as Crypto from 'constants/functions/crypto';
-import { PaymentHash } from 'constants/types';
+import type { PaymentHash } from 'constants/types';
 
 const CheckoutPage: NextPage = () => {
   return <div></div>;

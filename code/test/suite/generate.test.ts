@@ -1,4 +1,5 @@
-import Ziventi, { ZLoader } from '@ziventi/utils';
+import type Ziventi from '@ziventi/utils';
+import { ZLoader } from '@ziventi/utils';
 import AdmZip from 'adm-zip';
 import fs from 'fs';
 import path from 'path';

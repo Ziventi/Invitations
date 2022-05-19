@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
-import {
+import type {
   AppDispatch,
   PageStatePayload,
   RootState,
-  updateState,
 } from 'constants/reducers';
-import { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
+import { updateState } from 'constants/reducers';
+import type { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
 import { COLOR } from 'styles/Constants';
 import { LeftSidebar as L } from 'styles/Design/Editor.styles';
@@ -42,7 +42,10 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
    * Performs a download.
    */
   async function download(format: 'pdf' | 'png', asZip?: boolean) {
-    if (!state.imageSrc) return alert('No image');
+    if (!state.imageSrc) {
+      alert('No image');
+      return;
+    }
 
     setState({
       downloadInProgress: true,

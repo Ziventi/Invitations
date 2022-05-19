@@ -1,4 +1,5 @@
-import Ziventi, { Server, Utils } from '@ziventi/utils/src/production';
+import type Ziventi from '@ziventi/utils/src/production';
+import { Server, Utils } from '@ziventi/utils/src/production';
 import type { Express } from 'express';
 import type NodeCache from 'node-cache';
 

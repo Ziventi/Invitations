@@ -1,6 +1,6 @@
 import { Command, Option } from 'commander';
 
-import { CLIOptions } from '../types';
+import type { CLIOptions } from '../types';
 
 export default async function CLI(options: CLIOptions = {}): Promise<void> {
   const { generate, publish } = options;

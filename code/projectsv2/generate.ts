@@ -26,7 +26,7 @@ async function main(): Promise<void> {
       path: `${outputDir}/${name}.pdf`,
       pageRanges: '1',
       printBackground: true,
-      preferCSSPageSize: true
+      preferCSSPageSize: true,
     });
   };
 

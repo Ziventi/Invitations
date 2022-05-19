@@ -1,4 +1,5 @@
-import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import {
   FLUSH,
   PAUSE,
@@ -11,7 +12,7 @@ import {
 } from 'redux-persist';
 import sessionStorage from 'redux-persist/lib/storage/session';
 
-import { Draggable, DraggableOptions, PageState } from 'constants/types';
+import type { Draggable, DraggableOptions, PageState } from 'constants/types';
 
 const initialState: PageState = {
   namesList: [],

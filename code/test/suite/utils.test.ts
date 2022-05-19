@@ -1,4 +1,5 @@
-import Ziventi, { Emojis, Utils } from '@ziventi/utils';
+import type Ziventi from '@ziventi/utils';
+import { Emojis, Utils } from '@ziventi/utils';
 
 import { TEST_PROJECT_ROOT } from '../constants';
 

@@ -1,6 +1,6 @@
-import { NextApiRequest } from 'next';
+import type { NextApiRequest } from 'next';
 
-import { FONT_VARIANTS } from './variables';
+import type { FONT_VARIANTS } from './variables';
 
 export interface PageState {
   namesList: string[];

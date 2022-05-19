@@ -1,8 +1,9 @@
-import React, { ReactElement, useEffect, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import * as Utils from 'constants/functions/utils';
-import { RootState } from 'constants/reducers';
+import type { RootState } from 'constants/reducers';
 import { Preview as P } from 'styles/Design/Editor.styles';
 
 import DragZone from './DragZone';

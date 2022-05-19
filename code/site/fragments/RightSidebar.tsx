@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { updateState, RootState, AppDispatch } from 'constants/reducers';
+import type { RootState, AppDispatch } from 'constants/reducers';
+import { updateState } from 'constants/reducers';
 import { RightSidebar as R } from 'styles/Design/Editor.styles';
 
 export default function RightSidebar() {
@@ -22,7 +23,11 @@ export default function RightSidebar() {
       <R.ButtonList>
         {state.namesList.map((name, key) => {
           return (
-            <R.Button onClick={() => onNameClick(name)} key={key}>
+            <R.Button
+              onClick={() => {
+                onNameClick(name);
+              }}
+              key={key}>
               <R.Index>#{key + 1}</R.Index>
               <R.Name>{name}</R.Name>
             </R.Button>

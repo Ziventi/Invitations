@@ -1,4 +1,4 @@
-import { Dimensions } from 'constants/types';
+import type { Dimensions } from 'constants/types';
 
 /**
  * Downloads a PNG or PDF archive of all the generated file.
