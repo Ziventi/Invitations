@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import type { DefaultTheme } from 'styled-components';
 import styled, { css, ThemeProvider } from 'styled-components';
 
-import flowers from '../public/flowers.png';
-import pattern from '../public/pattern2.jpeg';
+import flowers from '../assets/flower.png';
+import pattern from '../assets/pattern.jpeg';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme1: DefaultTheme = {
@@ -104,7 +104,7 @@ const Page = styled.div`
   display: flex;
   height: 297mm;
   justify-content: center;
-  overflow-x: hidden;
+  overflow: hidden;
   padding: 3em;
   position: relative;
   width: 210mm;
