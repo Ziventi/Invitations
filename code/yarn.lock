@@ -3951,9 +3951,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@zzavidd/eslint-config@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@zzavidd/eslint-config@npm:1.4.0"
+"@zzavidd/eslint-config@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@zzavidd/eslint-config@npm:1.4.1"
   dependencies:
     "@types/react": ">=17.0.0"
     "@typescript-eslint/eslint-plugin": ">=5.0.0"
@@ -3986,22 +3986,22 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: b26f71ddfae728e3f3b5c9ec398527dc6fb0f10f878f63bd9d83cb42c41b8c8b09bd036b5db8ebe988e906e9f42fe65d060b281ab9dfe0e5671e94a45ac5ef9b
+  checksum: 86bb268f66a96c8be3dcb83179e66c9e8b60962ae103f6bd0ed0903ce9469082e7c5c27bd0c76107ab866de21d68bbf81741b16c859d53dba324e07133d02a05
   languageName: node
   linkType: hard
 
-"@zzavidd/prettier-config@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@zzavidd/prettier-config@npm:1.4.0"
+"@zzavidd/prettier-config@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@zzavidd/prettier-config@npm:1.4.1"
   peerDependencies:
     prettier: ">=2.6.0"
-  checksum: 0754b3b407e3f02472dd10c49cfa84cd9b790ea72bf55152509d032adfd42fe69dea205d5b979fd6b35c66e8a08bf1b6c76e75aa8a9ae62c8992ce5e9292a6f4
+  checksum: eb795ff708aed2c644b4dface601fadf690e6bb7fcf785089e0d9cec7c8c8b9e4f102f0f68b77d87c9f19ef0a6ba8f998c957210a88bac006d2c7160d4522787
   languageName: node
   linkType: hard
 
-"@zzavidd/stylelint-config@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "@zzavidd/stylelint-config@npm:1.4.0"
+"@zzavidd/stylelint-config@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "@zzavidd/stylelint-config@npm:1.4.1"
   dependencies:
     stylelint-config-styled-components: ">=0.1.1"
     stylelint-processor-styled-components: ">=1.10.0"
@@ -4014,7 +4014,7 @@ __metadata:
       optional: true
     stylelint-processor-styled-components:
       optional: true
-  checksum: 535f1286afde820c4017f484906d2477963c4d363bf6a0b4e925717213da98c46a8dedcaeb6f7a57163a82f641d64f89aa01bf4c6759826d018127b8eba9045e
+  checksum: 09325508c7b875b714e797eab61dada74fea4fb65c9f7ee5d648251843a79a155042c74037c5716b11863335a1354f73688c7949615b3970f7ea63bbfe9fc7c5
   languageName: node
   linkType: hard
 
@@ -14781,9 +14781,9 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     "@ziventi/utils": "workspace:utils"
-    "@zzavidd/eslint-config": ^1.4.0
-    "@zzavidd/prettier-config": ^1.4.0
-    "@zzavidd/stylelint-config": ^1.4.0
+    "@zzavidd/eslint-config": ^1.4.1
+    "@zzavidd/prettier-config": ^1.4.1
+    "@zzavidd/stylelint-config": ^1.4.1
     adm-zip: ^0.5.9
     axios: ^0.24.0
     babel-jest: ^28.1.0
