@@ -27,8 +27,7 @@
     "eslint": "eslint --ext .js,.ts,.tsx .",
     "eslint:fix": "yarn run eslint --fix",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json}\"",
-    "prettier:fix": "yarn run prettier --write",
-    "stylelint": "stylelint **/*.{scss,ts,tsx}"
+    "prettier:fix": "yarn run prettier --write"
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
@@ -46,7 +45,6 @@
     "@ziventi/utils": "workspace:utils",
     "@zzavidd/eslint-config": "^1.4.1",
     "@zzavidd/prettier-config": "^1.4.1",
-    "@zzavidd/stylelint-config": "^1.4.1",
     "adm-zip": "^0.5.9",
     "axios": "^0.24.0",
     "babel-jest": "^28.1.0",
@@ -62,11 +60,8 @@
     "log4js": "^6.3.0",
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.15",
-    "postcss": "^8.4.13",
     "prettier": "^2.6.2",
     "puppeteer": "^13.0.1",
-    "stylelint": "^14.2.0",
-    "stylelint-config-sass-guidelines": "^9.0.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.3.5"
   }
