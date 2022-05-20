@@ -6,7 +6,7 @@ import puppeteer from 'puppeteer';
 
 export default class Generator {
   private static NAMES_TXT = 'names.txt';
-  private static MAX_FILE_SIZE = 2;
+  private static MAX_FILE_SIZE = 5;
 
   private outputDir: string;
   private names: string[];
@@ -49,7 +49,8 @@ export default class Generator {
    * Generate PDF files for each name..
    */
   private async generatePDFs(): Promise<void> {
-    Logger.info('Generating PDFs directory.');
+    Logger.info('Generating PDF files.');
+    let maxFileSize = 0;
     const browser = await puppeteer.launch();
 
     await Promise.all(
@@ -66,13 +67,15 @@ export default class Generator {
           printBackground: true,
         });
         const size = Buffer.byteLength(file);
-        if (size > Generator.MAX_FILE_SIZE * 1024 * 1024) {
-          Logger.warn(
-            `File with name '${name}' is larger than ${Generator.MAX_FILE_SIZE}MB.`,
-          );
-        }
+        maxFileSize = Math.max(size, maxFileSize);
       }),
     );
+
+    if (maxFileSize > Generator.MAX_FILE_SIZE * 1024 * 1024) {
+      Logger.warn(
+        `There exists at least one file which is larger than ${Generator.MAX_FILE_SIZE}MB limit.`,
+      );
+    }
 
     await browser.close();
   }
