@@ -4,7 +4,8 @@
   "main": ".dist/index.js",
   "exports": {
     ".": "./.dist/index.js",
-    "./src/production": "./.dist/production.js"
+    "./src/production": "./.dist/production.js",
+    "./logger": "./.dist/lib/logger.js"
   },
   "scripts": {
     "prebuild": "rm -rf .dist",

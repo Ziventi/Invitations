@@ -31,7 +31,7 @@ log4js.configure({
     },
   },
   categories: {
-    default: { appenders: ['Server'], level: LOGGER_LEVEL },
+    default: { appenders: ['Default'], level: LOGGER_LEVEL },
     server: { appenders: ['Server'], level: LOGGER_LEVEL },
   },
 });

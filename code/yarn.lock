@@ -13743,6 +13743,7 @@ __metadata:
     "@types/react": ^18.0.9
     "@types/react-dom": ^18.0.4
     "@types/styled-components": ^5.1.25
+    "@ziventi/utils": "workspace:utils"
     babel-loader: ^8.2.5
     commander: ^9.2.0
     fs-extra: ^10.1.0
