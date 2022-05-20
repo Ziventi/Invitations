@@ -19,6 +19,7 @@
 # projects & utils
 **/utils/key.json
 **/projects/**/.cache.json
+**/projects/v2/*.txt
 
 # other
 **/.DS_Store

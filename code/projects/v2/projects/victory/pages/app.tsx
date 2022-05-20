@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import type { DefaultTheme } from 'styled-components';
 import styled, { css, ThemeProvider } from 'styled-components';
 
-import flowers from '../assets/flower.png';
-import pattern from '../assets/pattern.jpeg';
+import flowers from '../assets/flower.svg';
+import pattern from '../assets/pattern.jpg';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const theme1: DefaultTheme = {
@@ -114,7 +114,6 @@ const Background = styled.main`
   background-image: url(${pattern});
   background-repeat: repeat;
   background-size: 800px;
-  filter: saturate(1) hue-rotate(240deg);
   height: 100%;
   opacity: 0.1;
   position: absolute;
