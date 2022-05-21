@@ -5,7 +5,7 @@ import * as API from '../project/controller/api';
 
 jest.setTimeout(10000);
 
-describe('PDF Interaction', () => {
+describe.skip('PDF Interaction', () => {
   beforeAll(async () => {
     const cwd = path.resolve(process.cwd(), 'test/project');
     await API.generate({ limit: 1 });

@@ -1,8 +1,9 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 const options = {
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: [
     '<rootDir>/**/*.ts',
+    '!<rootDir>/bespoke/**',
     '!<rootDir>/projects/**',
     '!<rootDir>/server/**',
     '!<rootDir>/site/**',
@@ -12,11 +13,8 @@ const options = {
   ],
   coverageDirectory: '<rootDir>/test/suite/.coverage',
   coverageReporters: ['lcov', 'text', 'text-summary'],
-  moduleNameMapper: {
-    '@ziventi/utils': '<rootDir>/utils/src/index.ts',
-    '@ziventi/utils/src/production': '<rootDir>/utils/src/production.ts',
-  },
   preset: 'jest-puppeteer',
+  rootDir: '..',
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
   slowTestThreshold: 8,
   testMatch: ['<rootDir>/test/**/*.test.ts'],
