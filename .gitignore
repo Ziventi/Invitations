@@ -2,6 +2,7 @@
 **/node_modules
 **/.next
 **/.env
+**/.cache.json
 **/.dist
 **/dist
 **/.out
@@ -18,8 +19,7 @@
 
 # projects & utils
 **/utils/key.json
-**/projects/**/.cache.json
-**/projects/v2/*.txt
+**/bespoke/v2/*.txt
 
 # other
 **/.DS_Store
