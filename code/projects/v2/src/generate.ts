@@ -14,7 +14,7 @@ export default class Generator {
   private outputDir: string;
   private names: string[];
 
-  public constructor() {
+  constructor() {
     this.outputDir = path.resolve(__dirname, '../dist');
     this.names = fs
       .readFileSync(Generator.NAMES_TXT, { encoding: 'utf8' })
@@ -59,7 +59,9 @@ export default class Generator {
    */
   private async generateFiles(format: FileFormat): Promise<void> {
     this.browser = await puppeteer.launch();
-    logger.info('Generating PDF files.');
+    logger.info(
+      format === 'pdf' ? 'Generating PDF files.' : 'Generate PNG images.',
+    );
 
     let maxFileSize = 0;
     await Promise.all(
@@ -70,7 +72,8 @@ export default class Generator {
         const page = await this.browser!.newPage();
         await page.goto(url.href);
         await page.evaluateHandle('document.fonts.ready');
-        let file;
+
+        let file: Buffer | string;
         if (format === 'pdf') {
           file = await page.pdf({
             format: 'a4',
