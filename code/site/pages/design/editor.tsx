@@ -15,7 +15,6 @@ import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
 import DesignEditor from 'styles/Design/Editor.styles';
-import TestData from 'test/test.json';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,12 +30,12 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   );
 
   // TODO: Remove (dev purposes only)
-  useEffect(() => {
-    setState({
-      namesList: TestData.names,
-      imageSrc: TestData.imageSource,
-    });
-  }, [setState]);
+  // useEffect(() => {
+  //   setState({
+  //     namesList: TestData.names,
+  //     imageSrc: TestData.imageSource,
+  //   });
+  // }, [setState]);
 
   // Called each time the image source changes.
   useEffect(() => {

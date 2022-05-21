@@ -1,12 +1,11 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import React from 'react';
 import Stripe from 'stripe';
 
 import * as Crypto from 'constants/functions/crypto';
 import type { PaymentHash } from 'constants/types';
 
 const CheckoutPage: NextPage = () => {
-  return <div></div>;
+  return null;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -31,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       },
     ],
     success_url: process.env.DOMAIN!,
-    cancel_url: `${process.env.DOMAIN!}/design`,
+    cancel_url: `${process.env.DOMAIN!}/design/editor`,
     // discounts: [
     //   {
     //     promotion_code: 'promo_1KvRydIFI88zNbJfO8CWs5sB',
