@@ -1,13 +1,16 @@
-import { Logger } from '@ziventi/utils';
+import { Logger as logger } from '@ziventi/utils';
 import { spawnSync } from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
+import type { Browser } from 'puppeteer';
 import puppeteer from 'puppeteer';
 
 export default class Generator {
+  private static BASE_URL = 'http://localhost:8080';
   private static NAMES_TXT = 'names.txt';
   private static MAX_FILE_SIZE = 5;
 
+  private browser?: Browser;
   private outputDir: string;
   private names: string[];
 
@@ -28,7 +31,7 @@ export default class Generator {
     format: FileFormat,
     options: GenerateOptions,
   ): Promise<void> {
-    Logger.info('Cleaning output directory.');
+    logger.info('Cleaning output directory.');
     fs.removeSync(this.outputDir);
     fs.ensureDirSync(this.outputDir);
 
@@ -36,48 +39,68 @@ export default class Generator {
       this.names = this.names.slice(0, parseInt(options.limit));
     }
 
-    if (format === 'pdf') {
-      await this.generatePDFs();
-    }
+    try {
+      await this.generateFiles(format);
 
-    if (options.open) {
-      this.openSampleFiles(format);
+      if (options.open) {
+        this.openSampleFiles(format);
+      }
+    } catch (e) {
+      logger.error(e);
+    } finally {
+      if (this.browser) {
+        await this.browser.close();
+      }
     }
   }
 
   /**
-   * Generate PDF files for each name..
+   * Generate files for each name.
    */
-  private async generatePDFs(): Promise<void> {
-    Logger.info('Generating PDF files.');
-    let maxFileSize = 0;
-    const browser = await puppeteer.launch();
+  private async generateFiles(format: FileFormat): Promise<void> {
+    this.browser = await puppeteer.launch();
+    logger.info('Generating PDF files.');
 
+    let maxFileSize = 0;
     await Promise.all(
       this.names.map(async (name) => {
-        const page = await browser.newPage();
-        await page.goto(
-          `http://localhost:8080?name=${encodeURIComponent(name)}`,
-        );
+        const url = new URL(Generator.BASE_URL);
+        url.searchParams.append('name', name);
+
+        const page = await this.browser!.newPage();
+        await page.goto(url.href);
         await page.evaluateHandle('document.fonts.ready');
-        const file = await page.pdf({
-          format: 'a4',
-          path: `${this.outputDir}/${name}.pdf`,
-          pageRanges: '1',
-          printBackground: true,
-        });
+        let file;
+        if (format === 'pdf') {
+          file = await page.pdf({
+            format: 'a4',
+            path: `${this.outputDir}/${name}.pdf`,
+            pageRanges: '1',
+            printBackground: true,
+          });
+        } else {
+          const viewportOptions = this.translateViewportOptions({
+            width: '8.25in',
+            height: '11.75in',
+          });
+          await page.setViewport(viewportOptions);
+          file = await page.screenshot({
+            encoding: 'binary',
+            fullPage: true,
+            path: `${this.outputDir}/${name}.png`,
+            type: 'png',
+          });
+        }
         const size = Buffer.byteLength(file);
         maxFileSize = Math.max(size, maxFileSize);
       }),
     );
 
     if (maxFileSize > Generator.MAX_FILE_SIZE * 1024 * 1024) {
-      Logger.warn(
+      logger.warn(
         `There exists at least one file which is larger than ${Generator.MAX_FILE_SIZE}MB limit.`,
       );
     }
-
-    await browser.close();
   }
 
   /**
@@ -95,9 +118,33 @@ export default class Generator {
       spawnSync('code', [...files], { cwd: this.outputDir });
     }
   }
+
+  /**
+   * Translates the incoming viewport options to values acceptable by puppeteer.
+   * @returns The puppeteer viewport options.
+   */
+  private translateViewportOptions(
+    options: ViewportOptions,
+  ): puppeteer.Viewport {
+    const { width, height, deviceScaleFactor = 2.5 } = options;
+
+    const convert = (measurement: number | string): number => {
+      if (typeof measurement === 'string') {
+        measurement = parseFloat(measurement.replace('in', '')) * 96;
+      }
+      return measurement;
+    };
+
+    return {
+      width: convert(width),
+      height: convert(height),
+      deviceScaleFactor,
+    };
+  }
 }
 
 type FileFormat = 'pdf' | 'png';
+
 interface GenerateOptions {
   all?: boolean;
   format?: FileFormat;
@@ -105,4 +152,9 @@ interface GenerateOptions {
   name?: string;
   open?: boolean;
   zip?: boolean;
+}
+
+interface ViewportOptions extends Omit<puppeteer.Viewport, 'width' | 'height'> {
+  width: number | string;
+  height: number | string;
 }

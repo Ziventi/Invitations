@@ -29,7 +29,7 @@ function createConfig(name) {
     output: {
       clean: true,
       filename: 'bundle.js',
-      path: `${cwd}/projects/${name}dist`
+      path: `${cwd}/projects/${name}dist`,
     },
     plugins: [
       new HtmlWebpackPlugin({
