@@ -10,6 +10,7 @@ declare module 'styled-components' {
     border2: string;
     borderWidth: string;
     textColor: string;
+    textColorDark?: string;
     eventTitleTextColor: string;
     eventTitleFontSize: string;
     addressFontWeight: string;

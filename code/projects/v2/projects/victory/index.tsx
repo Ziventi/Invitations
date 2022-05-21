@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
+    background-color: beige;
     margin: 0;
     padding: 0;
   }

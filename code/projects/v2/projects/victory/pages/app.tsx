@@ -17,6 +17,7 @@ const theme1: DefaultTheme = {
   border2: '#f4ee83',
   borderWidth: '3px',
   textColor: '#fff',
+  textColorDark: '#0f0044',
   eventTitleTextColor: '#16074c',
   eventTitleFontSize: '100px',
   addressFontWeight: 'normal',
@@ -30,6 +31,7 @@ const theme2: DefaultTheme = {
   border2: '#5c0f7a',
   borderWidth: '5px',
   textColor: '#16074c',
+  textColorDark: '#0f0044',
   eventTitleTextColor: '#16074c',
   eventTitleFontSize: '120px',
   addressFontWeight: 'bold',
@@ -84,11 +86,13 @@ const G = {
   `,
   Text: styled.p`
     font-size: 25px;
+    letter-spacing: -1px;
     line-height: 145%;
     margin: 0;
   `,
   SmallText: styled.small`
     font-size: 22px;
+    letter-spacing: -1px;
     line-height: 125%;
     margin: 0;
   `,
@@ -115,7 +119,7 @@ const Background = styled.main`
   background-repeat: repeat;
   background-size: 800px;
   height: 100%;
-  opacity: 0.1;
+  opacity: 0.065;
   position: absolute;
   width: 100%;
 `;
@@ -166,12 +170,13 @@ const EventTitle = styled(G.Heading)`
 `;
 
 const Location = styled.section`
+  color: ${({ theme }) => theme.textColorDark};
   font-weight: ${({ theme }) => theme.addressFontWeight};
   padding: 0.5em 0 2em;
   text-align: center;
 
   a {
-    color: ${({ theme }) => theme.textColor};
+    color: ${({ theme }) => theme.textColorDark};
   }
 
   * {
