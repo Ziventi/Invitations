@@ -59,7 +59,7 @@ const Home: NextPage = () => {
     <H.Main>
       <div>
         <Header headerRef={headerRef} />
-        <H.Cover>
+        <H.Hero>
           <H.VideoWrapper>
             <H.Video
               src={`/cover.mp4`}
@@ -72,18 +72,18 @@ const Home: NextPage = () => {
               }}
             />
           </H.VideoWrapper>
-          <H.CoverCaption>
-            <H.CoverCaptionHeading>
+          <H.HeroCaption>
+            <H.HeroCaptionHeading>
               Personalise your invitations
-            </H.CoverCaptionHeading>
+            </H.HeroCaptionHeading>
             <p>Let each and every one of your guests know they matter.</p>
-            <H.CoverButton
+            <H.HeroButton
               bgColor={COLOR.PRIMARY_4_DARK}
               onClick={onStartClick}>
               Start
-            </H.CoverButton>
-          </H.CoverCaption>
-        </H.Cover>
+            </H.HeroButton>
+          </H.HeroCaption>
+        </H.Hero>
         <H.WorkflowSection>
           <H.WorkflowContainer maxWidth={700}>
             <Step heading={'Step 1'} icon={faUsersRectangle}>

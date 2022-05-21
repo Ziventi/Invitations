@@ -14,12 +14,12 @@ export default {
     height: 100%;
     position: relative;
   `,
-  Cover: styled.section`
+  Hero: styled.section`
     align-items: center;
     background-color: ${COLOR.PRIMARY_1_DARK};
     color: ${COLOR.WHITE};
     display: flex;
-    height: 750px;
+    height: 100vh;
     justify-content: center;
     position: relative;
   `,
@@ -39,17 +39,17 @@ export default {
     opacity: 0.25;
     z-index: 0;
   `,
-  CoverCaption: styled.div`
+  HeroCaption: styled.div`
     text-align: center;
     z-index: 1;
   `,
-  CoverCaptionHeading: styled.h1`
+  HeroCaptionHeading: styled.h1`
     font-size: 40px;
     margin: 0;
     max-width: 600px;
     text-align: center;
   `,
-  CoverButton: styled(Global.Button)`
+  HeroButton: styled(Global.Button)`
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
     font-size: 20px;
     margin: 1em 0;
