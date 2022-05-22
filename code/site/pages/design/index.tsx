@@ -87,8 +87,9 @@ const DesignSetupPage: NextPage = () => {
 
   return (
     <DS.Main>
+      <DS.Background src={'/cover.jpg'} />
       <DS.Container>
-        <DS.Section>
+        <DS.SectionNames>
           <h2>Step 1: List The Names</h2>
           <DS.Text>
             Type out or paste the list of your guest names here. Separate each
@@ -103,11 +104,11 @@ const DesignSetupPage: NextPage = () => {
             rows={10}
           />
           <small>{Utils.nameListFromText(state.names).length} names</small>
-        </DS.Section>
-        <DS.Section>
+        </DS.SectionNames>
+        <DS.SectionImage>
           <h2>Step 2: Select Your Image</h2>
           <DS.FileSelector>
-            <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3}>
+            <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3_DARK}>
               <input
                 type={'file'}
                 accept={'image/jpeg,image/png'}
@@ -129,7 +130,7 @@ const DesignSetupPage: NextPage = () => {
               />
             )}
           </DS.ImagePreview>
-        </DS.Section>
+        </DS.SectionImage>
       </DS.Container>
       <DS.Footer>
         <DS.FooterButton onClick={onHomeClick}>

@@ -1,28 +1,39 @@
+import { transparentize } from 'polished';
 import styled from 'styled-components';
 
 import { COLOR } from 'styles/Constants';
 import { Global } from 'styles/Library';
 
+const Section = styled.section`
+  padding: 2em 3em;
+`;
+
 export default {
   Main: styled.main`
-    background-color: ${COLOR.PRIMARY_1_DARK};
     color: ${COLOR.WHITE};
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
     width: 100%;
+  `,
+  Background: styled.img`
+    filter: blur(4px);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
   `,
   Container: styled.div`
     display: grid;
     flex: 1 1 auto;
     grid-template-columns: repeat(2, 50%);
   `,
-  Section: styled.section`
-    background-color: #8e7066;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 0 ${COLOR.BLACK};
-    margin: 2em;
-    padding: 2em;
+  SectionNames: styled(Section)`
+    background-color: ${transparentize(0.1, COLOR.PRIMARY_3_DARK)};
+  `,
+  SectionImage: styled(Section)`
+    background-color: ${transparentize(0.2, COLOR.BLACK)};
   `,
   NameListInput: styled.textarea`
     border-radius: 10px;
@@ -37,6 +48,7 @@ export default {
     line-height: 150%;
   `,
   Footer: styled.footer`
+    bottom: 0;
     display: flex;
     flex: 0 0 70px;
     justify-content: space-between;
