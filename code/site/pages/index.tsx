@@ -63,13 +63,12 @@ const Home: NextPage = () => {
           <H.VideoWrapper>
             <H.Video
               src={`/cover.mp4`}
+              poster={'/cover.jpg'}
               autoPlay={true}
               controls={false}
               loop={true}
               muted={true}
-              onContextMenu={(e) => {
-                e.preventDefault();
-              }}
+              onContextMenu={(e) => e.preventDefault()}
             />
           </H.VideoWrapper>
           <H.HeroCaption>
@@ -77,9 +76,7 @@ const Home: NextPage = () => {
               Personalise your invitations
             </H.HeroCaptionHeading>
             <p>Let each and every one of your guests know they matter.</p>
-            <H.HeroButton
-              bgColor={COLOR.PRIMARY_4_DARK}
-              onClick={onStartClick}>
+            <H.HeroButton bgColor={COLOR.PRIMARY_4_DARK} onClick={onStartClick}>
               Start
             </H.HeroButton>
           </H.HeroCaption>
