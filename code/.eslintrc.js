@@ -6,7 +6,7 @@ const zavidConfig = require('@zzavidd/eslint-config');
 module.exports = {
   extends: '@zzavidd/eslint-config/react-ts',
   root: true,
-  ignorePatterns: ['**/.dist/**', '**/.out/**', '**/next-env.d.ts'],
+  ignorePatterns: ['**/next-env.d.ts', '**/dist/**', '**/bespoke/v1/**'],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: ['**/tsconfig.json'],

@@ -14,7 +14,7 @@
   "scripts": {
     "check": "tsc --noEmit",
     "inspect": "yarn run eslint:fix && yarn run prettier:fix",
-    "eslint": "eslint --ext .js,.ts,.tsx .",
+    "eslint": "eslint --ext .js,.ts,.tsx --cache .",
     "eslint:fix": "yarn run eslint --fix",
     "prettier": "prettier --ignore-path ../.gitignore --check \"**/*.{js,ts,tsx,scss,json}\"",
     "prettier:fix": "yarn run prettier --write"

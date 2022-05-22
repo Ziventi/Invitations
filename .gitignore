@@ -1,6 +1,7 @@
 # all
 **/node_modules
 **/.next
+**/.eslintcache
 **/.env
 **/.cache.json
 **/.dist
