@@ -7,7 +7,7 @@ import SectionWorkflow from 'fragments/home/Workflow';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 import { COLOR } from 'styles/Constants';
-import H from 'styles/pages/Home.styles';
+import * as H from 'styles/pages/Home.styles';
 
 const Home: NextPage = () => {
   const headerRef = useRef<HTMLDivElement>(null);

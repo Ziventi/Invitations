@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import React from 'react';
 
 import { COLOR } from 'styles/Constants';
-import H from 'styles/pages/Home.styles';
+import * as H from 'styles/pages/Home.styles';
 
 export default function SectionWorkflow() {
   return (
