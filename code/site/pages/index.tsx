@@ -49,9 +49,9 @@ const Home: NextPage = () => {
   }
 
   return (
-    <H.Main>
-      <div>
-        <Header headerRef={headerRef} />
+    <H.Page>
+      <Header headerRef={headerRef} />
+      <main>
         <H.Hero>
           <HeroClipPathReference />
           <H.VideoWrapper>
@@ -86,9 +86,9 @@ const Home: NextPage = () => {
           colorBottom={COLOR.PRIMARY_1_NEUTRAL}
         />
         <section className={'motivation'}></section>
-      </div>
+      </main>
       <Footer />
-    </H.Main>
+    </H.Page>
   );
 };
 

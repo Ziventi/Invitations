@@ -8,11 +8,9 @@ const StepCaptionWrapper = styled.div`
 `;
 
 export default {
-  Main: styled.main`
+  Page: styled.div`
     display: grid;
     grid-template-rows: auto 1fr auto;
-    height: 100%;
-    position: relative;
   `,
   Hero: styled.section`
     align-items: center;
