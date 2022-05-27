@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import Wave from 'components/wave';
+import Wave, { HeroClipPathReference } from 'components/vectors';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 import { COLOR } from 'styles/Constants';
@@ -60,6 +60,7 @@ const Home: NextPage = () => {
       <div>
         <Header headerRef={headerRef} />
         <H.Hero>
+          <HeroClipPathReference />
           <H.VideoWrapper>
             <H.Video
               src={`/cover.mp4`}
@@ -95,9 +96,9 @@ const Home: NextPage = () => {
             </Step>
           </H.WorkflowContainer>
         </H.WorkflowSection>
-        <Wave className={'two'} />
+        <Wave colorTop={COLOR.PRIMARY_1_NEUTRAL} colorBottom={COLOR.PRIMARY_4_DARK} />
         <section className={'pricing'}></section>
-        <Wave className={'three'} />
+        <Wave colorTop={COLOR.PRIMARY_4_DARK} colorBottom={COLOR.PRIMARY_1_NEUTRAL} />
         <section className={'motivation'}></section>
       </div>
       <Footer />

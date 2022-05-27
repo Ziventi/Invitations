@@ -31,7 +31,7 @@ export default {
     height: 70px;
     justify-content: center;
     margin-top: -70px;
-    padding: 0.5em;
+    padding: 0.5em 1.5em;
     position: sticky;
     top: 0;
     transition: all 0.2s;
