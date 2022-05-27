@@ -54,7 +54,7 @@ export default {
     justify-content: space-between;
     padding: 0 1.5em 1em;
   `,
-  FooterButton: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
+  FooterButton: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4_NEUTRAL })`
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
     font-size: 20px;
     min-width: 200px;

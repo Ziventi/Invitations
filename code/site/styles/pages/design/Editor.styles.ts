@@ -30,8 +30,8 @@ const FormInput = css`
 
 export const LeftSidebar = {
   Aside: styled.aside`
-    ${Mixin.Scrollable(COLOR.PRIMARY_1_DARK)}
-    background-color: ${COLOR.PRIMARY_1_DARK};
+    ${Mixin.Scrollable(COLOR.PRIMARY_1_NEUTRAL)}
+    background-color: ${COLOR.PRIMARY_1_NEUTRAL};
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
     display: flex;
     flex: 0 0 auto;
@@ -76,7 +76,7 @@ export const LeftSidebar = {
   `,
   NumberSuffix: styled.input<NumberSuffixProps>`
     ${FormInput}
-    border-left: 2px solid ${COLOR.PRIMARY_1};
+    border-left: 2px solid ${COLOR.PRIMARY_1_NEUTRAL};
     border-radius: 0 10px 10px 0;
     color: #3b3b3b;
     cursor: default;
@@ -130,7 +130,7 @@ export const LeftSidebar = {
 export const Preview = {
   Container: styled.section`
     align-items: center;
-    background-color: ${COLOR.PRIMARY_1};
+    background-color: ${COLOR.PRIMARY_1_NEUTRAL};
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -214,7 +214,7 @@ export const Preview = {
 
 export const RightSidebar = {
   Aside: styled.aside`
-    background-color: ${COLOR.PRIMARY_4};
+    background-color: ${COLOR.PRIMARY_4_NEUTRAL};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
     flex: 0 0 200px;
@@ -231,13 +231,13 @@ export const RightSidebar = {
     justify-content: center;
   `,
   ButtonList: styled.div`
-    ${Mixin.Scrollable(COLOR.PRIMARY_4)}
+    ${Mixin.Scrollable(COLOR.PRIMARY_4_NEUTRAL)}
     border-left: 3px solid ${COLOR.PRIMARY_4_DARK};
     display: flex;
     flex-direction: column;
     height: 100%;
   `,
-  Button: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4 })`
+  Button: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4_NEUTRAL })`
     align-items: center;
     border-radius: 0;
     border-style: none;

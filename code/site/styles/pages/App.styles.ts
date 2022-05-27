@@ -44,7 +44,7 @@ export default {
   HeaderSiteLogo: styled(ZiventiLogo)`
     cursor: pointer;
     height: 250%;
-    transition: all 0.3s;
+    transition: all 0.2s;
   `,
   Footer: styled.footer`
     background-color: ${COLOR.PRIMARY_4_DARK};

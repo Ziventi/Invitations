@@ -66,7 +66,7 @@ export const Input = css`
   border-radius: 10px;
   border-style: none;
   max-width: 100%;
-  outline-color: ${COLOR.PRIMARY_2};
+  outline-color: ${COLOR.PRIMARY_2_NEUTRAL};
 `;
 
 export const Logo = styled.svg`

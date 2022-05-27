@@ -105,7 +105,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
         Draw
       </L.Button>
       <Link href={`/payment/checkout?q=${queryHash}`}>
-        <L.Button id={'pay'} bgColor={COLOR.PRIMARY_2}>
+        <L.Button id={'pay'} bgColor={COLOR.PRIMARY_2_NEUTRAL}>
           Checkout
         </L.Button>
       </Link>
@@ -118,19 +118,19 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
       <L.Button
         id={'download-pdf'}
         onClick={() => download('pdf')}
-        bgColor={COLOR.PRIMARY_5}>
+        bgColor={COLOR.PRIMARY_5_NEUTRAL}>
         Download PDF
       </L.Button>
       <L.Button
         id={'download-png-archive'}
         onClick={() => download('png', true)}
-        bgColor={COLOR.PRIMARY_3}>
+        bgColor={COLOR.PRIMARY_3_NEUTRAL}>
         Download PNG archive
       </L.Button>
       <L.Button
         id={'download-pdf-archive'}
         onClick={() => download('pdf', true)}
-        bgColor={COLOR.PRIMARY_4}>
+        bgColor={COLOR.PRIMARY_4_NEUTRAL}>
         Download PDF archive
       </L.Button>
       <Link href={'/design'}>Back to Design</Link>

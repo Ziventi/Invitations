@@ -16,7 +16,7 @@ export default {
   `,
   Hero: styled.section`
     align-items: center;
-    background-color: ${COLOR.PRIMARY_1_DARK};
+    background-color: ${COLOR.PRIMARY_1_NEUTRAL};
     color: ${COLOR.WHITE};
     display: flex;
     height: 100vh;
@@ -56,7 +56,7 @@ export default {
     min-width: 200px;
   `,
   WorkflowSection: styled.section`
-    background-color: ${COLOR.PRIMARY_1_DARK};
+    background-color: ${COLOR.PRIMARY_1_NEUTRAL};
     display: flex;
     justify-content: center;
     padding: 2em;
