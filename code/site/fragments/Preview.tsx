@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import * as Utils from 'constants/functions/utils';
 import type { RootState } from 'constants/reducers';
-import { Preview as P } from 'styles/Design/Editor.styles';
+import { Preview as P } from 'styles/pages/design/Editor.styles';
 
 import DragZone from './DragZone';
 

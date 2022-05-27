@@ -14,7 +14,7 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
 import LeftSidebar from 'fragments/LeftSidebar';
 import Preview from 'fragments/Preview';
 import RightSidebar from 'fragments/RightSidebar';
-import DesignEditor from 'styles/Design/Editor.styles';
+import DesignEditor from 'styles/pages/design/Editor.styles';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

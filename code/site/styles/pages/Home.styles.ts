@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { COLOR } from './Constants';
-import { Global } from './Library';
+import { COLOR } from 'styles/Constants';
+import * as Global from 'styles/Global';
 
 const StepCaptionWrapper = styled.div`
   display: flex;

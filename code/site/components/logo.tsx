@@ -1,7 +1,7 @@
 import type { ImageProps } from 'next/image';
 import React from 'react';
 
-import { Global } from 'styles/Library';
+import * as Global from 'styles/Global';
 
 export default function ZiventiLogo({ color, className }: ZiventiLogoProps) {
   return (

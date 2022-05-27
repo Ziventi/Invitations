@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import React from 'react';
 
 import type { PageState } from 'constants/types';
-import DesignEditor from 'styles/Design/Editor.styles';
+import DesignEditor from 'styles/pages/design/Editor.styles';
 
 export default function ProgressOverlay({
   state,

@@ -2,7 +2,7 @@ import { transparentize } from 'polished';
 import styled from 'styled-components';
 
 import { COLOR } from 'styles/Constants';
-import { Global } from 'styles/Library';
+import * as Global from 'styles/Global';
 
 const Section = styled.section`
   padding: 2em 3em;

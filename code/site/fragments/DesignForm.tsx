@@ -13,7 +13,7 @@ import type {
 import { updateState } from 'constants/reducers';
 import type { FontVariantKey, GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
-import { LeftSidebar as L } from 'styles/Design/Editor.styles';
+import { LeftSidebar as L } from 'styles/pages/design/Editor.styles';
 
 export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   const state = useSelector((state: RootState) => state);

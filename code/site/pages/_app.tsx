@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'constants/reducers';
-import { GlobalStyle } from 'styles/App.styles';
+import { GlobalStyle } from 'styles/pages/App.styles';
 
 export default function ZiventiApp({
   Component,
