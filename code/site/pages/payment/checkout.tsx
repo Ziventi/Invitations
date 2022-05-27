@@ -15,6 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { quantity, format } = Crypto.decryptJSON<PaymentHash>(
     query.q as string,
   );
+  const domain = process.env.DOMAIN!;
 
   const products = {
     pdf: process.env.UNIT_PRICE_ID_PDF!,
@@ -29,8 +30,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         quantity,
       },
     ],
-    success_url: process.env.DOMAIN!,
-    cancel_url: `${process.env.DOMAIN!}/design/editor`,
+    success_url: domain,
+    cancel_url: `${domain}/design/editor`,
     // discounts: [
     //   {
     //     promotion_code: 'promo_1KvRydIFI88zNbJfO8CWs5sB',

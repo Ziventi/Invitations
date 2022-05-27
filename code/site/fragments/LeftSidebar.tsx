@@ -104,7 +104,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
       <L.Button id={'preview'} onClick={preview} bgColor={COLOR.PRIMARY_2_DARK}>
         Draw
       </L.Button>
-      <Link href={`/checkout?q=${queryHash}`}>
+      <Link href={`/payment/checkout?q=${queryHash}`}>
         <L.Button id={'pay'} bgColor={COLOR.PRIMARY_2}>
           Checkout
         </L.Button>
