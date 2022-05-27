@@ -1,16 +1,9 @@
-import type { IconProp } from '@fortawesome/fontawesome-svg-core';
-import {
-  faCrosshairs,
-  faFileImage,
-  faUsersRectangle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import type { ReactNode } from 'react';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import Wave, { HeroClipPathReference } from 'components/vectors';
+import SectionWorkflow from 'fragments/home/Workflow';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 import { COLOR } from 'styles/Constants';
@@ -82,23 +75,16 @@ const Home: NextPage = () => {
             </H.HeroButton>
           </H.HeroCaption>
         </H.Hero>
-        <H.WorkflowSection>
-          <H.WorkflowContainer maxWidth={700}>
-            <Step heading={'Step 1'} icon={faUsersRectangle}>
-              Supply a full list of your guests names to generate invitations
-              for.
-            </Step>
-            <Step heading={'Step 2'} icon={faFileImage}>
-              Select your base invitation image as the template.
-            </Step>
-            <Step heading={'Step 3'} icon={faCrosshairs} noTrailingRule={true}>
-              Use the editor to position and apply styling to each name.
-            </Step>
-          </H.WorkflowContainer>
-        </H.WorkflowSection>
-        <Wave colorTop={COLOR.PRIMARY_1_NEUTRAL} colorBottom={COLOR.PRIMARY_4_DARK} />
+        <SectionWorkflow />
+        <Wave
+          colorTop={COLOR.PRIMARY_1_NEUTRAL}
+          colorBottom={COLOR.PRIMARY_4_DARK}
+        />
         <section className={'pricing'}></section>
-        <Wave colorTop={COLOR.PRIMARY_4_DARK} colorBottom={COLOR.PRIMARY_1_NEUTRAL} />
+        <Wave
+          colorTop={COLOR.PRIMARY_4_DARK}
+          colorBottom={COLOR.PRIMARY_1_NEUTRAL}
+        />
         <section className={'motivation'}></section>
       </div>
       <Footer />
@@ -106,30 +92,4 @@ const Home: NextPage = () => {
   );
 };
 
-function Step({ heading, noTrailingRule, icon, children }: StepProps) {
-  return (
-    <H.WorkflowStep>
-      <H.StepCaptionWrapper>
-        <FontAwesomeIcon
-          icon={icon}
-          size={'10x'}
-          color={COLOR.PRIMARY_4_DARK}
-        />
-        <H.StepCaption>
-          <H.StepCaptionHeading>{heading}</H.StepCaptionHeading>
-          <H.StepCaptionText>{children}</H.StepCaptionText>
-        </H.StepCaption>
-      </H.StepCaptionWrapper>
-      <H.HorizontalRule visible={!noTrailingRule} />
-    </H.WorkflowStep>
-  );
-}
-
 export default Home;
-
-interface StepProps {
-  icon: IconProp;
-  heading: string;
-  noTrailingRule?: boolean;
-  children?: ReactNode;
-}
