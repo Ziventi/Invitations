@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
 
-import ZiventiLogo from 'components/logo';
 import App from 'styles/App.styles';
 import { Global } from 'styles/Library';
 
@@ -9,7 +8,7 @@ export default function Header({ headerRef }: HeaderProps) {
   return (
     <App.Header ref={headerRef}>
       <Global.Container>
-        <ZiventiLogo color={'white'} />
+        <App.HeaderSiteLogo color={'white'} />
         <App.HeaderNavigation>
           <menu>
             <li>

@@ -1,6 +1,8 @@
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
-import { FONT, COLOR } from './Constants';
+import ZiventiLogo from 'components/logo';
+
+import { COLOR, FONT } from './Constants';
 import { Global } from './Library';
 
 export const GlobalStyle = createGlobalStyle`
@@ -40,6 +42,11 @@ export default {
   HeaderNavigation: styled(Global.Navigation)`
     justify-content: flex-end;
   `,
+  HeaderSiteLogo: styled(ZiventiLogo)`
+    cursor: pointer;
+    height: 250%;
+    transition: all 0.3s;
+  `,
   Footer: styled.footer`
     background-color: ${COLOR.PRIMARY_4_DARK};
     display: flex;
@@ -47,19 +54,5 @@ export default {
     padding: 1em;
     width: 100%;
     z-index: 1;
-  `,
-  SiteLogo: styled.svg`
-    cursor: pointer;
-    height: 250%;
-    transition: all 0.3s;
-  `,
-  SiteLogoPath: styled.path`
-    ${({ fill, strokeWidth }) => css`
-      fill: ${fill};
-      stroke: ${fill};
-      stroke-width: ${strokeWidth};
-    `}
-    fill-rule: 'evenodd';
-    stroke-linejoin: 'round';
   `,
 };

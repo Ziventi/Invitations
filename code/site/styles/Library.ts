@@ -66,6 +66,18 @@ export const Global = {
     max-width: 100%;
     outline-color: ${COLOR.PRIMARY_2};
   `,
+  Logo: styled.svg`
+    cursor: pointer;
+  `,
+  LogoPath: styled.path`
+    ${({ fill, strokeWidth }) => css`
+      fill: ${fill};
+      stroke: ${fill};
+      stroke-width: ${strokeWidth};
+    `}
+    fill-rule: 'evenodd';
+    stroke-linejoin: 'round';
+  `,
 };
 
 export const Mixin = {

@@ -1,16 +1,17 @@
 import type { ImageProps } from 'next/image';
 import React from 'react';
 
-import App from 'styles/App.styles';
+import { Global } from 'styles/Library';
 
-export default function ZiventiLogo({ color }: ZiventiLogoProps) {
+export default function ZiventiLogo({ color, className }: ZiventiLogoProps) {
   return (
-    <App.SiteLogo
+    <Global.Logo
       xmlns={'http://www.w3.org/2000/svg'}
       xmlnsXlink={'http://www.w3.org/1999/xlink'}
-      viewBox={'0 0 987 643'}>
-      <App.SiteLogoPath d={pathZ} fill={color} strokeWidth={'19px'} />
-      <App.SiteLogoPath d={pathIventi} fill={color} strokeWidth={'11px'} />
+      viewBox={'0 0 987 643'}
+      className={className}>
+      <Global.LogoPath d={pathZ} fill={color} strokeWidth={'19px'} />
+      <Global.LogoPath d={pathIventi} fill={color} strokeWidth={'11px'} />
       <image
         x={'564'}
         y={'94'}
@@ -18,7 +19,7 @@ export default function ZiventiLogo({ color }: ZiventiLogoProps) {
         height={'94'}
         xlinkHref={penImageData}
       />
-    </App.SiteLogo>
+    </Global.Logo>
   );
 }
 
