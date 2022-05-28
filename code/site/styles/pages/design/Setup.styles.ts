@@ -6,11 +6,7 @@ import * as Global from 'styles/Global';
 
 export const Main = styled.main`
   color: ${COLOR.WHITE};
-  display: flex;
-  flex-direction: column;
-  height: 100%;
   position: relative;
-  width: 100%;
 `;
 
 export const Background = styled.img`
@@ -22,52 +18,82 @@ export const Background = styled.img`
 `;
 
 export const Container = styled.div`
-  display: grid;
   flex: 1 1 auto;
-  grid-template-columns: repeat(2, 50%);
 `;
 
 const Section = styled.section`
+  display: flex;
+  height: 100vh;
+  justify-content: center;
   padding: 2em 3em;
 `;
 
 export const SectionNames = styled(Section)`
-  background-color: ${transparentize(0.1, COLOR.PRIMARY_3_DARK)};
+  background-color: ${COLOR.WORKFLOW};
 `;
 
 export const SectionImage = styled(Section)`
   background-color: ${transparentize(0.2, COLOR.BLACK)};
 `;
 
-export const NameListInput = styled.textarea`
-  border-radius: 10px;
-  border-style: none;
-  box-shadow: 0 0 2px 0 ${COLOR.BLACK};
-  font-size: 20px;
-  line-height: 1.5;
-  padding: 0.5em;
-  width: 100%;
+export const SectionNamesContainer = styled(Global.Container)`
+  display: flex;
+  gap: 2em;
+`;
+
+export const NamesPartOne = styled.section`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+`;
+
+export const NamesPartTwo = styled.section`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+`;
+
+export const Heading = styled.h2`
+  font-size: 3em;
+  margin: 0.2em 0;
 `;
 
 export const Text = styled.p`
+  font-size: 1.8em;
   line-height: 150%;
+  max-width: 700px;
+`;
+
+export const NameListInput = styled.textarea`
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${COLOR.WHITE};
+  color: ${COLOR.WHITE};
+  font-size: 20px;
+  line-height: 1.5;
+  max-width: 100%;
+  min-width: 350px;
+  padding: 0.5em;
+`;
+
+export const NameCount = styled.small`
+  display: block;
 `;
 
 export const Footer = styled.footer`
   bottom: 0;
   display: flex;
-  flex: 0 0 70px;
   justify-content: space-between;
-  padding: 0 1.5em 1em;
+  padding: 1.5em;
+  position: sticky;
 `;
 
-export const FooterButton = styled(Global.Button).attrs({
-  bgColor: COLOR.PRIMARY_4_NEUTRAL,
-})`
-  box-shadow: 0 0 3px 0 ${COLOR.BLACK};
-  font-size: 20px;
-  min-width: 200px;
-  padding: 0.5em;
+export const FooterLink = styled(Global.Link)`
+  font-size: 1em;
 `;
 
 export const FileSelector = styled.div`

@@ -1,4 +1,4 @@
-import { faChevronLeft, faCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import FontIcon from 'components/icon';
 import * as Utils from 'constants/functions/utils';
+import { updateState } from 'constants/reducers';
 import type {
   AppDispatch,
   PageStatePayload,
   RootState,
 } from 'constants/reducers';
-import { updateState } from 'constants/reducers';
 import { COLOR } from 'styles/Constants';
 import * as Global from 'styles/Global';
 import * as DS from 'styles/pages/design/Setup.styles';
@@ -90,20 +90,28 @@ const DesignSetupPage: NextPage = () => {
       <DS.Background src={'/cover.jpg'} />
       <DS.Container>
         <DS.SectionNames>
-          <h2>Step 1: List The Names</h2>
-          <DS.Text>
-            Type out or paste the list of your guest names here. Separate each
-            name with a new line.
-          </DS.Text>
-          <DS.NameListInput
-            id={'names-list'}
-            onChange={onNameListChange}
-            value={state.names}
-            placeholder={'List each individual name...'}
-            spellCheck={false}
-            rows={10}
-          />
-          <small>{Utils.nameListFromText(state.names).length} names</small>
+          <DS.SectionNamesContainer>
+            <DS.NamesPartOne>
+              <DS.Heading>Step 1: List The Names</DS.Heading>
+              <DS.Text>
+                Type out or paste the list of your guest names here. Separate
+                each name with a new line.
+              </DS.Text>
+            </DS.NamesPartOne>
+            <DS.NamesPartTwo>
+              <DS.NameListInput
+                id={'names-list'}
+                onChange={onNameListChange}
+                value={state.names}
+                placeholder={'List each individual name...'}
+                spellCheck={false}
+                rows={10}
+              />
+              <DS.NameCount>
+                {Utils.nameListFromText(state.names).length} names
+              </DS.NameCount>
+            </DS.NamesPartTwo>
+          </DS.SectionNamesContainer>
         </DS.SectionNames>
         <DS.SectionImage>
           <h2>Step 2: Select Your Image</h2>
@@ -133,14 +141,12 @@ const DesignSetupPage: NextPage = () => {
         </DS.SectionImage>
       </DS.Container>
       <DS.Footer>
-        <DS.FooterButton onClick={onHomeClick}>
-          <FontIcon icon={faChevronLeft} space={true} />
-          Back to Home
-        </DS.FooterButton>
-        <DS.FooterButton onClick={onSubmit}>
-          <FontIcon icon={faCrosshairs} space={true} />
-          Start Editing
-        </DS.FooterButton>
+        <DS.FooterLink href={'/'}>
+          <span>
+            <FontIcon icon={faChevronLeft} space={true} />
+            Back to Home
+          </span>
+        </DS.FooterLink>
       </DS.Footer>
     </DS.Main>
   );

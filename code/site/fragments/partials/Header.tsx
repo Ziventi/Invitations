@@ -1,31 +1,30 @@
-import Link from 'next/link';
 import React from 'react';
 
-import * as Global from 'styles/Global';
+import Hyperlink from 'components/hyperlink';
 import App from 'styles/pages/App.styles';
 
 export default function Header({ headerRef }: HeaderProps) {
   return (
     <App.Header ref={headerRef}>
-      <Global.Container>
-        <App.HeaderSiteLogo color={'white'} id={'site-logo'} />
+      <App.HeaderContainer>
+        <App.HeaderSiteLogo color={'white'} />
         <App.HeaderNavigation>
           <menu>
             <li>
-              <Link href={'/design'}>Design</Link>
+              <Hyperlink href={'/design'}>Design</Hyperlink>
             </li>
             <li>
-              <a>Pricing</a>
+              <Hyperlink href={'#'}>Pricing</Hyperlink>
             </li>
             <li>
-              <a>Motivation</a>
+              <Hyperlink href={'#'}>Motivation</Hyperlink>
             </li>
             <li>
-              <a>Contact</a>
+              <Hyperlink href={'#'}>Contact</Hyperlink>
             </li>
           </menu>
         </App.HeaderNavigation>
-      </Global.Container>
+      </App.HeaderContainer>
     </App.Header>
   );
 }

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { COLOR } from 'styles/Constants';
 import * as Global from 'styles/Global';
@@ -59,56 +59,3 @@ export const WorkflowSection = styled.section`
   min-height: 80vh;
   opacity: 1;
 `;
-
-export const WorkflowContainer = styled(Global.Container)`
-  flex-direction: column;
-`;
-
-export const StepCaptionWrapper = styled.div`
-  display: flex;
-`;
-
-export const WorkflowStep = styled.article`
-  align-items: center;
-  padding: 2em 0 1em;
-  width: 100%;
-
-  &:nth-child(2) ${StepCaptionWrapper} {
-    flex-direction: row-reverse;
-    text-align: right;
-  }
-`;
-
-export const StepCaption = styled.div`
-  margin: 1em 2.5em;
-`;
-
-export const StepCaptionHeading = styled.h3`
-  font-size: 2em;
-  margin: 0;
-  max-width: 500px;
-  width: 100%;
-`;
-
-export const StepCaptionText = styled.h3`
-  font-size: 1.5em;
-  line-height: 150%;
-  margin: 0.5em 0;
-  max-width: 400px;
-  width: 100%;
-`;
-
-export const HorizontalRule = styled.hr<HorizontalRuleProps>`
-  ${({ visible }) =>
-    visible &&
-    css`
-      display: none;
-    `}
-  border: 1.5px solid ${COLOR.PRIMARY_4_DARK};
-  margin: 2em 0 0;
-  width: 100%;
-`;
-
-interface HorizontalRuleProps {
-  visible: boolean;
-}

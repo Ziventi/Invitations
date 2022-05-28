@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Hyperlink from 'components/hyperlink';
 import * as Global from 'styles/Global';
 import App from 'styles/pages/App.styles';
 
@@ -10,13 +11,13 @@ export default function Footer() {
         <Global.Navigation>
           <menu>
             <li>
-              <a>Privacy Policy</a>
+              <Hyperlink href={'#'}>Privacy Policy</Hyperlink>
             </li>
             <li>
-              <a>Cookie Policy</a>
+              <Hyperlink href={'#'}>Cookie Policy</Hyperlink>
             </li>
             <li>
-              <a>Terms of Service</a>
+              <Hyperlink href={'#'}>Terms of Service</Hyperlink>
             </li>
           </menu>
         </Global.Navigation>

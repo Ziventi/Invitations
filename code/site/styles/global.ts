@@ -1,5 +1,5 @@
 import { darken } from 'polished';
-import type { FlattenSimpleInterpolation } from 'styled-components';
+import type React from 'react';
 import styled, { css } from 'styled-components';
 
 import { COLOR } from './Constants';
@@ -30,16 +30,12 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const Container = styled.div<ContainerProps>`
-  display: flex;
-  height: 100%;
-  justify-content: space-between;
   max-width: ${(props) => props.maxWidth || 1200}px;
   width: 100%;
 `;
 
 export const Navigation = styled.nav`
   align-items: center;
-  color: ${COLOR.WHITE};
   display: flex;
   flex: 1 1 auto;
   width: 100%;
@@ -54,16 +50,16 @@ export const Navigation = styled.nav`
       padding: 0 2em;
       user-select: none;
     }
+  }
+`;
 
-    li:hover {
-      text-decoration: underline;
-    }
+export const Link = styled.a`
+  color: ${COLOR.WHITE};
+  cursor: pointer;
+  text-decoration: none;
 
-    a {
-      color: ${COLOR.WHITE};
-      cursor: pointer;
-      text-decoration: none;
-    }
+  &:hover {
+    text-decoration: underline;
   }
 `;
 

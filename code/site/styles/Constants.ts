@@ -17,7 +17,6 @@ export const COLOR = {
 
   BLACK: '#000000',
   WHITE: '#ffffff',
-  TRANSPARENT: 'rgba(0,0,0,0)',
   DEFAULT: '#cccccc',
 
   HERO: 'rgba(67, 58, 55, 0.8)',

@@ -26,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
 
 export default {
   Header: styled.header`
-    background-color: ${COLOR.TRANSPARENT};
+    background-color: transparent;
     display: flex;
     height: 70px;
     justify-content: center;
@@ -37,6 +37,9 @@ export default {
     transition: all 0.2s;
     width: 100%;
     z-index: 2;
+  `,
+  HeaderContainer: styled(Global.Container)`
+    display: flex;
   `,
   HeaderNavigation: styled(Global.Navigation)`
     justify-content: flex-end;
