@@ -16,11 +16,6 @@ export interface PageState {
   fileNameTemplate: string;
 }
 
-export type PageStateHook = [
-  PageState,
-  React.Dispatch<React.SetStateAction<PageState>>,
-];
-
 export interface ZiventiNextApiRequest extends NextApiRequest {
   body: RequestBody;
 }
@@ -83,7 +78,6 @@ export type DraggableOptions =
   | { isDragging: false; offset: null };
 export type ResizeHandlePosition = 'east' | 'west';
 
-export type FileFormat = 'pdf' | 'png';
 export interface PaymentHash {
   quantity: number;
   format: FileFormat;
@@ -91,3 +85,5 @@ export interface PaymentHash {
 
 export type FontVariantKey = keyof typeof FONT_VARIANTS;
 export type FontVariantAlias = typeof FONT_VARIANTS[FontVariantKey];
+
+type FileFormat = 'pdf' | 'png';
