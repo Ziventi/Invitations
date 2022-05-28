@@ -15,7 +15,7 @@ import type {
 import { updateState } from 'constants/reducers';
 import { COLOR } from 'styles/Constants';
 import * as Global from 'styles/Global';
-import DS from 'styles/pages/design/Setup.styles';
+import * as DS from 'styles/pages/design/Setup.styles';
 
 const DesignSetupPage: NextPage = () => {
   const appState = useSelector((state: RootState) => state);
