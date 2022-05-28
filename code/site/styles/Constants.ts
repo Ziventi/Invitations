@@ -19,6 +19,9 @@ export const COLOR = {
   WHITE: '#ffffff',
   TRANSPARENT: 'rgba(0,0,0,0)',
   DEFAULT: '#cccccc',
+
+  HERO: 'rgba(67, 58, 55, 0.8)',
+  WORKFLOW: 'rgba(40, 26, 26, 0.97)'
 };
 
 export const FONT = {

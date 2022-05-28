@@ -1,8 +1,9 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { transparentize } from 'polished';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-import Wave, { HeroClipPathReference } from 'components/vectors';
+import Wave from 'components/vectors';
 import SectionWorkflow from 'fragments/home/Workflow';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
@@ -51,20 +52,17 @@ const Home: NextPage = () => {
   return (
     <H.Page>
       <Header headerRef={headerRef} />
-      <main>
+      <H.Main>
+        <H.Video
+          src={`/cover.mp4`}
+          poster={'/cover.jpg'}
+          autoPlay={true}
+          controls={false}
+          loop={true}
+          muted={true}
+          onContextMenu={(e) => e.preventDefault()}
+        />
         <H.Hero>
-          <HeroClipPathReference />
-          <H.VideoWrapper>
-            <H.Video
-              src={`/cover.mp4`}
-              poster={'/cover.jpg'}
-              autoPlay={true}
-              controls={false}
-              loop={true}
-              muted={true}
-              onContextMenu={(e) => e.preventDefault()}
-            />
-          </H.VideoWrapper>
           <H.HeroCaption>
             <H.HeroCaptionHeading>
               Personalise your invitations
@@ -75,9 +73,13 @@ const Home: NextPage = () => {
             </H.HeroButton>
           </H.HeroCaption>
         </H.Hero>
+        <Wave
+          colorTop={COLOR.HERO}
+          colorBottom={COLOR.WORKFLOW}
+        />
         <SectionWorkflow />
         <Wave
-          colorTop={COLOR.PRIMARY_1_NEUTRAL}
+          colorTop={COLOR.WORKFLOW}
           colorBottom={COLOR.PRIMARY_4_DARK}
         />
         <section className={'pricing'}></section>
@@ -86,7 +88,7 @@ const Home: NextPage = () => {
           colorBottom={COLOR.PRIMARY_1_NEUTRAL}
         />
         <section className={'motivation'}></section>
-      </main>
+      </H.Main>
       <Footer />
     </H.Page>
   );

@@ -52,6 +52,11 @@ export const Navigation = styled.nav`
 
     li {
       padding: 0 2em;
+      user-select: none;
+    }
+
+    li:hover {
+      text-decoration: underline;
     }
 
     a {

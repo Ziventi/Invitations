@@ -8,25 +8,8 @@ export const Page = styled.div`
   grid-template-rows: auto 1fr auto;
 `;
 
-export const Main = styled.main``;
-
-export const Hero = styled.section`
-  align-items: center;
-  background-color: ${COLOR.PRIMARY_1_NEUTRAL};
-  color: ${COLOR.WHITE};
-  display: flex;
-  height: 100vh;
-  justify-content: center;
+export const Main = styled.main`
   position: relative;
-`;
-
-export const VideoWrapper = styled.figure`
-  background-color: #433a37;
-  clip-path: url(#wave);
-  height: 100%;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
 `;
 
 export const Video = styled.video`
@@ -34,13 +17,24 @@ export const Video = styled.video`
   height: 100%;
   min-width: 100%;
   object-fit: cover;
-  opacity: 0.25;
-  z-index: 0;
+  position: fixed;
+  z-index: -1;
+`;
+
+export const Hero = styled.section`
+  align-items: center;
+  background-color: ${COLOR.HERO};
+  color: ${COLOR.WHITE};
+  display: flex;
+  height: 85vh;
+  justify-content: center;
+  position: relative;
 `;
 
 export const HeroCaption = styled.div`
+  margin-top: 10vh;
   text-align: center;
-  z-index: 1;
+  user-select: none;
 `;
 
 export const HeroCaptionHeading = styled.h1`
@@ -58,10 +52,12 @@ export const HeroButton = styled(Global.Button)`
 `;
 
 export const WorkflowSection = styled.section`
-  background-color: ${COLOR.PRIMARY_1_NEUTRAL};
+  background-color: ${COLOR.WORKFLOW};
+  color: ${COLOR.WHITE};
   display: flex;
   justify-content: center;
-  padding: 2em;
+  min-height: 80vh;
+  opacity: 1;
 `;
 
 export const WorkflowContainer = styled(Global.Container)`

@@ -8,7 +8,7 @@ export default function Header({ headerRef }: HeaderProps) {
   return (
     <App.Header ref={headerRef}>
       <Global.Container>
-        <App.HeaderSiteLogo color={'white'} />
+        <App.HeaderSiteLogo color={'white'} id={'site-logo'} />
         <App.HeaderNavigation>
           <menu>
             <li>
