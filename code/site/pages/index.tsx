@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { transparentize } from 'polished';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import Wave from 'components/vectors';
