@@ -14,13 +14,6 @@ export const Default = {
     color: ${COLOR.WHITE};
     position: relative;
   `,
-  Background: styled.img`
-    filter: blur(4px);
-    height: 100%;
-    position: absolute;
-    width: 100%;
-    z-index: -1;
-  `,
   Container: styled(Global.Container)`
     column-gap: 2em;
     display: grid;
@@ -84,7 +77,7 @@ export const NamesList = {
 
 export const ImageSelection = {
   Section: styled(Section)`
-    background-color: ${transparentize(0.03, COLOR.PRIMARY_5_NEUTRAL)};
+    background-color: ${transparentize(0.09, COLOR.PRIMARY_5_NEUTRAL)};
   `,
   FileSelector: styled.div`
     margin: 2em 0;

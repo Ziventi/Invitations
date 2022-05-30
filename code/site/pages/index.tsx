@@ -8,6 +8,7 @@ import SectionWorkflow from 'fragments/home/Workflow';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
 import { COLOR } from 'styles/Constants';
+import * as Global from 'styles/Global';
 import * as H from 'styles/pages/Home.styles';
 
 const Home: NextPage = () => {
@@ -53,7 +54,7 @@ const Home: NextPage = () => {
     <H.Page>
       <Header headerRef={headerRef} />
       <H.Main>
-        <H.Video
+        <Global.BackgroundVideo
           src={`/cover.mp4`}
           poster={'/cover.jpg'}
           autoPlay={true}
@@ -73,15 +74,9 @@ const Home: NextPage = () => {
             </H.HeroButton>
           </H.HeroCaption>
         </H.Hero>
-        <Wave
-          colorTop={COLOR.HERO}
-          colorBottom={COLOR.WORKFLOW}
-        />
+        <Wave colorTop={COLOR.HERO} colorBottom={COLOR.WORKFLOW} />
         <SectionWorkflow />
-        <Wave
-          colorTop={COLOR.WORKFLOW}
-          colorBottom={COLOR.PRIMARY_4_DARK}
-        />
+        <Wave colorTop={COLOR.WORKFLOW} colorBottom={COLOR.PRIMARY_4_DARK} />
         <section className={'pricing'}></section>
         <Wave
           colorTop={COLOR.PRIMARY_4_DARK}

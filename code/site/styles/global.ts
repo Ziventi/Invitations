@@ -4,6 +4,15 @@ import styled, { css } from 'styled-components';
 
 import { COLOR } from './Constants';
 
+export const BackgroundVideo = styled.video`
+  filter: blur(4px);
+  height: 100%;
+  min-width: 100%;
+  object-fit: cover;
+  position: fixed;
+  z-index: -1;
+`;
+
 export const Button = styled.button<ButtonProps>`
   border-radius: 10px;
   border-style: none;
