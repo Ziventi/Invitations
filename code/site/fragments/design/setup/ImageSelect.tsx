@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux';
 import type { RootState } from 'constants/reducers';
 import { COLOR } from 'styles/Constants';
 import * as Global from 'styles/Global';
-import { ImageSelection as IS } from 'styles/pages/design/Setup.styles';
+import {
+  ImageSelection as IS,
+  Default as DS,
+} from 'styles/pages/design/Setup.styles';
 
 export default function ImageSelect() {
   const appState = useSelector((state: RootState) => state);
@@ -40,24 +43,33 @@ export default function ImageSelect() {
   }
   return (
     <IS.Section>
-      <h2>Step 2: Select Your Image</h2>
-      <IS.FileSelector>
-        <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3_DARK}>
-          <input
-            type={'file'}
-            accept={'image/jpeg,image/png'}
-            onChange={onImageSelect}
-            hidden={true}
-          />
-          <span>Choose your image...</span>
-        </Global.Button>
-      </IS.FileSelector>
-      <small>
-        * Supported formats are JPEG and PNG. Maximum image size is 10MB.
-      </small>
-      <IS.ImagePreview>
-        <PreviewImage src={state.imageSrc} />
-      </IS.ImagePreview>
+      <DS.Container>
+        <DS.Partition>
+          <DS.Heading>Step 2: Select Your Design</DS.Heading>
+          <DS.Text>
+            Choose your existing design template on which to print each listed name.
+          </DS.Text>
+          <IS.FileSelector>
+            <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3_DARK}>
+              <input
+                type={'file'}
+                accept={'image/jpeg,image/png'}
+                onChange={onImageSelect}
+                hidden={true}
+              />
+              <span>Choose your image...</span>
+            </Global.Button>
+          </IS.FileSelector>
+          <small>
+            * Supported formats are JPEG and PNG. Maximum image size is 10MB.
+          </small>
+        </DS.Partition>
+        <DS.Partition>
+          <IS.ImagePreview>
+            <PreviewImage src={state.imageSrc} />
+          </IS.ImagePreview>
+        </DS.Partition>
+      </DS.Container>
     </IS.Section>
   );
 }

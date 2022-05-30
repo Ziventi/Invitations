@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux';
 
 import * as Utils from 'constants/functions/utils';
 import type { RootState } from 'constants/reducers';
-import { NamesList as NL } from 'styles/pages/design/Setup.styles';
+import {
+  NamesList as NL,
+  Default as DS,
+} from 'styles/pages/design/Setup.styles';
 
 export default function NamesList() {
   const appState = useSelector((state: RootState) => state);
@@ -22,15 +25,15 @@ export default function NamesList() {
 
   return (
     <NL.Section>
-      <NL.SectionNamesContainer>
-        <NL.NamesPartOne>
-          <NL.Heading>Step 1: List The Names</NL.Heading>
-          <NL.Text>
+      <DS.Container>
+        <DS.Partition>
+          <DS.Heading>Step 1: List The Names</DS.Heading>
+          <DS.Text>
             Type out or paste the list of your guest names here. Separate each
             name with a new line.
-          </NL.Text>
-        </NL.NamesPartOne>
-        <NL.NamesPartTwo>
+          </DS.Text>
+        </DS.Partition>
+        <DS.Partition>
           <NL.NameListInput
             id={'names-list'}
             onChange={onNameListChange}
@@ -42,8 +45,8 @@ export default function NamesList() {
           <NL.NameCount>
             {Utils.nameListFromText(state.names).length} names
           </NL.NameCount>
-        </NL.NamesPartTwo>
-      </NL.SectionNamesContainer>
+        </DS.Partition>
+      </DS.Container>
     </NL.Section>
   );
 }
