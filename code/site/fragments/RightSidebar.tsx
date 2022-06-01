@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import type { RootState, AppDispatch } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
-import { RightSidebar as R } from 'styles/pages/design/Editor.styles';
+import { RightSidebar as R } from 'styles/pages/design/DesignEditor.styles';
 
 export default function RightSidebar() {
   const state = useSelector((state: RootState) => state);

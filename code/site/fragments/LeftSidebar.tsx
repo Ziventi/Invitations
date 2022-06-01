@@ -14,7 +14,7 @@ import { updateState } from 'constants/reducers';
 import type { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
 import { COLOR } from 'styles/Constants';
-import { LeftSidebar as L } from 'styles/pages/design/Editor.styles';
+import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
 
 export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
   const state = useSelector((state: RootState) => state);

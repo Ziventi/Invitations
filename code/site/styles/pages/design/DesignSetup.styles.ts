@@ -1,23 +1,20 @@
 import { transparentize } from 'polished';
-import styled, { createGlobalStyle, css } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import { COLOR } from 'styles/Constants';
 import * as Global from 'styles/Global';
+import * as Mixin from 'styles/Mixins';
 
 export const Default = {
   Body: createGlobalStyle`
     html, body {
-      scroll-snap-type: y mandatory;
+      scroll-snap-type: x mandatory;
     }
   `,
   Main: styled.main`
     color: ${COLOR.WHITE};
+    display: inline-flex;
     position: relative;
-  `,
-  Container: styled(Global.Container)`
-    column-gap: 2em;
-    display: grid;
-    grid-template-columns: 7fr 3fr;
   `,
   Partition: styled.section`
     align-items: center;
@@ -35,12 +32,19 @@ export const Default = {
     line-height: 150%;
     max-width: 550px;
   `,
+  Button: styled(Global.Button)<{ visible?: boolean }>`
+    ${({ visible }) => Mixin.Visible(visible)}
+    min-width: 150px;
+    padding: 1.2em;
+  `,
   Footer: styled.footer`
+    align-items: center;
     bottom: 0;
     display: flex;
     justify-content: space-between;
     padding: 1.5em;
-    position: fixed;
+    position: absolute;
+    width: 100%;
   `,
   FooterLink: styled(Global.Link)`
     font-size: 1em;
@@ -49,33 +53,33 @@ export const Default = {
 
 const Section = styled.section`
   display: flex;
+  flex-direction: column;
   height: 100vh;
   justify-content: center;
-  scroll-snap-align: start;
+  position: relative;
+  scroll-snap-align: center;
+  transition: all 0.1s;
+  width: 100vw;
 `;
 
 export const NamesList = {
   Section: styled(Section)`
     background-color: ${COLOR.WORKFLOW};
   `,
+  Container: styled(Global.Container)`
+    column-gap: 2em;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 2em;
+  `,
   Modal: styled.dialog<{ visible: boolean }>`
+    ${({ visible }) => Mixin.Visible(visible)}
     background-color: rgba(0, 0, 0, 0.7);
     display: block;
     height: 100vh;
     position: fixed;
     transition: all 0.3s;
     width: 100vw;
-
-    ${({ visible }) =>
-      visible
-        ? css`
-            opacity: 1;
-            z-index: 1;
-          `
-        : css`
-            opacity: 0;
-            z-index: -1;
-          `}
   `,
   ModalDialog: styled.div`
     align-items: center;
@@ -100,7 +104,7 @@ export const NamesList = {
     color: ${COLOR.WHITE};
     font-size: 1.2em;
   `,
-  NameListInput: styled.textarea`
+  NameTextInput: styled.textarea`
     background-color: transparent;
     border: none;
     border-bottom: 1px solid ${COLOR.WHITE};
@@ -119,11 +123,37 @@ export const NamesList = {
     text-align: right;
     width: 100%;
   `,
+  NameListContainer: styled.div<{ visible: boolean }>`
+    ${({ visible }) => Mixin.Visible(visible)}
+    background-color: ${transparentize(0.6, COLOR.PRIMARY_5_DARK)};
+    border-radius: 3%;
+    height: 70vh;
+    overflow: auto;
+    padding: 0 2em;
+    transition: all 0.3s;
+    width: 100%;
+  `,
+  NameList: styled.ol`
+    font-size: 1.5em;
+    line-height: 1.5;
+    margin-inline-start: 20px;
+    padding-left: 20px;
+    text-align: left;
+
+    li {
+      padding-inline-start: 20px;
+    }
+  `,
 };
 
 export const ImageSelection = {
   Section: styled(Section)`
     background-color: ${transparentize(0.06, COLOR.PRIMARY_5_NEUTRAL)};
+  `,
+  Container: styled(Global.Container)`
+    column-gap: 2em;
+    display: grid;
+    grid-template-columns: 7fr 3fr;
   `,
   FileSelector: styled.div`
     margin: 2em 0;

@@ -1,8 +1,15 @@
 import { darken } from 'polished';
-import type { FlattenSimpleInterpolation } from 'styled-components';
+import type {
+  FlattenSimpleInterpolation
+} from 'styled-components';
 import { css } from 'styled-components';
 
-export const Scrollable = (color: string): FlattenSimpleInterpolation => {
+/**
+ * Ensures that a component is scrollable.
+ * @param color The base color of the scrollbar.
+ * @returns The CSS.
+ */
+export function Scrollable(color: string): FlattenSimpleInterpolation {
   return css`
     overflow-y: auto;
 
@@ -29,4 +36,21 @@ export const Scrollable = (color: string): FlattenSimpleInterpolation => {
       background-color: ${darken(0.12, color)};
     }
   `;
-};
+}
+
+/**
+ * Allows toggling of a component's visibility.
+ * @param visible True if visible, false if not.
+ * @returns The CSS.
+ */
+export function Visible(visible = true): FlattenSimpleInterpolation {
+  return visible
+    ? css`
+        opacity: 1;
+        z-index: 1;
+      `
+    : css`
+        opacity: 0;
+        z-index: -1;
+      `;
+}

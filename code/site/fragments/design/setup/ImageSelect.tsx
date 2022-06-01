@@ -8,7 +8,7 @@ import * as Global from 'styles/Global';
 import {
   ImageSelection as IS,
   Default as DS,
-} from 'styles/pages/design/Setup.styles';
+} from 'styles/pages/design/DesignSetup.styles';
 
 export default function ImageSelect() {
   const appState = useSelector((state: RootState) => state);
@@ -43,7 +43,7 @@ export default function ImageSelect() {
   }
   return (
     <IS.Section>
-      <DS.Container>
+      <IS.Container>
         <DS.Partition>
           <DS.Heading>Step 2: Select Your Design</DS.Heading>
           <DS.Text>
@@ -69,7 +69,7 @@ export default function ImageSelect() {
             <PreviewImage src={state.imageSrc} />
           </IS.ImagePreview>
         </DS.Partition>
-      </DS.Container>
+      </IS.Container>
     </IS.Section>
   );
 }

@@ -1,6 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import FontIcon from 'components/icon';
 import * as Utils from 'constants/functions/utils';
 import type {
   AppDispatch,
@@ -9,11 +11,10 @@ import type {
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import { COLOR } from 'styles/Constants';
-import * as G from 'styles/Global';
 import {
-  NamesList as NL,
   Default as DS,
-} from 'styles/pages/design/Setup.styles';
+  NamesList as NL,
+} from 'styles/pages/design/DesignSetup.styles';
 
 export default function NamesList() {
   const appState = useSelector((state: RootState) => state);
@@ -29,6 +30,10 @@ export default function NamesList() {
     names: Utils.textFromNameList(appState.namesList),
     isModalVisible: false,
   });
+
+  const hasNamesListed = useMemo(() => {
+    return appState.namesList.length > 0;
+  }, [appState.namesList]);
 
   /**
    * Called on change to the name list.
@@ -59,42 +64,61 @@ export default function NamesList() {
     toggleModal(false);
   }
 
+  /**
+   * On cancellation from modal.
+   * TODO: Only reset when modal isn't shown.
+   */
+  function onCancelClick() {
+    setState((current) => ({
+      ...current,
+      names: Utils.textFromNameList(appState.namesList),
+    }));
+    toggleModal(false);
+  }
+
   return (
     <NL.Section>
-      <DS.Container>
+      <NL.Container id={'namelist'}>
         <DS.Partition>
           <DS.Heading>Step 1: List The Names</DS.Heading>
           <DS.Text>
             Provide the full list of your guest names to be printed on each
             template.
           </DS.Text>
-          <G.Button
-            bgColor={COLOR.PRIMARY_5_LIGHT}
+          <DS.Button
+            bgColor={COLOR.PRIMARY_4_NEUTRAL}
             onClick={() => toggleModal(true)}>
             Manually enter names
-          </G.Button>
+          </DS.Button>
         </DS.Partition>
         <DS.Partition>
-          <table>
-            <tbody>
+          <NL.NameListContainer visible={hasNamesListed}>
+            <NL.NameList>
               {appState.namesList.map((name, key) => {
-                return (
-                  <tr key={key}>
-                    <td>{name}</td>
-                  </tr>
-                );
+                return <li key={key}>{name}</li>;
               })}
-            </tbody>
-          </table>
+            </NL.NameList>
+          </NL.NameListContainer>
         </DS.Partition>
-      </DS.Container>
+      </NL.Container>
+      <DS.Footer>
+        <DS.FooterLink href={'/'}>
+          <FontIcon icon={faChevronLeft} space={true} size={'1x'} />
+          Back to Home
+        </DS.FooterLink>
+        <DS.Button
+          bgColor={COLOR.PRIMARY_5_LIGHT}
+          visible={hasNamesListed}>
+          Next
+        </DS.Button>
+      </DS.Footer>
       <NL.Modal visible={state.isModalVisible}>
         <NL.ModalDialog>
           <NL.ModalContent>
             <NL.Instructions>
               Separate each name with a new line.
             </NL.Instructions>
-            <NL.NameListInput
+            <NL.NameTextInput
               id={'names-list'}
               onChange={onNameListChange}
               value={state.names}
@@ -103,17 +127,19 @@ export default function NamesList() {
               rows={10}
             />
             <NL.NameCount>
-              {Utils.nameListFromText(state.names).length} names
+              {Utils.nameListFromText(state.names).length} name(s)
             </NL.NameCount>
             <NL.ModalFooter>
-              <G.Button bgColor={COLOR.PRIMARY_3_DARK} onClick={onConfirmClick}>
+              <DS.Button
+                bgColor={COLOR.PRIMARY_3_DARK}
+                onClick={onConfirmClick}>
                 Confirm
-              </G.Button>
-              <G.Button
+              </DS.Button>
+              <DS.Button
                 bgColor={COLOR.PRIMARY_3_LIGHT}
-                onClick={() => toggleModal(false)}>
+                onClick={onCancelClick}>
                 Cancel
-              </G.Button>
+              </DS.Button>
             </NL.ModalFooter>
           </NL.ModalContent>
         </NL.ModalDialog>

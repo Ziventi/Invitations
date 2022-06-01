@@ -16,7 +16,7 @@ import type {
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import type { Coordinates, ResizeHandlePosition } from 'constants/types';
-import { Preview as P } from 'styles/pages/design/Editor.styles';
+import { Preview as P } from 'styles/pages/design/DesignEditor.styles';
 
 const positions: ResizeHandlePosition[] = ['east', 'west'];
 

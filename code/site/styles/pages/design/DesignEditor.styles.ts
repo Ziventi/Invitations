@@ -176,7 +176,7 @@ export const Preview = {
   `,
   Draggable: styled.div<DraggableProps>`
     border: 2px dashed
-      ${({ selected }) => (selected ? COLOR.DEFAULT : COLOR.TRANSPARENT)};
+      ${({ selected }) => (selected ? COLOR.DEFAULT : 'transparent')};
     border-radius: 2px;
     cursor: move;
     display: flex;
