@@ -1,6 +1,7 @@
 import { lighten, transparentize } from 'polished';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
+import * as Animation from 'styles/Animations';
 import { COLOR, THEME } from 'styles/Constants';
 import * as Global from 'styles/Global';
 import * as Mixin from 'styles/Mixins';
@@ -12,13 +13,22 @@ export const Default = {
     position: relative;
   `,
   BackgroundMask: styled.div`
-    background-color: rgba(0, 0, 0, 0.2);
+    animation: ${keyframes`
+      from {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      to {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+    `} 1s forwards;
     height: 100vh;
     position: absolute;
     width: 100vw;
   `,
   Section: styled.section<{ currentStep: number }>`
     align-items: center;
+    animation: ${Animation.FadeIn} 0.5s;
     background-color: ${({ currentStep }) =>
       currentStep === 0
         ? THEME.setupSectionNamesList

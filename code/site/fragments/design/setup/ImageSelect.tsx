@@ -80,9 +80,9 @@ export default function ImageSelect({
       </IS.Container>
       <DS.Footer>
         <DS.Button
-          bgColor={COLOR.PRIMARY_5_LIGHT}
+          bgColor={COLOR.PRIMARY_4_DARK}
           onClick={() => setCurrentStep(0)}>
-          <FontIcon icon={faChevronLeft} space={true} />
+          <FontIcon icon={faChevronLeft} spaceRight={true} />
           Previous
         </DS.Button>
         <DS.FooterLink href={'/design/editor'}>

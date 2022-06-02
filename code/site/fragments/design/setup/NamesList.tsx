@@ -1,4 +1,4 @@
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faHome } from '@fortawesome/free-solid-svg-icons';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,7 +19,7 @@ import {
 
 export default function NamesList({
   setCurrentStep,
-  visible
+  visible,
 }: DesignSetupStepProps) {
   const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
@@ -107,14 +107,17 @@ export default function NamesList({
       </NL.Container>
       <DS.Footer>
         <DS.FooterLink href={'/'}>
-          <FontIcon icon={faChevronLeft} space={true} />
-          Back to Home
+          <DS.Button bgColor={COLOR.PRIMARY_4_DARK}>
+            <FontIcon icon={faHome} spaceRight={true} />
+            Back to Home
+          </DS.Button>
         </DS.FooterLink>
         <DS.Button
-          bgColor={COLOR.PRIMARY_5_LIGHT}
+          bgColor={COLOR.PRIMARY_4_LIGHT}
           visible={hasNamesListed}
           onClick={() => setCurrentStep(1)}>
-          Next
+          Next Step
+          <FontIcon icon={faChevronRight} spaceLeft={true} />
         </DS.Button>
       </DS.Footer>
       <NL.Modal visible={state.isModalVisible}>
