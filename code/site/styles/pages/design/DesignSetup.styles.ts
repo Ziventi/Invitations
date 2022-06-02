@@ -1,6 +1,7 @@
 import { lighten, transparentize } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
+import ZiventiLogo from 'components/logo';
 import * as Animation from 'styles/Animations';
 import { COLOR, THEME } from 'styles/Constants';
 import * as Global from 'styles/Global';
@@ -11,6 +12,13 @@ export const Default = {
     color: ${COLOR.WHITE};
     height: 100%;
     position: relative;
+  `,
+  SiteLogo: styled(ZiventiLogo)`
+    height: 80px;
+    left: 2%;
+    position: absolute;
+    top: 2%;
+    z-index: 1;
   `,
   BackgroundMask: styled.div`
     animation: ${keyframes`

@@ -23,6 +23,7 @@ const DesignSetupPage: NextPage = () => {
         onContextMenu={(e) => e.preventDefault()}
       />
       <DS.BackgroundMask />
+      <DS.SiteLogo />
       <DS.Section currentStep={currentStep}>
         {STEPS.map((Step, key) => {
           return (
