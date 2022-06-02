@@ -270,7 +270,7 @@ function ColorPicker({ colorPickerRef }: ColorPickerProps) {
 function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const [isFocused, setIsFocused] = useState(false);
   return (
-    <div>
+    <L.NumericField focused={isFocused}>
       <L.NumericInput
         type={'number'}
         autoComplete={'off'}
@@ -284,11 +284,10 @@ function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
       />
       <L.NumberSuffix
         type={'text'}
-        focused={isFocused}
         value={'px'}
         readOnly={true}
       />
-    </div>
+    </L.NumericField>
   );
 }
 

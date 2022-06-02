@@ -24,16 +24,22 @@ export const Default = {
 };
 
 const FormInput = css`
-  ${Global.Input}
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid ${COLOR.WHITE};
+  color: ${COLOR.WHITE};
   font-size: 16px;
+  max-width: 100%;
+  outline-color: ${COLOR.PRIMARY_2_NEUTRAL};
   padding: 0.5em;
 `;
 
 export const LeftSidebar = {
   Aside: styled.aside`
-    ${Mixin.Scrollable(COLOR.PRIMARY_1_NEUTRAL)}
-    background-color: ${COLOR.PRIMARY_1_NEUTRAL};
+    ${Mixin.Scrollable(COLOR.PRIMARY_5_NEUTRAL)}
+    background-color: ${COLOR.PRIMARY_5_NEUTRAL};
     box-shadow: 0 0 3px 0 ${COLOR.BLACK};
+    color: ${COLOR.WHITE};
     display: flex;
     flex: 0 0 auto;
     flex-direction: column;
@@ -72,34 +78,33 @@ export const LeftSidebar = {
   FilenameInput: styled.textarea`
     ${FormInput}
   `,
-  NumericInput: styled.input`
-    ${FormInput}
-    border-radius: 10px 0 0 10px;
-  `,
-  NumberSuffix: styled.input<NumberSuffixProps>`
-    ${FormInput}
-    border-left: 2px solid ${COLOR.PRIMARY_1_NEUTRAL};
-    border-radius: 0 10px 10px 0;
-    color: #3b3b3b;
-    cursor: default;
-    font-size: 16px;
-    margin: -0.1em;
-    padding: 0.5em 0.2em;
-    user-select: none;
-    width: 30px;
+  NumericField: styled.div<{ focused: boolean }>`
+    width: fit-content;
 
     &:focus {
       outline-width: 0;
     }
 
     ${({ focused }) => {
-      if (!focused) return null;
-      return css`
-        outline-offset: 0;
-        outline-style: auto;
-        outline-width: 1px;
-      `;
+      if (focused) {
+        return css`
+          outline: 0.5px auto ${COLOR.PRIMARY_2_NEUTRAL};
+        `;
+      }
     }}
+  `,
+  NumericInput: styled.input`
+    ${FormInput}
+    outline: none;
+  `,
+  NumberSuffix: styled.input`
+    ${FormInput}
+    color: ${COLOR.DEFAULT};
+    cursor: default;
+    font-size: 16px;
+    padding: 0.5em 0.2em;
+    user-select: none;
+    width: 30px;
   `,
   ColorThumbnail: styled.button<ColorThumbnailProps>`
     ${({ bgColor, fontColor }) => css`
@@ -268,8 +273,4 @@ interface DraggableProps {
 interface ResizeHandleProps {
   position: ResizeHandlePosition;
   selected: boolean;
-}
-
-interface NumberSuffixProps {
-  focused: boolean;
 }

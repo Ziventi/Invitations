@@ -18,6 +18,7 @@ export const COLOR = {
   PRIMARY_5_DARK: '#130301',
   SECONDARY_1: '#281a1a',
   SECONDARY_2: '#250d15',
+  SECONDARY_3: '#37272d',
 
   BLACK: '#000000',
   WHITE: '#ffffff',
