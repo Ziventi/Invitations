@@ -1,3 +1,4 @@
+import type { ChromePickerProps } from 'react-color';
 import styled, { css } from 'styled-components';
 
 import type { ResizeHandlePosition } from 'constants/types';
@@ -5,7 +6,7 @@ import * as Global from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
 import * as Mixin from 'styles/Mixins.styles';
 
-export default {
+export const Default = {
   Main: styled.main`
     display: flex;
     flex: 1 1 auto;
@@ -266,7 +267,7 @@ interface ColorThumbnailProps {
   fontColor: string;
 }
 
-interface ColorPickerProps {
+interface ColorPickerProps extends ChromePickerProps {
   visible: boolean;
 }
 

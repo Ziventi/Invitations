@@ -16,7 +16,7 @@ import DesignForm from 'fragments/design/editor/DesignForm';
 import { COLOR } from 'styles/Constants.styles';
 import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
 
-export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
+export default function LeftSidebar({ canvasRef, colorPickerRef, fonts }: LeftSidebarProps) {
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
@@ -100,7 +100,7 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
 
   return (
     <L.Aside>
-      <DesignForm fonts={fonts} />
+      <DesignForm colorPickerRef={colorPickerRef} fonts={fonts} />
       <L.Button id={'preview'} onClick={preview} bgColor={COLOR.PRIMARY_2_DARK}>
         Draw
       </L.Button>
@@ -140,5 +140,6 @@ export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {
 
 interface LeftSidebarProps {
   canvasRef: React.RefObject<HTMLCanvasElement>;
+  colorPickerRef: React.RefObject<HTMLDivElement>;
   fonts: GoogleFont[];
 }

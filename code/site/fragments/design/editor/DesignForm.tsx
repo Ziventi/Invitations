@@ -15,7 +15,10 @@ import type { FontVariantKey, GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
 
-export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
+export default function DesignForm({
+  colorPickerRef,
+  fonts,
+}: DesignFormProps): ReactElement {
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
   const setState = useCallback(
@@ -53,18 +56,6 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
       fontPreviewTextColor: color.isLight() ? '#000' : '#fff',
     };
   }, [state.textStyle.color]);
-
-  /**
-   * Triggers on a new font color selection.
-   * @param color The result color.
-   */
-  function onFontColorChange(color: ColorResult): void {
-    setState({
-      textStyle: {
-        color: color.hex,
-      },
-    });
-  }
 
   /**
    * Triggers on a new font family selection. If the selected font family does
@@ -172,21 +163,7 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
           fontColor={fontPreviewTextColor}>
           {fontPreviewText}
         </L.ColorThumbnail>
-        {/* TODO: Color picker not staying open on clicks */}
-        <L.ColorPicker
-          as={ChromePicker}
-          visible={state.isColorPickerVisible}
-          color={state.textStyle.color}
-          onChange={onFontColorChange}
-          styles={{
-            default: {
-              picker: {
-                borderRadius: '20px',
-                cursor: 'pointer',
-              },
-            },
-          }}
-        />
+        <ColorPicker colorPickerRef={colorPickerRef} />
       </L.FormField>
       <L.FormFieldRow>
         <L.FormField>
@@ -250,6 +227,49 @@ export default function DesignForm({ fonts }: DesignFormProps): ReactElement {
   );
 }
 
+function ColorPicker({ colorPickerRef }: ColorPickerProps) {
+  const state = useSelector((state: RootState) => state);
+  const dispatch = useDispatch<AppDispatch>();
+  const setState = useCallback(
+    (payload: PageStatePayload) => {
+      dispatch(updateState(payload));
+    },
+    [dispatch],
+  );
+
+  /**
+   * Triggers on a new font color selection.
+   * @param color The result color.
+   */
+  function onFontColorChange(color: ColorResult): void {
+    setState({
+      textStyle: {
+        color: color.hex,
+      },
+    });
+  }
+
+  return (
+    <div ref={colorPickerRef}>
+      <L.ColorPicker
+        as={ChromePicker}
+        visible={state.isColorPickerVisible}
+        disableAlpha={true}
+        color={state.textStyle.color}
+        onChange={onFontColorChange}
+        styles={{
+          default: {
+            picker: {
+              borderRadius: '20px',
+              cursor: 'pointer',
+            },
+          },
+        }}
+      />
+    </div>
+  );
+}
+
 function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const [isFocused, setIsFocused] = useState(false);
   return (
@@ -276,5 +296,10 @@ function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 }
 
 interface DesignFormProps {
+  colorPickerRef: React.RefObject<HTMLDivElement>;
   fonts: GoogleFont[];
+}
+
+interface ColorPickerProps {
+  colorPickerRef: React.RefObject<HTMLDivElement>;
 }

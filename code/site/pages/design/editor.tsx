@@ -14,10 +14,11 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
 import LeftSidebar from 'fragments/design/editor/LeftSidebar';
 import Preview from 'fragments/design/editor/Preview';
 import RightSidebar from 'fragments/design/editor/RightSidebar';
-import DesignEditor from 'styles/pages/design/DesignEditor.styles';
+import { Default as DE } from 'styles/pages/design/DesignEditor.styles';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const colorPickerRef = useRef<HTMLDivElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
   const state = useSelector((state: RootState) => state);
@@ -85,13 +86,8 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
     const hideColorPicker = (e: MouseEvent) => {
       if (!state.isColorPickerVisible) return;
 
-      const isColorPicker = document
-        .elementsFromPoint(e.pageX, e.pageY)
-        .some((element) => {
-          return element.classList.contains('color-picker');
-        });
-
-      if (!isColorPicker) {
+      const colorPicker = colorPickerRef.current!;
+      if (colorPicker && !colorPicker.contains(e.target as Node)) {
         setState({
           isColorPickerVisible: false,
         });
@@ -131,12 +127,16 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   }, [setState, state.namesList]);
 
   return (
-    <DesignEditor.Main>
-      <LeftSidebar fonts={fonts} canvasRef={canvasRef} />
+    <DE.Main>
+      <LeftSidebar
+        fonts={fonts}
+        canvasRef={canvasRef}
+        colorPickerRef={colorPickerRef}
+      />
       <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
       <RightSidebar />
       <ProgressOverlay state={state} />
-    </DesignEditor.Main>
+    </DE.Main>
   );
 };
 
