@@ -11,9 +11,9 @@ import type {
 import { updateState } from 'constants/reducers';
 import type { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
-import LeftSidebar from 'fragments/LeftSidebar';
-import Preview from 'fragments/Preview';
-import RightSidebar from 'fragments/RightSidebar';
+import LeftSidebar from 'fragments/design/editor/LeftSidebar';
+import Preview from 'fragments/design/editor/Preview';
+import RightSidebar from 'fragments/design/editor/RightSidebar';
 import DesignEditor from 'styles/pages/design/DesignEditor.styles';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
@@ -98,9 +98,9 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
       }
     };
 
-    window.addEventListener('mousedown', hideColorPicker);
+    window.addEventListener('mouseup', hideColorPicker);
     return () => {
-      window.removeEventListener('mousedown', hideColorPicker);
+      window.removeEventListener('mouseup', hideColorPicker);
     };
   }, [setState, state.isColorPickerVisible]);
 

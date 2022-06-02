@@ -12,7 +12,7 @@ import type {
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import type { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
-import DesignForm from 'fragments/DesignForm';
+import DesignForm from 'fragments/design/editor/DesignForm';
 import { COLOR } from 'styles/Constants.styles';
 import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
 
