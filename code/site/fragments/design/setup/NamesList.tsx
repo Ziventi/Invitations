@@ -11,7 +11,7 @@ import type {
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import type { DesignSetupStepProps } from 'constants/types';
-import { COLOR } from 'styles/Constants';
+import { COLOR } from 'styles/Constants.styles';
 import {
   Default as DS,
   NamesList as NL,

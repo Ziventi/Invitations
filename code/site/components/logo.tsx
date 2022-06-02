@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
 
 export default function ZiventiLogo({
   color = 'white',

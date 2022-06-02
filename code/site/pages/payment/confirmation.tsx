@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import ZiventiLogo from 'components/logo';
-import { COLOR } from 'styles/Constants';
+import { COLOR } from 'styles/Constants.styles';
 
 const ConfirmationPage: NextPage = () => {
   return (

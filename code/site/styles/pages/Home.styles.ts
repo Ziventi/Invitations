@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { COLOR } from 'styles/Constants';
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
+import { COLOR } from 'styles/Constants.styles';
 
 export const Page = styled.div`
   display: grid;

@@ -2,10 +2,10 @@ import { lighten, transparentize } from 'polished';
 import styled, { css, keyframes } from 'styled-components';
 
 import ZiventiLogo from 'components/logo';
-import * as Animation from 'styles/Animations';
-import { COLOR, THEME } from 'styles/Constants';
-import * as Global from 'styles/Global';
-import * as Mixin from 'styles/Mixins';
+import * as Animation from 'styles/Animations.styles';
+import * as Global from 'styles/Components.styles';
+import { COLOR, THEME } from 'styles/Constants.styles';
+import * as Mixin from 'styles/Mixins.styles';
 
 export const Default = {
   Main: styled.main`

@@ -1,8 +1,8 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
 import ZiventiLogo from 'components/logo';
-import { COLOR, FONT } from 'styles/Constants';
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
+import { COLOR, FONT } from 'styles/Constants.styles';
 
 export const GlobalStyle = createGlobalStyle`
   * {

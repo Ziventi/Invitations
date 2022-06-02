@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import ImageSelect from 'fragments/design/setup/ImageSelect';
 import NamesList from 'fragments/design/setup/NamesList';
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
 import { Default as DS } from 'styles/pages/design/DesignSetup.styles';
 
 const STEPS = [NamesList, ImageSelect];

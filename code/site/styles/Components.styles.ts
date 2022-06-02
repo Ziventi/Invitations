@@ -2,7 +2,7 @@ import { darken } from 'polished';
 import type React from 'react';
 import styled, { css } from 'styled-components';
 
-import { COLOR } from './Constants';
+import { COLOR } from './Constants.styles';
 
 export const BackgroundVideo = styled.video`
   filter: blur(4px);

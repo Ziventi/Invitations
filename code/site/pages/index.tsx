@@ -7,8 +7,8 @@ import Wave from 'components/vectors';
 import SectionWorkflow from 'fragments/home/Workflow';
 import Footer from 'fragments/partials/Footer';
 import Header from 'fragments/partials/Header';
-import { COLOR } from 'styles/Constants';
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
+import { COLOR } from 'styles/Constants.styles';
 import * as H from 'styles/pages/Home.styles';
 
 const Home: NextPage = () => {

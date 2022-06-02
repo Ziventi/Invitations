@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import FontIcon from 'components/icon';
 import type { RootState } from 'constants/reducers';
 import type { DesignSetupStepProps } from 'constants/types';
-import { COLOR } from 'styles/Constants';
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
+import { COLOR } from 'styles/Constants.styles';
 import {
   Default as DS,
   ImageSelection as IS,

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Hyperlink from 'components/hyperlink';
-import * as Global from 'styles/Global';
+import * as Global from 'styles/Components.styles';
 import App from 'styles/pages/App.styles';
 
 export default function Footer() {

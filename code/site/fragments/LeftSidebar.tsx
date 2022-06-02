@@ -13,7 +13,7 @@ import type {
 import { updateState } from 'constants/reducers';
 import type { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
 import DesignForm from 'fragments/DesignForm';
-import { COLOR } from 'styles/Constants';
+import { COLOR } from 'styles/Constants.styles';
 import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
 
 export default function LeftSidebar({ canvasRef, fonts }: LeftSidebarProps) {

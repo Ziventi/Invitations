@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 
 import type { ResizeHandlePosition } from 'constants/types';
-import { COLOR } from 'styles/Constants';
-import * as Global from 'styles/Global';
-import * as Mixin from 'styles/Mixins';
+import * as Global from 'styles/Components.styles';
+import { COLOR } from 'styles/Constants.styles';
+import * as Mixin from 'styles/Mixins.styles';
 
 export default {
   Main: styled.main`
