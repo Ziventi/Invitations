@@ -36,8 +36,8 @@ commands:
           steps:
             - run:
                 name: Build utils
-                command: yarn run build utils
-                working_directory: ./code
+                command: yarn run build
+                working_directory: ./code/utils
   transfer_scripts:
     description: 'Transfers deployment scripts via SCP'
     parameters:
