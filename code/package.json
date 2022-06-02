@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "packageManager": "yarn@3.2.1",
   "workspaces": [
-    "projects/v2",
+    "bespoke/v2",
     "server",
     "site",
     "test",
