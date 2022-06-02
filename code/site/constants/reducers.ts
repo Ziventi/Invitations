@@ -36,7 +36,7 @@ const initialState: AppState = {
     height: 0,
   },
   textStyle: {
-    color: '#831919',
+    color: '#831919FF',
     fontFamily: 'Courgette',
     fontStyle: 'regular',
     fontSize: 19,

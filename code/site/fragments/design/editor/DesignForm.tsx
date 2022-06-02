@@ -2,7 +2,6 @@ import { TinyColor } from '@ctrl/tinycolor';
 import type { ReactElement } from 'react';
 import React, { useCallback, useMemo, useState } from 'react';
 import type { ColorResult } from 'react-color';
-import { ChromePicker } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
 import type {
@@ -52,7 +51,7 @@ export default function DesignForm({
   const { fontPreviewText, fontPreviewTextColor } = useMemo(() => {
     const color = new TinyColor(state.textStyle.color);
     return {
-      fontPreviewText: color.toString('hex3').toUpperCase(),
+      fontPreviewText: color.toString('hex8').toUpperCase(),
       fontPreviewTextColor: color.isLight() ? '#000' : '#fff',
     };
   }, [state.textStyle.color]);
@@ -244,7 +243,7 @@ function ColorPicker({ colorPickerRef }: ColorPickerProps) {
   function onFontColorChange(color: ColorResult): void {
     setState({
       textStyle: {
-        color: color.hex,
+        color: new TinyColor({ ...color.rgb }).toRgbString(),
       },
     });
   }
@@ -252,9 +251,7 @@ function ColorPicker({ colorPickerRef }: ColorPickerProps) {
   return (
     <div ref={colorPickerRef}>
       <L.ColorPicker
-        as={ChromePicker}
         visible={state.isColorPickerVisible}
-        disableAlpha={true}
         color={state.textStyle.color}
         onChange={onFontColorChange}
         styles={{

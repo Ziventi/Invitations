@@ -1,4 +1,4 @@
-import type { ChromePickerProps } from 'react-color';
+import { ChromePicker } from 'react-color';
 import styled, { css } from 'styled-components';
 
 import type { ResizeHandlePosition } from 'constants/types';
@@ -56,6 +56,7 @@ export const LeftSidebar = {
   FormField: styled.div`
     flex: 1;
     padding: 0.5em 0;
+    position: relative;
   `,
   Label: styled.label`
     display: block;
@@ -107,24 +108,17 @@ export const LeftSidebar = {
     `}
     border-radius: 3px;
     border-style: none;
-    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+    box-shadow: 0 0 1px 0 ${COLOR.BLACK};
     cursor: pointer;
     height: 35px;
     width: 100%;
   `,
-  ColorPicker: styled.div<ColorPickerProps>`
+  ColorPicker: styled(ChromePicker)<{ visible: boolean }>`
+    ${({ visible }) => Mixin.Visible(visible)}
+    margin-top: 0.5em;
     position: absolute;
     transition: all 0.2s;
-    ${({ visible }) =>
-      visible
-        ? css`
-            opacity: 1;
-            z-index: 2;
-          `
-        : css`
-            opacity: 0;
-            z-index: -1;
-          `};
+    width: 100%;
   `,
 };
 
@@ -265,10 +259,6 @@ export const RightSidebar = {
 interface ColorThumbnailProps {
   bgColor: string;
   fontColor: string;
-}
-
-interface ColorPickerProps extends ChromePickerProps {
-  visible: boolean;
 }
 
 interface DraggableProps {

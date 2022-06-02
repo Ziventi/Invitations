@@ -94,9 +94,9 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
       }
     };
 
-    window.addEventListener('mouseup', hideColorPicker);
+    window.addEventListener('mousedown', hideColorPicker);
     return () => {
-      window.removeEventListener('mouseup', hideColorPicker);
+      window.removeEventListener('mousedown', hideColorPicker);
     };
   }, [setState, state.isColorPickerVisible]);
 
