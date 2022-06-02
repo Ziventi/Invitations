@@ -1,8 +1,9 @@
 import type { NextApiRequest } from 'next';
+import type { Dispatch, SetStateAction } from 'react';
 
 import type { FONT_VARIANTS } from './variables';
 
-export interface PageState {
+export interface AppState {
   namesList: string[];
   canvasDimensions: Dimensions;
   downloadInProgress: boolean;
@@ -87,3 +88,8 @@ export type FontVariantKey = keyof typeof FONT_VARIANTS;
 export type FontVariantAlias = typeof FONT_VARIANTS[FontVariantKey];
 
 type FileFormat = 'pdf' | 'png';
+
+export interface DesignSetupStepProps {
+  visible: boolean;
+  setCurrentStep: Dispatch<SetStateAction<number>>;
+}

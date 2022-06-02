@@ -1,3 +1,5 @@
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import type { ReactElement } from 'react';
@@ -7,6 +9,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import { persistor, store } from 'constants/reducers';
 import { GlobalStyle } from 'styles/pages/App.styles';
+
+config.autoAddCss = false;
 
 export default function ZiventiApp({
   Component,

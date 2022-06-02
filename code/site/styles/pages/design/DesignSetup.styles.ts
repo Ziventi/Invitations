@@ -1,20 +1,56 @@
-import { transparentize } from 'polished';
-import styled, { createGlobalStyle } from 'styled-components';
+import { lighten, transparentize } from 'polished';
+import styled, { css } from 'styled-components';
 
-import { COLOR } from 'styles/Constants';
+import { COLOR, THEME } from 'styles/Constants';
 import * as Global from 'styles/Global';
 import * as Mixin from 'styles/Mixins';
 
 export const Default = {
-  Body: createGlobalStyle`
-    html, body {
-      scroll-snap-type: x mandatory;
-    }
-  `,
   Main: styled.main`
     color: ${COLOR.WHITE};
-    display: inline-flex;
+    height: 100%;
     position: relative;
+  `,
+  BackgroundMask: styled.div`
+    background-color: rgba(0, 0, 0, 0.2);
+    height: 100vh;
+    position: absolute;
+    width: 100vw;
+  `,
+  Section: styled.section<{ currentStep: number }>`
+    align-items: center;
+    background-color: ${({ currentStep }) =>
+      currentStep === 0
+        ? THEME.setupSectionNamesList
+        : THEME.setupSectionImageSelect};
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    padding: 2em;
+    position: relative;
+    transition: all 0.5s;
+    transition-delay: 0.1s;
+    width: 100%;
+  `,
+  Step: styled.div<{ visible: boolean }>`
+    ${({ visible }) =>
+      visible
+        ? css`
+            opacity: 1;
+            pointer-events: auto;
+          `
+        : css`
+            opacity: 0;
+            pointer-events: none;
+          `};
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    transition: all 0.5s;
+    width: 100%;
   `,
   Partition: styled.section`
     align-items: center;
@@ -51,21 +87,7 @@ export const Default = {
   `,
 };
 
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  justify-content: center;
-  position: relative;
-  scroll-snap-align: center;
-  transition: all 0.1s;
-  width: 100vw;
-`;
-
 export const NamesList = {
-  Section: styled(Section)`
-    background-color: ${COLOR.WORKFLOW};
-  `,
   Container: styled(Global.Container)`
     column-gap: 2em;
     display: grid;
@@ -125,9 +147,10 @@ export const NamesList = {
   `,
   NameListContainer: styled.div<{ visible: boolean }>`
     ${({ visible }) => Mixin.Visible(visible)}
+    ${Mixin.Scrollable(lighten(0.1, COLOR.PRIMARY_5_DARK), '20px')}
     background-color: ${transparentize(0.6, COLOR.PRIMARY_5_DARK)};
     border-radius: 3%;
-    height: 70vh;
+    height: 60vh;
     overflow: auto;
     padding: 0 2em;
     transition: all 0.3s;
@@ -147,21 +170,23 @@ export const NamesList = {
 };
 
 export const ImageSelection = {
-  Section: styled(Section)`
-    background-color: ${transparentize(0.06, COLOR.PRIMARY_5_NEUTRAL)};
-  `,
   Container: styled(Global.Container)`
     column-gap: 2em;
     display: grid;
     grid-template-columns: 7fr 3fr;
   `,
   FileSelector: styled.div`
-    margin: 2em 0;
+    margin: 1em 0;
   `,
   ImagePreview: styled.figure`
     height: 100%;
     margin: 0;
     position: relative;
     width: 100%;
+  `,
+  SmallPrint: styled.small`
+    line-height: 1.3;
+    margin: 1.5em 0;
+    max-width: 300px;
   `,
 };

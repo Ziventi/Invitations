@@ -9,7 +9,7 @@ import { css } from 'styled-components';
  * @param color The base color of the scrollbar.
  * @returns The CSS.
  */
-export function Scrollable(color: string): FlattenSimpleInterpolation {
+export function Scrollable(color: string, borderRadius?: string): FlattenSimpleInterpolation {
   return css`
     overflow-y: auto;
 
@@ -28,7 +28,7 @@ export function Scrollable(color: string): FlattenSimpleInterpolation {
 
     &:hover::-webkit-scrollbar-thumb {
       background-color: ${darken(0.08, color)};
-      border-radius: 2px;
+      border-radius: ${borderRadius || '2px'};
       transition: background-color 0.3s ease;
     }
 

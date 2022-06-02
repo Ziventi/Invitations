@@ -10,13 +10,17 @@ import type {
   RootState,
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
+import type { DesignSetupStepProps } from 'constants/types';
 import { COLOR } from 'styles/Constants';
 import {
   Default as DS,
   NamesList as NL,
 } from 'styles/pages/design/DesignSetup.styles';
 
-export default function NamesList() {
+export default function NamesList({
+  setCurrentStep,
+  visible
+}: DesignSetupStepProps) {
   const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
   const setAppState = useCallback(
@@ -77,7 +81,7 @@ export default function NamesList() {
   }
 
   return (
-    <NL.Section>
+    <DS.Step visible={visible}>
       <NL.Container id={'namelist'}>
         <DS.Partition>
           <DS.Heading>Step 1: List The Names</DS.Heading>
@@ -103,12 +107,13 @@ export default function NamesList() {
       </NL.Container>
       <DS.Footer>
         <DS.FooterLink href={'/'}>
-          <FontIcon icon={faChevronLeft} space={true} size={'1x'} />
+          <FontIcon icon={faChevronLeft} space={true} />
           Back to Home
         </DS.FooterLink>
         <DS.Button
           bgColor={COLOR.PRIMARY_5_LIGHT}
-          visible={hasNamesListed}>
+          visible={hasNamesListed}
+          onClick={() => setCurrentStep(1)}>
           Next
         </DS.Button>
       </DS.Footer>
@@ -144,7 +149,7 @@ export default function NamesList() {
           </NL.ModalContent>
         </NL.ModalDialog>
       </NL.Modal>
-    </NL.Section>
+    </DS.Step>
   );
 }
 

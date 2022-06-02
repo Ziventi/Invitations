@@ -1,6 +1,6 @@
 import { transparentize } from 'polished';
 
-const WORKFLOW = 'rgba(40, 26, 26, 0.97)';
+const WORKFLOW = 'rgba(40, 26, 26, 1)';
 
 export const COLOR = {
   PRIMARY_1_LIGHT: '#f9f3f0',
@@ -28,8 +28,8 @@ export const COLOR = {
 };
 
 export const THEME = {
-  setupSectionNamesList: transparentize(0.09, WORKFLOW),
-  setupSectionImageSelect: transparentize(0.09, COLOR.PRIMARY_5_NEUTRAL),
+  setupSectionNamesList: transparentize(0.06, WORKFLOW),
+  setupSectionImageSelect: transparentize(0.08, COLOR.PRIMARY_5_NEUTRAL),
 };
 
 export const FONT = {

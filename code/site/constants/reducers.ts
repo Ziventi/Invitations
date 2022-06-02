@@ -12,9 +12,9 @@ import {
 } from 'redux-persist';
 import sessionStorage from 'redux-persist/lib/storage/session';
 
-import type { Draggable, DraggableOptions, PageState } from 'constants/types';
+import type { Draggable, DraggableOptions, AppState } from 'constants/types';
 
-const initialState: PageState = {
+const initialState: AppState = {
   namesList: [],
   draggable: {
     isDragging: false,
@@ -73,12 +73,12 @@ const slice = createSlice({
   },
 });
 
-const blacklist: (keyof PageState)[] = [
+const blacklist: (keyof AppState)[] = [
   'draggable',
   'downloadInProgress',
   'isColorPickerVisible',
 ];
-const persistedReducer = persistReducer<PageState>(
+const persistedReducer = persistReducer<AppState>(
   {
     key: 'root',
     version: 1,
@@ -103,9 +103,9 @@ export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type PageStatePayload = Omit<
-  Partial<PageState>,
+  Partial<AppState>,
   'draggable' | 'textStyle'
 > & {
   draggable?: Draggable | DraggableOptions | { isSelected: boolean };
-  textStyle?: Partial<PageState['textStyle']>;
+  textStyle?: Partial<AppState['textStyle']>;
 };

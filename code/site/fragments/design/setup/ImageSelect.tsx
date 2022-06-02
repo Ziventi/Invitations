@@ -1,16 +1,22 @@
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import FontIcon from 'components/icon';
 import type { RootState } from 'constants/reducers';
+import type { DesignSetupStepProps } from 'constants/types';
 import { COLOR } from 'styles/Constants';
 import * as Global from 'styles/Global';
 import {
-  ImageSelection as IS,
   Default as DS,
+  ImageSelection as IS,
 } from 'styles/pages/design/DesignSetup.styles';
 
-export default function ImageSelect() {
+export default function ImageSelect({
+  setCurrentStep,
+  visible,
+}: DesignSetupStepProps) {
   const appState = useSelector((state: RootState) => state);
   const [state, setState] = useState<ImageSelectState>({
     imageSrc: appState.imageSrc,
@@ -42,12 +48,13 @@ export default function ImageSelect() {
     };
   }
   return (
-    <IS.Section>
+    <DS.Step visible={visible}>
       <IS.Container>
         <DS.Partition>
           <DS.Heading>Step 2: Select Your Design</DS.Heading>
           <DS.Text>
-            Choose your existing design template on which to print each listed name.
+            Choose your existing design template on which to print each listed
+            name.
           </DS.Text>
           <IS.FileSelector>
             <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3_DARK}>
@@ -60,9 +67,10 @@ export default function ImageSelect() {
               <span>Choose your image...</span>
             </Global.Button>
           </IS.FileSelector>
-          <small>
-            * Supported formats are JPEG and PNG. Maximum image size is 10MB.
-          </small>
+          <IS.SmallPrint>
+            * Supported image formats are JPEG and PNG. Maximum image size is
+            10MB.
+          </IS.SmallPrint>
         </DS.Partition>
         <DS.Partition>
           <IS.ImagePreview>
@@ -70,7 +78,18 @@ export default function ImageSelect() {
           </IS.ImagePreview>
         </DS.Partition>
       </IS.Container>
-    </IS.Section>
+      <DS.Footer>
+        <DS.Button
+          bgColor={COLOR.PRIMARY_5_LIGHT}
+          onClick={() => setCurrentStep(0)}>
+          <FontIcon icon={faChevronLeft} space={true} />
+          Previous
+        </DS.Button>
+        <DS.FooterLink href={'/design/editor'}>
+          <DS.Button bgColor={COLOR.PRIMARY_4_LIGHT}>Start Editing</DS.Button>
+        </DS.FooterLink>
+      </DS.Footer>
+    </DS.Step>
   );
 }
 
