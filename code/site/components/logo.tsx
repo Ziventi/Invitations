@@ -2,7 +2,10 @@ import React from 'react';
 
 import * as Global from 'styles/Global';
 
-export default function ZiventiLogo({ color = 'white', className }: ZiventiLogoProps) {
+export default function ZiventiLogo({
+  color = 'white',
+  className,
+}: ZiventiLogoProps) {
   return (
     <Global.Logo
       xmlns={'http://www.w3.org/2000/svg'}

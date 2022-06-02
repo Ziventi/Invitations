@@ -18,7 +18,7 @@ export default class ZPublisher<G extends TGuest, R extends TGuestRow> {
   private postPublish?: PostPublish<G>;
   private spreadsheet!: GoogleSpreadsheet;
 
-  public constructor(options: PublisherConstructor<G, R>) {
+  constructor(options: PublisherConstructor<G, R>) {
     const { loadingOptions, postPublish } = options;
     this.loadingOptions = loadingOptions;
     this.postPublish = postPublish;

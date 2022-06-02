@@ -7,14 +7,14 @@ import * as Utils from 'constants/functions/utils';
 import type {
   AppDispatch,
   PageStatePayload,
-  RootState
+  RootState,
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import type { DesignSetupStepProps } from 'constants/types';
 import { COLOR } from 'styles/Constants';
 import {
   Default as DS,
-  NamesList as NL
+  NamesList as NL,
 } from 'styles/pages/design/DesignSetup.styles';
 
 export default function NamesList({

@@ -43,7 +43,7 @@ export default class ZGenerator<G extends TGuest, R extends TGuestRow> {
    * Constructors a new generator.
    * @param options The generator constructor options.
    */
-  public constructor(options: GeneratorConstructor<G, R>) {
+  constructor(options: GeneratorConstructor<G, R>) {
     const { fontsUrl, formatOptions, htmlOptions, loadingOptions, rootDir } =
       options;
     const root = rootDir || process.cwd();

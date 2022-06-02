@@ -1,7 +1,5 @@
 import { darken } from 'polished';
-import type {
-  FlattenSimpleInterpolation
-} from 'styled-components';
+import type { FlattenSimpleInterpolation } from 'styled-components';
 import { css } from 'styled-components';
 
 /**
@@ -9,7 +7,10 @@ import { css } from 'styled-components';
  * @param color The base color of the scrollbar.
  * @returns The CSS.
  */
-export function Scrollable(color: string, borderRadius?: string): FlattenSimpleInterpolation {
+export function Scrollable(
+  color: string,
+  borderRadius?: string,
+): FlattenSimpleInterpolation {
   return css`
     overflow-y: auto;
 

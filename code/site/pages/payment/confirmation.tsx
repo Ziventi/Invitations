@@ -25,7 +25,7 @@ const CFN = {
     height: 100%;
     justify-content: center;
   `,
-  SiteLogo: styled(ZiventiLogo).attrs({ color: 'white'})`
+  SiteLogo: styled(ZiventiLogo).attrs({ color: 'white' })`
     height: 50px;
   `,
   TextBox: styled.div`
