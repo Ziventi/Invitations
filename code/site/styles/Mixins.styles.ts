@@ -44,14 +44,21 @@ export function Scrollable(
  * @param visible True if visible, false if not.
  * @returns The CSS.
  */
-export function Visible(visible = true): FlattenSimpleInterpolation {
+export function Visible(
+  visible = true,
+  options?: VisibleOptions,
+): FlattenSimpleInterpolation {
   return visible
     ? css`
         opacity: 1;
-        z-index: 1;
+        z-index: ${options?.zIndex || 1};
       `
     : css`
         opacity: 0;
         z-index: -1;
       `;
+}
+
+interface VisibleOptions {
+  zIndex?: number;
 }

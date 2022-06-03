@@ -1,16 +1,23 @@
 import { ChromePicker } from 'react-color';
 import styled, { css } from 'styled-components';
 
+import ZiventiLogo from 'components/logo';
 import type { ResizeHandlePosition } from 'constants/types';
 import * as Global from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
 import * as Mixin from 'styles/Mixins.styles';
 
 export const Default = {
+  Page: styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  `,
   Main: styled.main`
     display: flex;
     flex: 1 1 auto;
     height: 100%;
+    min-height: 0;
     position: relative;
   `,
   ProgressOverlay: styled.dialog`
@@ -34,6 +41,62 @@ const FormInput = css`
   padding: 0.5em;
 `;
 
+export const EditorHeader = {
+  Header: styled.header`
+    align-items: center;
+    background-color: ${COLOR.PRIMARY_4_DARK};
+    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
+    display: flex;
+    flex: 0 0 65px;
+    justify-content: space-between;
+    min-height: 0;
+    padding: 0.5em 1em;
+    z-index: 2;
+  `,
+  HeaderButton: styled(Global.Button)`
+    display: block;
+    height: 100%;
+    min-width: 120px;
+    width: 20%;
+  `,
+  BackLink: styled.a`
+    color: ${COLOR.WHITE};
+  `,
+  SiteLogo: styled(ZiventiLogo)`
+    height: 100%;
+  `,
+  ActionSection: styled.section`
+    display: flex;
+    gap: 0.5em;
+    height: 100%;
+  `,
+  MenuTrigger: styled.div`
+    height: 100%;
+    position: relative;
+  `,
+  Menu: styled.menu<{ visible: boolean }>`
+    ${({ visible }) => Mixin.Visible(visible, { zIndex: 2 })}
+    background-color: ${COLOR.PRIMARY_5_NEUTRAL};
+    border-radius: 10px;
+    cursor: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    max-height: 400px;
+    padding: 1em;
+    position: absolute;
+    right: 0;
+    top: 80%;
+    transition: all 0.1s;
+    width: 400px;
+  `,
+  MenuButton: styled(Global.Button)`
+    display: block;
+    flex: 1 1 150px;
+    padding: 1.5em;
+  `,
+};
+
 export const LeftSidebar = {
   Aside: styled.aside`
     ${Mixin.Scrollable(COLOR.PRIMARY_5_NEUTRAL)}
@@ -46,11 +109,7 @@ export const LeftSidebar = {
     max-width: 290px;
     padding: 1em 1.5em;
     user-select: none;
-    z-index: 2;
-  `,
-  Button: styled(Global.Button)`
-    margin: 0.3em 0;
-    width: 100%;
+    z-index: 1;
   `,
   DesignForm: styled.section`
     margin-bottom: 1em;
@@ -130,7 +189,7 @@ export const LeftSidebar = {
 export const Preview = {
   Container: styled.section`
     align-items: center;
-    background-color: ${COLOR.PRIMARY_1_NEUTRAL};
+    background-color: ${COLOR.PRIMARY_5_DARK};
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -174,7 +233,7 @@ export const Preview = {
     position: absolute;
     width: 100%;
   `,
-  Draggable: styled.div<DraggableProps>`
+  Draggable: styled.div<{ selected: boolean }>`
     border: 2px dashed
       ${({ selected }) => (selected ? COLOR.DEFAULT : 'transparent')};
     border-radius: 2px;
@@ -220,7 +279,7 @@ export const RightSidebar = {
     flex: 0 0 200px;
     flex-direction: column;
     overflow-y: clip;
-    z-index: 2;
+    z-index: 1;
   `,
   Header: styled.header`
     align-items: center;
@@ -264,10 +323,6 @@ export const RightSidebar = {
 interface ColorThumbnailProps {
   bgColor: string;
   fontColor: string;
-}
-
-interface DraggableProps {
-  selected: boolean;
 }
 
 interface ResizeHandleProps {

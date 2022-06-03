@@ -2,14 +2,14 @@ import type { ReactElement } from 'react';
 import React from 'react';
 
 import type { AppState } from 'constants/types';
-import DesignEditor from 'styles/pages/design/DesignEditor.styles';
+import { Default as DE} from 'styles/pages/design/DesignEditor.styles';
 
 export default function ProgressOverlay({
   state,
 }: ProgressOverlayProps): ReactElement | null {
   if (!state.downloadInProgress) return null;
   return (
-    <DesignEditor.ProgressOverlay>Loading...</DesignEditor.ProgressOverlay>
+    <DE.ProgressOverlay>Loading...</DE.ProgressOverlay>
   );
 }
 

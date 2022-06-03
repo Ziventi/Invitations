@@ -11,6 +11,7 @@ import type {
 import { updateState } from 'constants/reducers';
 import type { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
+import EditorHeader from 'fragments/design/editor/EditorHeader';
 import LeftSidebar from 'fragments/design/editor/LeftSidebar';
 import Preview from 'fragments/design/editor/Preview';
 import RightSidebar from 'fragments/design/editor/RightSidebar';
@@ -127,16 +128,15 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   }, [setState, state.namesList]);
 
   return (
-    <DE.Main>
-      <LeftSidebar
-        fonts={fonts}
-        canvasRef={canvasRef}
-        colorPickerRef={colorPickerRef}
-      />
-      <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
-      <RightSidebar />
-      <ProgressOverlay state={state} />
-    </DE.Main>
+    <DE.Page>
+      <EditorHeader canvasRef={canvasRef} fonts={fonts} />
+      <DE.Main>
+        <LeftSidebar colorPickerRef={colorPickerRef} fonts={fonts} />
+        <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
+        <RightSidebar />
+        <ProgressOverlay state={state} />
+      </DE.Main>
+    </DE.Page>
   );
 };
 
