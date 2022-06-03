@@ -1,5 +1,5 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -50,9 +50,17 @@ export default function ImageSelect({
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
-      setAppState({
-        imageSrc: fileReader.result as string,
-      });
+      const img = new Image();
+      img.src = fileReader.result as string;
+      img.onload = () => {
+        setAppState({
+          imageDimensions: {
+            width: img.width,
+            height: img.height,
+          },
+          imageSrc: img.src,
+        });
+      };
     };
   }
 
@@ -104,7 +112,7 @@ export default function ImageSelect({
 
 function PreviewImage({ src }: PreviewImageProps) {
   if (!src) return null;
-  return <Image src={src} layout={'fill'} objectFit={'contain'} />;
+  return <NextImage src={src} layout={'fill'} objectFit={'contain'} />;
 }
 
 interface PreviewImageProps {

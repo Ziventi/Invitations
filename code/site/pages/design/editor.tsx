@@ -14,13 +14,13 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
 import EditorHeader from 'fragments/design/editor/EditorHeader';
 import LeftSidebar from 'fragments/design/editor/LeftSidebar';
 import Preview from 'fragments/design/editor/Preview';
+import PreviewSVG from 'fragments/design/editor/PreviewSVG';
 import RightSidebar from 'fragments/design/editor/RightSidebar';
 import { Default as DE } from 'styles/pages/design/DesignEditor.styles';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
-  const draggableRef = useRef<HTMLDivElement>(null);
 
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
@@ -56,6 +56,8 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
       const scaleX = canvas.width / canvas.clientWidth;
       const scaleY = canvas.height / canvas.clientHeight;
       const scale = (scaleX + scaleY) / 2;
+
+      console.log(img.width, img.height);
 
       setState({
         canvasDimensions: {
@@ -132,7 +134,8 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
       <EditorHeader canvasRef={canvasRef} fonts={fonts} />
       <DE.Main>
         <LeftSidebar colorPickerRef={colorPickerRef} fonts={fonts} />
-        <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
+        {/* <Preview canvasRef={canvasRef} /> */}
+        <PreviewSVG />
         <RightSidebar />
         <ProgressOverlay state={state} />
       </DE.Main>
