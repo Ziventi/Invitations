@@ -70,7 +70,10 @@ export async function singlePNGImage(
   w?.document.write(main.outerHTML);
 }
 
-export async function testSVG(payload: RequestInit): Promise<void> {
+export async function testSVG(
+  payload: RequestInit,
+  imageDimensions: Dimensions,
+): Promise<void> {
   const res = await fetch('/api/svg', payload);
   if (!res.ok) throw new Error('Could not download image.');
   const data = await res.text();
@@ -82,14 +85,14 @@ export async function testSVG(payload: RequestInit): Promise<void> {
 
   const img = new Image();
   img.src = data;
-  img.height = 720;
-  img.width = 1280;
+  img.height = imageDimensions.height;
+  img.width = imageDimensions.width;
   img.style.height = '100%';
   img.style.width = '100%';
 
   const main = document.createElement('main');
-  main.style.height = `${720}px`;
-  main.style.width = `${1280}px`;
+  main.style.height = `${imageDimensions.height}px`;
+  main.style.width = `${imageDimensions.width}px`;
   main.append(img);
 
   const w = window.open(data);

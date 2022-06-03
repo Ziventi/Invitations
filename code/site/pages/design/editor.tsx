@@ -56,8 +56,6 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
       const scaleY = canvas.height / canvas.clientHeight;
       const scale = (scaleX + scaleY) / 2;
 
-      console.log(img.width, img.height);
-
       setState({
         canvasDimensions: {
           width: canvas.clientWidth,

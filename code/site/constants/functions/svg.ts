@@ -19,9 +19,23 @@ export function create(
   svg.setAttribute('viewBox', `0 0 ${dimensions.width} ${dimensions.height}`);
 
   const defs = document.createElementNS(xmlns, 'defs');
+
   const style = document.createElementNS(xmlns, 'style');
   style.textContent = `@import url(${fontDataUri});`;
   defs.appendChild(style);
+
+  const filter = document.createElementNS(xmlns, 'filter');
+  filter.setAttribute('id', 'crispify');
+  const feComponentTransfer = document.createElementNS(
+    'xmlns',
+    'feComponentTransfer',
+  );
+  const feFuncA = document.createElementNS('xmlns', 'feFuncA');
+  feFuncA.setAttribute('type', 'discrete');
+  feFuncA.setAttribute('tableValues', '0 1');
+  feComponentTransfer.appendChild(feFuncA);
+  filter.appendChild(feComponentTransfer);
+  defs.appendChild(filter);
 
   const image = document.createElementNS(xmlns, 'image');
   image.setAttribute('href', backgroundImageSrc);
@@ -34,6 +48,7 @@ export function create(
   text.setAttribute('x', String(textStyle.left));
   text.setAttribute('y', String(textStyle.top));
   text.setAttribute('dominant-baseline', 'text-before-edge');
+  text.setAttribute('filter', 'url(#crispify)');
   text.setAttribute('fill', textStyle.color);
   text.setAttribute('font-size', `${textStyle.fontSize}px`);
   text.setAttribute(

@@ -134,7 +134,7 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
             appState.imageDimensions,
           );
         } else if (format === 'svg') {
-          await Download.testSVG(payload);
+          await Download.testSVG(payload, appState.imageDimensions,);
         }
       }
     } catch (e) {
