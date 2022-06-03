@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import type { ResizeHandlePosition } from 'constants/types';
 import { COLOR } from 'styles/Constants.styles';
+import * as Mixin from 'styles/Mixins.styles';
 
 export default {
   Container: styled.section`
@@ -19,28 +19,20 @@ export default {
     max-width: 100%;
   `,
   Text: styled.text<{ selected: boolean }>`
-    border: 2px dashed
-      ${({ selected }) => (selected ? COLOR.DEFAULT : 'transparent')};
     cursor: move;
     text-align: center;
     user-select: none;
   `,
+  Border: styled.rect<{ visible: boolean }>`
+    ${({ visible }) => Mixin.Visible(visible)}
+    transition: opacity 0.2s, z-index 0.2s;
+  `,
   ResizeHandle: styled.circle<{
-    position: ResizeHandlePosition;
-    selected: boolean;
+    visible: boolean;
   }>`
+    ${({ visible }) => Mixin.Visible(visible)}
     cursor: ew-resize;
     fill: #00a6ff;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-
-    ${({ position, selected }) => {
-      const opacity = selected ? 1 : 0;
-      const visibility = selected ? 'visible' : 'hidden';
-      // const alignSelf = position === 'east' ? 'flex-end' : 'flex-start';
-      return css`
-        opacity: ${opacity};
-        visibility: ${visibility};
-      `;
-    }}
+    transition: opacity 0.2s, z-index 0.2s;
   `,
 };

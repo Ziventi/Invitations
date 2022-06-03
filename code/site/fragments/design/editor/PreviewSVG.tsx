@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
 import React, {
-  useEffect,
-  useState,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,15 +15,19 @@ import type {
   RootState,
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
-import type { Coordinates } from 'constants/types';
+import type { Coordinates, Dimensions } from 'constants/types';
 import { COLOR } from 'styles/Constants.styles';
 import P from 'styles/pages/design/Preview.styles';
 
 export default function Preview(): ReactElement {
-  const [state, setState] = useState({
+  const [state, setState] = useState<PreviewState>({
     draggable: {
       isDragging: false,
       isSelected: false,
+      dimensions: {
+        height: 0,
+        width: 0,
+      },
       offset: {
         x: 0,
         y: 0,
@@ -61,8 +65,8 @@ export default function Preview(): ReactElement {
     return {
       fill: color,
       fontFamily,
-      fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
       fontSize: `${fontSize}px`,
+      fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
       fontWeight,
       letterSpacing: `${letterSpacing}px`,
       lineHeight: `${lineHeight}px`,
@@ -80,11 +84,12 @@ export default function Preview(): ReactElement {
         y: e.pageY - state.draggable.offset!.y,
       };
 
-      const { height, width } = appState.imageDimensions;
+      const { height: maxHeight, width: maxWidth } = appState.imageDimensions;
+      const bounds = draggableRef.current!.getBBox();
       setAppState({
         textStyle: {
-          left: Utils.minmax(currentPoint.x, 0, width),
-          top: Utils.minmax(currentPoint.y, 0, height),
+          left: Utils.minmax(currentPoint.x, 0, maxWidth - bounds.width),
+          top: Utils.minmax(currentPoint.y, 0, maxHeight - bounds.height),
         },
       });
 
@@ -155,6 +160,24 @@ export default function Preview(): ReactElement {
     // onResizeHandleDragEnd, onWindowResize
   ]);
 
+  // Adjust draggable dimensions when the selected name or font style changes.
+  useEffect(() => {
+    const draggable = draggableRef.current;
+    if (draggable) {
+      const { height, width } = draggable.getBBox();
+      setState((current) => ({
+        ...current,
+        draggable: {
+          ...current.draggable,
+          dimensions: {
+            height,
+            width,
+          },
+        },
+      }));
+    }
+  }, [appState.selectedName, appState.textStyle]);
+
   /**
    * Called on mouse-down to start dragging the draggable. Triggers only on
    * left-clicks on the draggable element.
@@ -167,6 +190,7 @@ export default function Preview(): ReactElement {
     setState((current) => ({
       ...current,
       draggable: {
+        ...current.draggable,
         isDragging: true,
         isSelected: true,
         offset: {
@@ -199,7 +223,8 @@ export default function Preview(): ReactElement {
     }
   }
 
-  const { height, left, top, width } = appState.textStyle;
+  const { left, top } = appState.textStyle;
+  const { height, width } = state.draggable.dimensions;
   return (
     <P.Container onMouseDown={onDragZoneClick}>
       <P.SVGCanvas xmlns={'http://www.w3.org/2000/svg'} viewBox={viewBox}>
@@ -211,11 +236,24 @@ export default function Preview(): ReactElement {
           width={'100%'}
           height={'100%'}
         />
+        <P.Border
+          x={left}
+          y={top}
+          width={width}
+          height={height}
+          rx={10}
+          ry={10}
+          fill={'transparent'}
+          stroke={COLOR.DEFAULT}
+          strokeDasharray={'10 6'}
+          strokeWidth={4}
+          visible={state.draggable.isSelected}
+        />
         <P.Text
           x={left}
           y={top}
           style={{
-            dominantBaseline: 'hanging',
+            dominantBaseline: 'text-before-edge',
             ...draggableStyle,
           }}
           selected={state.draggable.isSelected}
@@ -226,20 +264,27 @@ export default function Preview(): ReactElement {
         <P.ResizeHandle
           id={'west'}
           cx={left}
-          cy={top + height}
+          cy={top + height / 2}
           r={10}
-          position={'west'}
-          selected={state.draggable.isSelected}
+          visible={state.draggable.isSelected}
         />
         <P.ResizeHandle
           id={'east'}
           cx={left + width}
-          cy={top + height}
+          cy={top + height / 2}
           r={10}
-          position={'east'}
-          selected={state.draggable.isSelected}
+          visible={state.draggable.isSelected}
         />
       </P.SVGCanvas>
     </P.Container>
   );
+}
+
+interface PreviewState {
+  draggable: {
+    isDragging: boolean;
+    isSelected: boolean;
+    dimensions: Dimensions;
+    offset: Coordinates | null;
+  };
 }
