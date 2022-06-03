@@ -47,6 +47,7 @@ export interface TextStyle {
   fontFamily: string;
   fontStyle: FontVariantKey;
   fontSize: number;
+  letterSpacing: number;
   lineHeight: number;
   left: number;
   top: number;

@@ -46,8 +46,14 @@ export default function DragZone({
 
   // Memoises the draggable style based on selected text style properties.
   const draggableStyle: React.CSSProperties = useMemo(() => {
-    const { color, fontFamily, fontStyle, fontSize, lineHeight } =
-      state.textStyle;
+    const {
+      color,
+      fontFamily,
+      fontStyle,
+      fontSize,
+      letterSpacing,
+      lineHeight,
+    } = state.textStyle;
     const fontWeight = Utils.getFontWeight(fontStyle);
     return {
       color,
@@ -55,6 +61,7 @@ export default function DragZone({
       fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
       fontSize: `${fontSize}px`,
       fontWeight,
+      letterSpacing: `${letterSpacing}px`,
       lineHeight: `${lineHeight}px`,
     };
   }, [state.textStyle]);

@@ -40,6 +40,7 @@ const initialState: AppState = {
     fontFamily: 'Courgette',
     fontStyle: 'regular',
     fontSize: 19,
+    letterSpacing: 0,
     lineHeight: 24,
     left: 0,
     top: 0,

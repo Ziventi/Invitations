@@ -38,12 +38,12 @@ export default function Preview({
         <P.Canvas ref={canvasRef} />
         <DragZone canvasRef={canvasRef} draggableRef={draggableRef} />
       </P.Main>
-      <P.Footer>
+      {/* <P.Footer>
         <P.FooterText>{dimensions}</P.FooterText>
         <P.FooterText>
           {filename}.{state.fileFormat}
         </P.FooterText>
-      </P.Footer>
+      </P.Footer> */}
     </P.Container>
   );
 }
