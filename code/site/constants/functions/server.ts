@@ -13,13 +13,15 @@ import { GOOGLE_FONT_HOST } from 'constants/variables';
 export function loadFonts(
   fontId: string,
   textStyle: TextStyle,
-): Promise<string> {
+): Promise<[string, string | undefined]> {
   return new Promise((resolve, reject) => {
     const url = new URL(`${GOOGLE_FONT_HOST}/${fontId}`);
     url.searchParams.append('download', 'zip');
     url.searchParams.append('formats', 'ttf');
     url.searchParams.append('variants', textStyle.fontStyle);
 
+    // TODO: Allow duplicate fonts. Check for existing fontIDs and don't
+    // download new ones if they already exist.
     fetch(url.href)
       .then((res) => res.blob())
       .then((blob) => blob.arrayBuffer())
@@ -27,19 +29,18 @@ export function loadFonts(
         const buffer = Buffer.from(arrayBuffer);
         const zip = new AdmZip(buffer);
 
-        const downloadId = `${fontId}-${Date.now()}`;
-        const downloadPath = `./fonts/${downloadId}`;
-        zip.extractAllTo(downloadPath);
+        const downloadDir = `./fonts/${fontId}-${Date.now()}`;
+        zip.extractAllTo(downloadDir);
 
         try {
           const fontFile = zip.getEntries().shift();
           if (fontFile) {
-            registerFont(`./fonts/${downloadId}/${fontFile.entryName}`, {
+            registerFont(`./${downloadDir}/${fontFile.entryName}`, {
               family: textStyle.fontFamily,
             });
           }
 
-          resolve(downloadPath);
+          resolve([downloadDir, fontFile?.entryName]);
         } catch (e) {
           throw new Error(e as string);
         }

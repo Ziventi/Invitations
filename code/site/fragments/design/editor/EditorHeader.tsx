@@ -10,7 +10,6 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 
 import FontIcon from 'components/icon';
-import { drawOnCanvas } from 'constants/functions/canvas';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
 import type {
@@ -19,7 +18,12 @@ import type {
   RootState,
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
-import type { GoogleFont, PaymentHash, RequestBody } from 'constants/types';
+import type {
+  FileFormat,
+  GoogleFont,
+  PaymentHash,
+  RequestBody,
+} from 'constants/types';
 import * as C from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
 import { EditorHeader as EH } from 'styles/pages/design/DesignEditor.styles';
@@ -73,11 +77,6 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
     };
   }, [setState, state.isMenuVisible]);
 
-  function preview(): void {
-    const canvas = canvasRef.current!;
-    drawOnCanvas(canvas, appState.selectedName, appState.textStyle);
-  }
-
   function showMenu(): void {
     setState((current) => ({
       ...current,
@@ -88,7 +87,7 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
   /**
    * Performs a download.
    */
-  async function download(format: 'pdf' | 'png', asZip?: boolean) {
+  async function download(format: FileFormat | 'svg', asZip?: boolean) {
     if (!appState.imageSrc) {
       alert('No image');
       return;
@@ -106,8 +105,8 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
     const requestBody: RequestBody = {
       backgroundImageSrc: appState.imageSrc,
       fileNameTemplate: appState.fileNameTemplate,
-      format,
-      fontId: selectedFont.id,
+      format: format as FileFormat,
+      fontId: selectedFont.family,
       dimensions: appState.imageDimensions,
       namesList: appState.namesList,
       selectedName: appState.selectedName,
@@ -134,6 +133,8 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
             appState.canvasDimensions,
             appState.imageDimensions,
           );
+        } else if (format === 'svg') {
+          await Download.testSVG(payload);
         }
       }
     } catch (e) {
@@ -166,10 +167,9 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
           </EH.HeaderButton>
           <EH.Menu visible={state.isMenuVisible} ref={menuRef}>
             <EH.MenuButton
-              id={'preview'}
-              onClick={preview}
+              onClick={() => download('svg')}
               bgColor={COLOR.PRIMARY_2_DARK}>
-              Draw
+              Print SVG
             </EH.MenuButton>
             <EH.MenuButton
               id={'download-png'}

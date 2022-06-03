@@ -69,12 +69,16 @@ export default function Preview(): ReactElement {
       appState.textStyle;
     const fontWeight = Utils.getFontWeight(fontStyle);
     return {
-      fill: color,
-      fontFamily,
-      fontSize: `${fontSize}px`,
-      fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
-      fontWeight,
-      letterSpacing: `${letterSpacing}px`,
+      props: {
+        fill: color,
+        fontSize: `${fontSize}px`,
+        fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
+        fontWeight,
+        letterSpacing: `${letterSpacing}px`,
+      },
+      style: {
+        fontFamily,
+      },
     };
   }, [appState.textStyle]);
 
@@ -355,7 +359,8 @@ export default function Preview(): ReactElement {
           onMouseDown={onTextDragStart}
           ref={draggableRef}
           selected={state.draggable.isSelected}
-          {...draggableStyle}>
+          style={draggableStyle.style}
+          {...draggableStyle.props}>
           {appState.selectedName}
         </P.Text>
         {[
@@ -396,12 +401,15 @@ interface PreviewState {
   };
 }
 
-type DraggableStyle = Pick<
-  React.CSSProperties,
-  | 'fill'
-  | 'fontFamily'
-  | 'fontSize'
-  | 'fontStyle'
-  | 'fontWeight'
-  | 'letterSpacing'
->;
+interface DraggableStyle {
+  props: Pick<
+    React.CSSProperties,
+    | 'fill'
+    | 'fontFamily'
+    | 'fontSize'
+    | 'fontStyle'
+    | 'fontWeight'
+    | 'letterSpacing'
+  >;
+  style: Pick<React.CSSProperties, 'fontFamily'>;
+}

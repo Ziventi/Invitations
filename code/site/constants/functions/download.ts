@@ -25,7 +25,7 @@ export async function archive(payload: RequestInit): Promise<void> {
  * @param payload The request payload.
  */
 export async function singlePDFFile(payload: RequestInit): Promise<void> {
-  const res = await fetch('api/test', payload);
+  const res = await fetch('/api/test', payload);
   if (!res.ok) throw new Error('Could not download PDF.');
   const image = await res.blob();
 
@@ -50,7 +50,7 @@ export async function singlePNGImage(
   canvasDimensions: Dimensions,
   imageDimensions: Dimensions,
 ): Promise<void> {
-  const res = await fetch('api/test', payload);
+  const res = await fetch('/api/test', payload);
   if (!res.ok) throw new Error('Could not download image.');
   const data = await res.text();
 
@@ -64,6 +64,32 @@ export async function singlePNGImage(
   const main = document.createElement('main');
   main.style.height = `${canvasDimensions.height}px`;
   main.style.width = `${canvasDimensions.width}px`;
+  main.append(img);
+
+  const w = window.open(data);
+  w?.document.write(main.outerHTML);
+}
+
+export async function testSVG(payload: RequestInit): Promise<void> {
+  const res = await fetch('/api/svg', payload);
+  if (!res.ok) throw new Error('Could not download image.');
+  const data = await res.text();
+
+  // const blob = new Blob([data], { type: 'image/png' });
+  // const url = URL.createObjectURL(blob);
+  // const win = open(url)!;
+  // win.onload = () => URL.revokeObjectURL(url);
+
+  const img = new Image();
+  img.src = data;
+  img.height = 720;
+  img.width = 1280;
+  img.style.height = '100%';
+  img.style.width = '100%';
+
+  const main = document.createElement('main');
+  main.style.height = `${720}px`;
+  main.style.width = `${1280}px`;
   main.append(img);
 
   const w = window.open(data);

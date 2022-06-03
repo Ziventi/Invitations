@@ -13,7 +13,6 @@ import type { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import EditorHeader from 'fragments/design/editor/EditorHeader';
 import LeftSidebar from 'fragments/design/editor/LeftSidebar';
-import Preview from 'fragments/design/editor/Preview';
 import PreviewSVG from 'fragments/design/editor/PreviewSVG';
 import RightSidebar from 'fragments/design/editor/RightSidebar';
 import { Default as DE } from 'styles/pages/design/DesignEditor.styles';
