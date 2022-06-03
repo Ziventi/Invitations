@@ -1,10 +1,15 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import FontIcon from 'components/icon';
-import type { RootState } from 'constants/reducers';
+import type {
+  AppDispatch,
+  PageStatePayload,
+  RootState,
+} from 'constants/reducers';
+import { updateState } from 'constants/reducers';
 import type { DesignSetupStepProps } from 'constants/types';
 import * as Global from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
@@ -18,9 +23,13 @@ export default function ImageSelect({
   visible,
 }: DesignSetupStepProps) {
   const appState = useSelector((state: RootState) => state);
-  const [state, setState] = useState<ImageSelectState>({
-    imageSrc: appState.imageSrc,
-  });
+  const dispatch = useDispatch<AppDispatch>();
+  const setAppState = useCallback(
+    (payload: PageStatePayload) => {
+      dispatch(updateState(payload));
+    },
+    [dispatch],
+  );
 
   /**
    * Called on selection of a file to edit. Ensures only files below limit are
@@ -32,7 +41,7 @@ export default function ImageSelect({
     if (!files || !files.length) return;
 
     const file = files[0];
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > 5 * 1024 * 1024) {
       e.target.value = '';
       alert('Maximum file size is 10MB');
       return;
@@ -41,12 +50,12 @@ export default function ImageSelect({
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
-      setState((current) => ({
-        ...current,
+      setAppState({
         imageSrc: fileReader.result as string,
-      }));
+      });
     };
   }
+
   return (
     <DS.Step visible={visible}>
       <IS.Container>
@@ -74,7 +83,7 @@ export default function ImageSelect({
         </DS.Partition>
         <DS.Partition>
           <IS.ImagePreview>
-            <PreviewImage src={state.imageSrc} />
+            <PreviewImage src={appState.imageSrc} />
           </IS.ImagePreview>
         </DS.Partition>
       </IS.Container>
