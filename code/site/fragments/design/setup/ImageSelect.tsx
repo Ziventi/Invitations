@@ -107,10 +107,6 @@ function PreviewImage({ src }: PreviewImageProps) {
   return <Image src={src} layout={'fill'} objectFit={'contain'} />;
 }
 
-interface ImageSelectState {
-  imageSrc: string | null;
-}
-
 interface PreviewImageProps {
   src: string | null;
 }

@@ -156,7 +156,7 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
       <EH.SiteLogo />
       <EH.ActionSection>
         <Link href={`/payment/checkout?q=${queryHash}`}>
-          <EH.HeaderButton id={'pay'} bgColor={COLOR.PRIMARY_2_NEUTRAL}>
+          <EH.HeaderButton id={'pay'} bgColor={COLOR.PRIMARY_3_LIGHT}>
             Checkout
           </EH.HeaderButton>
         </Link>

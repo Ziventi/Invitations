@@ -4,12 +4,12 @@ import { css } from 'styled-components';
 
 /**
  * Ensures that a component is scrollable.
- * @param color The base color of the scrollbar.
+ * @param baseColor The base color of the scrollbar.
  * @returns The CSS.
  */
 export function Scrollable(
-  color: string,
-  borderRadius?: string,
+  baseColor: string,
+  options?: ScrollableOptions,
 ): FlattenSimpleInterpolation {
   return css`
     overflow-y: auto;
@@ -28,13 +28,15 @@ export function Scrollable(
     }
 
     &:hover::-webkit-scrollbar-thumb {
-      background-color: ${darken(0.08, color)};
-      border-radius: ${borderRadius || '2px'};
+      background-color: ${options?.exactColor
+        ? baseColor
+        : darken(0.08, baseColor)};
+      border-radius: ${options?.borderRadius || '2px'};
       transition: background-color 0.3s ease;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background-color: ${darken(0.12, color)};
+      background-color: ${darken(0.12, baseColor)};
     }
   `;
 }
@@ -51,12 +53,19 @@ export function Visible(
   return visible
     ? css`
         opacity: 1;
+        pointer-events: auto;
         z-index: ${options?.zIndex || 1};
       `
     : css`
         opacity: 0;
+        pointer-events: none;
         z-index: -1;
       `;
+}
+
+interface ScrollableOptions {
+  borderRadius?: string;
+  exactColor?: boolean;
 }
 
 interface VisibleOptions {

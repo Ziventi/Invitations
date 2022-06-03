@@ -165,7 +165,9 @@ export const NamesList = {
   `,
   NameListContainer: styled.div<{ visible: boolean }>`
     ${({ visible }) => Mixin.Visible(visible)}
-    ${Mixin.Scrollable(lighten(0.1, COLOR.PRIMARY_5_DARK), '20px')}
+    ${Mixin.Scrollable(lighten(0.1, COLOR.PRIMARY_5_DARK), {
+      borderRadius: '20px',
+    })}
     background-color: ${transparentize(0.6, COLOR.PRIMARY_5_DARK)};
     border-radius: 3%;
     height: 60vh;

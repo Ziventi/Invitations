@@ -47,7 +47,7 @@ export const EditorHeader = {
     background-color: ${COLOR.PRIMARY_4_DARK};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
-    flex: 0 0 65px;
+    flex: 0 0 55px;
     justify-content: space-between;
     min-height: 0;
     padding: 0.5em 1em;
@@ -55,8 +55,10 @@ export const EditorHeader = {
   `,
   HeaderButton: styled(Global.Button)`
     display: block;
+    font-size: 0.8em;
     height: 100%;
-    min-width: 120px;
+    min-width: 100px;
+    padding: 0;
     width: 20%;
   `,
   BackLink: styled.a`
@@ -189,7 +191,7 @@ export const LeftSidebar = {
 export const Preview = {
   Container: styled.section`
     align-items: center;
-    background-color: ${COLOR.PRIMARY_5_DARK};
+    background-color: ${COLOR.PRIMARY_5_DARKER};
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -207,7 +209,7 @@ export const Preview = {
   `,
   Footer: styled.footer`
     align-items: center;
-    background-color: ${COLOR.PRIMARY_5_LIGHT};
+    background-color: ${COLOR.PRIMARY_4_DARK};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
     flex: 0 0 30px;
@@ -273,7 +275,7 @@ export const Preview = {
 
 export const RightSidebar = {
   Aside: styled.aside`
-    background-color: ${COLOR.PRIMARY_4_NEUTRAL};
+    background-color: ${COLOR.PRIMARY_5_NEUTRAL};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
     flex: 0 0 200px;
@@ -283,20 +285,20 @@ export const RightSidebar = {
   `,
   Header: styled.header`
     align-items: center;
-    background-color: ${COLOR.PRIMARY_4_DARK};
+    background-color: ${COLOR.PRIMARY_5_DARK};
     color: ${COLOR.WHITE};
     display: flex;
-    height: 40px;
+    font-size: 0.9em;
     justify-content: center;
+    padding: 1em;
   `,
   ButtonList: styled.div`
-    ${Mixin.Scrollable(COLOR.PRIMARY_4_NEUTRAL)}
-    border-left: 3px solid ${COLOR.PRIMARY_4_DARK};
+    ${Mixin.Scrollable(COLOR.PRIMARY_5_DARK, { exactColor: true })}
     display: flex;
     flex-direction: column;
     height: 100%;
   `,
-  Button: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_4_NEUTRAL })`
+  Button: styled(Global.Button).attrs({ bgColor: COLOR.PRIMARY_5_NEUTRAL })`
     align-items: center;
     border-radius: 0;
     border-style: none;

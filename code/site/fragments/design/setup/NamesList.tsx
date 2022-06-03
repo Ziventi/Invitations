@@ -1,4 +1,5 @@
 import { faChevronRight, faHome } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -106,12 +107,12 @@ export default function NamesList({
         </DS.Partition>
       </NL.Container>
       <DS.Footer>
-        <DS.FooterLink href={'/'}>
+        <Link href={'/'}>
           <DS.Button bgColor={COLOR.PRIMARY_4_DARK}>
             <FontIcon icon={faHome} spaceRight={true} />
             Back to Home
           </DS.Button>
-        </DS.FooterLink>
+        </Link>
         <DS.Button
           bgColor={COLOR.PRIMARY_4_LIGHT}
           visible={hasNamesListed}
