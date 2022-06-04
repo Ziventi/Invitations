@@ -1,9 +1,6 @@
 /** The default filename template for generated files. */
 export const DEFAULT_FILENAME_TEMPLATE = 'Invitation for [name]';
 
-/** The draggable padding in pixels. */
-export const DRAGGABLE_PADDING = 12;
-
 /** The host path for Google Web Font queries. */
 export const GOOGLE_FONT_HOST =
   'https://google-webfonts-helper.herokuapp.com/api/fonts';
