@@ -28,7 +28,7 @@ import * as C from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
 import { EditorHeader as EH } from 'styles/pages/design/DesignEditor.styles';
 
-export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
+export default function EditorHeader({ fonts }: EditorHeaderProps) {
   const [state, setState] = useState<EditorHeaderState>({
     isMenuVisible: false,
   });
@@ -204,7 +204,6 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
 }
 
 interface EditorHeaderProps {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
   fonts: GoogleFont[];
 }
 

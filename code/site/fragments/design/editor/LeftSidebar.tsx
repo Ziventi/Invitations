@@ -56,6 +56,15 @@ export default function LeftSidebar({
     };
   }, [state.textStyle.color]);
 
+  // const filename = useMemo(() => {
+  //   return Utils.substituteName(state.fileNameTemplate, state.selectedName);
+  // }, [state.fileNameTemplate, state.selectedName]);
+
+  // const dimensions = useMemo(() => {
+  //   const { height, width } = state.imageDimensions;
+  //   return `Dimensions: ${width} x ${height}`;
+  // }, [state.imageDimensions]);
+
   /**
    * Triggers on a new font family selection. If the selected font family does
    * not have the current font style, the font style resets to regular.
