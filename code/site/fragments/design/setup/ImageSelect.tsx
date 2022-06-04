@@ -103,7 +103,11 @@ export default function ImageSelect({
           Previous
         </DS.Button>
         <DS.FooterLink href={'/design/editor'}>
-          <DS.Button bgColor={COLOR.PRIMARY_4_LIGHT}>Start Editing</DS.Button>
+          <DS.Button
+            bgColor={COLOR.PRIMARY_4_LIGHT}
+            visible={!!appState.imageSrc}>
+            Start Editing
+          </DS.Button>
         </DS.FooterLink>
       </DS.Footer>
     </DS.Step>
