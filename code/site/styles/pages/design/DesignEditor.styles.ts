@@ -35,7 +35,7 @@ const FormInput = css`
   border-bottom: 1px solid ${COLOR.WHITE};
   color: ${COLOR.WHITE};
   flex: 1;
-  font-size: 0.9em;
+  font-size: 0.95em;
   max-width: 100%;
   outline-color: ${COLOR.PRIMARY_2_NEUTRAL};
   padding: 0.5em;
@@ -47,10 +47,10 @@ export const EditorHeader = {
     background-color: ${COLOR.PRIMARY_4_DARK};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
-    flex: 0 0 55px;
+    flex: 0 0 60px;
     justify-content: space-between;
     min-height: 0;
-    padding: 0.5em 1em;
+    padding: 0.6em 1em;
     z-index: 2;
   `,
   HeaderButton: styled(Global.Button)`
@@ -116,7 +116,6 @@ export const LeftSidebar = {
   DesignForm: styled.section`
     display: flex;
     flex-direction: column;
-    margin-bottom: 1em;
     row-gap: 1.2em;
   `,
   FormFieldRow: styled.div`
@@ -130,7 +129,7 @@ export const LeftSidebar = {
   `,
   Label: styled.label`
     display: block;
-    font-size: 0.9em;
+    font-size: 0.95em;
     padding: 5px 0;
   `,
   FormSelect: styled.select`
@@ -200,7 +199,7 @@ export const RightSidebar = {
     background-color: ${COLOR.PRIMARY_5_NEUTRAL};
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     display: flex;
-    flex: 0 0 200px;
+    flex: 0 0 180px;
     flex-direction: column;
     overflow-y: clip;
     z-index: 1;
@@ -227,8 +226,7 @@ export const RightSidebar = {
     column-gap: 20px;
     cursor: pointer;
     display: grid;
-    flex: 1 1 auto;
-    font-size: 14px;
+    font-size: 0.85em;
     grid-template-columns: 20px 1fr;
     min-height: 70px;
     outline: none;

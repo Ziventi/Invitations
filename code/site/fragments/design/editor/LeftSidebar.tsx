@@ -110,7 +110,6 @@ export default function LeftSidebar({
     const value = e.target.valueAsNumber ?? min;
     setAppState({
       textStyle: {
-        ...appState.textStyle,
         [e.target.name]: Math.max(min, Math.min(value, max)),
       },
     });
