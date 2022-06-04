@@ -148,7 +148,7 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
 
   return (
     <EH.Header>
-      <Link href={'/design'}>
+      <Link href={'/design/#2'}>
         <C.Link>
           <FontIcon icon={faChevronLeft} spaceRight={true} />
           Back to Setup
