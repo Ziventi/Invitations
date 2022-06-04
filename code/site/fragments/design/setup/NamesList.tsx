@@ -36,6 +36,7 @@ export default function NamesList({
     isModalVisible: false,
   });
 
+  // Memoises if the names list exists.
   const hasNamesListed = useMemo(() => {
     return appState.namesList.length > 0;
   }, [appState.namesList]);
@@ -81,6 +82,9 @@ export default function NamesList({
     toggleModal(false);
   }
 
+  /**
+   * Triggered on clicking next step button.
+   */
   function onNextStepClick() {
     setCurrentStep(1);
   }

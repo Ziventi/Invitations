@@ -125,7 +125,7 @@ export const NamesList = {
     width: 100%;
   `,
   ModalContent: styled.div`
-    background-color: ${transparentize(0.1, COLOR.PRIMARY_4_DARK)};
+    background-color: ${transparentize(0.03, COLOR.PRIMARY_4_DARK)};
     border-radius: 10px;
     box-shadow: 0 0 2px 0 ${COLOR.BLACK};
     min-height: 400px;
