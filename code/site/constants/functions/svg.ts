@@ -1,7 +1,7 @@
 import { DOMImplementation, XMLSerializer } from '@xmldom/xmldom';
 
 import * as Utils from 'constants/functions/utils';
-import type { RequestBody } from 'constants/types';
+import type { Dimensions, TextStyle } from 'constants/types';
 
 const xmlSerializer = new XMLSerializer();
 const document = new DOMImplementation().createDocument(
@@ -11,19 +11,33 @@ const document = new DOMImplementation().createDocument(
 );
 
 export function create(
-  { backgroundImageSrc, dimensions, selectedName, textStyle }: RequestBody,
+  backgroundImageSrc: string,
+  dimensions: Dimensions,
+  fileNameTemplate: string,
+  selectedName: string,
+  textStyle: TextStyle,
   fontDataUri: string,
 ): string {
   const xmlns = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(xmlns, 'svg');
   svg.setAttribute('viewBox', `0 0 ${dimensions.width} ${dimensions.height}`);
 
+  // Add metadata.
+  const title = document.createElementNS(xmlns, 'title');
+  title.textContent = Utils.substituteName(fileNameTemplate, selectedName);
+  svg.appendChild(title);
+  const desc = document.createElementNS(xmlns, 'desc');
+  desc.textContent = 'Created by Ziventi';
+  svg.appendChild(desc);
+
   const defs = document.createElementNS(xmlns, 'defs');
 
+  // Add Google Web Font url and ensure no margins.
   const style = document.createElementNS(xmlns, 'style');
-  style.textContent = `@import url(${fontDataUri});`;
+  style.textContent = `@import url(${fontDataUri}); html, body { margin: 0 !important; }`;
   defs.appendChild(style);
 
+  // Use filter to ensure crispiness.
   const filter = document.createElementNS(xmlns, 'filter');
   filter.setAttribute('id', 'crispify');
   const feComponentTransfer = document.createElementNS(
@@ -36,14 +50,18 @@ export function create(
   feComponentTransfer.appendChild(feFuncA);
   filter.appendChild(feComponentTransfer);
   defs.appendChild(filter);
+  svg.appendChild(defs);
 
+  // Add background image.
   const image = document.createElementNS(xmlns, 'image');
   image.setAttribute('href', backgroundImageSrc);
   image.setAttribute('x', '0');
   image.setAttribute('y', '0');
   image.setAttribute('width', '100%');
   image.setAttribute('height', '100%');
+  svg.appendChild(image);
 
+  // Add custom text.
   const text = document.createElementNS(xmlns, 'text');
   text.setAttribute('x', String(textStyle.left));
   text.setAttribute('y', String(textStyle.top));
@@ -59,9 +77,6 @@ export function create(
   text.setAttribute('letter-spacing', `${textStyle.letterSpacing}px`);
   text.setAttribute('style', `font-family:${textStyle.fontFamily};`);
   text.textContent = selectedName;
-
-  svg.appendChild(defs);
-  svg.appendChild(image);
   svg.appendChild(text);
 
   const xml = xmlSerializer.serializeToString(svg);

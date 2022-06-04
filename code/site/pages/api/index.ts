@@ -1,10 +1,9 @@
 import AdmZip from 'adm-zip';
-import { createCanvas } from 'canvas';
-import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
+import type { Browser } from 'puppeteer';
+import puppeteer from 'puppeteer';
 
-import { clearCanvas, drawOnCanvas } from 'constants/functions/canvas';
-import * as Server from 'constants/functions/server';
+import * as SVG from 'constants/functions/svg';
 import * as Utils from 'constants/functions/utils';
 import type { ZiventiNextApiRequest } from 'constants/types';
 
@@ -18,41 +17,65 @@ export default async function handler(
     fileNameTemplate,
     format,
     fontId,
-    namesList: names,
+    namesList,
     textStyle,
   } = req.body;
 
-  let downloadPath;
-
+  let browser: Browser | undefined;
+  const startTime = Date.now();
   try {
-    const backgroundImage = await Server.loadImage(backgroundImageSrc);
-    downloadPath = await Server.loadFonts(fontId, textStyle);
+    const url = new URL('https://fonts.googleapis.com/css2');
+    url.searchParams.append('family', fontId);
+    url.searchParams.append('display', 'swap');
 
-    // Generate image and add to archive.
-    const canvasType = format === 'pdf' ? 'pdf' : undefined;
-    const canvas = createCanvas(
-      dimensions.width,
-      dimensions.height,
-      canvasType,
-    );
+    if (format !== 'svg') {
+      browser = await puppeteer.launch();
+    }
+
     const archiver = new AdmZip();
-    names.forEach((name) => {
-      drawOnCanvas(canvas, name, textStyle, backgroundImage);
-      const filename = Utils.substituteName(fileNameTemplate, name);
+    await Promise.all(
+      namesList.map(async (name) => {
+        const markup = SVG.create(
+          backgroundImageSrc,
+          dimensions,
+          fileNameTemplate,
+          name,
+          textStyle,
+          url.href,
+        );
 
-      let file;
-      if (format === 'pdf') {
-        file = canvas.toBuffer('application/pdf', {
-          title: filename,
-          author: 'Ziventi',
-        });
-      } else {
-        file = canvas.toBuffer('image/png');
-      }
+        let file: Buffer;
+        if (format === 'svg') {
+          file = Buffer.from(markup);
+        } else {
+          const page = await browser!.newPage();
+          await page.setContent(markup);
+          await page.evaluateHandle('document.fonts.ready');
 
-      archiver.addFile(`${filename}.${format}`, file);
-      clearCanvas(canvas);
-    });
+          if (format === 'pdf') {
+            file = await page.pdf({
+              height: dimensions.height,
+              width: dimensions.width,
+              pageRanges: '1',
+              printBackground: true,
+            });
+          } else {
+            await page.setViewport({
+              height: dimensions.height,
+              width: dimensions.width,
+            });
+            file = <Buffer>await page.screenshot({
+              encoding: 'binary',
+              fullPage: true,
+              type: 'png',
+            });
+          }
+        }
+
+        const filename = Utils.substituteName(fileNameTemplate, name);
+        archiver.addFile(`${filename}.${format}`, file);
+      }),
+    );
 
     const archive = archiver.toBuffer();
     res.setHeader('Content-Type', 'application/zip');
@@ -60,9 +83,14 @@ export default async function handler(
   } catch (e) {
     res.status(400).json({ msg: JSON.stringify(e) });
   } finally {
-    if (downloadPath && fs.existsSync(downloadPath)) {
-      fs.rmSync(downloadPath, { force: true, recursive: true });
+    if (browser) {
+      await browser.close();
     }
+    const endTime = Date.now();
+    const difference = (endTime - startTime) / 1000;
+    console.info(
+      `${format.toUpperCase()} download finished in ${difference.toFixed(2)}s.`,
+    );
   }
 }
 

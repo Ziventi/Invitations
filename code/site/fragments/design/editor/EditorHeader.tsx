@@ -196,6 +196,12 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
               bgColor={COLOR.PRIMARY_4_NEUTRAL}>
               Download PDF archive
             </EH.MenuButton>
+            <EH.MenuButton
+              id={'download-svg-archive'}
+              onClick={() => download('svg', true)}
+              bgColor={COLOR.SECONDARY_3}>
+              Download SVG archive
+            </EH.MenuButton>
           </EH.Menu>
         </EH.MenuTrigger>
       </EH.ActionSection>
