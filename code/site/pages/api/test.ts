@@ -1,55 +1,56 @@
-import { createCanvas } from 'canvas';
-import fs from 'fs';
 import type { NextApiResponse, PageConfig } from 'next';
+import puppeteer from 'puppeteer';
 
-import { drawOnCanvas } from 'constants/functions/canvas';
-import * as Server from 'constants/functions/server';
-import * as Utils from 'constants/functions/utils';
+import * as SVG from 'constants/functions/svg';
 import type { ZiventiNextApiRequest } from 'constants/types';
 
 export default async function handler(
   req: ZiventiNextApiRequest,
   res: NextApiResponse<any>,
 ): Promise<void> {
-  const {
-    backgroundImageSrc,
-    dimensions,
-    fileNameTemplate,
-    format,
-    fontId,
-    selectedName,
-    textStyle,
-  } = req.body;
+  const { dimensions, format, fontId } = req.body;
 
-  let downloadPath;
   try {
-    const backgroundImage = await Server.loadImage(backgroundImageSrc);
-    downloadPath = await Server.loadFonts(fontId, textStyle);
+    const url = new URL('https://fonts.googleapis.com/css2');
+    url.searchParams.append('family', fontId);
+    url.searchParams.append('display', 'swap');
+    const markup = SVG.create(req.body, url.href);
 
-    const filename = Utils.substituteName(fileNameTemplate, selectedName);
-
-    let file;
-    if (format === 'pdf') {
-      const canvas = createCanvas(dimensions.width, dimensions.height, 'pdf');
-      drawOnCanvas(canvas, selectedName, textStyle, backgroundImage);
-      file = canvas.toBuffer('application/pdf', {
-        title: filename,
-        author: 'Ziventi',
-      });
-      res.setHeader('Content-Type', 'application/pdf');
+    if (format === 'svg') {
+      res.setHeader('Content-Type', 'image/svg+xml');
+      res.status(200).send(markup);
     } else {
-      const canvas = createCanvas(dimensions.width, dimensions.height);
-      drawOnCanvas(canvas, selectedName, textStyle, backgroundImage);
-      file = canvas.toDataURL();
-      res.setHeader('Content-Type', 'image/png');
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      await page.setContent(markup);
+      await page.evaluateHandle('document.fonts.ready');
+
+      if (format === 'pdf') {
+        const file = await page.pdf({
+          height: dimensions.height,
+          width: dimensions.width,
+          pageRanges: '1',
+          printBackground: true,
+        });
+        res.setHeader('Content-Type', 'application/pdf');
+        res.status(200).send(file);
+      } else {
+        await page.setViewport({
+          height: dimensions.height,
+          width: dimensions.width,
+        });
+        const file = await page.screenshot({
+          encoding: 'base64',
+          fullPage: true,
+          type: 'png',
+        });
+        res.setHeader('Content-Type', 'image/png');
+        res.status(200).send(`data:image/png;base64,${file}`);
+      }
     }
-    res.status(200).send(file);
   } catch (e) {
     res.status(400).json({ msg: JSON.stringify(e) });
-  } finally {
-    if (downloadPath && fs.existsSync(downloadPath)) {
-      fs.rmSync(downloadPath, { force: true, recursive: true });
-    }
+    console.error(e);
   }
 }
 

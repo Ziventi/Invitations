@@ -88,7 +88,7 @@ export interface PaymentHash {
 export type FontVariantKey = keyof typeof FONT_VARIANTS;
 export type FontVariantAlias = typeof FONT_VARIANTS[FontVariantKey];
 
-export type FileFormat = 'pdf' | 'png';
+export type FileFormat = 'pdf' | 'png' | 'svg';
 
 export interface DesignSetupStepProps {
   visible: boolean;

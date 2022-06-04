@@ -87,7 +87,7 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
   /**
    * Performs a download.
    */
-  async function download(format: FileFormat | 'svg', asZip?: boolean) {
+  async function download(format: FileFormat, asZip?: boolean) {
     if (!appState.imageSrc) {
       alert('No image');
       return;
@@ -134,7 +134,7 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
             appState.imageDimensions,
           );
         } else if (format === 'svg') {
-          await Download.testSVG(payload, appState.imageDimensions,);
+          await Download.singleSVGImage(payload);
         }
       }
     } catch (e) {
@@ -167,11 +167,6 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
           </EH.HeaderButton>
           <EH.Menu visible={state.isMenuVisible} ref={menuRef}>
             <EH.MenuButton
-              onClick={() => download('svg')}
-              bgColor={COLOR.PRIMARY_2_DARK}>
-              Print SVG
-            </EH.MenuButton>
-            <EH.MenuButton
               id={'download-png'}
               onClick={() => download('png')}
               bgColor={COLOR.PRIMARY_5_LIGHT}>
@@ -182,6 +177,12 @@ export default function EditorHeader({ canvasRef, fonts }: EditorHeaderProps) {
               onClick={() => download('pdf')}
               bgColor={COLOR.PRIMARY_3_DARK}>
               Download PDF
+            </EH.MenuButton>
+            <EH.MenuButton
+              id={'download-svg'}
+              onClick={() => download('svg')}
+              bgColor={COLOR.PRIMARY_3_LIGHT}>
+              Download SVG
             </EH.MenuButton>
             <EH.MenuButton
               id={'download-png-archive'}

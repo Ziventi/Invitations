@@ -27,7 +27,7 @@ export function create(
   const filter = document.createElementNS(xmlns, 'filter');
   filter.setAttribute('id', 'crispify');
   const feComponentTransfer = document.createElementNS(
-    'xmlns',
+    xmlns,
     'feComponentTransfer',
   );
   const feFuncA = document.createElementNS('xmlns', 'feFuncA');
