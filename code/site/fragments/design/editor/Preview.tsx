@@ -145,12 +145,14 @@ export default function Preview(): ReactElement {
       const { height } = state.draggable.dimensions;
       setAppState({
         textStyle: {
-          left: Utils.minmax(
-            currentPoint.x,
-            0,
-            maxWidth - state.draggable.maxWidth,
+          left: Math.round(
+            Utils.minmax(
+              currentPoint.x,
+              0,
+              maxWidth - state.draggable.maxWidth,
+            ),
           ),
-          top: Utils.minmax(currentPoint.y, 0, maxHeight - height),
+          top: Math.round(Utils.minmax(currentPoint.y, 0, maxHeight - height)),
         },
       });
 
