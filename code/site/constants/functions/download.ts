@@ -5,7 +5,7 @@ import type { Dimensions } from 'constants/types';
  * @param payload The request payload.
  */
 export async function archive(payload: RequestInit): Promise<void> {
-  const res = await fetch('/api', payload);
+  const res = await fetch('/api/archive', payload);
   if (!res.ok) throw new Error('Could not download archive.');
   const archive = await res.blob();
   const url = URL.createObjectURL(archive);
@@ -25,7 +25,7 @@ export async function archive(payload: RequestInit): Promise<void> {
  * @param payload The request payload.
  */
 export async function singlePDFFile(payload: RequestInit): Promise<void> {
-  const res = await fetch('/api/test', payload);
+  const res = await fetch('/api/single', payload);
   if (!res.ok) throw new Error('Could not download PDF.');
   const image = await res.blob();
 
@@ -50,7 +50,7 @@ export async function singlePNGImage(
   canvasDimensions: Dimensions,
   imageDimensions: Dimensions,
 ): Promise<void> {
-  const res = await fetch('/api/test', payload);
+  const res = await fetch('/api/single', payload);
   if (!res.ok) throw new Error('Could not download image.');
   const data = await res.text();
 
@@ -71,7 +71,7 @@ export async function singlePNGImage(
 }
 
 export async function singleSVGImage(payload: RequestInit): Promise<void> {
-  const res = await fetch('/api/test', payload);
+  const res = await fetch('/api/single', payload);
   if (!res.ok) throw new Error('Could not download image.');
   const data = await res.text();
 
