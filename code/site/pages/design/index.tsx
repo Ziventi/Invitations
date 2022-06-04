@@ -3,13 +3,12 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import Hyperlink from 'components/hyperlink';
 import type { RootState } from 'constants/reducers';
 import ImageSelect from 'fragments/design/setup/ImageSelect';
 import NamesList from 'fragments/design/setup/NamesList';
 import * as Global from 'styles/Components.styles';
 import { Default as DS } from 'styles/pages/design/DesignSetup.styles';
-
-const STEPS = [NamesList, ImageSelect];
 
 const DesignSetupPage: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -23,7 +22,7 @@ const DesignSetupPage: NextPage = () => {
   }, [appState.namesList]);
 
   return (
-    <DS.Main>
+    <DS.Page>
       <Global.BackgroundVideo
         src={`/setup.mp4`}
         poster={'/setup.jpg'}
@@ -34,21 +33,20 @@ const DesignSetupPage: NextPage = () => {
         onContextMenu={(e) => e.preventDefault()}
       />
       <DS.BackgroundMask />
-      <Link href={'/'}>
+      <Hyperlink href={'/'}>
         <DS.SiteLogo />
-      </Link>
-      <DS.Section currentStep={currentStep}>
-        {STEPS.map((Step, key) => {
-          return (
-            <Step
-              key={key}
-              visible={key === currentStep}
-              setCurrentStep={setCurrentStep}
-            />
-          );
-        })}
-      </DS.Section>
-    </DS.Main>
+      </Hyperlink>
+      <DS.Carousel currentStep={currentStep}>
+        <NamesList
+          visible={currentStep === 0}
+          setCurrentStep={setCurrentStep}
+        />
+        <ImageSelect
+          visible={currentStep === 1}
+          setCurrentStep={setCurrentStep}
+        />
+      </DS.Carousel>
+    </DS.Page>
   );
 };
 

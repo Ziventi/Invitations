@@ -86,8 +86,8 @@ export default function NamesList({
   }
 
   return (
-    <DS.Step visible={visible}>
-      <NL.Container id={'namelist'}>
+    <DS.Component visible={visible}>
+      <DS.Container id={'namelist'}>
         <DS.Partition>
           <DS.Heading>Step 1: List The Names</DS.Heading>
           <DS.Text>
@@ -109,7 +109,7 @@ export default function NamesList({
             </NL.NameList>
           </NL.NameListContainer>
         </DS.Partition>
-      </NL.Container>
+      </DS.Container>
       <DS.Footer>
         <Link href={'/'}>
           <DS.Button bgColor={COLOR.PRIMARY_4_DARK}>
@@ -159,7 +159,7 @@ export default function NamesList({
           </NL.ModalContent>
         </NL.ModalDialog>
       </NL.Modal>
-    </DS.Step>
+    </DS.Component>
   );
 }
 

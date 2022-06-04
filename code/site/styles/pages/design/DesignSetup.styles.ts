@@ -8,7 +8,7 @@ import { COLOR, THEME } from 'styles/Constants.styles';
 import * as Mixin from 'styles/Mixins.styles';
 
 export const Default = {
-  Main: styled.main`
+  Page: styled.div`
     color: ${COLOR.WHITE};
     height: 100%;
     position: relative;
@@ -34,7 +34,7 @@ export const Default = {
     position: absolute;
     width: 100vw;
   `,
-  Section: styled.section<{ currentStep: number }>`
+  Carousel: styled.div<{ currentStep: number }>`
     align-items: center;
     animation: ${Animation.FadeIn} 0.5s;
     background-color: ${({ currentStep }) =>
@@ -50,7 +50,7 @@ export const Default = {
     transition-delay: 0.1s;
     width: 100%;
   `,
-  Step: styled.div<{ visible: boolean }>`
+  Component: styled.main<{ visible: boolean }>`
     ${({ visible }) =>
       visible
         ? css`
@@ -63,12 +63,17 @@ export const Default = {
           `};
     align-items: center;
     display: flex;
-    flex-direction: column;
     height: 100%;
     justify-content: center;
     position: absolute;
     transition: all 0.5s;
     width: 100%;
+  `,
+  Container: styled(Global.Container)`
+    column-gap: 2em;
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    padding: 2em;
   `,
   Partition: styled.section`
     align-items: center;
@@ -100,18 +105,9 @@ export const Default = {
     position: absolute;
     width: 100%;
   `,
-  FooterLink: styled(Global.Link)`
-    /* font-size: 1em; */
-  `,
 };
 
 export const NamesList = {
-  Container: styled(Global.Container)`
-    column-gap: 2em;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    padding: 2em;
-  `,
   Modal: styled.dialog<{ visible: boolean }>`
     ${({ visible }) => Mixin.Visible(visible)}
     background-color: rgba(0, 0, 0, 0.7);
@@ -190,11 +186,6 @@ export const NamesList = {
 };
 
 export const ImageSelection = {
-  Container: styled(Global.Container)`
-    column-gap: 2em;
-    display: grid;
-    grid-template-columns: 7fr 3fr;
-  `,
   FileSelector: styled.div`
     margin: 1em 0;
   `,

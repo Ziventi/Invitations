@@ -2,7 +2,6 @@ import { ChromePicker } from 'react-color';
 import styled, { css } from 'styled-components';
 
 import ZiventiLogo from 'components/logo';
-import type { ResizeHandlePosition } from 'constants/types';
 import * as Global from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
 import * as Mixin from 'styles/Mixins.styles';

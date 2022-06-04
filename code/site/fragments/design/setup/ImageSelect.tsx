@@ -66,8 +66,8 @@ export default function ImageSelect({
   }
 
   return (
-    <DS.Step visible={visible}>
-      <IS.Container>
+    <DS.Component visible={visible}>
+      <DS.Container>
         <DS.Partition>
           <DS.Heading>Step 2: Select Your Design</DS.Heading>
           <DS.Text>
@@ -95,7 +95,7 @@ export default function ImageSelect({
             <PreviewImage src={appState.imageSrc} />
           </IS.ImagePreview>
         </DS.Partition>
-      </IS.Container>
+      </DS.Container>
       <DS.Footer>
         <Link href={'/design/#1'}>
           <DS.Button
@@ -113,7 +113,7 @@ export default function ImageSelect({
           </DS.Button>
         </Link>
       </DS.Footer>
-    </DS.Step>
+    </DS.Component>
   );
 }
 
