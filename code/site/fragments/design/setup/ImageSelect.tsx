@@ -33,8 +33,9 @@ export default function ImageSelect({
   );
 
   /**
-   * Called on selection of a file to edit. Ensures only files below limit are
-   * allowed
+   * Called on selection of a file to edit.
+   * Ensures only files below limit are allowed.
+   * Sets appropriate estimates for text style based on image size.
    * @param e The change event.
    */
   function onImageSelect(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -44,7 +45,7 @@ export default function ImageSelect({
     const file = files[0];
     if (file.size > 5 * 1024 * 1024) {
       e.target.value = '';
-      alert('Maximum file size is 10MB');
+      alert('Maximum file size is 5MB');
       return;
     }
 
@@ -60,6 +61,11 @@ export default function ImageSelect({
             height: img.height,
           },
           imageSrc: img.src,
+          textStyle: {
+            fontSize: img.width / 10,
+            left: img.width / 3,
+            top: img.height / 3,
+          },
         });
       };
     };
