@@ -1,5 +1,6 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import NextImage from 'next/image';
+import Link from 'next/link';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -96,19 +97,21 @@ export default function ImageSelect({
         </DS.Partition>
       </IS.Container>
       <DS.Footer>
-        <DS.Button
-          bgColor={COLOR.PRIMARY_4_DARK}
-          onClick={() => setCurrentStep(0)}>
-          <FontIcon icon={faChevronLeft} spaceRight={true} />
-          Previous
-        </DS.Button>
-        <DS.FooterLink href={'/design/editor'}>
+        <Link href={'/design/#1'}>
+          <DS.Button
+            bgColor={COLOR.PRIMARY_4_DARK}
+            onClick={() => setCurrentStep(0)}>
+            <FontIcon icon={faChevronLeft} spaceRight={true} />
+            Previous
+          </DS.Button>
+        </Link>
+        <Link href={'/design/editor'}>
           <DS.Button
             bgColor={COLOR.PRIMARY_4_LIGHT}
             visible={!!appState.imageSrc}>
             Start Editing
           </DS.Button>
-        </DS.FooterLink>
+        </Link>
       </DS.Footer>
     </DS.Step>
   );

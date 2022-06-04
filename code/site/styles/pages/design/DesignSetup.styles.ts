@@ -101,7 +101,7 @@ export const Default = {
     width: 100%;
   `,
   FooterLink: styled(Global.Link)`
-    font-size: 1em;
+    /* font-size: 1em; */
   `,
 };
 

@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -14,7 +14,6 @@ const STEPS = [NamesList, ImageSelect];
 const DesignSetupPage: NextPage = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const appState = useSelector((state: RootState) => state);
-  const router = useRouter();
 
   // Fast-forward to step two if url hash indicates and names list is already in memory.
   useEffect(() => {
@@ -22,15 +21,6 @@ const DesignSetupPage: NextPage = () => {
       setCurrentStep(1);
     }
   }, [appState.namesList]);
-
-  // Push hash when the current step changes.
-  useEffect(() => {
-    if (currentStep === 0 && location.hash !== '#1') {
-      void router.replace('#1');
-    } else if (currentStep === 1 && location.hash !== '#2') {
-      void router.replace('#2');
-    }
-  }, [router, currentStep]);
 
   return (
     <DS.Main>
@@ -44,7 +34,9 @@ const DesignSetupPage: NextPage = () => {
         onContextMenu={(e) => e.preventDefault()}
       />
       <DS.BackgroundMask />
-      <DS.SiteLogo />
+      <Link href={'/'}>
+        <DS.SiteLogo />
+      </Link>
       <DS.Section currentStep={currentStep}>
         {STEPS.map((Step, key) => {
           return (
