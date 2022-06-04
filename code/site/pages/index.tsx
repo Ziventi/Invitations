@@ -1,6 +1,6 @@
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useCallback, useEffect, useRef } from 'react';
 
 import Wave from 'components/vectors';
@@ -13,7 +13,6 @@ import * as H from 'styles/pages/Home.styles';
 
 const Home: NextPage = () => {
   const headerRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   /**
    * Fill the header when window is scrolled to a certain height.
@@ -43,13 +42,6 @@ const Home: NextPage = () => {
     };
   }, [fillHeaderOnScroll]);
 
-  /**
-   * Navigate to design page.
-   */
-  function onStartClick(): void {
-    void router.push('/design');
-  }
-
   return (
     <H.Page>
       <Header headerRef={headerRef} />
@@ -69,9 +61,9 @@ const Home: NextPage = () => {
               Personalise your invitations
             </H.HeroCaptionHeading>
             <p>Let each and every one of your guests know they matter.</p>
-            <H.HeroButton bgColor={COLOR.PRIMARY_4_DARK} onClick={onStartClick}>
-              Start
-            </H.HeroButton>
+            <Link href={'/design/#1'}>
+              <H.HeroButton bgColor={COLOR.PRIMARY_4_DARK}>Start</H.HeroButton>
+            </Link>
           </H.HeroCaption>
         </H.Hero>
         <Wave colorTop={COLOR.HERO} colorBottom={COLOR.WORKFLOW} />

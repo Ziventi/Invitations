@@ -18,9 +18,7 @@ import RightSidebar from 'fragments/design/editor/RightSidebar';
 import { Default as DE } from 'styles/pages/design/DesignEditor.styles';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
-  const draggableRef = useRef<HTMLDivElement>(null);
 
   const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
@@ -30,50 +28,6 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
     },
     [dispatch],
   );
-
-  // TODO: Remove (dev purposes only)
-  // useEffect(() => {
-  //   setState({
-  //     namesList: TestData.names,
-  //     imageSrc: TestData.imageSource,
-  //   });
-  // }, [setState]);
-
-  // Called each time the image source changes.
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || !state.imageSrc) return;
-
-    const ctx = canvas.getContext('2d')!;
-
-    const img = new Image();
-    img.src = state.imageSrc;
-    img.onload = () => {
-      ctx.canvas.width = img.width;
-      ctx.canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const scaleX = canvas.width / canvas.clientWidth;
-      const scaleY = canvas.height / canvas.clientHeight;
-      const scale = (scaleX + scaleY) / 2;
-
-      setState({
-        canvasDimensions: {
-          width: canvas.clientWidth,
-          height: canvas.clientHeight,
-        },
-        imageDimensions: {
-          width: img.width,
-          height: img.height,
-        },
-        textStyle: {
-          scale,
-          scaleX,
-          scaleY,
-        },
-      });
-    };
-  }, [setState, state.imageSrc]);
 
   // Toggle cursor type when color picker is visible.
   // Hide color picker if clicked outside of color picker.
@@ -129,10 +83,10 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
 
   return (
     <DE.Page>
-      <EditorHeader canvasRef={canvasRef} fonts={fonts} />
+      <EditorHeader fonts={fonts} />
       <DE.Main>
         <LeftSidebar colorPickerRef={colorPickerRef} fonts={fonts} />
-        <Preview canvasRef={canvasRef} draggableRef={draggableRef} />
+        <Preview />
         <RightSidebar />
         <ProgressOverlay state={state} />
       </DE.Main>

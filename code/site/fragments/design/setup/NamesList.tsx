@@ -81,6 +81,10 @@ export default function NamesList({
     toggleModal(false);
   }
 
+  function onNextStepClick() {
+    setCurrentStep(1);
+  }
+
   return (
     <DS.Step visible={visible}>
       <NL.Container id={'namelist'}>
@@ -113,13 +117,15 @@ export default function NamesList({
             Back to Home
           </DS.Button>
         </Link>
-        <DS.Button
-          bgColor={COLOR.PRIMARY_4_LIGHT}
-          visible={hasNamesListed}
-          onClick={() => setCurrentStep(1)}>
-          Next Step
-          <FontIcon icon={faChevronRight} spaceLeft={true} />
-        </DS.Button>
+        <Link href={'/design/#2'}>
+          <DS.Button
+            bgColor={COLOR.PRIMARY_4_LIGHT}
+            visible={hasNamesListed}
+            onClick={onNextStepClick}>
+            Next Step
+            <FontIcon icon={faChevronRight} spaceLeft={true} />
+          </DS.Button>
+        </Link>
       </DS.Footer>
       <NL.Modal visible={state.isModalVisible}>
         <NL.ModalDialog>

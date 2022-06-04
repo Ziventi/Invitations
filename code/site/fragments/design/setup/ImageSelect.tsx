@@ -1,5 +1,6 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import Image from 'next/image';
+import NextImage from 'next/image';
+import Link from 'next/link';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -50,9 +51,17 @@ export default function ImageSelect({
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
-      setAppState({
-        imageSrc: fileReader.result as string,
-      });
+      const img = new Image();
+      img.src = fileReader.result as string;
+      img.onload = () => {
+        setAppState({
+          imageDimensions: {
+            width: img.width,
+            height: img.height,
+          },
+          imageSrc: img.src,
+        });
+      };
     };
   }
 
@@ -88,15 +97,21 @@ export default function ImageSelect({
         </DS.Partition>
       </IS.Container>
       <DS.Footer>
-        <DS.Button
-          bgColor={COLOR.PRIMARY_4_DARK}
-          onClick={() => setCurrentStep(0)}>
-          <FontIcon icon={faChevronLeft} spaceRight={true} />
-          Previous
-        </DS.Button>
-        <DS.FooterLink href={'/design/editor'}>
-          <DS.Button bgColor={COLOR.PRIMARY_4_LIGHT}>Start Editing</DS.Button>
-        </DS.FooterLink>
+        <Link href={'/design/#1'}>
+          <DS.Button
+            bgColor={COLOR.PRIMARY_4_DARK}
+            onClick={() => setCurrentStep(0)}>
+            <FontIcon icon={faChevronLeft} spaceRight={true} />
+            Previous
+          </DS.Button>
+        </Link>
+        <Link href={'/design/editor'}>
+          <DS.Button
+            bgColor={COLOR.PRIMARY_4_LIGHT}
+            visible={!!appState.imageSrc}>
+            Start Editing
+          </DS.Button>
+        </Link>
       </DS.Footer>
     </DS.Step>
   );
@@ -104,7 +119,7 @@ export default function ImageSelect({
 
 function PreviewImage({ src }: PreviewImageProps) {
   if (!src) return null;
-  return <Image src={src} layout={'fill'} objectFit={'contain'} />;
+  return <NextImage src={src} layout={'fill'} objectFit={'contain'} />;
 }
 
 interface PreviewImageProps {

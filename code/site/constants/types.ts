@@ -47,6 +47,7 @@ export interface TextStyle {
   fontFamily: string;
   fontStyle: FontVariantKey;
   fontSize: number;
+  letterSpacing: number;
   lineHeight: number;
   left: number;
   top: number;
@@ -85,9 +86,8 @@ export interface PaymentHash {
 }
 
 export type FontVariantKey = keyof typeof FONT_VARIANTS;
-export type FontVariantAlias = typeof FONT_VARIANTS[FontVariantKey];
 
-type FileFormat = 'pdf' | 'png';
+export type FileFormat = 'pdf' | 'png' | 'svg';
 
 export interface DesignSetupStepProps {
   visible: boolean;

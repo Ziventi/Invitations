@@ -3992,6 +3992,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@xmldom/xmldom@npm:^0.8.2":
+  version: 0.8.2
+  resolution: "@xmldom/xmldom@npm:0.8.2"
+  checksum: aeea8f670bfa52b3a1b2d355dab3bf4d58ef4969b1fd146a1ab91bf8acbb9d02953022e66e85279015a4e4027205620dfc001ed5d169b1711a09a0a079951e08
+  languageName: node
+  linkType: hard
+
 "@xtuc/ieee754@npm:^1.2.0":
   version: 1.2.0
   resolution: "@xtuc/ieee754@npm:1.2.0"
@@ -4045,11 +4052,13 @@ __metadata:
     "@types/react-dom": 18.0.0
     "@types/styled-components": ^5.1.25
     "@types/webfontloader": ^1.6.34
+    "@xmldom/xmldom": ^0.8.2
     adm-zip: ^0.5.9
     canvas: ^2.9.1
     crypto-js: ^4.1.1
     next: 12.1.5
     polished: ^4.2.2
+    puppeteer: ^14.2.1
     react: 18.0.0
     react-color: ^2.19.3
     react-dom: 18.0.0
@@ -11591,7 +11600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^14.1.0":
+"puppeteer@npm:^14.1.0, puppeteer@npm:^14.2.1":
   version: 14.2.1
   resolution: "puppeteer@npm:14.2.1"
   dependencies:

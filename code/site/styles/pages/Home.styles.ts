@@ -12,15 +12,6 @@ export const Main = styled.main`
   position: relative;
 `;
 
-export const Video = styled.video`
-  filter: blur(4px);
-  height: 100%;
-  min-width: 100%;
-  object-fit: cover;
-  position: fixed;
-  z-index: -1;
-`;
-
 export const Hero = styled.section`
   align-items: center;
   background-color: ${COLOR.HERO};

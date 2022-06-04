@@ -56,6 +56,15 @@ export default function LeftSidebar({
     };
   }, [state.textStyle.color]);
 
+  // const filename = useMemo(() => {
+  //   return Utils.substituteName(state.fileNameTemplate, state.selectedName);
+  // }, [state.fileNameTemplate, state.selectedName]);
+
+  // const dimensions = useMemo(() => {
+  //   const { height, width } = state.imageDimensions;
+  //   return `Dimensions: ${width} x ${height}`;
+  // }, [state.imageDimensions]);
+
   /**
    * Triggers on a new font family selection. If the selected font family does
    * not have the current font style, the font style resets to regular.
@@ -97,7 +106,7 @@ export default function LeftSidebar({
   function onNumberInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const min = parseInt(e.target.min);
     const max = parseInt(e.target.max);
-    const value = e.target.valueAsNumber || min;
+    const value = e.target.valueAsNumber ?? min;
     setState({
       textStyle: {
         ...state.textStyle,
@@ -189,6 +198,17 @@ export default function LeftSidebar({
             />
           </L.FormField>
         </L.FormFieldRow>
+        <L.FormField>
+          <L.Label>Letter Spacing:</L.Label>
+          <NumberInput
+            name={'letterSpacing'}
+            min={-40}
+            max={40}
+            step={1}
+            onChange={onNumberInputChange}
+            value={state.textStyle.letterSpacing}
+          />
+        </L.FormField>
         <L.FormFieldRow>
           <L.FormField>
             <L.Label>Top:</L.Label>
