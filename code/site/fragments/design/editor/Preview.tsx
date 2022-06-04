@@ -21,7 +21,7 @@ import type {
   ResizeHandlePosition,
 } from 'constants/types';
 import { COLOR } from 'styles/Constants.styles';
-import P from 'styles/pages/design/Preview.styles';
+import P from 'styles/pages/design/editor/Preview.styles';
 
 export default function Preview(): ReactElement {
   const [state, setState] = useState<PreviewState>({

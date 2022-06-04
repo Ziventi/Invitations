@@ -188,91 +188,6 @@ export const LeftSidebar = {
   `,
 };
 
-export const Preview = {
-  Container: styled.section`
-    align-items: center;
-    background-color: ${COLOR.PRIMARY_5_DARKER};
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-  `,
-  Main: styled.div`
-    align-items: center;
-    display: flex;
-    flex: 1 1 auto;
-    height: 0;
-    justify-content: center;
-    position: relative;
-  `,
-  Footer: styled.footer`
-    align-items: center;
-    background-color: ${COLOR.PRIMARY_4_DARK};
-    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
-    display: flex;
-    flex: 0 0 30px;
-    justify-content: space-evenly;
-    min-height: 0;
-    width: 100%;
-    z-index: 2;
-  `,
-  FooterText: styled.small`
-    color: ${COLOR.WHITE};
-    font-size: 0.9vw;
-  `,
-  Canvas: styled.canvas`
-    max-height: 100%;
-    max-width: 100%;
-  `,
-  DragZone: styled.div`
-    align-items: center;
-    box-shadow: 0 0 2px 0 ${COLOR.BLACK};
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    position: absolute;
-    width: 100%;
-  `,
-  Draggable: styled.div<{ selected: boolean }>`
-    border: 2px dashed
-      ${({ selected }) => (selected ? COLOR.DEFAULT : 'transparent')};
-    border-radius: 2px;
-    cursor: move;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: fit-content;
-    padding: 10px;
-    position: absolute;
-    text-align: center;
-    transition: border 0.2s;
-    user-select: none;
-    width: 100%;
-  `,
-  ResizeHandle: styled.svg<ResizeHandleProps>`
-    cursor: ew-resize;
-    margin: -1em;
-    position: absolute;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-
-    ${({ position, selected }) => {
-      const opacity = selected ? 1 : 0;
-      const visibility = selected ? 'visible' : 'hidden';
-      const alignSelf = position === 'east' ? 'flex-end' : 'flex-start';
-      return css`
-        align-self: ${alignSelf};
-        opacity: ${opacity};
-        visibility: ${visibility};
-      `;
-    }}
-  `,
-  ResizeHandleCircle: styled.circle`
-    fill: #00a6ff;
-  `,
-};
-
 export const RightSidebar = {
   Aside: styled.aside`
     background-color: ${COLOR.PRIMARY_5_NEUTRAL};
@@ -325,9 +240,4 @@ export const RightSidebar = {
 interface ColorThumbnailProps {
   bgColor: string;
   fontColor: string;
-}
-
-interface ResizeHandleProps {
-  position: ResizeHandlePosition;
-  selected: boolean;
 }
