@@ -130,7 +130,7 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
         } else if (format === 'png') {
           await Download.singlePNGImage(
             payload,
-            appState.canvasDimensions,
+            appState.imageDimensions,
             appState.imageDimensions,
           );
         } else if (format === 'svg') {

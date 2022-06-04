@@ -31,10 +31,6 @@ const initialState: AppState = {
     width: 0,
     height: 0,
   },
-  canvasDimensions: {
-    width: 0,
-    height: 0,
-  },
   textStyle: {
     color: '#831919FF',
     fontFamily: 'Courgette',

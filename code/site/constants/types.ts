@@ -5,7 +5,6 @@ import type { FONT_VARIANTS } from './variables';
 
 export interface AppState {
   namesList: string[];
-  canvasDimensions: Dimensions;
   downloadInProgress: boolean;
   draggable: Draggable;
   fileFormat: FileFormat;

@@ -18,43 +18,44 @@ export default function LeftSidebar({
   colorPickerRef,
   fonts,
 }: LeftSidebarProps): ReactElement {
-  const state = useSelector((state: RootState) => state);
+  const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
-  const setState = useCallback(
+  const setAppState = useCallback(
     (payload: PageStatePayload) => {
       dispatch(updateState(payload));
     },
     [dispatch],
   );
 
-  // Memoises the draggable top and left limits for the number inputs.
-  const maxTop = useMemo(() => {
-    return state.canvasDimensions.height - state.textStyle.height;
-  }, [state.canvasDimensions.height, state.textStyle.height]);
-  const maxLeft = useMemo(() => {
-    return state.canvasDimensions.width - state.textStyle.width;
-  }, [state.canvasDimensions.width, state.textStyle.width]);
+  // Memoises the draggable text style limits for the number inputs.
+  const max = useMemo(() => {
+    return {
+      top: appState.imageDimensions.height - appState.textStyle.height,
+      left: appState.imageDimensions.width - appState.textStyle.width,
+      fontSize: (appState.imageDimensions.width / 4) * 3,
+    };
+  }, [appState.imageDimensions, appState.textStyle]);
 
   // Memoises the list of font variants for the selected font family.
   const fontVariants = useMemo(() => {
     const font = fonts.find(
-      (font) => font.family === state.textStyle.fontFamily,
+      (font) => font.family === appState.textStyle.fontFamily,
     )!;
     return font.variants.sort((a, b) => {
       if (FONT_VARIANTS[a] < FONT_VARIANTS[b]) return -1;
       if (FONT_VARIANTS[a] > FONT_VARIANTS[b]) return 1;
       return 0;
     });
-  }, [fonts, state.textStyle.fontFamily]);
+  }, [fonts, appState.textStyle.fontFamily]);
 
   // Memoises the font preview text and color.
   const { fontPreviewText, fontPreviewTextColor } = useMemo(() => {
-    const color = new TinyColor(state.textStyle.color);
+    const color = new TinyColor(appState.textStyle.color);
     return {
       fontPreviewText: color.toString('hex8').toUpperCase(),
       fontPreviewTextColor: color.isLight() ? '#000' : '#fff',
     };
-  }, [state.textStyle.color]);
+  }, [appState.textStyle.color]);
 
   // const filename = useMemo(() => {
   //   return Utils.substituteName(state.fileNameTemplate, state.selectedName);
@@ -72,13 +73,13 @@ export default function LeftSidebar({
    */
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
     const fontFamily = e.target.value;
-    let { fontStyle } = state.textStyle;
+    let { fontStyle } = appState.textStyle;
 
     const font = fonts.find((font) => font.family === fontFamily);
     if (!font || !font.variants.includes(fontStyle)) {
       fontStyle = 'regular';
     }
-    setState({
+    setAppState({
       textStyle: {
         fontFamily: e.target.value,
         fontStyle,
@@ -91,7 +92,7 @@ export default function LeftSidebar({
    * @param e The change event.
    */
   function onFontStyleChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    setState({
+    setAppState({
       textStyle: {
         fontStyle: e.target.value as FontVariantKey,
       },
@@ -107,9 +108,9 @@ export default function LeftSidebar({
     const min = parseInt(e.target.min);
     const max = parseInt(e.target.max);
     const value = e.target.valueAsNumber ?? min;
-    setState({
+    setAppState({
       textStyle: {
-        ...state.textStyle,
+        ...appState.textStyle,
         [e.target.name]: Math.max(min, Math.min(value, max)),
       },
     });
@@ -118,7 +119,7 @@ export default function LeftSidebar({
   function onFileNameTemplateChange(
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ): void {
-    setState({
+    setAppState({
       fileNameTemplate: e.target.value,
     });
   }
@@ -127,7 +128,7 @@ export default function LeftSidebar({
    * Shows the color picker.
    */
   function showColorPicker() {
-    setState({
+    setAppState({
       isColorPickerVisible: true,
     });
   }
@@ -139,7 +140,7 @@ export default function LeftSidebar({
           <L.Label>Font Family:</L.Label>
           <L.FormSelect
             onChange={onFontFamilyChange}
-            value={state.textStyle.fontFamily}>
+            value={appState.textStyle.fontFamily}>
             {fonts.map((font) => {
               return (
                 <option value={font.family} key={font.id}>
@@ -154,7 +155,7 @@ export default function LeftSidebar({
           <L.FontStyleSelect
             onChange={onFontStyleChange}
             disabled={fontVariants.length < 2}
-            value={state.textStyle.fontStyle}>
+            value={appState.textStyle.fontStyle}>
             {fontVariants.map((variantKey) => {
               return (
                 <option value={variantKey} key={variantKey}>
@@ -168,7 +169,7 @@ export default function LeftSidebar({
           <L.Label>Font Color:</L.Label>
           <L.ColorThumbnail
             onClick={showColorPicker}
-            bgColor={state.textStyle.color}
+            bgColor={appState.textStyle.color}
             fontColor={fontPreviewTextColor}>
             {fontPreviewText}
           </L.ColorThumbnail>
@@ -180,10 +181,10 @@ export default function LeftSidebar({
             <NumberInput
               name={'fontSize'}
               min={2}
-              max={144}
+              max={max.fontSize}
               step={1}
               onChange={onNumberInputChange}
-              value={state.textStyle.fontSize}
+              value={appState.textStyle.fontSize}
             />
           </L.FormField>
           <L.FormField>
@@ -194,31 +195,33 @@ export default function LeftSidebar({
               max={150}
               step={2}
               onChange={onNumberInputChange}
-              value={state.textStyle.lineHeight}
+              value={appState.textStyle.lineHeight}
             />
           </L.FormField>
         </L.FormFieldRow>
-        <L.FormField>
-          <L.Label>Letter Spacing:</L.Label>
-          <NumberInput
-            name={'letterSpacing'}
-            min={-40}
-            max={40}
-            step={1}
-            onChange={onNumberInputChange}
-            value={state.textStyle.letterSpacing}
-          />
-        </L.FormField>
+        <L.FormFieldRow>
+          <L.FormField>
+            <L.Label>Letter Spacing:</L.Label>
+            <NumberInput
+              name={'letterSpacing'}
+              min={-40}
+              max={40}
+              step={1}
+              onChange={onNumberInputChange}
+              value={appState.textStyle.letterSpacing}
+            />
+          </L.FormField>
+        </L.FormFieldRow>
         <L.FormFieldRow>
           <L.FormField>
             <L.Label>Top:</L.Label>
             <NumberInput
               name={'top'}
               min={0}
-              max={maxTop}
+              max={max.top}
               step={1}
               onChange={onNumberInputChange}
-              value={state.textStyle.top}
+              value={appState.textStyle.top}
             />
           </L.FormField>
           <L.FormField>
@@ -226,10 +229,10 @@ export default function LeftSidebar({
             <NumberInput
               name={'left'}
               min={0}
-              max={maxLeft}
+              max={max.left}
               step={1}
               onChange={onNumberInputChange}
-              value={state.textStyle.left}
+              value={appState.textStyle.left}
             />
           </L.FormField>
         </L.FormFieldRow>
@@ -237,7 +240,7 @@ export default function LeftSidebar({
           <L.Label>File Name Template:</L.Label>
           <L.FilenameInput
             onChange={onFileNameTemplateChange}
-            value={state.fileNameTemplate}
+            value={appState.fileNameTemplate}
             rows={2}
             placeholder={DEFAULT_FILENAME_TEMPLATE}
             maxLength={128}
@@ -289,19 +292,15 @@ function ColorPicker({ colorPickerRef }: ColorPickerProps) {
   );
 }
 
-function NumberInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
+function NumberInput({ ...props }: NumberInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   return (
     <L.NumericField focused={isFocused}>
       <L.NumericInput
         type={'number'}
         autoComplete={'off'}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
-        onBlur={() => {
-          setIsFocused(false);
-        }}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         {...props}
       />
       <L.NumberSuffix type={'text'} value={'px'} readOnly={true} />
@@ -317,3 +316,5 @@ interface LeftSidebarProps {
 interface ColorPickerProps {
   colorPickerRef: React.RefObject<HTMLDivElement>;
 }
+
+type NumberInputProps = React.InputHTMLAttributes<HTMLInputElement>;

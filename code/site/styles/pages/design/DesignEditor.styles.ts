@@ -34,7 +34,8 @@ const FormInput = css`
   border: none;
   border-bottom: 1px solid ${COLOR.WHITE};
   color: ${COLOR.WHITE};
-  font-size: 16px;
+  flex: 1;
+  font-size: 0.9em;
   max-width: 100%;
   outline-color: ${COLOR.PRIMARY_2_NEUTRAL};
   padding: 0.5em;
@@ -107,25 +108,29 @@ export const LeftSidebar = {
     display: flex;
     flex: 0 0 auto;
     flex-direction: column;
-    max-width: 290px;
+    max-width: 300px;
     padding: 1em 1.5em;
     user-select: none;
     z-index: 1;
   `,
   DesignForm: styled.section`
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1em;
+    row-gap: 1.2em;
   `,
   FormFieldRow: styled.div`
-    display: flex;
-    justify-content: space-between;
+    column-gap: 1em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
   `,
   FormField: styled.div`
     flex: 1;
-    padding: 0.5em 0;
     position: relative;
   `,
   Label: styled.label`
     display: block;
+    font-size: 0.9em;
     padding: 5px 0;
   `,
   FormSelect: styled.select`
@@ -137,9 +142,11 @@ export const LeftSidebar = {
   `,
   FilenameInput: styled.textarea`
     ${FormInput}
+    resize: none;
+    width: 100%;
   `,
-  NumericField: styled.div<{ focused: boolean }>`
-    width: fit-content;
+  NumericField: styled.div<{ focused: boolean; stretch?: boolean }>`
+    display: flex;
 
     &:focus {
       outline-width: 0;
@@ -155,6 +162,7 @@ export const LeftSidebar = {
   `,
   NumericInput: styled.input`
     ${FormInput}
+    flex: 100%;
     outline: none;
   `,
   NumberSuffix: styled.input`
