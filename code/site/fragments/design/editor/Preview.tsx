@@ -56,6 +56,7 @@ export default function Preview(): ReactElement {
     [dispatch],
   );
 
+  const svgCanvasRef = useRef<SVGSVGElement>(null);
   const draggableRef = useRef<SVGTextElement>(null);
 
   const viewBox = useMemo(() => {
@@ -90,6 +91,11 @@ export default function Preview(): ReactElement {
   function onTextDragStart(e: React.MouseEvent<SVGTextElement>): void {
     if (e.button !== 0) return;
 
+    const svgp = convertToSVGCoordinates(svgCanvasRef, {
+      x: e.pageX,
+      y: e.pageY,
+    });
+
     const { x, y } = e.currentTarget;
     setState((current) => ({
       ...current,
@@ -98,8 +104,8 @@ export default function Preview(): ReactElement {
         isDragging: true,
         isSelected: true,
         offset: {
-          x: e.pageX - x.baseVal[0].value,
-          y: e.pageY - y.baseVal[0].value,
+          x: svgp.x - x.baseVal[0].value,
+          y: svgp.y - y.baseVal[0].value,
         },
       },
     }));
@@ -115,6 +121,10 @@ export default function Preview(): ReactElement {
   function onResizeHandleDragStart(
     e: React.MouseEvent<SVGCircleElement>,
   ): void {
+    const svgp = convertToSVGCoordinates(svgCanvasRef, {
+      x: e.pageX,
+      y: e.pageY,
+    });
     const { id } = e.currentTarget;
     setState((current) => ({
       ...current,
@@ -123,7 +133,7 @@ export default function Preview(): ReactElement {
         snapshotDraggableWidth: state.draggable.maxWidth,
         isDragging: true,
         handleId: id as ResizeHandlePosition,
-        initialPointX: e.pageX,
+        initialPointX: svgp.x,
       },
     }));
 
@@ -136,10 +146,10 @@ export default function Preview(): ReactElement {
    */
   const onTextDrag = useCallback(
     (e: MouseEvent): void => {
-      const currentPoint: Coordinates = {
-        x: e.pageX - state.draggable.offset!.x,
-        y: e.pageY - state.draggable.offset!.y,
-      };
+      const svgp = convertToSVGCoordinates(svgCanvasRef, {
+        x: e.pageX,
+        y: e.pageY,
+      });
 
       const { height: maxHeight, width: maxWidth } = appState.imageDimensions;
       const { height } = state.draggable.dimensions;
@@ -147,12 +157,18 @@ export default function Preview(): ReactElement {
         textStyle: {
           left: Math.round(
             Utils.minmax(
-              currentPoint.x,
+              svgp.x - state.draggable.offset!.x,
               0,
               maxWidth - state.draggable.maxWidth,
             ),
           ),
-          top: Math.round(Utils.minmax(currentPoint.y, 0, maxHeight - height)),
+          top: Math.round(
+            Utils.minmax(
+              svgp.y - state.draggable.offset!.y,
+              0,
+              maxHeight - height,
+            ),
+          ),
         },
       });
 
@@ -296,6 +312,7 @@ export default function Preview(): ReactElement {
     }
   }, [appState.selectedName, appState.textStyle]);
 
+  // Get the initial max width.
   useEffect(() => {
     const draggable = draggableRef.current;
     if (draggable) {
@@ -303,7 +320,7 @@ export default function Preview(): ReactElement {
         ...current,
         draggable: {
           ...current.draggable,
-          maxWidth: draggable.getBBox().width,
+          maxWidth: draggable && draggable.getBBox().width,
         },
       }));
     }
@@ -332,7 +349,10 @@ export default function Preview(): ReactElement {
   const { height } = state.draggable.dimensions;
   return (
     <P.Container onMouseDown={onDragZoneClick}>
-      <P.SVGCanvas xmlns={'http://www.w3.org/2000/svg'} viewBox={viewBox}>
+      <P.SVGCanvas
+        xmlns={'http://www.w3.org/2000/svg'}
+        viewBox={viewBox}
+        ref={svgCanvasRef}>
         <rect x={0} y={0} width={'100%'} height={'100%'} fill={COLOR.WHITE} />
         <image
           href={appState.imageSrc!}
@@ -384,6 +404,26 @@ export default function Preview(): ReactElement {
       </P.SVGCanvas>
     </P.Container>
   );
+}
+
+/**
+ * Convert DOM point to SVG coordinates.
+ * @param svgRef The SVG reference.
+ * @param domCoordinates The DOM point.
+ * @returns The SVG coordinates.
+ */
+function convertToSVGCoordinates(
+  svgRef: React.RefObject<SVGSVGElement>,
+  domCoordinates: Coordinates,
+) {
+  const svg = svgRef.current!;
+  const domPoint = DOMPoint.fromPoint({
+    x: domCoordinates.x,
+    y: domCoordinates.y,
+  });
+
+  const svgp = domPoint.matrixTransform(svg.getScreenCTM()!.inverse());
+  return svgp;
 }
 
 interface PreviewState {
