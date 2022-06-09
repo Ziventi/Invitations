@@ -216,8 +216,13 @@ export default function Preview(): ReactElement {
         handleId,
         initialPointX,
       } = state.resizeHandles;
+
+      const svgp = convertToSVGCoordinates(svgCanvasRef, {
+        x: e.pageX,
+        y: e.pageY,
+      });
       const delta =
-        handleId === 'east' ? e.pageX - initialPointX : initialPointX - e.pageX;
+        handleId === 'east' ? svgp.x - initialPointX : initialPointX - svgp.x;
 
       const draggableNewWidth = snapshotDraggableWidth + delta;
 
