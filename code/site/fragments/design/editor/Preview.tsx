@@ -115,32 +115,6 @@ export default function Preview(): ReactElement {
   }
 
   /**
-   * Records the initial X-point and handle ID of the resize handle.
-   * @param e The mouse event.
-   */
-  function onResizeHandleDragStart(
-    e: React.MouseEvent<SVGCircleElement>,
-  ): void {
-    const svgp = convertToSVGCoordinates(svgCanvasRef, {
-      x: e.pageX,
-      y: e.pageY,
-    });
-    const { id } = e.currentTarget;
-    setState((current) => ({
-      ...current,
-      resizeHandles: {
-        snapshotDraggableLeft: appState.textStyle.left,
-        snapshotDraggableWidth: state.draggable.maxWidth,
-        isDragging: true,
-        handleId: id as ResizeHandlePosition,
-        initialPointX: svgp.x,
-      },
-    }));
-
-    e.stopPropagation();
-  }
-
-  /**
    * The {@link onDrag} for draggable text.
    * @param e The mouse event.
    */
@@ -177,6 +151,56 @@ export default function Preview(): ReactElement {
     },
     [setAppState, appState.imageDimensions, state.draggable],
   );
+
+  /**
+   * Called on when finished dragging draggable text.
+   * @param e The mouse event.
+   */
+  const onTextDragEnd = useCallback(
+    (e: MouseEvent): void => {
+      if (!state.draggable.isDragging) return;
+
+      const draggable = draggableRef.current;
+      if (!draggable) return;
+
+      setState((current) => ({
+        ...current,
+        draggable: {
+          ...current.draggable,
+          isDragging: false,
+        },
+      }));
+
+      e.stopPropagation();
+    },
+    [setState, draggableRef, state.draggable.isDragging],
+  );
+
+  /**
+   * Records the initial X-point and handle ID of the resize handle.
+   * @param e The mouse event.
+   */
+  function onResizeHandleDragStart(
+    e: React.MouseEvent<SVGCircleElement>,
+  ): void {
+    const svgp = convertToSVGCoordinates(svgCanvasRef, {
+      x: e.pageX,
+      y: e.pageY,
+    });
+    const { id } = e.currentTarget;
+    setState((current) => ({
+      ...current,
+      resizeHandles: {
+        snapshotDraggableLeft: appState.textStyle.left,
+        snapshotDraggableWidth: state.draggable.maxWidth,
+        isDragging: true,
+        handleId: id as ResizeHandlePosition,
+        initialPointX: svgp.x,
+      },
+    }));
+
+    e.stopPropagation();
+  }
 
   /**
    * The {@link onDrag} for resize handle. Calculates the delta on dragging a resize
@@ -224,6 +248,21 @@ export default function Preview(): ReactElement {
   );
 
   /**
+   * Called when finished dragging resize handle.
+   */
+  const onResizeHandleDragEnd = useCallback((e: MouseEvent): void => {
+    setState((current) => ({
+      ...current,
+      resizeHandles: {
+        ...current.resizeHandles,
+        isDragging: false,
+        handleId: null,
+      },
+    }));
+    e.stopPropagation();
+  }, []);
+
+  /**
    * Called repeatedly while dragging an element within the drag zone.
    * @param e The mouse event.
    */
@@ -242,45 +281,6 @@ export default function Preview(): ReactElement {
       state.resizeHandles.isDragging,
     ],
   );
-
-  /**
-   * Called on when finished dragging draggable text.
-   * @param e The mouse event.
-   */
-  const onTextDragEnd = useCallback(
-    (e: MouseEvent): void => {
-      if (!state.draggable.isDragging) return;
-
-      const draggable = draggableRef.current;
-      if (!draggable) return;
-
-      setState((current) => ({
-        ...current,
-        draggable: {
-          ...current.draggable,
-          isDragging: false,
-        },
-      }));
-
-      e.stopPropagation();
-    },
-    [setState, draggableRef, state.draggable.isDragging],
-  );
-
-  /**
-   * Called when finished dragging resize handle.
-   */
-  const onResizeHandleDragEnd = useCallback((e: MouseEvent): void => {
-    setState((current) => ({
-      ...current,
-      resizeHandles: {
-        ...current.resizeHandles,
-        isDragging: false,
-        handleId: null,
-      },
-    }));
-    e.stopPropagation();
-  }, []);
 
   // Window event listeners for the drag and resize operations.
   useEffect(() => {
