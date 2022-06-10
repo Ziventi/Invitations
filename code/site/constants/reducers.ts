@@ -55,6 +55,16 @@ const slice = createSlice({
       return {
         ...state,
         ...action.payload,
+        draggable: {
+          style: {
+            ...state.draggable.style,
+            ...action.payload.draggable?.style,
+          },
+          position: {
+            ...state.draggable.position,
+            ...action.payload.draggable?.position,
+          },
+        },
       };
     },
     updateDraggable: (state, action: PayloadAction<UpdateDraggablePayload>) => {
@@ -101,7 +111,12 @@ export const persistor = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-type UpdateStatePayload = Partial<AppState>;
+export type UpdateStatePayload = Omit<Partial<AppState>, 'draggable'> & {
+  draggable?: {
+    style?: Partial<DraggableStyle>;
+    position?: Partial<DraggablePosition>;
+  };
+};
 type UpdateDraggablePayload = {
   style?: Partial<DraggableStyle>;
   position?: Partial<DraggablePosition>;

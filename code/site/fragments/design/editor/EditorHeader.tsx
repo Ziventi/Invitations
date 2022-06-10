@@ -1,19 +1,12 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import FontIcon from 'components/icon';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
-import type { AppDispatch, RootState } from 'constants/reducers';
-import { updateState } from 'constants/reducers';
+import type { RootState } from 'constants/reducers';
 import type {
   FileFormat,
   GoogleFont,

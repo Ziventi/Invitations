@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import FontIcon from 'components/icon';
 import type {
   AppDispatch,
-  PageStatePayload,
   RootState,
+  UpdateStatePayload,
 } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import type { DesignSetupStepProps } from 'constants/types';
@@ -26,7 +26,7 @@ export default function ImageSelect({
   const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
   const setAppState = useCallback(
-    (payload: PageStatePayload) => {
+    (payload: UpdateStatePayload) => {
       dispatch(updateState(payload));
     },
     [dispatch],
@@ -61,11 +61,6 @@ export default function ImageSelect({
             height: img.height,
           },
           imageSrc: img.src,
-          textStyle: {
-            fontSize: img.width / 10,
-            left: img.width / 3,
-            top: img.height / 3,
-          },
         });
       };
     };

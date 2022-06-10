@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ProgressOverlay from 'components/progress';
 import type { AppDispatch, RootState } from 'constants/reducers';
-import { updateState } from 'constants/reducers';
+import { updateDraggable, updateState } from 'constants/reducers';
 import type { GoogleFont } from 'constants/types';
 import { GOOGLE_FONT_HOST } from 'constants/variables';
 import EditorHeader from 'fragments/design/editor/EditorHeader';
@@ -42,7 +42,7 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
     return () => {
       window.removeEventListener('mousedown', hideColorPicker);
     };
-  }, [dispatch, isColorPickerVisible]);
+  }, [isColorPickerVisible]);
 
   // Load a new font on a new font family selection.
   useEffect(() => {
@@ -65,10 +65,28 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
 
   // Change selected name if the names list changes.
   useEffect(() => {
-    updateState({
-      selectedName: appState.namesList[0] || '',
-    });
+    dispatch(
+      updateState({
+        selectedName: appState.namesList[0] || '',
+      }),
+    );
   }, [dispatch, appState.namesList]);
+
+  // Set draggable style and position defaults based on image dimensions.
+  useEffect(() => {
+    const { height, width } = appState.imageDimensions;
+    dispatch(
+      updateDraggable({
+        style: {
+          fontSize: width / 10,
+        },
+        position: {
+          left: width / 3,
+          top: height / 3,
+        },
+      }),
+    );
+  }, [dispatch, appState.imageDimensions]);
 
   return (
     <DE.Page>
