@@ -12,11 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FontIcon from 'components/icon';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
-import type {
-  AppDispatch,
-  PageStatePayload,
-  RootState,
-} from 'constants/reducers';
+import type { AppDispatch, RootState } from 'constants/reducers';
 import { updateState } from 'constants/reducers';
 import type {
   FileFormat,
@@ -31,15 +27,9 @@ import { EditorHeader as EH } from 'styles/pages/design/DesignEditor.styles';
 export default function EditorHeader({ fonts }: EditorHeaderProps) {
   const [state, setState] = useState<EditorHeaderState>({
     isMenuVisible: false,
+    downloadInProgress: false,
   });
   const appState = useSelector((state: RootState) => state);
-  const dispatch = useDispatch<AppDispatch>();
-  const setAppState = useCallback(
-    (payload: PageStatePayload) => {
-      dispatch(updateState(payload));
-    },
-    [dispatch],
-  );
 
   const menuRef = useRef<HTMLMenuElement>(null);
 
@@ -93,24 +83,25 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
       return;
     }
 
-    setAppState({
+    setState((current) => ({
+      ...current,
       downloadInProgress: true,
-    });
+    }));
 
     const selectedFont = fonts.find((font) => {
-      return font.family === appState.textStyle.fontFamily;
+      return font.family === appState.draggable.style.fontFamily;
     })!;
 
     // TODO: Validate request body.
     const requestBody: RequestBody = {
       backgroundImageSrc: appState.imageSrc,
+      draggable: appState.draggable,
       fileNameTemplate: appState.fileNameTemplate,
       format: format as FileFormat,
       fontId: selectedFont.family,
       dimensions: appState.imageDimensions,
       namesList: appState.namesList,
       selectedName: appState.selectedName,
-      textStyle: appState.textStyle,
     };
 
     const payload: RequestInit = {
@@ -140,9 +131,10 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
     } catch (e) {
       alert(e);
     } finally {
-      setAppState({
+      setState((current) => ({
+        ...current,
         downloadInProgress: false,
-      });
+      }));
     }
   }
 
@@ -215,4 +207,5 @@ interface EditorHeaderProps {
 
 interface EditorHeaderState {
   isMenuVisible: boolean;
+  downloadInProgress: boolean;
 }

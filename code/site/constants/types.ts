@@ -6,14 +6,12 @@ import type { FONT_VARIANTS } from './variables';
 export interface AppState {
   namesList: string[];
   downloadInProgress: boolean;
-  draggable: Draggable;
   fileFormat: FileFormat;
   imageDimensions: Dimensions;
   imageSrc: string | null;
-  isColorPickerVisible: boolean;
   selectedName: string;
-  textStyle: TextStyle;
   fileNameTemplate: string;
+  draggable: Draggable;
 }
 
 export interface ZiventiNextApiRequest extends NextApiRequest {
@@ -22,13 +20,13 @@ export interface ZiventiNextApiRequest extends NextApiRequest {
 
 export interface RequestBody {
   backgroundImageSrc: string;
+  draggable: Draggable;
   dimensions: Dimensions;
   fileNameTemplate: string;
   format: FileFormat;
   fontId: string;
   namesList: string[];
   selectedName: string;
-  textStyle: TextStyle;
 }
 
 export interface Coordinates {
@@ -41,20 +39,25 @@ export interface Dimensions {
   height: number;
 }
 
-export interface TextStyle {
+export interface Draggable {
+  style: DraggableStyle;
+  position: DraggablePosition;
+}
+
+export interface DraggableStyle {
   color: string;
   fontFamily: string;
   fontStyle: FontVariantKey;
   fontSize: number;
   letterSpacing: number;
   lineHeight: number;
+}
+
+export interface DraggablePosition {
   left: number;
   top: number;
   width: number;
   height: number;
-  scale: number;
-  scaleX: number;
-  scaleY: number;
 }
 
 export interface GoogleFont {
@@ -70,13 +73,6 @@ export interface GoogleFont {
   defVariant?: string;
 }
 
-export type Draggable = { isSelected: boolean } & DraggableOptions;
-export type DraggableOptions =
-  | {
-      isDragging: true;
-      offset: Coordinates;
-    }
-  | { isDragging: false; offset: null };
 export type ResizeHandlePosition = 'east' | 'west';
 
 export interface PaymentHash {

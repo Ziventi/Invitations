@@ -18,7 +18,7 @@ export default async function handler(
     format,
     fontId,
     namesList,
-    textStyle,
+    draggable,
   } = req.body;
 
   let browser: Browser | undefined;
@@ -40,7 +40,7 @@ export default async function handler(
           dimensions,
           fileNameTemplate,
           name,
-          textStyle,
+          draggable,
           url.href,
         );
 

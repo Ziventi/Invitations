@@ -1,7 +1,7 @@
 import { DOMImplementation, XMLSerializer } from '@xmldom/xmldom';
 
 import * as Utils from 'constants/functions/utils';
-import type { Dimensions, TextStyle } from 'constants/types';
+import type { Dimensions, Draggable } from 'constants/types';
 
 const xmlSerializer = new XMLSerializer();
 const document = new DOMImplementation().createDocument(
@@ -15,7 +15,7 @@ export function create(
   dimensions: Dimensions,
   fileNameTemplate: string,
   selectedName: string,
-  textStyle: TextStyle,
+  draggable: Draggable,
   fontDataUri: string,
 ): string {
   const xmlns = 'http://www.w3.org/2000/svg';
@@ -63,19 +63,22 @@ export function create(
 
   // Add custom text.
   const text = document.createElementNS(xmlns, 'text');
-  text.setAttribute('x', String(textStyle.left));
-  text.setAttribute('y', String(textStyle.top));
+  text.setAttribute('x', String(draggable.position.left));
+  text.setAttribute('y', String(draggable.position.top));
   text.setAttribute('dominant-baseline', 'text-before-edge');
   text.setAttribute('filter', 'url(#crispify)');
-  text.setAttribute('fill', textStyle.color);
-  text.setAttribute('font-size', `${textStyle.fontSize}px`);
+  text.setAttribute('fill', draggable.style.color);
+  text.setAttribute('font-size', `${draggable.style.fontSize}px`);
   text.setAttribute(
     'font-style',
-    textStyle.fontStyle.includes('italic') ? 'italic' : 'normal',
+    draggable.style.fontStyle.includes('italic') ? 'italic' : 'normal',
   );
-  text.setAttribute('font-weight', Utils.getFontWeight(textStyle.fontStyle));
-  text.setAttribute('letter-spacing', `${textStyle.letterSpacing}px`);
-  text.setAttribute('style', `font-family:${textStyle.fontFamily};`);
+  text.setAttribute(
+    'font-weight',
+    Utils.getFontWeight(draggable.style.fontStyle),
+  );
+  text.setAttribute('letter-spacing', `${draggable.style.letterSpacing}px`);
+  text.setAttribute('style', `font-family:${draggable.style.fontFamily};`);
   text.textContent = selectedName;
   svg.appendChild(text);
 

@@ -1,15 +1,11 @@
 import { TinyColor } from '@ctrl/tinycolor';
-import type { ReactElement } from 'react';
-import React, { useCallback, useMemo, useState } from 'react';
+import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import React, { useMemo, useState } from 'react';
 import type { ColorResult } from 'react-color';
 import { useDispatch, useSelector } from 'react-redux';
 
-import type {
-  AppDispatch,
-  PageStatePayload,
-  RootState,
-} from 'constants/reducers';
-import { updateState } from 'constants/reducers';
+import type { AppDispatch, RootState } from 'constants/reducers';
+import { updateDraggable, updateState } from 'constants/reducers';
 import type { FontVariantKey, GoogleFont } from 'constants/types';
 import { DEFAULT_FILENAME_TEMPLATE, FONT_VARIANTS } from 'constants/variables';
 import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
@@ -17,45 +13,45 @@ import { LeftSidebar as L } from 'styles/pages/design/DesignEditor.styles';
 export default function LeftSidebar({
   colorPickerRef,
   fonts,
+  useColorPicker,
 }: LeftSidebarProps): ReactElement {
+  const [isColorPickerVisible, setColorPickerVisible] = useColorPicker;
   const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
-  const setAppState = useCallback(
-    (payload: PageStatePayload) => {
-      dispatch(updateState(payload));
-    },
-    [dispatch],
-  );
 
   // Memoises the draggable text style limits for the number inputs.
   const max = useMemo(() => {
     return {
-      top: appState.imageDimensions.height - appState.textStyle.height,
-      left: appState.imageDimensions.width - appState.textStyle.width,
+      top: appState.imageDimensions.height - appState.draggable.position.height,
+      left: appState.imageDimensions.width - appState.draggable.position.width,
       fontSize: (appState.imageDimensions.width / 4) * 3,
     };
-  }, [appState.imageDimensions, appState.textStyle]);
+  }, [
+    appState.imageDimensions,
+    appState.draggable.position.height,
+    appState.draggable.position.width,
+  ]);
 
   // Memoises the list of font variants for the selected font family.
   const fontVariants = useMemo(() => {
     const font = fonts.find(
-      (font) => font.family === appState.textStyle.fontFamily,
+      (font) => font.family === appState.draggable.style.fontFamily,
     )!;
     return font.variants.sort((a, b) => {
       if (FONT_VARIANTS[a] < FONT_VARIANTS[b]) return -1;
       if (FONT_VARIANTS[a] > FONT_VARIANTS[b]) return 1;
       return 0;
     });
-  }, [fonts, appState.textStyle.fontFamily]);
+  }, [fonts, appState.draggable.style.fontFamily]);
 
   // Memoises the font preview text and color.
   const { fontPreviewText, fontPreviewTextColor } = useMemo(() => {
-    const color = new TinyColor(appState.textStyle.color);
+    const color = new TinyColor(appState.draggable.style.color);
     return {
       fontPreviewText: color.toString('hex8').toUpperCase(),
       fontPreviewTextColor: color.isLight() ? '#000' : '#fff',
     };
-  }, [appState.textStyle.color]);
+  }, [appState.draggable.style.color]);
 
   // const filename = useMemo(() => {
   //   return Utils.substituteName(state.fileNameTemplate, state.selectedName);
@@ -73,18 +69,21 @@ export default function LeftSidebar({
    */
   function onFontFamilyChange(e: React.ChangeEvent<HTMLSelectElement>): void {
     const fontFamily = e.target.value;
-    let { fontStyle } = appState.textStyle;
+    let { fontStyle } = appState.draggable.style;
 
     const font = fonts.find((font) => font.family === fontFamily);
     if (!font || !font.variants.includes(fontStyle)) {
       fontStyle = 'regular';
     }
-    setAppState({
-      textStyle: {
-        fontFamily: e.target.value,
-        fontStyle,
-      },
-    });
+
+    dispatch(
+      updateDraggable({
+        style: {
+          fontFamily: e.target.value,
+          fontStyle,
+        },
+      }),
+    );
   }
 
   /**
@@ -92,11 +91,13 @@ export default function LeftSidebar({
    * @param e The change event.
    */
   function onFontStyleChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    setAppState({
-      textStyle: {
-        fontStyle: e.target.value as FontVariantKey,
-      },
-    });
+    dispatch(
+      updateDraggable({
+        style: {
+          fontStyle: e.target.value as FontVariantKey,
+        },
+      }),
+    );
   }
 
   /**
@@ -104,32 +105,54 @@ export default function LeftSidebar({
    * to change and the minimum and maximum values as bounds.
    * @param e The change event.
    */
-  function onNumberInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+  function onNumberStyleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const min = parseInt(e.target.min);
     const max = parseInt(e.target.max);
     const value = e.target.valueAsNumber ?? min;
-    setAppState({
-      textStyle: {
-        [e.target.name]: Math.max(min, Math.min(value, max)),
-      },
-    });
+    dispatch(
+      updateDraggable({
+        style: {
+          [e.target.name]: Math.max(min, Math.min(value, max)),
+        },
+      }),
+    );
+  }
+
+  /**
+   * Triggers on any of the number input changes using the name as the property
+   * to change and the minimum and maximum values as bounds.
+   * @param e The change event.
+   */
+  function onNumberPositionChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void {
+    const min = parseInt(e.target.min);
+    const max = parseInt(e.target.max);
+    const value = e.target.valueAsNumber ?? min;
+    dispatch(
+      updateDraggable({
+        position: {
+          [e.target.name]: Math.max(min, Math.min(value, max)),
+        },
+      }),
+    );
   }
 
   function onFileNameTemplateChange(
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ): void {
-    setAppState({
-      fileNameTemplate: e.target.value,
-    });
+    dispatch(
+      updateState({
+        fileNameTemplate: e.target.value,
+      }),
+    );
   }
 
   /**
    * Shows the color picker.
    */
   function showColorPicker() {
-    setAppState({
-      isColorPickerVisible: true,
-    });
+    setColorPickerVisible(true);
   }
 
   return (
@@ -139,7 +162,7 @@ export default function LeftSidebar({
           <L.Label>Font Family:</L.Label>
           <L.FormSelect
             onChange={onFontFamilyChange}
-            value={appState.textStyle.fontFamily}>
+            value={appState.draggable.style.fontFamily}>
             {fonts.map((font) => {
               return (
                 <option value={font.family} key={font.id}>
@@ -154,7 +177,7 @@ export default function LeftSidebar({
           <L.FontStyleSelect
             onChange={onFontStyleChange}
             disabled={fontVariants.length < 2}
-            value={appState.textStyle.fontStyle}>
+            value={appState.draggable.style.fontStyle}>
             {fontVariants.map((variantKey) => {
               return (
                 <option value={variantKey} key={variantKey}>
@@ -168,11 +191,14 @@ export default function LeftSidebar({
           <L.Label>Font Color:</L.Label>
           <L.ColorThumbnail
             onClick={showColorPicker}
-            bgColor={appState.textStyle.color}
+            bgColor={appState.draggable.style.color}
             fontColor={fontPreviewTextColor}>
             {fontPreviewText}
           </L.ColorThumbnail>
-          <ColorPicker colorPickerRef={colorPickerRef} />
+          <ColorPicker
+            colorPickerRef={colorPickerRef}
+            visible={isColorPickerVisible}
+          />
         </L.FormField>
         <L.FormFieldRow>
           <L.FormField>
@@ -182,8 +208,8 @@ export default function LeftSidebar({
               min={2}
               max={max.fontSize}
               step={1}
-              onChange={onNumberInputChange}
-              value={appState.textStyle.fontSize}
+              onChange={onNumberStyleChange}
+              value={appState.draggable.style.fontSize}
             />
           </L.FormField>
           <L.FormField>
@@ -193,8 +219,8 @@ export default function LeftSidebar({
               min={2}
               max={150}
               step={2}
-              onChange={onNumberInputChange}
-              value={appState.textStyle.lineHeight}
+              onChange={onNumberStyleChange}
+              value={appState.draggable.style.lineHeight}
             />
           </L.FormField>
         </L.FormFieldRow>
@@ -206,8 +232,8 @@ export default function LeftSidebar({
               min={-40}
               max={40}
               step={1}
-              onChange={onNumberInputChange}
-              value={appState.textStyle.letterSpacing}
+              onChange={onNumberStyleChange}
+              value={appState.draggable.style.letterSpacing}
             />
           </L.FormField>
         </L.FormFieldRow>
@@ -219,8 +245,8 @@ export default function LeftSidebar({
               min={0}
               max={max.top}
               step={1}
-              onChange={onNumberInputChange}
-              value={appState.textStyle.top}
+              onChange={onNumberPositionChange}
+              value={appState.draggable.position.top}
             />
           </L.FormField>
           <L.FormField>
@@ -230,8 +256,8 @@ export default function LeftSidebar({
               min={0}
               max={max.left}
               step={1}
-              onChange={onNumberInputChange}
-              value={appState.textStyle.left}
+              onChange={onNumberPositionChange}
+              value={appState.draggable.position.left}
             />
           </L.FormField>
         </L.FormFieldRow>
@@ -250,33 +276,29 @@ export default function LeftSidebar({
   );
 }
 
-function ColorPicker({ colorPickerRef }: ColorPickerProps) {
-  const state = useSelector((state: RootState) => state);
+function ColorPicker({ colorPickerRef, visible }: ColorPickerProps) {
+  const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
-  const setState = useCallback(
-    (payload: PageStatePayload) => {
-      dispatch(updateState(payload));
-    },
-    [dispatch],
-  );
 
   /**
    * Triggers on a new font color selection.
    * @param color The result color.
    */
   function onFontColorChange(color: ColorResult): void {
-    setState({
-      textStyle: {
-        color: new TinyColor({ ...color.rgb }).toRgbString(),
-      },
-    });
+    dispatch(
+      updateDraggable({
+        style: {
+          color: new TinyColor({ ...color.rgb }).toRgbString(),
+        },
+      }),
+    );
   }
 
   return (
     <div ref={colorPickerRef}>
       <L.ColorPicker
-        visible={state.isColorPickerVisible}
-        color={state.textStyle.color}
+        visible={visible}
+        color={appState.draggable.style.color}
         onChange={onFontColorChange}
         styles={{
           default: {
@@ -310,10 +332,12 @@ function NumberInput({ ...props }: NumberInputProps) {
 interface LeftSidebarProps {
   colorPickerRef: React.RefObject<HTMLDivElement>;
   fonts: GoogleFont[];
+  useColorPicker: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
 interface ColorPickerProps {
   colorPickerRef: React.RefObject<HTMLDivElement>;
+  visible: boolean;
 }
 
 type NumberInputProps = React.InputHTMLAttributes<HTMLInputElement>;

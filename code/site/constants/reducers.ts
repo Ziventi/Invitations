@@ -12,69 +12,70 @@ import {
 } from 'redux-persist';
 import sessionStorage from 'redux-persist/lib/storage/session';
 
-import type { Draggable, DraggableOptions, AppState } from 'constants/types';
+import type {
+  AppState,
+  DraggablePosition,
+  DraggableStyle,
+} from 'constants/types';
 
 const initialState: AppState = {
   namesList: [],
-  draggable: {
-    isDragging: false,
-    isSelected: false,
-    offset: null,
-  },
   downloadInProgress: false,
   fileFormat: 'png',
   fileNameTemplate: '',
   selectedName: '',
-  isColorPickerVisible: false,
   imageSrc: null,
   imageDimensions: {
     width: 0,
     height: 0,
   },
-  textStyle: {
-    color: '#831919FF',
-    fontFamily: 'Courgette',
-    fontStyle: 'regular',
-    fontSize: 19,
-    letterSpacing: 0,
-    lineHeight: 24,
-    left: 0,
-    top: 0,
-    height: 0,
-    width: 0,
-    scale: 1,
-    scaleX: 1,
-    scaleY: 1,
+  draggable: {
+    style: {
+      color: '#831919FF',
+      fontFamily: 'Courgette',
+      fontStyle: 'regular',
+      fontSize: 19,
+      letterSpacing: 0,
+      lineHeight: 24,
+    },
+    position: {
+      left: 0,
+      top: 0,
+      height: 0,
+      width: 0,
+    },
   },
 };
 
 const slice = createSlice({
-  name: 'counter',
+  name: 'app',
   initialState,
   reducers: {
-    updateState: (state, action: PayloadAction<PageStatePayload>) => {
-      const { draggable, textStyle, ...payload } = action.payload;
+    updateState: (state, action: PayloadAction<UpdateStatePayload>) => {
       return {
         ...state,
-        ...payload,
+        ...action.payload,
+      };
+    },
+    updateDraggable: (state, action: PayloadAction<UpdateDraggablePayload>) => {
+      return {
+        ...state,
         draggable: {
-          ...state.draggable,
-          ...draggable,
-        },
-        textStyle: {
-          ...state.textStyle,
-          ...textStyle,
+          style: {
+            ...state.draggable.style,
+            ...action.payload.style,
+          },
+          position: {
+            ...state.draggable.position,
+            ...action.payload.position,
+          },
         },
       };
     },
   },
 });
 
-const blacklist: (keyof AppState)[] = [
-  'draggable',
-  'downloadInProgress',
-  'isColorPickerVisible',
-];
+const blacklist: (keyof AppState)[] = ['downloadInProgress'];
 const persistedReducer = persistReducer<AppState>(
   {
     key: 'root',
@@ -94,15 +95,14 @@ export const store = configureStore({
       },
     }),
 });
-export const { updateState } = slice.actions;
+export const { updateState, updateDraggable } = slice.actions;
 export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export type PageStatePayload = Omit<
-  Partial<AppState>,
-  'draggable' | 'textStyle'
-> & {
-  draggable?: Draggable | DraggableOptions | { isSelected: boolean };
-  textStyle?: Partial<AppState['textStyle']>;
+
+type UpdateStatePayload = Partial<AppState>;
+type UpdateDraggablePayload = {
+  style?: Partial<DraggableStyle>;
+  position?: Partial<DraggablePosition>;
 };
