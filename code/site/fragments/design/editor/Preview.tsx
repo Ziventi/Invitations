@@ -33,6 +33,7 @@ export default function Preview(): ReactElement {
         x: 0,
         y: 0,
       },
+      textFragments: [],
     },
     resizeHandles: {
       isDragging: false,
@@ -48,6 +49,7 @@ export default function Preview(): ReactElement {
 
   const svgRef = useRef<SVGSVGElement>(null);
   const draggableRef = useRef<SVGTextElement>(null);
+  const dummyRef = useRef<SVGTextElement>(null);
 
   // Memoises the draggable style based on selected text style properties.
   const draggableStyle = useMemo<DraggableStyle>(() => {
@@ -310,19 +312,55 @@ export default function Preview(): ReactElement {
     }
   }, [appState.selectedName, appState.draggable.style]);
 
-  // Get the initial max width.
+  useEffect(() => {
+    const dummy = dummyRef.current;
+    if (!dummy) return;
+
+    const fragments: string[] = [];
+
+    let line = '';
+    appState.selectedName
+      .split(/(\w+\-?)/)
+      .filter((e) => e.trim())
+      .forEach((word, k) => {
+        if (line.endsWith('- ')) {
+          line = line.slice(0, -1);
+        }
+        const currentLine = line + word + ' ';
+        dummy.textContent = currentLine;
+        const currentTextWidth = dummy.getBBox().width;
+
+        if (currentTextWidth > state.draggable.maxWidth && k > 0) {
+          fragments.push(line.trim());
+          line = word + ' ';
+        } else {
+          line = currentLine;
+        }
+      });
+
+    fragments.push(line.trim());
+
+    setState((current) => ({
+      ...current,
+      draggable: {
+        ...current.draggable,
+        textFragments: fragments,
+      },
+    }));
+  }, [appState.selectedName, state.draggable.maxWidth]);
+
   useEffect(() => {
     const draggable = draggableRef.current;
-    if (draggable) {
-      setState((current) => ({
-        ...current,
-        draggable: {
-          ...current.draggable,
-          maxWidth: draggable && draggable.getBBox().width,
-        },
-      }));
-    }
-  }, []);
+    if (!draggable) return;
+
+    setState((current) => ({
+      ...current,
+      draggable: {
+        ...current.draggable,
+        maxWidth: draggable.getBBox().width,
+      },
+    }));
+  }, [state.draggable.textFragments.length]);
 
   /**
    * Deselect the draggable text when clicked outside of it but within the drag
@@ -367,6 +405,12 @@ export default function Preview(): ReactElement {
         xmlns={'http://www.w3.org/2000/svg'}
         viewBox={`0 0 ${width} ${height}`}
         ref={svgRef}>
+        <text
+          dominantBaseline={'text-before-edge'}
+          ref={dummyRef}
+          style={draggableStyle.style}
+          {...draggableStyle.props}
+        />
         <rect width={'100%'} height={'100%'} fill={COLOR.WHITE} />
         <image
           href={appState.imageSrc!}
@@ -395,9 +439,18 @@ export default function Preview(): ReactElement {
           onMouseDown={onTextDragStart}
           ref={draggableRef}
           selected={state.draggable.isSelected}
-          style={draggableStyle.style}
           {...draggableStyle.props}>
-          {appState.selectedName}
+          {state.draggable.textFragments.map((fragment, key) => {
+            return (
+              <tspan
+                key={key}
+                style={draggableStyle.style}
+                x={left}
+                dy={appState.draggable.style.lineHeight * key}>
+                {fragment}
+              </tspan>
+            );
+          })}
         </P.Text>
         {[
           { id: 'west', start: left },
@@ -427,6 +480,7 @@ interface PreviewState {
     dimensions: Dimensions;
     maxWidth: number;
     offset: Coordinates | null;
+    textFragments: string[];
   };
   resizeHandles: {
     isDragging: boolean;

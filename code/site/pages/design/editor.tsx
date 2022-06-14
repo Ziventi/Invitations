@@ -79,6 +79,7 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
       updateDraggable({
         style: {
           fontSize: width / 10,
+          lineHeight: width / 6,
         },
         position: {
           left: width / 3,

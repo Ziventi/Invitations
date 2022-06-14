@@ -217,7 +217,7 @@ export default function LeftSidebar({
             <NumberInput
               name={'lineHeight'}
               min={2}
-              max={150}
+              max={appState.imageDimensions.height}
               step={2}
               onChange={onNumberStyleChange}
               value={appState.draggable.style.lineHeight}
