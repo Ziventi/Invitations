@@ -75,11 +75,12 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   // Set draggable style and position defaults based on image dimensions.
   useEffect(() => {
     const { height, width } = appState.imageDimensions;
+    const defaultFontSize = width / 10;
     dispatch(
       updateDraggable({
         style: {
-          fontSize: width / 10,
-          lineHeight: width / 6,
+          fontSize: defaultFontSize,
+          lineHeight: defaultFontSize * 1.05,
         },
         position: {
           left: width / 3,
