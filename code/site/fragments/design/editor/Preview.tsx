@@ -19,7 +19,7 @@ import type {
 import { COLOR } from 'styles/Constants.styles';
 import P from 'styles/pages/design/editor/Preview.styles';
 
-export default function Preview(): ReactElement {
+export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
   const [state, setState] = useState<PreviewState>({
     draggable: {
       isDragging: false,
@@ -28,7 +28,6 @@ export default function Preview(): ReactElement {
         height: 0,
         width: 0,
       },
-      maxWidth: 100,
       offset: {
         x: 0,
         y: 0,
@@ -49,10 +48,9 @@ export default function Preview(): ReactElement {
 
   const svgRef = useRef<SVGSVGElement>(null);
   const draggableRef = useRef<SVGTextElement>(null);
-  const dummyRef = useRef<SVGTextElement>(null);
 
   // Memoises the draggable style based on selected text style properties.
-  const draggableStyle = useMemo<DraggableStyle>(() => {
+  const draggableStyle = useMemo<DraggableStyleLocal>(() => {
     const { color, fontFamily, fontStyle, fontSize, letterSpacing } =
       appState.draggable.style;
     const fontWeight = Utils.getFontWeight(fontStyle);
@@ -113,7 +111,7 @@ export default function Preview(): ReactElement {
               Utils.minmax(
                 svgp.x - state.draggable.offset!.x,
                 0,
-                maxWidth - state.draggable.maxWidth,
+                maxWidth - appState.draggable.style.maxWidth,
               ),
             ),
             top: Math.round(
@@ -130,7 +128,12 @@ export default function Preview(): ReactElement {
       e.stopPropagation();
       e.preventDefault();
     },
-    [dispatch, appState.imageDimensions, state.draggable],
+    [
+      dispatch,
+      appState.imageDimensions,
+      appState.draggable.style.maxWidth,
+      state.draggable,
+    ],
   );
 
   /**
@@ -172,7 +175,7 @@ export default function Preview(): ReactElement {
       ...current,
       resizeHandles: {
         snapshotDraggableLeft: appState.draggable.position.left,
-        snapshotDraggableWidth: state.draggable.maxWidth,
+        snapshotDraggableWidth: appState.draggable.style.maxWidth,
         isDragging: true,
         handleId: id as ResizeHandlePosition,
         initialPointX: svgp.x,
@@ -207,35 +210,31 @@ export default function Preview(): ReactElement {
       const newDraggableWidth = snapshotDraggableWidth + delta;
 
       let maxX = 0;
+      let left = appState.draggable.position.left;
       if (handleId === 'east') {
         maxX = appState.imageDimensions.width - snapshotDraggableLeft;
       } else {
         // Compensate for movement when dragging west handle.
         maxX = snapshotDraggableLeft + snapshotDraggableWidth;
-        dispatch(
-          updateDraggable({
-            position: {
-              left: Utils.minmax(
-                snapshotDraggableLeft - delta,
-                minimumDraggableWidth,
-                maxX,
-              ),
-            },
-          }),
+        left = Utils.minmax(
+          snapshotDraggableLeft - delta,
+          minimumDraggableWidth,
+          maxX,
         );
       }
 
-      setState((current) => ({
-        ...current,
-        draggable: {
-          ...current.draggable,
-          maxWidth: Utils.minmax(
-            newDraggableWidth,
-            minimumDraggableWidth,
-            maxX,
-          ),
-        },
-      }));
+      dispatch(
+        updateDraggable({
+          position: { left },
+          style: {
+            maxWidth: Utils.minmax(
+              newDraggableWidth,
+              minimumDraggableWidth,
+              maxX,
+            ),
+          },
+        }),
+      );
 
       e.stopPropagation();
     },
@@ -244,6 +243,7 @@ export default function Preview(): ReactElement {
       appState.imageDimensions.width,
       state.resizeHandles,
       appState.draggable.style.fontSize,
+      appState.draggable.position.left,
     ],
   );
 
@@ -313,33 +313,14 @@ export default function Preview(): ReactElement {
   }, [appState.selectedName, appState.draggable.style]);
 
   useEffect(() => {
-    const dummy = dummyRef.current;
+    const dummy = dummyTextRef.current;
     if (!dummy) return;
 
-    const fragments: string[] = [];
-
-    let line = '';
-    appState.selectedName
-      .split(/(\w+\-?)/)
-      .filter((e) => e.trim())
-      .forEach((word, k) => {
-        if (line.endsWith('- ')) {
-          line = line.slice(0, -1);
-        }
-        const currentLine = line + word + ' ';
-        dummy.textContent = currentLine;
-        const currentTextWidth = dummy.getBBox().width;
-
-        if (currentTextWidth > state.draggable.maxWidth && k > 0) {
-          fragments.push(line.trim());
-          line = word + ' ';
-        } else {
-          line = currentLine;
-        }
-      });
-
-    fragments.push(line.trim());
-
+    const fragments = Utils.splitTextIntoWrapFragments(
+      dummy,
+      appState.selectedName,
+      appState.draggable.style.maxWidth,
+    );
     setState((current) => ({
       ...current,
       draggable: {
@@ -347,20 +328,20 @@ export default function Preview(): ReactElement {
         textFragments: fragments,
       },
     }));
-  }, [appState.selectedName, state.draggable.maxWidth]);
+  }, [dummyTextRef, appState.selectedName, appState.draggable.style.maxWidth]);
 
   useEffect(() => {
     const draggable = draggableRef.current;
     if (!draggable) return;
 
-    setState((current) => ({
-      ...current,
-      draggable: {
-        ...current.draggable,
-        maxWidth: draggable.getBBox().width,
-      },
-    }));
-  }, [state.draggable.textFragments.length]);
+    dispatch(
+      updateDraggable({
+        style: {
+          maxWidth: draggable.getBBox().width,
+        },
+      }),
+    );
+  }, [dispatch, state.draggable.textFragments.length]);
 
   /**
    * Deselect the draggable text when clicked outside of it but within the drag
@@ -407,7 +388,7 @@ export default function Preview(): ReactElement {
         ref={svgRef}>
         <text
           dominantBaseline={'text-before-edge'}
-          ref={dummyRef}
+          ref={dummyTextRef}
           style={draggableStyle.style}
           {...draggableStyle.props}
         />
@@ -422,7 +403,7 @@ export default function Preview(): ReactElement {
         <P.Border
           x={left}
           y={top}
-          width={state.draggable.maxWidth}
+          width={appState.draggable.style.maxWidth}
           height={draggableHeight}
           rx={10}
           ry={10}
@@ -441,12 +422,9 @@ export default function Preview(): ReactElement {
           selected={state.draggable.isSelected}
           {...draggableStyle.props}>
           {state.draggable.textFragments.map((fragment, key) => {
+            const dy = key > 0 ? appState.draggable.style.lineHeight : 0;
             return (
-              <tspan
-                key={key}
-                style={draggableStyle.style}
-                x={left}
-                dy={appState.draggable.style.lineHeight * key}>
+              <tspan key={key} style={draggableStyle.style} x={left} dy={dy}>
                 {fragment}
               </tspan>
             );
@@ -454,7 +432,7 @@ export default function Preview(): ReactElement {
         </P.Text>
         {[
           { id: 'west', start: left },
-          { id: 'east', start: left + state.draggable.maxWidth },
+          { id: 'east', start: left + appState.draggable.style.maxWidth },
         ].map(({ id, start }) => {
           return (
             <P.ResizeHandle
@@ -473,12 +451,15 @@ export default function Preview(): ReactElement {
   );
 }
 
+interface PreviewProps {
+  dummyTextRef: React.RefObject<SVGTextElement>;
+}
+
 interface PreviewState {
   draggable: {
     isDragging: boolean;
     isSelected: boolean;
     dimensions: Dimensions;
-    maxWidth: number;
     offset: Coordinates | null;
     textFragments: string[];
   };
@@ -491,7 +472,7 @@ interface PreviewState {
   };
 }
 
-interface DraggableStyle {
+interface DraggableStyleLocal {
   props: Pick<
     React.CSSProperties,
     | 'fill'

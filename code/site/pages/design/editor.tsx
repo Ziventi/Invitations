@@ -15,7 +15,9 @@ import { Default as DE } from 'styles/pages/design/DesignEditor.styles';
 
 const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
   const [isColorPickerVisible, setColorPickerVisible] = useState(false);
+
   const colorPickerRef = useRef<HTMLDivElement>(null);
+  const dummyTextRef = useRef<SVGTextElement>(null);
 
   const appState = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
@@ -92,14 +94,14 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
 
   return (
     <DE.Page>
-      <EditorHeader fonts={fonts} />
+      <EditorHeader dummyTextRef={dummyTextRef} fonts={fonts} />
       <DE.Main>
         <LeftSidebar
           colorPickerRef={colorPickerRef}
           fonts={fonts}
           useColorPicker={[isColorPickerVisible, setColorPickerVisible]}
         />
-        <Preview />
+        <Preview dummyTextRef={dummyTextRef} />
         <RightSidebar />
         <ProgressOverlay state={appState} />
       </DE.Main>

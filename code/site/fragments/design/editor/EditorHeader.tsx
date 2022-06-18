@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import FontIcon from 'components/icon';
 import * as Crypto from 'constants/functions/crypto';
 import * as Download from 'constants/functions/download';
+import * as Utils from 'constants/functions/utils';
 import type { RootState } from 'constants/reducers';
 import type {
   FileFormat,
@@ -17,7 +18,10 @@ import * as C from 'styles/Components.styles';
 import { COLOR } from 'styles/Constants.styles';
 import { EditorHeader as EH } from 'styles/pages/design/DesignEditor.styles';
 
-export default function EditorHeader({ fonts }: EditorHeaderProps) {
+export default function EditorHeader({
+  dummyTextRef,
+  fonts,
+}: EditorHeaderProps) {
   const [state, setState] = useState<EditorHeaderState>({
     isMenuVisible: false,
     downloadInProgress: false,
@@ -81,6 +85,18 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
       downloadInProgress: true,
     }));
 
+    // Determine wrap fragments for each name.
+    const dummyText = dummyTextRef.current;
+    if (!dummyText) return;
+    const fragmentedNamesList = appState.namesList.map((name) =>
+      Utils.splitTextIntoWrapFragments(dummyText, name, 0),
+    );
+    const selectedNameFragments = Utils.splitTextIntoWrapFragments(
+      dummyText,
+      appState.selectedName,
+      appState.draggable.style.maxWidth,
+    );
+
     const selectedFont = fonts.find((font) => {
       return font.family === appState.draggable.style.fontFamily;
     })!;
@@ -93,8 +109,8 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
       format: format as FileFormat,
       fontId: selectedFont.family,
       dimensions: appState.imageDimensions,
-      namesList: appState.namesList,
-      selectedName: appState.selectedName,
+      fragmentedNamesList,
+      selectedNameFragments,
     };
 
     const payload: RequestInit = {
@@ -195,6 +211,7 @@ export default function EditorHeader({ fonts }: EditorHeaderProps) {
 }
 
 interface EditorHeaderProps {
+  dummyTextRef: React.RefObject<SVGTextElement>;
   fonts: GoogleFont[];
 }
 

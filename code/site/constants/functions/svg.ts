@@ -14,7 +14,7 @@ export function create(
   backgroundImageSrc: string,
   dimensions: Dimensions,
   fileNameTemplate: string,
-  selectedName: string,
+  selectedName: string[],
   draggable: Draggable,
   fontDataUri: string,
 ): string {
@@ -24,7 +24,11 @@ export function create(
 
   // Add metadata.
   const title = document.createElementNS(xmlns, 'title');
-  title.textContent = Utils.substituteName(fileNameTemplate, selectedName);
+  title.textContent = Utils.substituteName(
+    fileNameTemplate,
+    // TODO: Only join with space is delimited with space.
+    selectedName.join(' '),
+  );
   svg.appendChild(title);
   const desc = document.createElementNS(xmlns, 'desc');
   desc.textContent = 'Created by Ziventi';
@@ -61,25 +65,37 @@ export function create(
   image.setAttribute('height', '100%');
   svg.appendChild(image);
 
-  // Add custom text.
+  // Add name-specific text.
   const text = document.createElementNS(xmlns, 'text');
+  text.setAttribute('dominant-baseline', 'text-before-edge');
   text.setAttribute('x', String(draggable.position.left));
   text.setAttribute('y', String(draggable.position.top));
-  text.setAttribute('dominant-baseline', 'text-before-edge');
-  text.setAttribute('filter', 'url(#crispify)');
-  text.setAttribute('fill', draggable.style.color);
-  text.setAttribute('font-size', `${draggable.style.fontSize}px`);
-  text.setAttribute(
-    'font-style',
-    draggable.style.fontStyle.includes('italic') ? 'italic' : 'normal',
-  );
-  text.setAttribute(
-    'font-weight',
-    Utils.getFontWeight(draggable.style.fontStyle),
-  );
-  text.setAttribute('letter-spacing', `${draggable.style.letterSpacing}px`);
-  text.setAttribute('style', `font-family:${draggable.style.fontFamily};`);
-  text.textContent = selectedName;
+  selectedName.forEach((fragment, index) => {
+    const tspan = document.createElementNS(xmlns, 'tspan');
+    tspan.setAttribute('dominant-baseline', 'text-before-edge');
+    tspan.setAttribute('x', String(draggable.position.left));
+    tspan.setAttribute(
+      'dy',
+      String(index > 0 ? draggable.style.lineHeight : 0),
+    );
+
+    tspan.setAttribute('filter', 'url(#crispify)');
+    tspan.setAttribute('fill', draggable.style.color);
+    tspan.setAttribute('font-size', `${draggable.style.fontSize}px`);
+    tspan.setAttribute(
+      'font-style',
+      draggable.style.fontStyle.includes('italic') ? 'italic' : 'normal',
+    );
+    tspan.setAttribute(
+      'font-weight',
+      Utils.getFontWeight(draggable.style.fontStyle),
+    );
+    tspan.setAttribute('letter-spacing', `${draggable.style.letterSpacing}px`);
+    tspan.setAttribute('style', `font-family:${draggable.style.fontFamily};`);
+    tspan.textContent = fragment;
+    text.appendChild(tspan);
+  });
+
   svg.appendChild(text);
 
   const xml = xmlSerializer.serializeToString(svg);

@@ -15,7 +15,7 @@ export default async function handler(
     fileNameTemplate,
     format,
     fontId,
-    selectedName,
+    selectedNameFragments,
     draggable,
   } = req.body;
 
@@ -29,7 +29,7 @@ export default async function handler(
       backgroundImageSrc,
       dimensions,
       fileNameTemplate,
-      selectedName,
+      selectedNameFragments,
       draggable,
       url.href,
     );

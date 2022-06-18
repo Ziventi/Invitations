@@ -25,8 +25,8 @@ export interface RequestBody {
   fileNameTemplate: string;
   format: FileFormat;
   fontId: string;
-  namesList: string[];
-  selectedName: string;
+  fragmentedNamesList: string[][];
+  selectedNameFragments: string[];
 }
 
 export interface Coordinates {
@@ -51,6 +51,7 @@ export interface DraggableStyle {
   fontSize: number;
   letterSpacing: number;
   lineHeight: number;
+  maxWidth: number;
 }
 
 export interface DraggablePosition {

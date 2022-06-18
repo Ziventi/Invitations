@@ -37,6 +37,7 @@ const initialState: AppState = {
       fontSize: 19,
       letterSpacing: 0,
       lineHeight: 24,
+      maxWidth: 100,
     },
     position: {
       left: 0,

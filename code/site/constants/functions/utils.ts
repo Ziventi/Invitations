@@ -43,3 +43,40 @@ export function nameListFromText(names: string): string[] {
 export function textFromNameList(nameList: string[]): string {
   return nameList.join('\n');
 }
+
+/**
+ * Splits a string into fragments based on wrapping.
+ * @param dummyTextElement The dummy text element.
+ * @param text The text to transform.
+ * @param maxWidth The maximum width of a line before wrapping text.
+ * @returns The text fragments.
+ */
+export function splitTextIntoWrapFragments(
+  dummyTextElement: SVGTextElement,
+  text: string,
+  maxWidth: number,
+): string[] {
+  const fragments: string[] = [];
+  let line = '';
+  text
+    .split(/(\w+\-?)/)
+    .filter((e) => e.trim())
+    .forEach((word, k) => {
+      if (line.endsWith('- ')) {
+        line = line.slice(0, -1);
+      }
+      const currentLine = line + word + ' ';
+      dummyTextElement.textContent = currentLine;
+      const currentTextWidth = dummyTextElement.getBBox().width;
+
+      if (currentTextWidth > maxWidth && k > 0) {
+        fragments.push(line.trim());
+        line = word + ' ';
+      } else {
+        line = currentLine;
+      }
+    });
+
+  fragments.push(line.trim());
+  return fragments;
+}

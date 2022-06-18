@@ -17,7 +17,7 @@ export default async function handler(
     fileNameTemplate,
     format,
     fontId,
-    namesList,
+    fragmentedNamesList: namesList,
     draggable,
   } = req.body;
 
