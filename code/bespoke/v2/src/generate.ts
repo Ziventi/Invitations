@@ -70,15 +70,17 @@ export default class Generator {
         url.searchParams.append('name', name);
 
         const page = await this.browser!.newPage();
-        await page.goto(url.href);
+        await page.goto(url.href, {
+          waitUntil: 'networkidle0',
+        });
         await page.evaluateHandle('document.fonts.ready');
 
         let file: Buffer | string;
         if (format === 'pdf') {
           file = await page.pdf({
             format: 'a4',
-            path: `${this.outputDir}/${name}.pdf`,
-            pageRanges: '1',
+            path: `${this.outputDir}/Adebusola’s 24th Birthday - Invitation to ${name}.pdf`,
+            pageRanges: '1-5',
             printBackground: true,
           });
         } else {

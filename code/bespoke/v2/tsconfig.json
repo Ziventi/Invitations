@@ -15,5 +15,5 @@
     "sourceMap": true,
     "target": "es6"
   },
-  "include": ["projects/**/*.tsx", "types/*.d.ts"]
+  "include": ["projects/**/*.ts", "projects/**/*.tsx", "types/*.d.ts"]
 }
