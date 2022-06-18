@@ -79,6 +79,7 @@ const DesignEditorPage: NextPage<DesignEditorProps> = ({ fonts }) => {
     const { height, width } = appState.imageDimensions;
     const defaultFontSize = width / 10;
     dispatch(
+      // TODO: Return to setting defaults after selecting image.
       updateDraggable({
         style: {
           fontSize: defaultFontSize,

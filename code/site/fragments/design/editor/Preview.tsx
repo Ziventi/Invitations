@@ -341,7 +341,7 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
         },
       }),
     );
-  }, [dispatch, state.draggable.textFragments.length]);
+  }, [dispatch, state.draggable.textFragments]);
 
   /**
    * Deselect the draggable text when clicked outside of it but within the drag
