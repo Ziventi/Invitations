@@ -7,9 +7,9 @@ module.exports = [createConfig('victory')];
 function createConfig(name) {
   const cwd = path.resolve(__dirname);
   return {
-    name: 'victory',
+    name,
     devtool: 'inline-source-map',
-    entry: './projects/victory/index.tsx',
+    entry: `./projects/${name}/index.tsx`,
     mode: 'development',
     module: {
       rules: [
@@ -29,15 +29,15 @@ function createConfig(name) {
     output: {
       clean: true,
       filename: 'bundle.js',
-      path: `${cwd}/projects/${name}dist`,
+      path: `${cwd}/projects/${name}/dist`,
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: `${cwd}/index.html`,
+        template: `${cwd}/projects/${name}/index.html`,
       }),
     ],
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.js', '.ts', '.tsx'],
     },
     /** @type {import('webpack-dev-server').Configuration} */
     devServer: {
