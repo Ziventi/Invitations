@@ -4,6 +4,11 @@ const path = require('path');
 /** @type {import('webpack').Configuration[]} */
 module.exports = [createConfig('victory')];
 
+/**
+ * Creates a new Webpack configuration.
+ * @param {string} name The configuration name.
+ * @returns {import('webpack').Configuration}
+ */
 function createConfig(name) {
   const cwd = path.resolve(__dirname);
   return {
@@ -45,6 +50,9 @@ function createConfig(name) {
       historyApiFallback: true,
       open: false,
       port: 8080,
+      static: {
+        directory: `${cwd}/projects/${name}/config`,
+      },
     },
   };
 }

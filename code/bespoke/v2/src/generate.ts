@@ -1,25 +1,24 @@
 import { Logger as logger } from '@ziventi/utils';
+import axios from 'axios';
 import { spawnSync } from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
 import type { Browser } from 'puppeteer';
 import puppeteer from 'puppeteer';
 
+import type { ProjectSettings } from '../types';
+
 export default class Generator {
   private static BASE_URL = 'http://localhost:8080';
-  private static NAMES_TXT = 'names.txt';
   private static MAX_FILE_SIZE = 5;
 
   private browser?: Browser;
   private outputDir: string;
   private names: string[];
+  private projectSettings: ProjectSettings;
 
   constructor() {
     this.outputDir = path.resolve(__dirname, '../dist');
-    this.names = fs
-      .readFileSync(Generator.NAMES_TXT, { encoding: 'utf8' })
-      .split(/\n/)
-      .map((e) => e.trim());
   }
 
   /**
@@ -34,6 +33,8 @@ export default class Generator {
     logger.info('Cleaning output directory.');
     fs.removeSync(this.outputDir);
     fs.ensureDirSync(this.outputDir);
+
+    await this.retrieveProjectConfiguration();
 
     if (options.limit) {
       this.names = this.names.slice(0, parseInt(options.limit));
@@ -66,6 +67,10 @@ export default class Generator {
     let maxFileSize = 0;
     await Promise.all(
       this.names.map(async (name) => {
+        const filename = this.projectSettings.fileNameTemplate.replace(
+          '{name}',
+          name,
+        );
         const url = new URL(Generator.BASE_URL);
         url.searchParams.append('name', name);
 
@@ -79,8 +84,8 @@ export default class Generator {
         if (format === 'pdf') {
           file = await page.pdf({
             format: 'a4',
-            path: `${this.outputDir}/Adebusola’s 24th Birthday - Invitation to ${name}.pdf`,
-            pageRanges: '1-5',
+            path: `${this.outputDir}/${filename}.pdf`,
+            pageRanges: `1-${this.projectSettings.pagesLength}`,
             printBackground: true,
           });
         } else {
@@ -92,7 +97,7 @@ export default class Generator {
           file = await page.screenshot({
             encoding: 'binary',
             fullPage: true,
-            path: `${this.outputDir}/${name}.png`,
+            path: `${this.outputDir}/${filename}.png`,
             type: 'png',
           });
         }
@@ -145,6 +150,19 @@ export default class Generator {
       height: convert(height),
       deviceScaleFactor,
     };
+  }
+
+  /**
+   * Request for the project specific names and configuration.
+   */
+  private async retrieveProjectConfiguration(): Promise<void> {
+    const [namesResponse, settingsResponse] = await Promise.all([
+      await axios.get<string>(`${Generator.BASE_URL}/names.txt`),
+      await axios.get<ProjectSettings>(`${Generator.BASE_URL}/settings.json`),
+    ]);
+
+    this.names = namesResponse.data.split(/\n/).map((e) => e.trim());
+    this.projectSettings = settingsResponse.data;
   }
 }
 
