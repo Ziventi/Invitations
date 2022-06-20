@@ -68,6 +68,9 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
     };
   }, [appState.draggable.style]);
 
+  // Stringify the text fragments for comparison as an effect dependency.
+  const textFragmentString = JSON.stringify(state.draggable.textFragments);
+
   /**
    * Called on mouse-down to start dragging the draggable. Triggers only on
    * left-clicks on the draggable element.
@@ -342,7 +345,7 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
         },
       }),
     );
-  }, [dispatch, state.draggable.textFragments]);
+  }, [dispatch, textFragmentString]);
 
   /**
    * Deselect the draggable text when clicked outside of it but within the drag

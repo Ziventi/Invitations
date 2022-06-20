@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import * as Animation from 'styles/Animations.styles';
 import { COLOR } from 'styles/Constants.styles';
