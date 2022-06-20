@@ -64,6 +64,7 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
       },
       style: {
         fontFamily,
+        minWidth: Math.round(appState.draggable.style.fontSize / 2),
       },
     };
   }, [appState.draggable.style]);
@@ -207,9 +208,7 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
       const delta =
         handleId === 'east' ? svgp.x - initialPointX : initialPointX - svgp.x;
 
-      const minimumDraggableWidth = Math.round(
-        appState.draggable.style.fontSize / 4,
-      );
+      const minimumDraggableWidth = draggableStyle.style.minWidth!;
       const newDraggableWidth = snapshotDraggableWidth + delta;
 
       let maxX = 0;
@@ -245,7 +244,7 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
       dispatch,
       appState.imageDimensions.width,
       state.resizeHandles,
-      appState.draggable.style.fontSize,
+      draggableStyle.style.minWidth,
       appState.draggable.position.left,
     ],
   );
@@ -486,5 +485,7 @@ interface DraggableStyleLocal {
     | 'fontWeight'
     | 'letterSpacing'
   >;
-  style: Pick<React.CSSProperties, 'fontFamily'>;
+  style: Pick<React.CSSProperties, 'fontFamily'> & {
+    minWidth: number;
+  };
 }
