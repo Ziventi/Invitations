@@ -9,3 +9,13 @@ export const FadeIn = keyframes`
     opacity: 1
   }
 `;
+
+export const BorderRotate = keyframes`
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -5000;
+  }
+`;

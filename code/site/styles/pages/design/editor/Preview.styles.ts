@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+import * as Animation from 'styles/Animations.styles';
 import { COLOR } from 'styles/Constants.styles';
 import * as Mixin from 'styles/Mixins.styles';
 
@@ -25,6 +26,9 @@ export default {
   `,
   Border: styled.rect<{ visible: boolean }>`
     ${({ visible }) => Mixin.Visible(visible)}
+    animation: ${Animation.BorderRotate} 60s linear;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
     transition: opacity 0.2s, z-index 0.2s;
   `,
   ResizeHandle: styled.circle<{

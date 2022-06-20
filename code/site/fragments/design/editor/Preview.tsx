@@ -312,6 +312,7 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
     }
   }, [appState.selectedName, appState.draggable.style]);
 
+  // Determine text fragments for the selected name.
   useEffect(() => {
     const dummy = dummyTextRef.current;
     if (!dummy) return;
