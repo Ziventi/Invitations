@@ -62,7 +62,9 @@ const Home: NextPage = () => {
             </H.HeroCaptionHeading>
             <p>Let each and every one of your guests know they matter.</p>
             <Link href={'/design/#1'}>
-              <H.HeroButton bgColor={COLOR.PRIMARY_4_DARK}>Start</H.HeroButton>
+              <H.HeroButton id={'start'} bgColor={COLOR.PRIMARY_4_DARK}>
+                Start
+              </H.HeroButton>
             </Link>
           </H.HeroCaption>
         </H.Hero>

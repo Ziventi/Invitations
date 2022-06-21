@@ -91,8 +91,8 @@ export const Default = {
     line-height: 150%;
     max-width: 550px;
   `,
-  Button: styled(Global.Button)<{ visible?: boolean }>`
-    ${({ visible }) => Mixin.Visible(visible)}
+  Button: styled(Global.Button)`
+    ${({ disabled }) => Mixin.Visible(!disabled)}
     min-width: 150px;
     padding: 1.2em;
   `,

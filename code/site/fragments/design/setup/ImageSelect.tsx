@@ -100,16 +100,17 @@ export default function ImageSelect({
       <DS.Footer>
         <Link href={'/design/#1'}>
           <DS.Button
+            id={'previous-step'}
             bgColor={COLOR.PRIMARY_4_DARK}
             onClick={() => setCurrentStep(0)}>
             <FontIcon icon={faChevronLeft} spaceRight={true} />
-            Previous
+            Previous Step
           </DS.Button>
         </Link>
         <Link href={'/design/editor'}>
           <DS.Button
             bgColor={COLOR.PRIMARY_4_LIGHT}
-            visible={!!appState.imageSrc}>
+            disabled={!appState.imageSrc}>
             Start Editing
           </DS.Button>
         </Link>

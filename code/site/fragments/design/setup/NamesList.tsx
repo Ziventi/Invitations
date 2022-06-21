@@ -99,6 +99,7 @@ export default function NamesList({
             template.
           </DS.Text>
           <DS.Button
+            id={'enter-names'}
             bgColor={COLOR.PRIMARY_4_NEUTRAL}
             onClick={() => toggleModal(true)}>
             Manually enter names
@@ -106,7 +107,7 @@ export default function NamesList({
         </DS.Partition>
         <DS.Partition>
           <NL.NameListContainer visible={hasNamesListed}>
-            <NL.NameList>
+            <NL.NameList id={'nameslist'}>
               {appState.namesList.map((name, key) => {
                 return <li key={key}>{name}</li>;
               })}
@@ -123,8 +124,9 @@ export default function NamesList({
         </Link>
         <Link href={'/design/#2'}>
           <DS.Button
+            id={'next-step'}
             bgColor={COLOR.PRIMARY_4_LIGHT}
-            visible={hasNamesListed}
+            disabled={!hasNamesListed}
             onClick={onNextStepClick}>
             Next Step
             <FontIcon icon={faChevronRight} spaceLeft={true} />
@@ -138,23 +140,26 @@ export default function NamesList({
               Separate each name with a new line.
             </NL.Instructions>
             <NL.NameTextInput
-              id={'names-list'}
+              id={'nameslist-input'}
+              disabled={!state.isModalVisible}
               onChange={onNameListChange}
               value={state.names}
               placeholder={'List each individual name...'}
               spellCheck={false}
               rows={10}
             />
-            <NL.NameCount>
+            <NL.NameCount id={'name-count'}>
               {Utils.nameListFromText(state.names).length} name(s)
             </NL.NameCount>
             <NL.ModalFooter>
               <DS.Button
+                id={'names-modal-confirm'}
                 bgColor={COLOR.PRIMARY_3_DARK}
                 onClick={onConfirmClick}>
                 Confirm
               </DS.Button>
               <DS.Button
+                id={'names-modal-cancel'}
                 bgColor={COLOR.PRIMARY_3_LIGHT}
                 onClick={onCancelClick}>
                 Cancel
