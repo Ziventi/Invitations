@@ -205,11 +205,11 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
       } = state.resizeHandles;
 
       const svgp = getCurrentSVGPoint(e);
-      const delta =
+      const deltaX =
         handleId === 'east' ? svgp.x - initialPointX : initialPointX - svgp.x;
 
       const minimumDraggableWidth = draggableStyle.style.minWidth!;
-      const newDraggableWidth = snapshotDraggableWidth + delta;
+      const newDraggableWidth = snapshotDraggableWidth + deltaX;
 
       let maxX = 0;
       let left = appState.draggable.position.left;
@@ -217,12 +217,11 @@ export default function Preview({ dummyTextRef }: PreviewProps): ReactElement {
         maxX = appState.imageDimensions.width - snapshotDraggableLeft;
       } else {
         // Compensate for movement when dragging west handle.
-        maxX = snapshotDraggableLeft + snapshotDraggableWidth;
-        left = Utils.minmax(
-          snapshotDraggableLeft - delta,
-          minimumDraggableWidth,
-          maxX,
-        );
+        maxX =
+          snapshotDraggableLeft +
+          snapshotDraggableWidth -
+          minimumDraggableWidth;
+        left = Utils.minmax(snapshotDraggableLeft - deltaX, 0, maxX);
       }
 
       dispatch(
