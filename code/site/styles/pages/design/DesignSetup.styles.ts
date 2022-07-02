@@ -80,6 +80,7 @@ export const Default = {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    pointer-events: none;
     text-align: center;
   `,
   Heading: styled.h2`

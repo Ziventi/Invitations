@@ -117,7 +117,7 @@ export default function NamesList({
       </DS.Container>
       <DS.Footer>
         <Link href={'/'}>
-          <DS.Button bgColor={COLOR.PRIMARY_4_DARK}>
+          <DS.Button id={'back-home'} bgColor={COLOR.PRIMARY_4_DARK}>
             <FontIcon icon={faHome} spaceRight={true} />
             Back to Home
           </DS.Button>

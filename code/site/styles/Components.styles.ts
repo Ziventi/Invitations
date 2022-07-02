@@ -22,6 +22,7 @@ export const Button = styled.button<ButtonProps>`
   min-width: 100px;
   outline: none;
   padding: 1em;
+  pointer-events: auto;
   transition: all 0.3s ease;
   user-select: none;
 

@@ -150,7 +150,7 @@ export default function EditorHeader({
   return (
     <EH.Header>
       <Link href={'/design/#2'}>
-        <C.Link>
+        <C.Link id={'back-setup'}>
           <FontIcon icon={faChevronLeft} spaceRight={true} />
           Back to Setup
         </C.Link>

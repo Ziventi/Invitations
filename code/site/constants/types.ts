@@ -89,3 +89,8 @@ export interface DesignSetupStepProps {
   visible: boolean;
   setCurrentStep: Dispatch<SetStateAction<number>>;
 }
+
+export interface DesignSetupHash {
+  namesList: string[];
+  imageSource: string;
+}

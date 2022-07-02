@@ -76,7 +76,10 @@ export default function ImageSelect({
             name.
           </DS.Text>
           <IS.FileSelector>
-            <Global.Button as={'label'} bgColor={COLOR.PRIMARY_3_DARK}>
+            <Global.Button
+              id={'file-selector'}
+              as={'label'}
+              bgColor={COLOR.PRIMARY_3_DARK}>
               <input
                 type={'file'}
                 accept={'image/jpeg,image/png'}
@@ -109,6 +112,7 @@ export default function ImageSelect({
         </Link>
         <Link href={'/design/editor'}>
           <DS.Button
+            id={'start-editing'}
             bgColor={COLOR.PRIMARY_4_LIGHT}
             disabled={!appState.imageSrc}>
             Start Editing

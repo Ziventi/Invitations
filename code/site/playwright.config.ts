@@ -1,9 +1,13 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
+import 'dotenv/config';
 
 const port = 3333;
 
 const config: PlaywrightTestConfig = {
-  timeout: 10000,
+  expect: {
+    timeout: 100,
+  },
+  timeout: 5000,
   use: {
     baseURL: `http://localhost:${port}`,
     headless: true,
