@@ -1,5 +1,5 @@
+import { NAMES_LIST } from '@test/constants';
 import { expect, test } from '@test/fixtures';
-import { names } from '@test/resources/data.json';
 
 test.describe('Design Setup - Step #1', () => {
   /**
@@ -25,14 +25,14 @@ test.describe('Design Setup - Step #1', () => {
 
     await locators.enterNamesButton.click();
     await expect(locators.nameslistInput).toBeEnabled();
-    await locators.nameslistInput.fill(names.join('\n'));
+    await locators.nameslistInput.fill(NAMES_LIST.join('\n'));
 
     await locators.namesModalConfirmButton.click();
     await expect(locators.nameslistInput).toBeDisabled();
     await expect(locators.nextStepButton).toBeEnabled();
 
     (await locators.nameslistItems.allTextContents()).forEach((name, i) => {
-      expect(name).toBe(names[i]);
+      expect(name).toBe(NAMES_LIST[i]);
     });
 
     await locators.nextStepButton.click();
@@ -48,7 +48,7 @@ test.describe('Design Setup - Step #1', () => {
    */
   test('Abort populating names', async ({ locators }) => {
     await locators.enterNamesButton.click();
-    await locators.nameslistInput.fill(names.join('\n'));
+    await locators.nameslistInput.fill(NAMES_LIST.join('\n'));
     await locators.namesModalCancelButton.click();
 
     await expect(locators.nameslistInput).toBeDisabled();
@@ -63,7 +63,7 @@ test.describe('Design Setup - Step #1', () => {
    */
   test('Populate names then depopulate names', async ({ locators }) => {
     await locators.enterNamesButton.click();
-    await locators.nameslistInput.fill(names.join('\n'));
+    await locators.nameslistInput.fill(NAMES_LIST.join('\n'));
     await locators.namesModalConfirmButton.click();
 
     await locators.enterNamesButton.click();

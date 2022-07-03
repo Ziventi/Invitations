@@ -13,7 +13,6 @@ test.describe('Home', () => {
    */
   test('Click to design setup', async ({ page }) => {
     await page.click('button#start');
-
     const url = new URL(page.url());
     expect(url.pathname, '/design');
     expect(url.hash, '#1');

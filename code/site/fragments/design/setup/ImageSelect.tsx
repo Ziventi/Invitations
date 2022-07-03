@@ -53,7 +53,6 @@ export default function ImageSelect({
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
       const img = new Image();
-      img.src = fileReader.result as string;
       img.onload = () => {
         setAppState({
           imageDimensions: {
@@ -63,6 +62,7 @@ export default function ImageSelect({
           imageSrc: img.src,
         });
       };
+      img.src = fileReader.result as string;
     };
   }
 
@@ -81,6 +81,7 @@ export default function ImageSelect({
               as={'label'}
               bgColor={COLOR.PRIMARY_3_DARK}>
               <input
+                id={'file-input'}
                 type={'file'}
                 accept={'image/jpeg,image/png'}
                 onChange={onImageSelect}
